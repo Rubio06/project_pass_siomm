@@ -1,0 +1,28 @@
+[
+  {
+    "ContainingType": "pass_siomm_backend.Controllers.RoutersController",
+    "Method": "GetRutas",
+    "RelativePath": "api/Routers/mostrar-rutas",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm.Controllers.AuthController",
+    "Method": "AutenticatheUser",
+    "RelativePath": "Auth/authenticate",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "pass_siomm.Data.Dto.UsersDto\u002BLoginRequestDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]
