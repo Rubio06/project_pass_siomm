@@ -1,0 +1,134 @@
+<div class="navbar bg-base shadow-sm bg-[#F5F5F5]" style="padding-top:0.10rem; padding-bottom:0.10rem;">
+    <div class="navbar-start flex-1">
+        <div class="dropdown">
+            <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" />
+                </svg>
+
+            </div>
+            <ul tabindex="-1" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-60 p-2 shadow">
+
+                @for (rutaPrimaria of routers(); track $index) {
+                <li>
+                    <details>
+                        <summary (click)="closeOtherMenus($event)">
+                            {{ rutaPrimaria.nom_ruta_primer }}
+                        </summary>
+
+                        <ul class="pl-4 py-1">
+                            @for (rutaSecundaria of rutaPrimaria.rutas_secundarias; track $index) {
+                            <ng-container *ngTemplateOutlet="renderNivelMobile; context:{ item: rutaSecundaria }">
+                            </ng-container>
+                            }
+                        </ul>
+                    </details>
+
+                </li>
+                }
+            </ul>
+
+            <!-- Recursive template for mobile -->
+            <ng-template #renderNivelMobile let-item="item">
+                <li class="relative group">
+
+                    @if (getChildren(item).length > 0) {
+
+                    <details class="relative">
+                        <summary (click)="closeOtherMenus($event)">
+                            {{ getName(item) | replaceUnderscore }}
+                        </summary>
+
+                        <!-- Submenú hacia la derecha -->
+                        <ul
+                            class="p-2 absolute left-full top-0 ml-2 bg-base-100 shadow rounded-box w-48 z-50 hidden group-hover:block">
+                            @for (child of getChildren(item); track $index) {
+                            <ng-container *ngTemplateOutlet="renderNivel; context:{ item: child }"></ng-container>
+                            }
+                        </ul>
+                    </details>
+
+                    } @else {
+
+                    <a data-close="true" class="block py-1 px-2 hover:bg-base-200 rounded whitespace-nowrap">
+                        {{ getName(item) | replaceUnderscore }}
+                    </a>
+
+                    }
+                </li>
+            </ng-template>
+
+
+        </div>
+        <div class="flex justify-center items-center my-2  m-auto">
+            <img src="logo-empresa.png" alt="Logo empresa"
+                class="w-25 h-auto" />
+        </div>
+
+    </div>
+    <div class="navbar-center hidden lg:flex flex-6">
+        <ul class="menu menu-horizontal px-6 gap-4 font-sans text-base font-medium text-[bg-black]">
+            @for (rutaPrimaria of routers(); track $index) {
+            <li class="w-52 group relative" #menu>
+                <details class="group">
+                    <summary (click)="closeOtherMenus($event)"
+                        class=" font-semibold border-b-2 border-transparent hover:border-[#012D96]">
+                        {{ rutaPrimaria.nom_ruta_primer }}
+                    </summary>
+
+                    <ul class="p-2 mt-1 bg-white shadow-lg rounded-lg w-full transition-all duration-300 ease-in-out z-50">
+                        @for (rutaSecundaria of rutaPrimaria.rutas_secundarias; track $index) {
+                        <ng-container *ngTemplateOutlet="renderNivel; context:{ item: rutaSecundaria }"></ng-container>
+                        }
+                    </ul>
+                </details>
+
+            </li>
+            }
+        </ul>
+
+        <ng-template #renderNivel let-item="item">
+            <li class="relative group">
+
+                @if (getChildren(item).length > 0) {
+
+                <details class="group">
+                    <summary (click)="closeOtherMenus($event)"
+                        class="cursor-pointer py-1 px-3 rounded hover:bg-blue-50 hover:text-blue-600 transition-all duration-300 ease-in-out font-medium">
+                        {{ getName(item) | replaceUnderscore }}
+                    </summary>
+
+                    <ul
+                        class="p-2 absolute left-full top-0 ml-2 bg-white shadow-lg rounded-lg w-48 z-50 transition-all duration-300 ease-in-out">
+                        @for (child of getChildren(item); track $index) {
+                        <ng-container *ngTemplateOutlet="renderNivel; context:{ item: child }"></ng-container>
+                        }
+                    </ul>
+
+                </details>
+
+                } @else {
+                <a
+                    class="block py-1 px-3 rounded hover:bg-blue-50 hover:text-blue-600 transition-all duration-300 ease-in-out font-medium">
+                    {{ getName(item) | replaceUnderscore }}
+                </a>
+                }
+            </li>
+        </ng-template>
+    </div>
+
+
+    <div class="navbar-end flex-1">
+        <button class="btn btn-error gap-2 flex items-center m-auto hover:scale-105 transition-transform duration-200"
+            (click)="authService.logout()">
+            <!-- Icono de Logout -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1" />
+            </svg>
+            Cerrar Sesión
+        </button>
+    </div>
+</div>
