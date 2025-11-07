@@ -1,0 +1,55 @@
+
+@if (hasError()) {
+<div class="text-red-600 font-semibold p-4 text-center w-100">
+    {{ hasError() }}
+</div>
+} @else {
+<ul class="menu menu-horizontal text-base font-medium text-black">
+    @for (rutaPrimaria of routers(); track $index) {
+    <li class="w-52 relative group" #menu>
+        <details class="group">
+            <summary (click)="closeOtherMenus($event)"
+                class="font-semibold border-b-2 border-transparent hover:border-[#012D96] transition-colors duration-300">
+                {{ rutaPrimaria.nom_ruta_primer }}
+            </summary>
+
+            <!-- Submenú de primer nivel -->
+            <ul class="p-2 mt-1 bg-white shadow-lg rounded-lg w-full z-50 transition-all duration-300 ease-in-out">
+                @for (rutaSecundaria of rutaPrimaria.rutas_secundarias; track $index) {
+                <ng-container *ngTemplateOutlet="renderNivel; context:{ item: rutaSecundaria }"></ng-container>
+                }
+            </ul>
+        </details>
+    </li>
+    }
+</ul>
+
+<!-- 🔁 Template recursivo para niveles secundarios -->
+<ng-template #renderNivel let-item="item">
+    <li class="relative group">
+        @if (getChildren(item).length > 0) {
+        <details class="group">
+            <summary (click)="closeOtherMenus($event)"
+                class="cursor-pointer py-1 px-3 rounded hover:bg-blue-50 hover:text-blue-600 transition-all duration-300 ease-in-out font-medium">
+                {{ getName(item) | replaceUnderscore }}
+            </summary>
+
+            <!-- Submenú anidado -->
+            <ul
+                class="p-2 absolute left-full top-0 ml-2 bg-white shadow-lg rounded-lg w-48 z-50 transition-all duration-300 ease-in-out">
+                @for (child of getChildren(item); track $index) {
+                <ng-container *ngTemplateOutlet="renderNivel; context:{ item: child }"></ng-container>
+                }
+            </ul>
+        </details>
+        }
+        @else {
+        <!-- Enlace final sin hijos -->
+        <a [routerLink]="[item.nom_ruta_secun]" (click)="closeAllDropdowns()"
+            class="block py-1 px-3 rounded hover:bg-blue-50 hover:text-blue-600 transition-all duration-300 ease-in-out font-medium">
+            {{ getName(item) | replaceUnderscore }}
+        </a>
+        }
+    </li>
+</ng-template>
+}

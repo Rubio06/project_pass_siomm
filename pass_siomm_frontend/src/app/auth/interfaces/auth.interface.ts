@@ -3,10 +3,12 @@
 export interface LogResponse {
     success: boolean;
     message: string;
-    data:
-    {
-        username: string;
-        token: string;
-    }
+    data: DataToken
+}
+
+export interface DataToken {
+
+    username: string;
+    token: string;
 
 }

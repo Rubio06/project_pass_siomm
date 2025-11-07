@@ -5,7 +5,6 @@ import { MainPagePrimer } from '../../interfaces/main-page.interface';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from "@angular/router";
 import { MainPagePipe } from '../../pipe/main-page-pipe';
-import { SecundariaComponent } from 'src/app/shared/components/secundaria/secundaria.component';
 
 @Component({
     selector: 'app-main-page',
@@ -81,7 +80,6 @@ export class MainPageComponent {
             || item.nom_ruta_opc;
     }
 
-    // Cierra todos los detalles si se hace clic fuera del navbar
     @HostListener('document:click', ['$event'])
     handleClickOutside(event: Event) {
         this.menus.forEach(menu => {

@@ -33,13 +33,14 @@ export class LoginPageComponent {
         this.authServices.login(username!, password!).subscribe({
             next: (res: boolean) => {
                 if (res) {
-                    this.router.navigate(['/main']);
-                } else {
-                    this.hasError.set(true);
-                    setTimeout(() => {
-                        this.hasError.set(false);
-                    }, 3000);
+                    this.router.navigateByUrl('/main');
+                    return;
                 }
+                this.hasError.set(true);
+                setTimeout(() => {
+                    this.hasError.set(false);
+                }, 3000);
+
             },
             error: (err) => {
                 console.error('Error al autenticar', err);
