@@ -1,16 +1,17 @@
 import { environment } from '@environments/environments';
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { catchError, Observable, of } from 'rxjs';
-import { AperPerOper } from '../interface/aper-per-oper.interface';
+import { PlanningData, PlanningResponse } from '../interface/aper-per-oper.interface';
 
 @Injectable({
     providedIn: 'root'
 })
 export class PlanningService {
-
     planningHttp = inject(HttpClient);
     private planingUrl = environment.baseUrl;
+
+    data = signal<any>(null);
 
     public getMonths(yearData: string): Observable<string[]> {
         return this.planningHttp.get<string[]>(`${this.planingUrl}planeamiento/aper-periodo-operativo/meses`,
@@ -34,8 +35,8 @@ export class PlanningService {
         }));
     }
 
-    public getDate(dataMes: string, dataAnio: string): Observable<AperPerOper[]>{
-        return this.planningHttp.get<AperPerOper[]>(`${this.planingUrl}planeamiento/aper-periodo-operativo/fechas`,
+    public getDate(dataMes: string, dataAnio: string): Observable<any[]> {
+        return this.planningHttp.get<PlanningData[]>(`${this.planingUrl}planeamiento/aper-periodo-operativo/obtener-datos`,
             {
                 params: {
                     month: dataMes,
@@ -46,5 +47,9 @@ export class PlanningService {
             console.log('Error al cargar los meses', error)
             return of([]);
         }))
+    }
+
+    setData(data: any) {
+        this.data.set(data);
     }
 }

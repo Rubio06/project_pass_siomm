@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { Planning } from './planning.service';
 
 
 describe('Planning', () => {

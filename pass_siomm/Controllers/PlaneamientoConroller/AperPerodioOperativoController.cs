@@ -23,11 +23,10 @@ namespace pass_siomm_backend.Controllers.aper_per_oper
             try
             {
                 var meses = await _AperPeriodoOperativoService.ObtenerMeses(year);
-                return Ok(meses); // Devuelve lista de meses como JSON
+                return Ok(meses);
             }
             catch (System.Exception ex)
             {
-                // Manejo de errores
                 return StatusCode(500, $"Error al obtener los meses: {ex.Message}");
             }
         }
@@ -38,28 +37,41 @@ namespace pass_siomm_backend.Controllers.aper_per_oper
             try
             {
                 var anio = await _AperPeriodoOperativoService.ObtenerAnio();
-                return Ok(anio); // Devuelve lista de meses como JSON
+                return Ok(anio); 
             }
             catch (System.Exception ex)
             {
-                // Manejo de errores
                 return StatusCode(500, $"Error al obtener los meses: {ex.Message}");
             }
         }
 
-        [HttpGet("fechas")]
-        public async Task<IActionResult> ObtenerFechas([FromQuery] string month, string anio)
+        //[HttpGet("fechas")]
+        //public async Task<IActionResult> ObtenerFechas([FromQuery] string month, string anio)
+        //{
+        //    try
+        //    {
+        //        var fechas = await _AperPeriodoOperativoService.ObtenerFecha(month, anio);
+
+                
+        //        return Ok(fechas);
+        //    }
+        //    catch (System.Exception ex)
+        //    {
+        //        return StatusCode(500, $"Error al obtener los meses: {ex.Message}");
+        //    }
+        //}
+
+        [HttpGet("obtener-datos")]
+        public async Task<IActionResult> FactorOperativo([FromQuery] string month, string anio)
         {
             try
             {
-                var fechas = await _AperPeriodoOperativoService.ObtenerFecha(month, anio);
+                var fechas = await _AperPeriodoOperativoService.ObtenerDatosCompletos(month, anio);
 
-                
-                return Ok(fechas); // Devuelve lista de meses como JSON
+                return Ok(fechas);
             }
             catch (System.Exception ex)
             {
-                // Manejo de errores
                 return StatusCode(500, $"Error al obtener los meses: {ex.Message}");
             }
         }

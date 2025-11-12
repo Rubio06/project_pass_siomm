@@ -27,8 +27,24 @@
   },
   {
     "ContainingType": "pass_siomm_backend.Controllers.aper_per_oper.AperPerodioOperativoController",
-    "Method": "ObtenerFechas",
-    "RelativePath": "planeamiento/aper-periodo-operativo/fechas",
+    "Method": "ObtenerMeses",
+    "RelativePath": "planeamiento/aper-periodo-operativo/meses",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "year",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Controllers.aper_per_oper.AperPerodioOperativoController",
+    "Method": "FactorOperativo",
+    "RelativePath": "planeamiento/aper-periodo-operativo/obtener-datos",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -40,22 +56,6 @@
       },
       {
         "Name": "anio",
-        "Type": "System.String",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "pass_siomm_backend.Controllers.aper_per_oper.AperPerodioOperativoController",
-    "Method": "ObtenerMeses",
-    "RelativePath": "planeamiento/aper-periodo-operativo/meses",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "year",
         "Type": "System.String",
         "IsRequired": false
       }

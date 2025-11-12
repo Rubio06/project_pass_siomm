@@ -2,10 +2,10 @@
 {
     public class AperPeriodoDto
     {
-        public string CiePer { get; set; }
-        public DateTime FechaInicio { get; set; }
-        public DateTime FechaFin { get; set; }
-        public string Anio { get; set; }
+        public string cie_per { get; set; }
+        public DateTime fec_ini { get; set; }
+        public DateTime fec_fin { get; set; }
+        public string cie_ano { get; set; }
 
     }
 

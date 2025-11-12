@@ -1,5 +1,103 @@
-<div class="container mx-auto px-4 gap-10 justify-center">
-    <app-periodo />
-    <app-factor-operativo />
-    <app-valores />
+<div class="w-full flex relative mt-27">
+
+    <button (click)="isSidebarOpen = !isSidebarOpen"
+        class="fixed top-30 left-3 bg-gray-200 p-2 rounded-lg shadow-md hover:bg-gray-300 transition z-15">
+        <!-- Ícono de hamburguesa -->
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+            class="w-6 h-6 text-gray-800">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 5.75h16.5m-16.5 6.5h16.5m-16.5 6.5h16.5" />
+        </svg>
+    </button>
+
+    <!-- 🔹 Sidebar (flotante, visible al presionar hamburguesa) -->
+    <div class="fixed h-full w-56 bg-white shadow-lg border-r border-gray-300 p-2 z-10 transform transition-transform duration-300 ease-in-out"
+    [class.translate-x-0]="isSidebarOpen" [class.-translate-x-full]="!isSidebarOpen">
+    <button (click)="isSidebarOpen = false" class="absolute top-3 right-3 text-gray-500 hover:text-gray-800">
+            ✕
+        </button>
+
+        <!-- Opciones del menú -->
+        <div class="mt-20 flex flex-col space-y-2">
+            <a routerLink="factor-operativo" routerLinkActive="bg-[#CCCCCC] text-black shadow-md"
+                [routerLinkActiveOptions]="{ exact: true }" class="px-4 py-2 text-sm font-medium text-gray-700 rounded-lg border border-transparent
+               transition-all duration-200 hover:bg-[#F3F4F6] hover:text-[#455A64] text-center">
+                Factor Operativo
+            </a>
+
+            <a routerLink="estandar-avance" routerLinkActive="bg-[#CCCCCC] text-black shadow-md"
+                [routerLinkActiveOptions]="{ exact: true }" class="px-4 py-2 text-sm font-medium text-gray-700 rounded-lg border border-transparent
+               transition-all duration-200 hover:bg-[#F3F4F6] hover:text-[#455A64] text-center">
+                Estándar Avance
+            </a>
+
+            <a routerLink="estandar-exploracion" routerLinkActive="bg-[#CCCCCC] text-black shadow-md"
+                [routerLinkActiveOptions]="{ exact: true }" class="px-4 py-2 text-sm font-medium text-gray-700 rounded-lg border border-transparent
+               transition-all duration-200 hover:bg-[#F3F4F6] hover:text-[#455A64] text-center">
+                Estándar Exploración
+            </a>
+
+            <a routerLink="metodo-minado" routerLinkActive="bg-[#CCCCCC] text-black shadow-md"
+                [routerLinkActiveOptions]="{ exact: true }" class="px-4 py-2 text-sm font-medium text-gray-700 rounded-lg border border-transparent
+               transition-all duration-200 hover:bg-[#F3F4F6] hover:text-[#455A64] text-center">
+                Método Minado
+            </a>
+
+            <a routerLink="semanas-ciclo" routerLinkActive="bg-[#CCCCCC] text-black shadow-md"
+                [routerLinkActiveOptions]="{ exact: true }" class="px-4 py-2 text-sm font-medium text-gray-700 rounded-lg border border-transparent
+               transition-all duration-200 hover:bg-[#F3F4F6] hover:text-[#455A64] text-center">
+                Semanas Ciclo
+            </a>
+
+            <a routerLink="semanas-avance" routerLinkActive="bg-[#CCCCCC] text-black shadow-md"
+                [routerLinkActiveOptions]="{ exact: true }" class="px-4 py-2 text-sm font-medium text-gray-700 rounded-lg border border-transparent
+               transition-all duration-200 hover:bg-[#F3F4F6] hover:text-[#455A64] text-center">
+                Semanas Avance
+            </a>
+        </div>
+    </div>
+
+    <!-- 🔹 Contenido principal -->
+    <div class="flex-1 flex justify-center items-start w-full transition-all duration-300">
+        <div class="w-full sm:w-[900px] md:w-[1000px] lg:w-[1100px] xl:w-[1500px] mt-6 px-4">
+            <!-- Selects -->
+            <div class="mb-4 flex flex-wrap gap-4 justify-center w-full ">
+                <!-- Select Año -->
+                <select class="select text-sm font-medium outline-none flex items-center border border-gray-300
+                 rounded-lg px-2 py-1 bg-gray-50 shadow-sm hover:shadow-md transition-shadow
+                 duration-300 ease-in-out focus-within:border-[#033351] focus-within:ring-1
+                 focus-within:ring-[rgb(3,102,157)] focus-within:ring-opacity-40 sm:w-[240px] md:w-[250px] lg:w-[260px] xl:w-[270px]
+                 focus-within:shadow-md w-36" (change)="sendYear($event)">
+                    <option disabled selected>Selecciona un año</option>
+                    @if (_getYear().length > 0) {
+                    @for (item of _getYear(); track $index) {
+                    <option [value]="item">{{ item }}</option>
+                    }
+                    } @else {
+                    <option disabled>No existen datos disponibles</option>
+                    }
+                </select>
+
+                <!-- Select Mes -->
+                <select class="select text-sm font-medium outline-none flex items-center border border-gray-300
+                 rounded-lg px-2 py-1 bg-gray-50 shadow-sm hover:shadow-md transition-shadow
+                 duration-300 ease-in-out focus-within:border-[#033351] focus-within:ring-1
+                 focus-within:ring-[rgb(3,102,157)] focus-within:ring-opacity-40 sm:w-[240px] md:w-[250px] lg:w-[260px] xl:w-[270px]
+                 focus-within:shadow-md w-36" (change)="sendMonth($event)">
+                    <option disabled selected>Selecciona un mes</option>
+                    @if (_getMonths().length > 0) {
+                    @for (item of _getMonths(); track $index) {
+                    <option [value]="item">{{ item | transfornMonth }}</option>
+                    }
+                    } @else {
+                    <option disabled>No existen meses disponibles</option>
+                    }
+                </select>
+            </div>
+
+            <!-- Contenido dinámico -->
+            <div class="rounded-lg shadow-md p-4 bg-white">
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+    </div>
 </div>

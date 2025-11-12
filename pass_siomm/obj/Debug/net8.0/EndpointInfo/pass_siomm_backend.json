@@ -38,7 +38,7 @@
         }
       }
     },
-    "/planeamiento/aper-periodo-operativo/fechas": {
+    "/planeamiento/aper-periodo-operativo/obtener-datos": {
       "get": {
         "tags": [
           "AperPerodioOperativo"
