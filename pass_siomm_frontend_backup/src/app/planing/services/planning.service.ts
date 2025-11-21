@@ -52,4 +52,19 @@ export class PlanningService {
     setData(data: any) {
         this.data.set(data);
     }
+
+    esISO(valor: string): boolean {
+        return typeof valor === 'string' && /^\d{4}-\d{2}-\d{2}T/.test(valor);
+    }
+
+    formatearISOaDDMMYYYY(fechaISO: string): string {
+        if (!fechaISO) return '';
+        const fecha = new Date(fechaISO);
+
+        const dia = fecha.getDate().toString().padStart(2, '0');
+        const mes = (fecha.getMonth() + 1).toString().padStart(2, '0');
+        const anio = fecha.getFullYear();
+
+        return `${dia}/${mes}/${anio}`;
+    }
 }

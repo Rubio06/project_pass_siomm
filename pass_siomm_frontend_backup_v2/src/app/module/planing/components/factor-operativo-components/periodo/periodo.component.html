@@ -1,0 +1,25 @@
+<form [formGroup]="form">
+    <div class="mx-auto w-full sm:w-[600px] md:w-[700px] lg:w-[900px] xl:w-[1100px] flex flex-col items-center">
+
+        <h1 class="text-[15px] font-bold text-gray-800 w-full" style="color: #013B5C;">Periodo</h1>
+
+        <div class="flex flex-wrap justify-center gap-4 border-2 border-gray-400 rounded-xl p-4 bg-gray-100 mb-4 mx-auto
+        sm:w-[600px] md:w-[700px] lg:w-[900px] xl:w-[1100px]">
+        
+            @for (item of fieldInputs(); track item.name) {
+                <div>
+                    <label class="text-sm font-medium text-gray-700">{{ item.label }}</label>
+                    <div class="flex items-center border border-gray-300 rounded-lg px-2 py-1 bg-gray-50 shadow-sm hover:shadow-md
+                       transition-shadow duration-300 ease-in-out focus-within:border-[#033351] focus-within:ring-1
+                       focus-within:ring-[rgb(3,102,157)] focus-within:ring-opacity-40 focus-within:shadow-md
+                       flex-1 min-w-[200px] md:min-w-[230px]">
+                        <input [type]="item.type" [formControlName]="item.name"
+                            class="w-full bg-transparent outline-none text-gray-800 placeholder-gray-400 text-xs font-medium"
+                            required />
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</form>
+

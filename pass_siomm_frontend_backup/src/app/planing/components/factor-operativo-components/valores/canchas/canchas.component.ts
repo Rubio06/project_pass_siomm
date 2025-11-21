@@ -41,10 +41,4 @@ export class CanchasComponent {
             }
         });
     }
-
-    private formatDate(dateStr: string): string {
-        if (!dateStr) return '';
-        const date = new Date(dateStr);
-        return date.toISOString().split('T')[0];
-    }
 }

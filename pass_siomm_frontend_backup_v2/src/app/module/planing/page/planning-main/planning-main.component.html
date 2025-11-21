@@ -1,0 +1,119 @@
+<div class="flex-1 flex justify-center items-start w-full transition-all duration-300 mt-2">
+
+    <div class="w-full xl:w-[1500px]">
+        <div class="mb-6 bg-white p-4 rounded-xl shadow-lg border border-gray-100">
+            <h3 class="text-lg font-bold mb-4 border-b border-gray-200 pb-2 flex items-center gap-2"
+                style="color: #013B5C;">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                    stroke="currentColor" class="w-6 h-6 text-[#013B5C]">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M12 3c2.757 0 5.23 1.107 7.071 2.949A10.437 10.437 0 0 1 21 12c0 2.757-1.107 5.23-2.949 7.071A10.437 10.437 0 0 1 12 21c-2.757 0-5.23-1.107-7.071-2.949A10.437 10.437 0 0 1 3 12c0-2.757 1.107-5.23 2.949-7.071A10.437 10.437 0 0 1 12 3Z" />
+                </svg>
+                Filtros de Período
+            </h3>
+
+            <div class="flex flex-wrap gap-4 justify-start">
+
+                <div>
+                    <label class="block text-xs font-semibold text-gray-500 mb-1">Selecciona el Año</label>
+                    <select class="select-sm mx-auto select text-sm font-medium outline-none flex items-center border border-gray-300 rounded-lg px-2 py-1 bg-gray-50 shadow-sm hover:shadow-md transition-shadow duration-300 ease-in-out focus-within:border-[#033351] focus-within:ring-1 focus-within:ring-[rgb(3,102,157)] focus-within:ring-opacity-40 w-75 ng-pristine ng-valid ng-touched" (change)="sendYear($event)">
+                        <option disabled selected value="">Selecciona un año</option>
+                        @if (_getYear().length > 0) {
+                        @for (item of _getYear(); track $index) {
+                        <option [value]="item">{{ item }}</option>
+                        }
+                        } @else {
+                        <option disabled>No existen datos disponibles</option>
+                        }
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-gray-500 mb-1">Selecciona el Mes</label>
+                    <select class="select-sm mx-auto select text-sm font-medium outline-none flex items-center border border-gray-300 rounded-lg px-2 py-1 bg-gray-50 shadow-sm hover:shadow-md transition-shadow duration-300 ease-in-out focus-within:border-[#033351] focus-within:ring-1 focus-within:ring-[rgb(3,102,157)] focus-within:ring-opacity-40 w-75 ng-pristine ng-valid ng-touched" (change)="sendMonth($event)">
+                        <option disabled selected value="">Selecciona un mes</option>
+                        @if (_getMonths().length > 0) {
+                        @for (item of _getMonths(); track $index) {
+                        <option [value]="item">{{ item | transfornMonth }}</option>
+                        }
+                        } @else {
+                        <option disabled>No existen meses disponibles</option>
+                        }
+                    </select>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="flex border-b-2 border-[#E0E0E0] mb-4 overflow-x-auto">
+            <div class="flex space-x-2 pb-1">
+                <a routerLink="factor-operativo" routerLinkActive="tab-active"
+                    [routerLinkActiveOptions]="{ exact: true }" class="tab-style">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M10.5 6a7.5 7.5 0 1 0 7.5 7.5h-7.5V6Z" />
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M13.5 10.5H21A7.5 7.5 0 0 0 13.5 3v7.5Z" />
+                    </svg>
+                    <span>Factor Operativo</span>
+                </a>
+
+                <a routerLink="estandar-avance" routerLinkActive="tab-active"
+                    [routerLinkActiveOptions]="{ exact: true }" class="tab-style">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M3 13.5h14.25m-14.25 0L6.18 8.42m-3.18 5.08h14.25M3 13.5l3.18 5.08m5.717-5.08h7.93" />
+                    </svg>
+                    <span>Estándar Avance</span>
+                </a>
+
+                <a routerLink="estandar-exploracion" routerLinkActive="tab-active"
+                    [routerLinkActiveOptions]="{ exact: true }" class="tab-style">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.197 5.197a7.5 7.5 0 0 0 10.606 10.606Z" />
+                    </svg>
+                    <span>Estándar Exploración</span>
+                </a>
+
+                <a routerLink="metodo-minado" routerLinkActive="tab-active" [routerLinkActiveOptions]="{ exact: true }"
+                    class="tab-style">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M3.75 21l6.97-6.97m0 0v5.65m-5.65-5.65H15.75m3.65-3.65l-6.97-6.97m0 0v-5.65m5.65 5.65H8.25" />
+                    </svg>
+                    <span>Método Minado</span>
+                </a>
+
+                <a routerLink="semanas-ciclo" routerLinkActive="tab-active" [routerLinkActiveOptions]="{ exact: true }"
+                    class="tab-style">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M6.75 3v1.5M6.75 20.25v-1.5M10.5 6v7.5M13.5 12V9.75M6.75 16.5H20.25c.414 0 .75-.336.75-.75V8.25a.75.75 0 0 0-.75-.75H6.75a.75.75 0 0 0-.75.75v7.5c0 .414.336.75.75.75Z" />
+                    </svg>
+                    <span>Semanas Ciclo</span>
+                </a>
+
+                <a routerLink="semanas-avance" routerLinkActive="tab-active" [routerLinkActiveOptions]="{ exact: true }"
+                    class="tab-style">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M6.75 3v1.5M6.75 20.25v-1.5M12 6V3m0 3v12m0 0v3m0-3h6m-6 0H6M7.5 13.5h10.5" />
+                    </svg>
+                    <span>Semanas Avance</span>
+                </a>
+            </div>
+        </div>
+
+        <div>
+            <!-- <app-spinner></app-spinner> -->
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>

@@ -11,8 +11,8 @@
 
     <!-- 🔹 Sidebar (flotante, visible al presionar hamburguesa) -->
     <div class="fixed h-full w-56 bg-white shadow-lg border-r border-gray-300 p-2 z-10 transform transition-transform duration-300 ease-in-out"
-    [class.translate-x-0]="isSidebarOpen" [class.-translate-x-full]="!isSidebarOpen">
-    <button (click)="isSidebarOpen = false" class="absolute top-3 right-3 text-gray-500 hover:text-gray-800">
+        [class.translate-x-0]="isSidebarOpen" [class.-translate-x-full]="!isSidebarOpen">
+        <button (click)="isSidebarOpen = false" class="absolute top-3 right-3 text-gray-500 hover:text-gray-800">
             ✕
         </button>
 
@@ -68,6 +68,9 @@
                  focus-within:ring-[rgb(3,102,157)] focus-within:ring-opacity-40 sm:w-[240px] md:w-[250px] lg:w-[260px] xl:w-[270px]
                  focus-within:shadow-md w-36" (change)="sendYear($event)">
                     <option disabled selected>Selecciona un año</option>
+
+                    <option [value]="2006">2006</option>
+
                     @if (_getYear().length > 0) {
                     @for (item of _getYear(); track $index) {
                     <option [value]="item">{{ item }}</option>
@@ -84,6 +87,9 @@
                  focus-within:ring-[rgb(3,102,157)] focus-within:ring-opacity-40 sm:w-[240px] md:w-[250px] lg:w-[260px] xl:w-[270px]
                  focus-within:shadow-md w-36" (change)="sendMonth($event)">
                     <option disabled selected>Selecciona un mes</option>
+
+                    <option value="10">10</option>
+
                     @if (_getMonths().length > 0) {
                     @for (item of _getMonths(); track $index) {
                     <option [value]="item">{{ item | transfornMonth }}</option>

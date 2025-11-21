@@ -1,0 +1,17 @@
+
+/* Estado cerrado */
+details > .submenu {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+
+    transition:
+        max-height 0.35s ease,
+        opacity 0.25s ease;
+}
+
+/* Estado abierto */
+details[open] > .submenu {
+    max-height: 500px;   /* suficiente para todos los ítems */
+    opacity: 1;
+}

@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet } from "@angular/router";
 import { ListDesktopComponent } from 'src/app/shared/components/header-list-desktop/list-desktop.component';
 import { ListMobileComponent } from 'src/app/shared/components/header-list-mobile/list-mobile.component';
+import { PlanningMainComponent } from 'src/app/planing/page/planning-main/planning-main.component';
 
 @Component({
     selector: 'app-main-page',

@@ -7,11 +7,11 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { AperPeriodo, PlanningData, PlanningResponse } from '../../interface/aper-per-oper.interface';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive, RouterModule, RouterOutlet } from '@angular/router';
+import { ListDesktopComponent } from 'src/app/shared/components/header-list-desktop/list-desktop.component';
 
 @Component({
     selector: 'app-planning-main',
-    imports: [CommonModule, RouterOutlet, TransfornMonthPipe, RouterLink, RouterLinkActive
-    ],
+    imports: [CommonModule, RouterOutlet, TransfornMonthPipe, RouterLink, RouterLinkActive],
     templateUrl: './planning-main.component.html',
     styleUrl: './planning-main.component.css',
 })

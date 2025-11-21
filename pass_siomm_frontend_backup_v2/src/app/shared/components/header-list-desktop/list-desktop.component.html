@@ -1,0 +1,53 @@
+<!-- <ul class="menu p-0 m-0 text-base-content w-full space-y-0.5">
+    @for (ruta of routers(); track $index) {
+        <li>
+            <a [routerLink]="['/menu-principal', ruta.nom_ruta_primer]" class="flex items-center gap-2">
+                <app-iconos [iconos]="ruta.icon"></app-iconos>
+                <span>{{ ruta.nom_ruta_primer | replaceUnderscore }}</span>
+            </a>
+        </li>
+    }
+</ul> -->
+
+
+<ul class="menu p-0 m-0 text-base-content w-full space-y-0.5">
+    @for (ruta of routers(); track $index) {
+    <li class="w-full">
+
+        <details>
+            <summary class="flex items-center gap-2 cursor-pointer m-1"
+                     style="display: flex; justify-content: space-around;">
+                <app-iconos [iconos]="ruta.icon"></app-iconos>
+                <span class="font-bold text-sm w-35">
+                    {{ ruta.nom_ruta_primer | replaceUnderscore }}
+                </span>
+            </summary>
+
+            <ul class="submenu p-2 w-57 bg-[#E6F2ED]"
+                style="border-radius: 10px;">
+
+                @for (subRuta of ruta.rutas_secundarias; track $index) {
+                <li>
+                    <a class="flex items-center gap-2 p-1 rounded-lg text-xs transition-all duration-300
+                              text-gray-700 hover:text-white
+                              bg-transparent hover:bg-[#033351]
+                              from-indigo-500 to-blue-500 shadow-sm hover:shadow-md"
+                       style="font-size: 12px; font-weight: bold;"
+                       [routerLink]="[
+                           '/menu-principal',
+                           ruta.nom_ruta_primer,
+                           subRuta.nom_ruta_secun | replaceUnderscore
+                       ]">
+                        <span class="transition-all duration-300">
+                            {{ subRuta.nom_ruta_secun | replaceUnderscore }}
+                        </span>
+                    </a>
+                </li>
+                }
+            </ul>
+
+        </details>
+
+    </li>
+    }
+</ul>
