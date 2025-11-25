@@ -142,10 +142,7 @@ export interface PlanningResponse {
 
 export interface ColumnaTabla {
     titulo: string;
-    control: string;
-    tipo?: string;
-    campo?: string;   // acepta cualquier string
-
+// acepta cualquier string
 }
 export interface MaeTipLabEstandar {
     cod_tiplab: string;
@@ -216,10 +213,10 @@ export const TABLA_DATOS_METODO_MINADO = [
 ]
 
 export const TABLA_DATOS_SEMANAS_AVANCES = [
-    { titulo: 'Num.', control: 'num_semana' },
-    { titulo: 'Fec. Inicio', control: 'fec_ini' },
-    { titulo: 'Fec. Fin', control: 'fec_fin' },
-    { titulo: 'Descripción', control: 'desc_semana' },
+    { titulo: 'Num.' },
+    { titulo: 'Fec. Inicio' },
+    { titulo: 'Fec. Fin' },
+    { titulo: 'Descripción'},
 ]
 
 export const TABLA_DATOS_SEMANAS_CICLO = [
@@ -228,6 +225,10 @@ export const TABLA_DATOS_SEMANAS_CICLO = [
     { titulo: 'Fec. Fin', control: 'fec_fin' },
     { titulo: 'Descripción', control: 'desc_semana' },
 ]
+
+
+
+
 
 
 

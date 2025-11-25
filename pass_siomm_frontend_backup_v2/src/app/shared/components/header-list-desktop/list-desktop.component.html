@@ -34,9 +34,7 @@
                               from-indigo-500 to-blue-500 shadow-sm hover:shadow-md"
                        style="font-size: 12px; font-weight: bold;"
                        [routerLink]="[
-                           '/menu-principal',
-                           ruta.nom_ruta_primer,
-                           subRuta.nom_ruta_secun | replaceUnderscore
+                           '/menu-principal'
                        ]">
                         <span class="transition-all duration-300">
                             {{ subRuta.nom_ruta_secun | replaceUnderscore }}

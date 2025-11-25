@@ -3,10 +3,9 @@ import { PlanningService } from '../../services/planning.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AperPeriodo } from '../../interface/aper-per-oper.interface';
 import { CommonModule } from '@angular/common';
-import { NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { LoadingService } from '../../services/loading.service';
-import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
-import { TransfornMonthPipe } from '../../pipe/transforn-month-pipe';
+import { TransfornMonthPipe } from '../../../../core/pipe/transforn-month-pipe';
 
 @Component({
     selector: 'app-planning-main',
@@ -60,7 +59,6 @@ export class PlanningMainComponent {
     showData = this.fb.group({
         fechaInicio: ['', [Validators.required]],
         fechaFin: ['', [Validators.required]]
-
     });
 
 
@@ -109,9 +107,7 @@ export class PlanningMainComponent {
         const selectElement = event.target as HTMLSelectElement;
         const yearMes = selectElement.value;
         this.dataMes.set(yearMes);
-
-
-
+        this.loadingService.loadingOn();
         const anio = this.dataAnio();
 
         this.planingService.getDate(yearMes, anio).subscribe({
@@ -122,12 +118,16 @@ export class PlanningMainComponent {
                     this.hasError.set(null);
                     this._getDate.set(data);
                     this.planingService.setData(data);
-
+                    this.loadingService.loadingOff();
                 }
             }, error: (error) => {
                 console.error('Error al traer los meses.', error)
                 this.hasError.set('Ocurrió un error al cargar las rutas.');
             }
         })
+    }
+
+    public enviarDatos(){
+        
     }
 }
