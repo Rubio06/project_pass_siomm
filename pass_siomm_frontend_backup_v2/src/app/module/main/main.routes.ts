@@ -8,12 +8,12 @@ export const mainRouter: Routes = [
         component: MainPageComponent,
         children: [
             {
-                path: '',
-                loadChildren: () => import('../planing/planing.routes').then(m => m.default)
+                path: 'planeamiento',
+                loadChildren: () => import('../planing/opciones-componentes/apertura-periodo-operativo/planing.routes')
             },
             {
-                path: '',
-                loadChildren: () => import('../geology/geology.routes').then(m => m.default)
+                path: 'geologia',
+                loadChildren: () => import('../geology/geology.routes')
             }
         ]
     }
