@@ -6,46 +6,6 @@
         <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
 
             <div class="mt-5">
-                <div class="flex flex-wrap gap-3 p-0 mb-4">
-
-                    <button type="button"
-                        class="flex items-center space-x-2 px-4 py-2 text-white bg-[#013B5C] rounded-md font-semibold text-sm shadow-md hover:bg-[#002B48] transition duration-300">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
-                            <path
-                                d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5A6.75 6.75 0 0 0 10.5 3.75ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.289l4.618 4.618a.75.75 0 1 1-1.06 1.06l-4.619-4.618A8.25 8.25 0 0 1 2.25 10.5Z" />
-                        </svg>
-                        <span>Visualizar</span>
-                    </button>
-
-                    <button type="button" (click)="agregarFilas()"
-                        class="flex items-center space-x-2 px-4 py-2 text-white bg-[#1A7A40] rounded-md font-semibold text-sm shadow-md hover:bg-green-700 transition duration-300">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
-                            <path fill-rule="evenodd"
-                                d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z"
-                                clip-rule="evenodd" />
-                        </svg>
-                        <span>Nuevo</span>
-                    </button>
-
-                    <button type="submit"
-                        class="flex items-center space-x-2 px-4 py-2 text-white bg-[#013B5C] rounded-md font-semibold text-sm shadow-md hover:bg-[#002B48] transition duration-300">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
-                            <path fill-rule="evenodd"
-                                d="M18.97 3.659a2.25 2.25 0 0 0-3.182 0l-10.94 10.94a2.25 2.25 0 0 0-.583 1.084l-.56 2.803a.75.75 0 0 0 .97 1.002l2.805-.562a2.25 2.25 0 0 0 1.084-.583L18.97 6.84a2.25 2.25 0 0 0 0-3.182Z"
-                                clip-rule="evenodd" />
-                        </svg>
-                        <span>Guardar</span>
-                    </button>
-
-                    <button type="button"
-                        class="flex items-center space-x-2 px-4 py-2 text-gray-800 bg-yellow-400 rounded-md font-semibold text-sm shadow-md hover:bg-yellow-500 transition duration-300">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
-                            <path
-                                d="M21.731 2.269a2.68 2.68 0 0 0-3.791 0l-1.5 1.5 4.5 4.5 1.5-1.5a2.68 2.68 0 0 0 0-3.791l-1.5-1.5ZM16 5.25l1.5 1.5L5.75 18H4.25v-1.5L16 5.25ZM2.25 19.5v3h3l10.5-10.5-3-3L2.25 19.5Z" />
-                        </svg>
-                        <span>Editar</span>
-                    </button>
-                </div>
 
                 <div
                     class="p-3 flex justify-between items-center mb-4 border-l-4 border-[#013B5C] bg-[] shadow-sm rounded-md">
@@ -62,77 +22,96 @@
                     </div>
                 </div>
 
-                <div class="w-full mx-auto rounded-lg overflow-x-auto shadow-md border border-gray-300">
-                    <table class="min-w-full border-collapse text-sm text-gray-800">
+                <div class="flex gap-5">
+                    <div class="w-full mx-auto rounded-lg overflow-x-auto shadow-md border border-gray-300 border">
+                        <table class="min-w-full border-collapse text-sm text-gray-800">
 
-                        <thead>
-                            <tr class="text-center text-gray-700 font-bold bg-gray-200 uppercase text-xs">
-                                @for (col of titulo; track $index) {
-                                <th class="border border-gray-300 px-4 py-2">{{ col }}</th>
-                                }
-                            </tr>
-                        </thead>
-
-                        <tbody formArrayName="semanas">
-                            @if (loading()) {
-                            <tr class="border">
-                                <td [attr.colspan]="datosColumna().length"
-                                    class="text-center p-4 mx-auto border border-gray-300" colspan="5">
-                                    <app-spinner></app-spinner>
-                                </td>
-                            </tr>
-                            }@else if (semanas.length === 0) {
-                            <tr class="border-y border-gray-300">
-                                <td colspan="5"
-                                    class="p-4 text-center font-semibold text-red-700 bg-red-50 border border-gray-300">
-                                    No existen datos para mostrar.
-                                </td>
-                            </tr>
-                            }@else {
-                            @if (!loading()) {
-                            @for (item of semanas.controls; track $index; let i = $index) {
-                            <tr [formGroupName]="i"
-                                class="even:bg-gray-50 odd:bg-white hover:bg-blue-50/70 transition duration-150">
-
-                                @for (col of datosColumna(); track $index) {
-                                <td class="border-x border-gray-300 p-1.5 w-40">
-
-                                    <div
-                                        class="no-disabled-style flex items-center border border-gray-300 rounded-md px-2 py-1 bg-white shadow-sm">
-                                        <input [type]="col.type" [formControlName]="col.name" [readonly]="bloqueo()"
-                                            class="w-full bg-transparent outline-none text-gray-800 placeholder-gray-400 text-sm font-medium disabled:bg-gray-100 disabled:text-gray-500" />
-                                    </div>
-
-                                    @if (formUtils.esInvalido(semanas, i, col.name)) {
-                                    <p class="text-red-600 text-xs mt-0.5 text-left ml-1">
-                                        {{ formUtils.obtenerMensajeError(semanas, i, col.name) }}
-                                    </p>
+                            <thead>
+                                <tr class="text-center text-gray-700 font-bold bg-gray-200 uppercase text-xs">
+                                    @for (col of titulo; track $index) {
+                                    <th class="border border-gray-300 px-4 py-2">{{ col }}</th>
                                     }
-                                </td>
+                                    <th class="border border-gray-300 px-4 py-2">ACCIÓN</th>
+
+                                </tr>
+                            </thead>
+
+                            <tbody formArrayName="semanas">
+
+                                @if (loading()) {
+                                <tr class="border">
+                                    <td [attr.colspan]="datosColumna().length + 2"
+                                        class="text-center p-4 mx-auto border border-gray-300">
+                                        <app-spinner></app-spinner>
+                                    </td>
+                                </tr>
                                 }
-                                <td class="border-x border-gray-300 p-1.5 w-24 text-center">
-                                    <button type="button" [disabled]="bloqueo()" (click)="eliminarFila(i)"
-                                        class="flex items-center justify-center gap-1 mx-auto bg-red-600 hover:bg-red-700 text-white px-2 py-1.5 rounded-md shadow-sm transition-all duration-200 font-medium text-xs disabled:opacity-50 disabled:cursor-not-allowed">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="3 6 5 6 21 6"></polyline>
-                                            <path
-                                                d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6m5 0V4a2 2 0 0 1 2-2h0a2 2 0 0 1 2 2v2">
-                                            </path>
-                                        </svg>
-                                        Eliminar
-                                    </button>
-                                </td>
-                            </tr>
-                            }
-                            }
-                            }
 
-                        </tbody>
+                                @else if (semanas.controls.length > 0) {
 
-                    </table>
+                                @for (item of semanas.controls; track $index; let i = $index) {
+                                <tr [formGroupName]="i"
+                                    class="even:bg-gray-50 odd:bg-white hover:bg-blue-50/70 transition duration-150">
+
+                                    @for (col of datosColumna(); track $index) {
+                                    <td class="border-x border-gray-300 p-1.5 w-40">
+                                        <div
+                                            class="flex items-center border border-gray-300 rounded-md px-2 py-1 bg-white shadow-sm">
+                                            <input [type]="col.type" [formControlName]="col.name"
+                                                class="w-full disabled:opacity-50 disabled:bg-gray-100 disabled:cursor-not-allowed bg-transparent outline-none text-gray-800 placeholder-gray-400 text-sm font-medium disabled:bg-gray-100 disabled:text-gray-500" />
+                                        </div>
+
+                                        @if (formUtils.esInvalido(semanas, i, col.name)) {
+                                        <p class="text-red-600 text-xs mt-0.5 text-left ml-1">
+                                            {{ formUtils.obtenerMensajeError(semanas, i, col.name) }}
+                                        </p>
+                                        }
+                                    </td>
+                                    }
+
+                                    <td class="border-x border-gray-300 p-1.5 w-24 text-center">
+                                        <button type="button" (click)="eliminarFila(i)" [disabled]="item.get('accion')?.disabled"
+                                            class="flex disabled:opacity-50 disabled:bg-gray-100 disabled:cursor-not-allowed items-center justify-center gap-1 mx-auto bg-[#A3361D] hover:bg-red-700 text-white px-2 py-1.5 rounded-md shadow-sm transition-all duration-200 font-medium text-xs disabled:opacity-50 disabled:cursor-not-allowed">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round">
+                                                <polyline points="3 6 5 6 21 6"></polyline>
+                                                <path
+                                                    d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6m5 0V4a2 2 0 0 1 2-2h0a2 2 0 0 1 2 2v2">
+                                                </path>
+                                            </svg>
+                                            <b>Eliminar</b>
+                                        </button>
+                                    </td>
+                                </tr>
+                                }
+                                }
+
+                                @else {
+                                <tr class="border-y border-gray-300">
+                                    <td [attr.colspan]="datosColumna().length + 2"
+                                        class="p-4 text-center font-semibold text-red-700 bg-red-50 border border-gray-300">
+                                        No existen datos para mostrar.
+                                    </td>
+                                </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                        <button type="button" (click)="agregarFilas()"
+                            class="flex items-center space-x-2 px-4 py-2 transition duration-300 w-30"
+                            title="Agregar registro">
+                            <img src="icono-agregar.png"
+                                class="object-contain w-20 h-20 transition-transform duration-300 hover:scale-110 cursor-pointer"
+                                alt="Logo empresa" />
+
+                        </button>
+                    </div>
+
                 </div>
+
             </div>
         </form>
 

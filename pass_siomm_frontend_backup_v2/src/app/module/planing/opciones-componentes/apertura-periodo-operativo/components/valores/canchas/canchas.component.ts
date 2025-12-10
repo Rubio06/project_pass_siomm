@@ -11,7 +11,7 @@ import { PlanningService } from 'src/app/module/planing/opciones-componentes/ape
 export class CanchasComponent {
     private planingService = inject(PlanningService);
     private fb = inject(FormBuilder);
-    rutas = this.planingService.dataRoutes;
+    rutas = this.planingService.data;
 
     form: FormGroup;
     bloqueo = inject(PlanningService).bloqueo;
@@ -44,7 +44,7 @@ export class CanchasComponent {
         });
 
         effect(() => {
-            const data = this.planingService.dataRoutes();
+            const data = this.planingService.data();
 
             if (data === null || data?.length === 0) {
                 this.resetearFormulario();   // 🔥 Se ejecuta en TODOS los componentes
@@ -54,7 +54,22 @@ export class CanchasComponent {
             // si hay data, llenas tus formularios
             this.form.patchValue(data);
         });
+
+        effect(()=> {
+            this.bloqueoFormulario();
+        })
     }
+
+    bloqueoFormulario() {
+        const bloqueado = this.planingService.bloqueoForm();
+        console.log(bloqueado)
+        if (bloqueado) {
+            this.form.disable();
+        } else {
+            this.form.enable();
+        }
+    }
+
 
     resetearFormulario() {
         this.form.reset({

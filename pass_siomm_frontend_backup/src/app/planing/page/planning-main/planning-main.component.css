@@ -1,7 +1,0 @@
-a[routerLinkActive] {
-  border-color: transparent;
-}
-a.router-link-active {
-  border-bottom: 2px solid #3b82f6; /* Azul */
-  color: #3b82f6;
-}

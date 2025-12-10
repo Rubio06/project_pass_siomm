@@ -18,6 +18,7 @@ builder.Services.AddSingleton<DatabaseHelper>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<RoutesService>();
 builder.Services.AddScoped<AperPeriodoOperativoServices>();
+builder.Services.AddScoped<SemanaAvanceServices>();
 
 //CODIGO DEL TOKEN
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

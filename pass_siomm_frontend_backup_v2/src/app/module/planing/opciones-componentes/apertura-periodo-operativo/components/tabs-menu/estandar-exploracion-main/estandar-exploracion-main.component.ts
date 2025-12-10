@@ -1,4 +1,4 @@
-import { Component, effect, inject, signal } from '@angular/core';
+import { Component, effect, inject, signal, WritableSignal } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormUtils } from 'src/app/utils/form-utils';
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
@@ -13,116 +13,196 @@ import { PlanningService } from 'src/app/module/planing/opciones-componentes/ape
 })
 export class EstandarExploracionMainComponent {
 
-    columnas = signal<ColumnaTabla[]>(TABLA_DATOS_ESTANDAR_EXPLORACION);
     private fb = inject(FormBuilder);
-    titulo = this.columnas().map(titulo => titulo.titulo);
     private planingService = inject(PlanningService);
+
+    // Utilidades
     formUtils = FormUtils;
 
-    // private semanasAvanceMainService = inject(SemanasAvanceMainService);
+    // Configuración de tabla (Señales)
+    columnas = signal<ColumnaTabla[]>(TABLA_DATOS_ESTANDAR_EXPLORACION);
+    titulo = this.columnas().map(titulo => titulo.titulo);
+
+    // Estado de la UI (Señales)
     message = signal<string>('');
     loading = signal(false);
+    // Señal de estado de bloqueo (adaptado de MetodoMinado)
+    readonly estaBloqueado: WritableSignal<boolean> = signal(false);
+
+    // Señales de Lookups (adaptado de MetodoMinado)
     listZona = signal<SelectZona[]>([])
-    bloqueo = inject(PlanningService).bloqueo;
 
-
+    // Configuración de los datos de la columna (adaptado de ExploracionEstandar original)
     datosColumna = signal<any[]>([
-        { tipo: 'select', type: 'text', name: 'cod_zona' },
-        { tipo: 'input', type: 'text', name: 'lab_pieper' },
-        { tipo: 'input', type: 'text', name: 'lab_broca' },
-        { tipo: 'input', type: 'text', name: 'lab_barcon' },
-        { tipo: 'input', type: 'text', name: 'lab_barren' },
-        { tipo: 'input', type: 'text', name: 'lab_facpot' },
-        { tipo: 'input', type: 'text', name: 'lab_fulmin' },
-        { tipo: 'input', type: 'text', name: 'lab_conect' },
-        { tipo: 'input', type: 'text', name: 'lab_punmar' },
-        { tipo: 'input', type: 'text', name: 'lab_tabla' },
-        { tipo: 'input', type: 'text', name: 'ind_act' },
-        { tipo: 'input', type: 'text', name: 'lab_apr' },
-
-
+        { tipo: 'select', type: 'text', name: 'cod_zona', width: '210px' },
+        { tipo: 'input', type: 'text', name: 'lab_pieper', width: '20px' },
+        { tipo: 'input', type: 'text', name: 'lab_broca', width: '20px' },
+        { tipo: 'input', type: 'text', name: 'lab_barcon', width: '20px' },
+        { tipo: 'input', type: 'text', name: 'lab_barren', width: '20px' },
+        { tipo: 'input', type: 'text', name: 'lab_facpot', width: '20px' },
+        { tipo: 'input', type: 'text', name: 'lab_fulmin', width: '20px' },
+        { tipo: 'input', type: 'text', name: 'lab_conect', width: '20px' },
+        { tipo: 'input', type: 'text', name: 'lab_punmar', width: '20px' },
+        { tipo: 'input', type: 'text', name: 'lab_tabla', width: '20px' },
+        { tipo: 'input', type: 'text', name: 'ind_act', width: '20px' },
+        { tipo: 'input', type: 'text', name: 'lab_apr', width: '20px' },
     ])
-    cod_metexp = signal<SelectExploracion[]>([])
+    cod_metexp = signal<any[]>([]) // Se mantiene la señal cod_metexp aunque parezca no usarse directamente.
 
+    // Formulario principal
     myForm: FormGroup = this.fb.group({
-        semanas: this.fb.array([])
+        semanas: this.fb.array([]) // El FormArray se sigue llamando 'semanas'
     });
 
-    constructor() {
-        effect(() => {
-            const data = this.planingService.dataRoutes()?.data?.exploracion_extandar;
-            if (!data) return;
-
-            this.loading.set(true);
-            this.message.set('');
-
-            setTimeout(() => {
-                this.obtenerDatos(data);
-                this.loading.set(false);
-            }, 500);
-
-        });
-
-        effect(() => {
-            const data = this.planingService.dataRoutes();
-
-            if (data === null || data?.length === 0) {
-                this.resetearFormulario();   // 🔥 Se ejecuta en TODOS los componentes
-                return;
-            }
-
-            // si hay data, llenas tus formularios
-            this.myForm.patchValue(data);
-        });
-
-        this.listZona();
-    }
-
-    resetearFormulario() {
-        this.myForm.reset();
-
-    }
-
-    obtenerDatos(data: any[]) {
-
-        const grupos = data.map((item, index) => {
-            return this.fb.group({
-                cod_zona: [{
-                    value: this.listZona()[index]?.des_zona || '',
-                }, [Validators.required]],
-
-                lab_pieper: [item.lab_pieper],
-                lab_broca: [item.lab_broca],
-                lab_barcon: [item.lab_barcon],
-                lab_barren: [item.lab_barren],
-                lab_facpot: [item.lab_facpot],
-                lab_fulmin: [item.lab_fulmin],
-                lab_conect: [item.lab_conect],
-                lab_punmar: [item.lab_punmar],
-                lab_tabla: [item.lab_tabla],
-                ind_act: [item.ind_act],
-                lab_apr: [item.lab_apr],
-            });
-        });
-
-        const nuevoFormArray = this.fb.array(grupos);
-        this.myForm.setControl('semanas', nuevoFormArray);
-    }
-
+    // Getter para acceder fácilmente al FormArray
     get semanas(): FormArray {
         return this.myForm.get('semanas') as FormArray;
     }
 
-    agregarFilas() {
-        // if (this.semanas.length === 0) {
-        const nuevaSemana = this.crearFila();
-        this.semanas.push(nuevaSemana);
-        // }
+    constructor() {
+        // Efecto 1 (Carga de Datos Inicial/Cambio): Reacciona a la signal 'dataRoutes' del servicio.
+        const dataRoutes = this.planingService.data();
+        // Para prevenir ExpressionChangedAfterItHasBeenCheckedError en los efectos iniciales
+
+        setTimeout(() => {
+            this.recargarSemanasConDatos(dataRoutes);
+        }, 0);
+
+        // Llamada al servicio de lookups al cargar (se mantiene la lógica original)
+        this.SelectZona();
+
+        // Efecto 2 (Bloqueo): Reacciona a la signal de bloqueo del servicio.
+        effect(() => {
+            // Para prevenir ExpressionChangedAfterItHasBeenCheckedError
+            setTimeout(() => {
+                this.bloqueoFormulario();
+            }, 0);
+        });
     }
 
+    /**
+     * Reconstruye el FormArray 'semanas' con los datos proporcionados y aplica el patchValue al formulario principal.
+     * Es la fuente única de la carga de datos (adaptado de MetodoMinado).
+     * @param dataRoutes Datos completos de la ruta o selección.
+     */
+    private recargarSemanasConDatos(dataRoutes: any): void {
+        this.message.set('');
+
+        // Si no hay datos, reseteamos todo.
+        if (!dataRoutes || Object.keys(dataRoutes).length === 0) {
+            this.resetearFormulario();
+            return;
+        }
+
+        // ADAPTADO: La data de la tabla está en exploracion_extandar
+        const dataExploracionEstandar = dataRoutes?.data?.exploracion_extandar;
+
+        // Si la estructura existe pero la parte de exploracion_extandar está vacía, solo limpiamos el FormArray.
+        if (!dataExploracionEstandar || dataExploracionEstandar.length === 0) {
+            this.semanas.clear();
+            this.myForm.patchValue(dataRoutes); // Parchea otros campos del formulario principal
+            return;
+        }
+
+        this.loading.set(true);
+
+        // NOTA: Se mantiene el setTimeout(500) para simular la latencia asíncrona.
+        setTimeout(() => {
+            this.obtenerDatos(dataExploracionEstandar); // Limpia y rellena this.semanas
+            this.myForm.patchValue(dataRoutes); // Parchea otros campos del formulario principal
+            this.loading.set(false);
+        }, 500);
+    }
+
+    /**
+     * Gestiona la habilitación/deshabilitación del formulario en respuesta al estado de bloqueo.
+     * (Adaptado de MetodoMinado)
+     */
+    bloqueoFormulario() {
+        const bloqueado = this.planingService.bloqueoForm();
+        this.estaBloqueado.set(bloqueado);
+
+        if (bloqueado) {
+            this.myForm.disable();
+            // ADAPTADO: Limpiamos los datos del FormArray para que la tabla se vea vacía al estar bloqueada.
+            this.semanas.clear();
+        } else {
+            this.myForm.enable();
+
+            // Si se desbloquea, recargamos la data
+            const dataRoutes = this.planingService.data();
+            this.recargarSemanasConDatos(dataRoutes);
+        }
+    }
+
+
+    /**
+     * Limpia completamente el formulario, reseteando los valores y vaciando el FormArray.
+     * (Adaptado de MetodoMinado)
+     */
+    resetearFormulario() {
+        this.myForm.reset();
+        this.semanas.clear(); // Asegura que el FormArray se vacíe
+    }
+
+    /**
+     * Construye y rellena el FormArray 'semanas' a partir de un arreglo de datos de Exploracion Estandar.
+     * La lógica interna de creación de FormGroup se mantiene de ExploracionEstandar original.
+     * @param data Arreglo de objetos.
+     */
+    obtenerDatos(data: any[]) {
+        // Limpiamos el FormArray existente antes de rellenar
+        this.semanas.clear();
+
+        const grupos = data.map((item, index) => {
+            return this.fb.group({
+                // Se mantiene la lógica de inhabilitación original
+                cod_zona: [{
+                    value: this.listZona()[index]?.des_zona || item.cod_zona || '',
+                    disabled: true
+                }, [Validators.required]],
+
+                // Se mantienen los campos y valores originales de ExploracionEstandar
+                lab_pieper: [{ value: item.lab_pieper, disabled: true }],
+                lab_broca: [{ value: item.lab_broca, disabled: true }],
+                lab_barcon: [{ value: item.lab_barcon, disabled: true }],
+                lab_barren: [{ value: item.lab_barren, disabled: true }],
+                lab_facpot: [{ value: item.lab_facpot, disabled: true }],
+                lab_fulmin: [{ value: item.lab_fulmin, disabled: true }],
+                lab_conect: [{ value: item.lab_conect, disabled: true }],
+                lab_punmar: [{ value: item.lab_punmar, disabled: true }],
+                lab_tabla: [{ value: item.lab_tabla, disabled: true }],
+                ind_act: [{ value: item.ind_act, disabled: true }],
+                lab_apr: [{ value: item.lab_apr, disabled: true }],
+
+                accion: new FormControl({ value: '', disabled: true })
+
+            });
+        });
+
+        // Rellenamos el FormArray
+        grupos.forEach(group => this.semanas.push(group));
+    }
+
+    /**
+     * Agrega una nueva fila (FormGroup) al FormArray 'semanas'.
+     * (Lógica original de ExploracionEstandar, solo se remueve la validación de length === 0)
+     */
+    agregarFilas() {
+        // Se podría agregar validación de la última fila aquí, similar a MetodoMinado,
+        // pero se mantiene la simpleza original del segundo snippet:
+        const nuevaSemana = this.crearFila();
+        this.semanas.push(nuevaSemana);
+        this.message.set('');
+    }
+
+    /**
+     * Crea un FormGroup con validaciones para una nueva fila editable.
+     */
     private crearFila(): FormGroup {
         this.planingService.setBloqueo(false);
 
+        // Se mantienen los validadores y campos originales de ExploracionEstandar
         return this.fb.group({
             cod_zona: ['', [Validators.required]],
             lab_pieper: ['', [Validators.required]],
@@ -140,35 +220,52 @@ export class EstandarExploracionMainComponent {
     }
 
 
+    /**
+     * Procesa y envía los datos del formulario.
+     * (Se reemplaza alert() por manejo de mensajes en consola y UI)
+     */
     onSubmit() {
         if (this.myForm.invalid) {
             this.myForm.markAllAsTouched();
-            alert("Debe enviar todos los datos")
+            // Adaptado: Reemplazado alert()
+            console.error('Debe completar todos los datos del formulario.');
+            this.message.set('ERROR: Debe completar todos los datos del formulario para poder enviar.');
             return;
         }
+
+        this.message.set('Datos enviados correctamente (simulación).');
+        console.log('Payload Exploracion Estandar listo para envío:', this.myForm.getRawValue());
+
+        // Lógica de guardado real...
     }
 
+    /**
+     * Llama al servicio para obtener la lista de Zonas (Lookups).
+     */
     public SelectZona() {
         this.planingService.SelectZona().subscribe({
             next: (data: any) => {
                 this.listZona.set(data);
             }, error: (error) => {
-                console.error('Error al traer los meses.', error)
+                console.error('Error al traer las zonas.', error)
             }
         })
     }
 
+    /**
+     * Elimina una fila específica del FormArray.
+     * @param index Índice de la fila a eliminar.
+     */
     eliminarFila(index: number) {
-        const fila = this.semanas.at(index).getRawValue(); // 🔥 obtienes los valores
+        const fila = this.semanas.at(index).getRawValue();
 
         console.log("Fila que se eliminará:", fila);
 
-        this.semanas.removeAt(index); // 🔥 elimina la fila
+        this.semanas.removeAt(index);
 
         console.log("Fila eliminada correctamente");
-
+        this.message.set(`Fila ${index + 1} eliminada correctamente.`);
     }
-
 
 }
 

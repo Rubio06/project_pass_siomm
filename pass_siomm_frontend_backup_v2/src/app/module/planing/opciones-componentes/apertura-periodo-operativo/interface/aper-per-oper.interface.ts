@@ -120,7 +120,7 @@ export interface MaeSemanaCiclo {
 
 
 export interface MaeSemanaAvance {
-    
+
     num_semana: number;
     fec_ini: Date;
     fec_fin: Date;
@@ -201,6 +201,7 @@ export const TABLA_DATOS_ESTANDAR_AVANCE = [
     { titulo: 'Conectores Und/mts', control: 'nro_lab_conect' },
     { titulo: 'Puntal /Marchavante', control: 'nro_lab_punmar' }, // cambiar el nombre en el formGroup
     { titulo: 'Nro Tabla', control: 'nro_lab_tabla' }
+
 ]
 
 
@@ -218,7 +219,6 @@ export const TABLA_DATOS_SEMANAS_AVANCES = [
     { titulo: 'Fec. Inicio' },
     { titulo: 'Fec. Fin' },
     { titulo: 'Descripción' },
-    { titulo: '' },
 ]
 
 export const TABLA_DATOS_SEMANAS_CICLO = [
@@ -247,8 +247,8 @@ export interface SelectZona {
 }
 
 export interface SelectTipoLabor {
-    cod_metexp: string;
-    nom_metexp: string;
+    cod_tipo_labor: string;
+    nom_tipo_labor: string;
 }
 
 export interface TableHeader {
@@ -278,11 +278,11 @@ export const TH_CAMPOS_TABLE: TableHeader[] = [
 
 export const TD_CAMPOS_TABLE: TableField[] = [
     { type: "text", name: "val_des_tipo_fac", readonly: true },
-    { type: "text", name: "val_fac_ag", readonly: true },
-    { type: "text", name: "val_fac_cu", readonly: true },
-    { type: "text", name: "val_fac_pb", readonly: true },
-    { type: "text", name: "val_fac_zn", readonly: true },
-    { type: "text", name: "val_fac_au", readonly: true },
+    { type: "number", name: "val_fac_ag", readonly: true },
+    { type: "number", name: "val_fac_cu", readonly: true },
+    { type: "number", name: "val_fac_pb", readonly: true },
+    { type: "number", name: "val_fac_zn", readonly: true },
+    { type: "number", name: "val_fac_au", readonly: true },
     { type: "text", name: "val_fac_rec_ag", readonly: true },
     { type: "text", name: "val_fac_rec_cu", readonly: true },
     { type: "text", name: "val_fac_rec_pb", readonly: true },

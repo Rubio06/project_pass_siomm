@@ -1,20 +1,20 @@
 import { Routes } from '@angular/router';
-
+import { menuPlaningComponent } from './page/menu-planing/menu-planning.component';
 
 
 export const planingMainRouter: Routes = [
-    // {
-    //     path: '',
-    //     component: PlanningMainComponent,
-    //     children: [
-    //         { path: 'factor-operativo', component: FactorOperativoMainComponent },
-    //         { path: 'estandar-avance', component: EstandarAvanceComponent },
-    //         { path: 'estandar-exploracion', component: EstandarExploracionMainComponent },
-    //         { path: 'metodo-minado', component: MetodoMinadoMainComponent },
-    //         { path: 'semanas-avance', component: SemanasAvanceMainComponent },
-    //         { path: 'semanas-ciclo', component: SemanasCicloMainComponent },
-    //     ]
-    // }
+    {
+        path: '',
+        component: menuPlaningComponent,
+        children: [
+            {
+                path: 'apertura_de_periodo_operativo',
+                loadChildren: () =>
+                    import('./opciones-componentes/apertura-periodo-operativo/apertura-periodo-operativo.routes')
+                        .then(m => m.default)  // 👈 IMPORTANTE
+            }
+        ]
+    }
 ];
 
 export default planingMainRouter;

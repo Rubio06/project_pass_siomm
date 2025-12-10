@@ -7,13 +7,14 @@
 
             @for (item of fieldInputs(); track item.name) {
                 <div>
-                    <label for="" class="text-sm font-medium text-gray-700">{{ item.label }}</label>
-                    <div class="flex items-center border border-gray-300 rounded-lg px-2 py-1 bg-gray-50 shadow-xs
+                    <label for="" class="text-sm font-medium">{{ item.label }}</label>
+                    <div class="flex items-center border border-gray-300 rounded-lg px-2 py-1 shadow-xs
                        hover:shadow-md transition-shadow duration-300 ease-in-out
                        focus-within:border-[#033351] focus-within:ring-1 focus-within:ring-[rgb(3,102,157)]
-                       focus-within:ring-opacity-40 focus-within:shadow-md">
-                        <input [type]="item.type" [formControlName]="item.name" [readonly]="bloqueo()"
-                            class="w-full bg-transparent outline-none text-gray-800 placeholder-gray-400 text-xs font-medium"
+                       focus-within:ring-opacity-40 focus-within:shadow-md bg-white
+                       ">
+                        <input [type]="item.type" [formControlName]="item.name"
+                            class="w-full bg-white outline-none text-gray-800 placeholder-gray-400 text-xs font-medium disabled:opacity-50 disabled:bg-gray-100 disabled:cursor-not-allowed"
                             required />
                     </div>
                 </div>

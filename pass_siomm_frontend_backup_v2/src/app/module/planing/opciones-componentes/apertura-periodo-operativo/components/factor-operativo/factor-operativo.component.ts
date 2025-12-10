@@ -1,7 +1,8 @@
 import { Component, effect, inject, signal } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { PlanningService } from '../../services/planning.service';
+import { CommonModule } from '@angular/common';
 
 interface fieldName {
     name: string;
@@ -11,40 +12,39 @@ interface fieldName {
 
 @Component({
     selector: 'app-factor-operativo',
-    imports: [ReactiveFormsModule],
+    imports: [ReactiveFormsModule, CommonModule],
     templateUrl: './factor-operativo.component.html',
     styleUrl: './factor-operativo.component.css',
 })
 export class FactorOperativoComonent {
-    private planingService = inject(PlanningService);
+    public planingService = inject(PlanningService);
     private fb = inject(FormBuilder);
     bloqueo = inject(PlanningService).bloqueo;
-
     rutas = this.planingService.dataRoutes;
 
     form: FormGroup;
 
     fieldInputs = signal<fieldName[]>([
-        { name: "fac_denmin", type: "text", label: "D. Mineral:" },
-        { name: "fac_dendes", type: "text", label: "D. Desmonte:" },
-        { name: "fac_vptmin", type: "text", label: "VPT Mínimo:" },
-        { name: "fac_dialab", type: "text", label: "Días Laborales:" },
-        { name: "fac_tarhor", type: "text", label: "Tareas/8 Horas" },
-        { name: "fac_porcum", type: "text", label: "%Cump.(+/-)" },
-        { name: "fac_porhum", type: "text", label: "%Humedad" },
-        { name: "fac_tms_dif", type: "text", label: "TMS Dif (+/-)" },
+        { name: "fac_denmin", type: "number", label: "D. Mineral:" },
+        { name: "fac_dendes", type: "number", label: "D. Desmonte:" },
+        { name: "fac_vptmin", type: "number", label: "VPT Mínimo:" },
+        { name: "fac_dialab", type: "number", label: "Días Laborales:" },
+        { name: "fac_tarhor", type: "number", label: "Tareas/8 Horas" },
+        { name: "fac_porcum", type: "number", label: "%Cump.(+/-)" },
+        { name: "fac_porhum", type: "number", label: "%Humedad" },
+        { name: "fac_tms_dif", type: "number", label: "TMS Dif (+/-)" },
     ]);
 
     constructor() {
         this.form = this.fb.group({
-            fac_denmin: ['0.000'],
-            fac_dendes: ['0.000'],
-            fac_vptmin: ['0.000'],
-            fac_dialab: ['0.000'],
-            fac_tarhor: ['0.000'],
-            fac_porcum: ['0.00'],
-            fac_porhum: ['0.00'],
-            fac_tms_dif: ['0.00']
+            fac_denmin: [{ value: '0.000', disabled: true }],
+            fac_dendes: [{ value: '0.000', disabled: true }],
+            fac_vptmin: [{ value: '0.000', disabled: true }],
+            fac_dialab: [{ value: '0.000', disabled: true }],
+            fac_tarhor: [{ value: '0.000', disabled: true }],
+            fac_porcum: [{ value: '0.000', disabled: true }],
+            fac_porhum: [{ value: '0.00', disabled: true }],
+            fac_tms_dif: [{ value: '0.00', disabled: true }]
         });
 
         effect(() => {
@@ -80,10 +80,24 @@ export class FactorOperativoComonent {
             this.form.patchValue(data);
 
         });
+
+        // Observa el estado de bloqueo y actualiza el formulario automáticamente
+        effect(() => {
+            this.bloqueoFormulario()
+        });
+
+        effect(() => {
+            // ⚠️ Asegúrate de leer la signal correcta: bloqueoFormEdit
+            const bloqueado = this.planingService.bloqueoFormEdit();
+
+            // Ejecuta tu lógica que deshabilita/habilita
+            this.gestionBloqueoFormulario(bloqueado);
+        });
+
+
     }
 
     resetearFormulario() {
-        console.log('Formulario reseteado en FactorOperativo');
         // Aquí reseteas tu formulario reactivo
 
         this.form.reset({
@@ -97,4 +111,26 @@ export class FactorOperativoComonent {
             fac_tms_dif: ['0.00']
         });
     }
+
+
+    bloqueoFormulario() {
+        const bloqueado = this.planingService.bloqueoForm();
+        console.log(bloqueado)
+        if (bloqueado) {
+            this.form.disable();
+        } else {
+            this.form.enable();
+        }
+    }
+
+    private gestionBloqueoFormulario(bloqueado: boolean) {
+        // Si la signal 'bloqueado' es FALSE (el usuario presionó el botón 'Editar'),
+        // entonces habilitamos el formulario.
+        if (!bloqueado) {
+            this.form.enable();
+        }
+        // Si 'bloqueado' es TRUE, el formulario se mantiene deshabilitado.
+        // No necesitamos un 'else' si tu objetivo es solo el desbloqueo.
+    }
+
 }

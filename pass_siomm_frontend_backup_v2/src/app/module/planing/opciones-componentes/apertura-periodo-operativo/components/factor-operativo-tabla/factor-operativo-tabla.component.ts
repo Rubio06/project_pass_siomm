@@ -24,7 +24,7 @@ export class FactorOperativoTablaComponent {
 
     constructor() {
         this.form = this.fb.group({
-            val_des_tipo_fac: ['GENERAL'],
+            val_des_tipo_fac: ['GENERAL' ],
             val_fac_ag: ['0.0000'],
             val_fac_cu: ['0.0000'],
             val_fac_pb: ['0.0000'],
@@ -40,7 +40,6 @@ export class FactorOperativoTablaComponent {
         effect(() => {
             const response = this.rutas();
 
-            // console.log(response)
 
             if (response?.data?.factorOperativo?.length) {
                 const factorOperativo = response.data.factorOperativo[0];
@@ -85,6 +84,10 @@ export class FactorOperativoTablaComponent {
             // si hay data, llenas tus formularios
             this.form.patchValue(data);
         });
+
+        effect(() => {
+            this.bloqueoFormulario()
+        })
     }
 
     resetearFormulario() {
@@ -101,5 +104,15 @@ export class FactorOperativoTablaComponent {
             val_fac_rec_zn: ['.00%'],
             val_fac_rec_au: ['.00%'],
         });
+    }
+
+    bloqueoFormulario() {
+        const bloqueado = this.planingService.bloqueoForm();
+        console.log(bloqueado)
+        if (bloqueado) {
+            this.form.disable();
+        } else {
+            this.form.enable();
+        }
     }
 }

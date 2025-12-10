@@ -1,0 +1,63 @@
+<div class="drawer lg:drawer-open">
+    <input id="my-drawer-4" type="checkbox" class="drawer-toggle" />
+    <div class="drawer-content">
+        <!-- Navbar -->
+        <nav class="navbar w-full bg-base-300">
+            <label for="my-drawer-4" aria-label="open sidebar" class="btn btn-square btn-ghost">
+                <!-- Sidebar toggle icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-linejoin="round"
+                    stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor"
+                    class="my-1.5 inline-block size-4">
+                    <path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"></path>
+                    <path d="M9 4v16"></path>
+                    <path d="M14 10l2 2l-2 2"></path>
+                </svg>
+            </label>
+            <div class="px-4 w-full" style="display: flex; justify-content: space-between; align-items: center; ">
+                <h1 style="font-weight: bold; font-size: 24px; color: #013B5C;">SISTEMA DE OPERACIONES MINERO
+                    METALURGICO (SIOMM)</h1>
+                <button class="btn btn-error gap-2 flex items-center hover:scale-105 transition-transform duration-200"
+                    (click)="authService.logout()">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1" />
+                    </svg>
+                    Cerrar Sesión
+                </button>
+            </div>
+        </nav>
+        <!-- Page content here -->
+        <div class="p-1">
+            <router-outlet />
+        </div>
+    </div>
+
+    <div class="drawer-side border-r border-gray-300" style="background-color: #e8eaeb;">
+        <label for="my-drawer-4" aria-label="close sidebar" class="drawer-overlay"></label>
+
+        <div class="flex min-h-full flex-col shadow-xl
+        w-64 md:w-72
+        transition-all duration-300 ease-in-out">
+
+            <div class="w-full p-4 h-20 flex items-center justify-center ">
+                <img src="logo-empresa.png" alt="Logo empresa" class="w-auto h-30 mt-10 " />
+            </div>
+
+            <ul class="menu w-full grow px-4 py-6 space-y-1 text-gray-700 mt-10">
+                <app-list-desktop />
+            </ul>
+
+            <div class="p-4 border-t border-gray-200 text-center text-xs">
+                <p><b>v1.0 | Dashboard Minero</b></p>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- CONTENIDO PRINCIPAL -->
+<!-- <div class="">
+    <router-outlet></router-outlet>
+</div> -->

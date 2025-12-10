@@ -45,12 +45,8 @@ export class ListDesktopComponent {
                     ...r,
                     icon: this.asignarIcono(r.nom_ruta_primer)
                 }));
-
-
-
                 this.routers.set(dataConIconos);
 
-                console.log(data)
             },
             error: () => this.hasError.set('Error al cargar las rutas.')
         });
@@ -66,6 +62,8 @@ export class ListDesktopComponent {
     }
 
     getName(item: any) {
+
+
         return item.nom_ruta_primer
             || item.nom_ruta_secun
             || item.nom_ruta_terc
@@ -84,10 +82,5 @@ export class ListDesktopComponent {
             .replace(/\s+/g, '-');                              // espacios → guiones
     }
 
-    toUrlSegundo(name: string) {
-        return name
-            .trim()
-            .replace(/\s+/g, '_')
-            .replace(/[^a-zA-Z0-9_]/g, '');
-    }
+
 }

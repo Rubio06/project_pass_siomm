@@ -4,18 +4,18 @@
         <h1 class="text-[15px] font-bold text-gray-800 w-full" style="color: #013B5C;">Canchas</h1>
         <div
             class="grid grid-cols-1 place-items-center border-2 border-gray-400 rounded lg:w-[410px] bg-gray-100 mx-auto">
-            <div class="flex items-end justify-center gap-3 w-fit mx-auto p-2">
+            <div class="flex items-end justify-center gap-3 w-fit mx-auto p-2 ">
                 <div class="flex flex-col">
-                    <input type="text" class="text-sm font-medium border border-gray-300 rounded-lg px-1 py-0.5 text-right bg-gray-50
-                                shadow-sm hover:shadow-md transition-shadow duration-200
+                    <input type="text" class="text-sm bg-white font-medium border border-gray-300 rounded-lg px-1 py-0.5 text-right bg-gray-50
+                                shadow-sm hover:shadow-md transition-shadow duration-200 disabled:opacity-50 disabled:bg-gray-100 disabled:cursor-not-allowed
                                 focus:border-[#033351] focus:ring-2 focus:ring-[rgb(3,102,157)]
                                 focus:ring-opacity-40 outline-none w-full" formControlName="val_ag" [readonly]="bloqueo()"/>
                 </div>
 
                 <div class="flex flex-col items-center">
                     <label class="text-sm font-semibold text-gray-700 mb-1 text-center">TMS</label>
-                    <input type="text" class="text-sm font-medium border border-gray-300 rounded-lg px-1 py-0.5 text-right bg-gray-50
-                                shadow-sm hover:shadow-md transition-shadow duration-200
+                    <input type="text"  class="text-sm bg-white font-medium border border-gray-300 rounded-lg px-1 py-0.5 text-right bg-gray-50
+                                shadow-sm hover:shadow-md transition-shadow duration-200 disabled:opacity-50 disabled:bg-gray-100 disabled:cursor-not-allowed
                                 focus:border-[#033351] focus:ring-2 focus:ring-[rgb(3,102,157)]
                                 focus:ring-opacity-40 outline-none w-full" formControlName="val_tms" [readonly]="bloqueo()"/>
                 </div>
@@ -25,10 +25,10 @@
             <div class="flex justify-center items-end gap-3 mx-auto w-full p-2 rounded-lg bg-gray-50">
                 <!-- Input izquierda -->
                 <div class="flex flex-col w-45">
-                    <input type="text" class="text-sm font-medium border border-gray-300 rounded-lg px-1 py-0.5 text-right bg-white
+                    <input type="text" class="text-sm bg-white font-medium border border-gray-300 rounded-lg px-1 py-0.5 text-right bg-white
              shadow-sm hover:shadow-md transition-shadow duration-200
              focus:border-[#033351] focus:ring-2 focus:ring-[rgb(3,102,157)]
-             focus:ring-opacity-40 outline-none w-full" formControlName="val_cu" [readonly]="bloqueo()" />
+             focus:ring-opacity-40 outline-none w-full disabled:opacity-50 disabled:bg-gray-100 disabled:cursor-not-allowed" formControlName="val_cu" [readonly]="bloqueo()" />
                 </div>
 
                 <!-- Label VTP alineado -->
@@ -39,27 +39,27 @@
 
             <div class="flex items-end justify-center gap-3 w-fit mx-auto p-2">
                 <div class="flex flex-col">
-                    <input type="text" class="text-sm font-medium border border-gray-300 rounded-lg px-1 py-0.5 text-right bg-gray-50
+                    <input type="text" class="text-sm  bg-white font-medium border border-gray-300 rounded-lg px-1 py-0.5 text-right bg-gray-50
                                 shadow-sm hover:shadow-md transition-shadow duration-200
                                 focus:border-[#033351] focus:ring-2 focus:ring-[rgb(3,102,157)]
-                                focus:ring-opacity-40 outline-none w-full" formControlName="val_zn"  [readonly]="bloqueo()"/>
+                                focus:ring-opacity-40 outline-none w-full disabled:opacity-50 disabled:bg-gray-100 disabled:cursor-not-allowed" formControlName="val_zn"  [readonly]="bloqueo()"/>
                 </div>
 
                 <div class="flex flex-col items-center">
-                    <input type="text" class="text-sm font-medium border border-gray-300 rounded-lg px-1 py-0.5 text-right bg-gray-50
+                    <input type="text" class="text-sm font-medium bg-white border border-gray-300 rounded-lg px-1 py-0.5 text-right bg-gray-50
                                 shadow-sm hover:shadow-md transition-shadow duration-200
                                 focus:border-[#033351] focus:ring-2 focus:ring-[rgb(3,102,157)]
-                                focus:ring-opacity-40 outline-none w-full" formControlName="val_vpt" [readonly]="bloqueo()"/>
+                                focus:ring-opacity-40 outline-none w-full disabled:opacity-50 disabled:bg-gray-100 disabled:cursor-not-allowed" formControlName="val_vpt" [readonly]="bloqueo()"/>
                 </div>
 
             </div>
 
             <div class="flex items-start justify-start gap-3 w-96 p-2">
                 <div class="flex flex-col">
-                    <input type="text" class="text-sm font-medium border border-gray-300 rounded-lg px-1 py-0.5 text-right bg-gray-50
+                    <input type="text" class="text-sm bg-white font-medium border border-gray-300 rounded-lg px-1 py-0.5 text-right bg-gray-50
              shadow-sm hover:shadow-md transition-shadow duration-200
              focus:border-[#033351] focus:ring-2 focus:ring-[rgb(3,102,157)]
-             focus:ring-opacity-40 outline-none w-full" formControlName="val_cu" [readonly]="bloqueo()" />
+             focus:ring-opacity-40 outline-none w-full disabled:opacity-50 disabled:bg-gray-100 disabled:cursor-not-allowed" formControlName="val_cu" [readonly]="bloqueo()" />
                 </div>
             </div>
         </div>

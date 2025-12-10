@@ -66,6 +66,42 @@
         }
       }
     },
+    "/planeamiento/aper-periodo-operativo/select-tipo-labor": {
+      "get": {
+        "tags": [
+          "AperPerodioOperativo"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/planeamiento/aper-periodo-operativo/select-zona": {
+      "get": {
+        "tags": [
+          "AperPerodioOperativo"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/planeamiento/aper-periodo-operativo/select-exploracion": {
+      "get": {
+        "tags": [
+          "AperPerodioOperativo"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/auth/authenticate": {
       "post": {
         "tags": [
@@ -108,6 +144,37 @@
           }
         }
       }
+    },
+    "/aper-periodo-operativo/semana/semana-avance-eliminar": {
+      "post": {
+        "tags": [
+          "Semana"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MaeSemanaAvanceEliminarDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MaeSemanaAvanceEliminarDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/MaeSemanaAvanceEliminarDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -126,6 +193,31 @@
           "password": {
             "minLength": 1,
             "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "MaeSemanaAvanceEliminarDto": {
+        "type": "object",
+        "properties": {
+          "num_semana": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "fec_ini": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "fec_fin": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "desc_semana": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using pass_siomm_backend.Data.Dto.PlaneamientoDto;
 using pass_siomm_backend.Services;
 using pass_siomm_backend.Services.PlaneamientoService;
 
@@ -37,7 +38,7 @@ namespace pass_siomm_backend.Controllers.aper_per_oper
             try
             {
                 var anio = await _AperPeriodoOperativoService.ObtenerAnio();
-                return Ok(anio); 
+                return Ok(anio);
             }
             catch (System.Exception ex)
             {
@@ -52,7 +53,7 @@ namespace pass_siomm_backend.Controllers.aper_per_oper
         //    {
         //        var fechas = await _AperPeriodoOperativoService.ObtenerFecha(month, anio);
 
-                
+
         //        return Ok(fechas);
         //    }
         //    catch (System.Exception ex)
@@ -67,8 +68,51 @@ namespace pass_siomm_backend.Controllers.aper_per_oper
             try
             {
                 var fechas = await _AperPeriodoOperativoService.ObtenerDatosCompletos(month, anio);
+                Console.WriteLine(fechas);
 
                 return Ok(fechas);
+            }
+            catch (System.Exception ex)
+            {
+                return StatusCode(500, $"Error al obtener los meses: {ex.Message}");
+            }
+        }
+
+        [HttpGet("select-tipo-labor")]
+        public async Task<IActionResult> SelectMetTipoLabor()
+        {
+            try
+            {
+                var exploracion = await _AperPeriodoOperativoService.SelectMetTipoLabor();
+                return Ok(exploracion);
+            }
+            catch (System.Exception ex)
+            {
+                return StatusCode(500, $"Error al obtener los meses: {ex.Message}");
+            }
+        }
+
+        [HttpGet("select-zona")]
+        public async Task<IActionResult> SelectZona()
+        {
+            try
+            {
+                var zona = await _AperPeriodoOperativoService.SelectMetZona();
+                return Ok(zona);
+            }
+            catch (System.Exception ex)
+            {
+                return StatusCode(500, $"Error al obtener los meses: {ex.Message}");
+            }
+        }
+
+        [HttpGet("select-exploracion")]
+        public async Task<IActionResult> SelectExploracion()
+        {
+            try
+            {
+                var zona = await _AperPeriodoOperativoService.SelectExploracion();
+                return Ok(zona);
             }
             catch (System.Exception ex)
             {

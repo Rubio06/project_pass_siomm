@@ -1,6 +1,6 @@
 import { environment } from '@environments/environments';
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, Signal, signal, WritableSignal } from '@angular/core';
+import { effect, inject, Injectable, Signal, signal, WritableSignal } from '@angular/core';
 import { BehaviorSubject, catchError, Observable, of } from 'rxjs';
 import { PlanningData, SelectExploracion, SelectTipoLabor, SelectZona } from '../interface/aper-per-oper.interface';
 
@@ -12,16 +12,55 @@ export class PlanningService {
     private planingUrl = environment.baseUrl;
     data = signal<any>(null);
 
-    // private readonly VALOR_INICIAL = null;
-
     private _dataRoutes: WritableSignal<any> = signal([]);
 
     public readonly dataRoutes: Signal<any> = this._dataRoutes.asReadonly();
 
 
+
     setData(data: any): void {
         this._dataRoutes.set(data);
+        // this.semanasCicloMainRef?.yaCargoData.set(false);
+
     }
+
+    setSemanasCiclo(semanas: any[]) {
+        const routes = structuredClone(this._dataRoutes());
+        routes.data.semana_ciclo = semanas;
+        this._dataRoutes.set(routes);
+    }
+
+
+    private _bloqueo = signal<boolean>(true);
+
+    public bloqueo = this._bloqueo.asReadonly();
+
+    setBloqueo(v: boolean) {
+        this._bloqueo.set(v);
+    }
+
+
+    readonly bloqueoFormEdit: WritableSignal<boolean> = signal(true);
+    // Por defecto, asumimos que el formulario debe estar bloqueado/deshabilitado.
+
+    /**
+     * Alterna el estado de bloqueo del formulario (lo desbloquea para la edición).
+     */
+    toggleBloqueoEdit(): void {
+        console.log("Click en el servicio")
+        this.bloqueoFormEdit.update(currentValue => !currentValue);
+    }
+
+
+
+
+    private _bloqueoForm = signal<boolean>(true); // true = bloqueado
+    public bloqueoForm = this._bloqueoForm.asReadonly();
+
+    setBloqueoForm(valor: boolean) {
+        this._bloqueoForm.set(false);
+    }
+
 
 
     public getMonths(yearData: string): Observable<string[]> {
@@ -86,13 +125,6 @@ export class PlanningService {
             console.log('Error al cargar los meses', error)
             return of([]);
         }));
-    }
-
-    private _bloqueo = signal<boolean>(true);
-    public bloqueo = this._bloqueo.asReadonly();
-
-    setBloqueo(v: boolean) {
-        this._bloqueo.set(v);
     }
 
 }

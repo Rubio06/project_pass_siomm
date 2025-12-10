@@ -33,15 +33,15 @@ export class ValoresComponent {
         const controls: any = {};
         this.elements.forEach(item => {
             item.fields.forEach(field => {
-                controls[field] = ["0.000", Validators.required];
+                controls[field] = [{ value: "0.000", disabled: true }, Validators.required];
             });
         });
 
         this.form = this.fb.group(controls);
 
         effect(() => {
-            const response = this.rutas();
-            if (!response?.data) return;
+            const response = this.planingService.data();
+            if (!response) return;
 
             const factor = response.data.factorOperativo?.[0];
             const factor_2 = response.data.factorSobredisolucion?.[0];
@@ -73,8 +73,8 @@ export class ValoresComponent {
 
                 val_pre_au: factor.val_pre_au,
                 val_fac_au: factor_2.val_fac_au,
-                val_fac_bud_au: factor_3.val_fac_bud_au,
-                val_con_au: factor_3.val_con_au
+                val_fac_bud_au: factor_3.val_fac_bud_au || '.00%',
+                val_con_au: factor_3.val_con_au || '.00%'
             });
 
         });
@@ -90,7 +90,23 @@ export class ValoresComponent {
             // si hay data, llenas tus formularios
             this.form.patchValue(data);
         });
+
+        effect(() => {
+            this.bloqueoFormulario()
+        })
+
     }
+
+    bloqueoFormulario() {
+        const bloqueado = this.planingService.bloqueoForm();
+        console.log(bloqueado)
+        if (bloqueado) {
+            this.form.disable();
+        } else {
+            this.form.enable();
+        }
+    }
+
 
     resetearFormulario() {
         this.form.reset({

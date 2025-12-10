@@ -1,5 +1,21 @@
 [
   {
+    "ContainingType": "pass_siomm_backend.Controllers.PlaneamientoConroller.SemanaController",
+    "Method": "Eliminado",
+    "RelativePath": "aper-periodo-operativo/semana/semana-avance-eliminar",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "semana",
+        "Type": "pass_siomm_backend.Data.Dto.PlaneamientoDto.MaeSemanaAvanceEliminarDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "pass_siomm.Controllers.AuthController",
     "Method": "AutenticatheUser",
     "RelativePath": "auth/authenticate",
@@ -60,6 +76,36 @@
         "IsRequired": false
       }
     ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Controllers.aper_per_oper.AperPerodioOperativoController",
+    "Method": "SelectExploracion",
+    "RelativePath": "planeamiento/aper-periodo-operativo/select-exploracion",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Controllers.aper_per_oper.AperPerodioOperativoController",
+    "Method": "SelectMetTipoLabor",
+    "RelativePath": "planeamiento/aper-periodo-operativo/select-tipo-labor",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Controllers.aper_per_oper.AperPerodioOperativoController",
+    "Method": "SelectZona",
+    "RelativePath": "planeamiento/aper-periodo-operativo/select-zona",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": []
   },
   {
