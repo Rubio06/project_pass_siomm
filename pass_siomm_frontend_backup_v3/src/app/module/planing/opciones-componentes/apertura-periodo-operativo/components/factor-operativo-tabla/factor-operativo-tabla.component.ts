@@ -1,8 +1,9 @@
 import { Component, effect, inject, signal } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PlanningService } from '../../services/planning.service';
 import { TableField, TableHeader, TD_CAMPOS_TABLE, TH_CAMPOS_TABLE } from '../../interface/aper-per-oper.interface';
 import { PlaningCompartido } from '../../services/planing-compartido.service';
+import { FormUtils } from 'src/app/utils/form-utils';
 
 
 @Component({
@@ -22,20 +23,20 @@ export class FactorOperativoTablaComponent {
 
     planingCompartido = inject(PlaningCompartido);
 
-    // form: FormGroup;
+    formUtils =  FormUtils;
 
     form: FormGroup = this.fb.group({
         val_des_tipo_fac: ['GENERAL'],
-        val_fac_ag: ['0.0000'],
-        val_fac_cu: ['0.0000'],
-        val_fac_pb: ['0.0000'],
-        val_fac_zn: ['0.0000'],
-        val_fac_au: ['0.0000'],
-        val_fac_rec_ag: ['.00%'],
-        val_fac_rec_cu: ['.00%'],
-        val_fac_rec_pb: ['.00%'],
-        val_fac_rec_zn: ['.00%'],
-        val_fac_rec_au: ['.00%'],
+        val_fac_ag: ['0.0000', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+        val_fac_cu: ['0.0000', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+        val_fac_pb: ['0.0000', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+        val_fac_zn: ['0.0000', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+        val_fac_au: ['0.0000', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+        val_fac_rec_ag: ['.00%', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+        val_fac_rec_cu: ['.00%', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+        val_fac_rec_pb: ['.00%', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+        val_fac_rec_zn: ['.00%', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+        val_fac_rec_au: ['.00%', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
     });
 
     constructor() {

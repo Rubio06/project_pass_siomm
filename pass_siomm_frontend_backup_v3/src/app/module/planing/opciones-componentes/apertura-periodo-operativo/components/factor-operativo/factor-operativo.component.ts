@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { PlanningService } from '../../services/planning.service';
 import { CommonModule } from '@angular/common';
 import { PlaningCompartido } from '../../services/planing-compartido.service';
+import { FormUtils } from 'src/app/utils/form-utils';
 
 interface fieldName {
     name: string;
@@ -23,6 +24,7 @@ export class FactorOperativoComonent {
     bloqueo = inject(PlanningService).bloqueo;
     rutas = this.planingService.dataRoutes;
     planingCompartido = inject(PlaningCompartido);
+	formUtils =  FormUtils;
 
     // form: FormGroup;
 
@@ -38,16 +40,15 @@ export class FactorOperativoComonent {
     ]);
 
     form: FormGroup = this.fb.group({
-        fac_denmin: [{ value: '0.000', disabled: true }],
-        fac_dendes: [{ value: '0.000', disabled: true }],
-        fac_vptmin: [{ value: '0.000', disabled: true }],
-        fac_dialab: [{ value: '0.000', disabled: true }],
-        fac_tarhor: [{ value: '0.000', disabled: true }],
-        fac_porcum: [{ value: '0.000', disabled: true }],
-        fac_porhum: [{ value: '0.00', disabled: true }],
-        fac_tms_dif: [{ value: '0.00', disabled: true }]
+        fac_denmin: [{ value: '0.000', disabled: true }, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+        fac_dendes: [{ value: '0.000', disabled: true }, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+        fac_vptmin: [{ value: '0.000', disabled: true }, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+        fac_dialab: [{ value: '0.000', disabled: true }, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+        fac_tarhor: [{ value: '0.000', disabled: true }, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+        fac_porcum: [{ value: '0.000', disabled: true }, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+        fac_porhum: [{ value: '0.00', disabled: true }, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+        fac_tms_dif: [{ value: '0.00', disabled: true }, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
     });
-
 
     constructor() {
 

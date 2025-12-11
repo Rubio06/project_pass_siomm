@@ -17,6 +17,14 @@
                             class="w-full bg-white outline-none text-gray-800 placeholder-gray-400 text-xs font-medium disabled:opacity-50 disabled:bg-gray-100 disabled:cursor-not-allowed"
                             required />
                     </div>
+
+                    @if ( formUtils.isValidField(form ,item.name) ) {
+    
+                        <div class="form-text text-danger text-[red] text-xs">
+                            <!-- Debe de ser de 3 letras -->
+                            {{ formUtils.getFiledError(form, item.name) }}
+                        </div>
+                    }
                 </div>
             }
         </div>

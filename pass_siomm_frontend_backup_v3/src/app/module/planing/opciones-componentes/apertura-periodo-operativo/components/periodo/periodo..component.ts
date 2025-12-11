@@ -1,6 +1,7 @@
 import { Component, effect, inject, signal } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { PlanningService } from '../../services/planning.service';
+import { FormUtils } from 'src/app/utils/form-utils';
 
 
 interface fieldName {
@@ -21,6 +22,7 @@ interface fieldName {
 export class AperPerOperComponent {
     private planingService = inject(PlanningService);
     private fb = inject(FormBuilder);
+    formUtils = FormUtils;
 
     form: FormGroup;
     rutas = this.planingService.data;
@@ -105,6 +107,10 @@ export class AperPerOperComponent {
 
         if (bloqueado) this.form.disable();
         else this.form.enable();
+
+        // ❗ Campos que siempre deben quedar bloqueados
+        this.form.get('cie_ano')?.disable();
+        this.form.get('cie_per')?.disable();
     }
 
     resetearFormulario() {

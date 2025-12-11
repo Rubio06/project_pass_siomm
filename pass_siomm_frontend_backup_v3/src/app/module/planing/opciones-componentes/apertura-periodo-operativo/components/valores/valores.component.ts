@@ -4,6 +4,7 @@ import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } fr
 import { CanchasComponent } from './canchas/canchas.component';
 import { PlanningService } from '../../services/planning.service';
 import { PlaningCompartido } from '../../services/planing-compartido.service';
+import { FormUtils } from 'src/app/utils/form-utils';
 
 
 
@@ -17,6 +18,7 @@ export class ValoresComponent {
     private planingService = inject(PlanningService);
     private fb = inject(FormBuilder);
     rutas = this.planingService.dataRoutes;
+    formUtils =  FormUtils;
 
     planingCompartido = inject(PlaningCompartido);
 
@@ -36,7 +38,7 @@ export class ValoresComponent {
         const controls: any = {};
         this.elements.forEach(item => {
             item.fields.forEach(field => {
-                controls[field] = [{ value: "0.000", disabled: true }, Validators.required];
+                controls[field] = [{ value: "0.000", disabled: true }, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]];
             });
         });
 

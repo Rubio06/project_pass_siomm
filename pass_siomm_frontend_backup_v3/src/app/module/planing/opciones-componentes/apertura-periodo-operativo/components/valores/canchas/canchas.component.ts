@@ -1,7 +1,8 @@
 import { Component, effect, inject, signal } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PlanningService } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/services/planning.service';
 import { PlaningCompartido } from '../../../services/planing-compartido.service';
+import { FormUtils } from 'src/app/utils/form-utils';
 
 @Component({
     selector: 'app-canchas',
@@ -14,19 +15,20 @@ export class CanchasComponent {
     private fb = inject(FormBuilder);
     rutas = this.planingService.data;
     planingCompartido = inject(PlaningCompartido);
+    formUtils =  FormUtils;
 
-    form: FormGroup;
     bloqueo = inject(PlanningService).bloqueo;
 
+    form: FormGroup= this.fb.group({
+        val_tms: ['0.000', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+        val_ag: ['0.000', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+        val_cu: ['0.000', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+        val_pb: ['0.000', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+        val_zn: ['0.000', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+        val_vpt: ['0.000', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]]
+    });
+    
     constructor() {
-        this.form = this.fb.group({
-            val_tms: ['0.000'],
-            val_ag: ['0.000'],
-            val_cu: ['0.000'],
-            val_pb: ['0.000'],
-            val_zn: ['0.000'],
-            val_vpt: ['0.000']
-        });
 
         effect(() => {
             const response = this.rutas();

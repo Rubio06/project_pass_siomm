@@ -1,3 +1,4 @@
+import { FormGroup, ValidationErrors } from '@angular/forms';
 import Swal from 'sweetalert2'
 import 'sweetalert2/src/sweetalert2.scss'
 
@@ -57,6 +58,46 @@ export class FormUtils {
             }
         });
     }
+
+
+    static isValidField(form: FormGroup, fildName: string): boolean | null {
+        return (
+            !!form.controls[fildName].errors &&
+            form.controls[fildName].touched
+        );
+    }
+
+
+    static getFiledError(form: FormGroup, fildName: string): string | null {
+        if (!form.controls[fildName]) return null;
+        const errors = form.controls[fildName].errors ?? {};
+
+        return FormUtils.getFieldError(errors);
+    }
+
+
+    static getFieldError(error: ValidationErrors) {
+        for (const key of Object.keys(error)) {
+            switch (key) {
+                case 'required':
+                    return 'Este campo es requerido';
+
+                case 'minlength':
+                    return `Minimo de ${error['minlength'].requiredLength} caracteres`;
+
+                case 'min':
+                    return `Valor minimo de  ${error['min'].min}`;
+
+                case 'pattern':
+                    return 'Formato inválido';
+            }
+        }
+        return null;
+    }
+
+
+    // fac_denmin: [{ value: '0.000', disabled: true }, [Validators.pattern(/^\d+(\.\d+)?$/)]],
+
 
 
 }

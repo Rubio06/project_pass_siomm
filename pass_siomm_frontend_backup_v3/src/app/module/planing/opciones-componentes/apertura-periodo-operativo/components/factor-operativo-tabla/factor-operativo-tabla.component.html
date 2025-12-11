@@ -31,8 +31,22 @@
                 <tr class="text-center bg-white hover:bg-gray-100 transition-colors duration-150">
                     @for (td of tdCampos(); track $index) {
                         <td class="border-2 border-gray-400 px-2 py-1">
-                            <input [type]="td.type" [formControlName]="td.name"
-                            class="w-full bg-transparent outline-none text-gray-800 placeholder-gray-400 text-xs font-medium disabled:opacity-50 disabled:bg-gray-100 disabled:cursor-not-allowed" /></td>
+
+                            <div class="col-2">
+
+                                <input [type]="td.type" [formControlName]="td.name"
+                                class="w-full bg-transparent outline-none text-gray-800 placeholder-gray-400 text-xs font-medium disabled:opacity-50 disabled:bg-gray-100 disabled:cursor-not-allowed" />
+                            </div>
+
+                            @if ( formUtils.isValidField(form ,td.name) ) {
+    
+                                <div class="form-text text-danger text-[red] text-xs">
+                                    <!-- Debe de ser de 3 letras -->
+                                    {{ formUtils.getFiledError(form, td.name) }}
+                                </div>
+                            }
+
+                        </td>
                     }
                 </tr>
             </tbody>

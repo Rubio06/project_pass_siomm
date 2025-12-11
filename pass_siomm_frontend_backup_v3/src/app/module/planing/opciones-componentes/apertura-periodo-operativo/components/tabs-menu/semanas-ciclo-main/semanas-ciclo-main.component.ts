@@ -40,29 +40,32 @@ export class SemanasCicloMainComponent {
         return this.myForm.get('semanas') as FormArray;
     }
 
-        //     effect(() => {
-        //     const data = this.planingService.dataRoutes();
-        //     const savedData = this.planingCompartido.getSemanaCiclo();
+    //     effect(() => {
+    //     const data = this.planingService.dataRoutes();
+    //     const savedData = this.planingCompartido.getSemanaCiclo();
 
-        //     if (!this.loaded && data) {
-        //         // Prioriza los datos guardados en el servicio
-        //         const semanasArray = Array.isArray(savedData) && savedData.length
-        //             ? savedData
-        //             : Array.isArray(data.data?.semana_ciclo)
-        //                 ? data.data.semana_ciclo
-        //                 : [];
+    //     if (!this.loaded && data) {
+    //         // Prioriza los datos guardados en el servicio
+    //         const semanasArray = Array.isArray(savedData) && savedData.length
+    //             ? savedData
+    //             : Array.isArray(data.data?.semana_ciclo)
+    //                 ? data.data.semana_ciclo
+    //                 : [];
 
-        //         this.loadSemanas(semanasArray);
+    //         this.loadSemanas(semanasArray);
 
-        //         // Guardar inmediatamente en el servicio
-        //         this.guardarCambios();
+    //         // Guardar inmediatamente en el servicio
+    //         this.guardarCambios();
 
-        //         // Patch del resto del formulario si es necesario
-        //         this.myForm.patchValue(data);
+    //         // Patch del resto del formulario si es necesario
+    //         this.myForm.patchValue(data);
 
-        //         this.loaded = true;
-        //     }
-        // });
+    //         this.loaded = true;
+    //     }
+    // });
+
+    loaded: boolean = true;
+
 
 
     constructor() {
@@ -80,6 +83,31 @@ export class SemanasCicloMainComponent {
                 const semanas = data?.data?.semana_ciclo || [];
                 this.loadSemanas(semanas);
                 this.myForm.patchValue(data);
+            }
+        });
+
+
+        effect(() => {
+            const data = this.planingService.dataRoutes();
+            const savedData = this.planingCompartido.getSemanaCiclo();
+
+            if (!this.loaded && data) {
+                // Prioriza los datos guardados en el servicio
+                const semanasArray = Array.isArray(savedData) && savedData.length
+                    ? savedData
+                    : Array.isArray(data.data?.semana_ciclo)
+                        ? data.data.semana_ciclo
+                        : [];
+
+                this.loadSemanas(semanasArray);
+
+                // Guardar inmediatamente en el servicio
+                this.guardarCambios();
+
+                // Patch del resto del formulario si es necesario
+                this.myForm.patchValue(data);
+
+                this.loaded = true;
             }
         });
 
@@ -153,7 +181,7 @@ export class SemanasCicloMainComponent {
 
     eliminarFila(data: any) {
 
-        console.log("el numero es ",  data.value)
+        console.log("el numero es ", data.value)
         // const codigo = this.semanas.removeAt(index);
         // this.alertaEliminarFila(codigo)
 
