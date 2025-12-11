@@ -52,6 +52,7 @@ export class AperturPeriodoComponent {
 
         this.getYear();
 
+
         effect(() => {
             this.textoBoton = this.planingService.bloqueo() ? 'Bloqueado' : 'Desbloqueado';
         });
@@ -122,7 +123,7 @@ export class AperturPeriodoComponent {
                     this.loadingService.loadingOff();
                     this.bloqueo.set(false);
 
-                    // console.log(this._getDate())
+
                 }
             }, error: (error) => {
                 console.error('Error al traer los meses.', error)
@@ -148,7 +149,6 @@ export class AperturPeriodoComponent {
     guardarTodo() {
         this.planingCompartido.guardarTodo().subscribe({
             next: () => {
-                console.log('✔ Datos enviados correctamente')
                 this.planingService.setBloqueoForm(true);
                 this.bloqueoGuardar.set(true);
             },

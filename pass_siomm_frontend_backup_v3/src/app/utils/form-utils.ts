@@ -23,39 +23,62 @@ export class FormUtils {
     }
 
 
-    static alertaEliminarFila(codigo: number) {
-        const swalWithBootstrapButtons = Swal.mixin({
-            customClass: {
-                confirmButton: "btn btn-success",
-                cancelButton: "btn btn-danger"
+    static mensajeError(error: any) {
+        Swal.fire({
+            icon: "error",
+            title: "Ocurrió un error",
+            html: `
+                <div style="text-align:left;">
+                    <b>Detalle técnico:</b><br>
+                    <span style="font-size:14px; color:#444;">${error}</span><br><br>
+                    <b>Recomendación:</b><br>
+                    <span style="font-size:14px; color:#444;">
+                        Comuníquese con Soporte TI para más asistencia.
+                    </span>
+                </div>
+            `,
+            background: "#fefefe",
+            color: "#333",
+            confirmButtonText: "Entendido",
+            confirmButtonColor: "#d33",
+            showClass: {
+                popup: 'animate__animated animate__fadeInDown'
             },
-            buttonsStyling: false
+            hideClass: {
+                popup: 'animate__animated animate__fadeOutUp'
+            }
         });
-        swalWithBootstrapButtons.fire({
-            title: "Are you sure?" + codigo,
-            text: "You won't be able to revert this!",
+    }
+
+
+
+
+    static confirmarEliminacion(): Promise<boolean> {
+        return Swal.fire({
+            title: "¿Estás seguro?",
+            text: "¡No podrás revertir esto!",
             icon: "warning",
             showCancelButton: true,
-            confirmButtonText: "Yes, delete it!",
-            cancelButtonText: "No, cancel!",
-            reverseButtons: true
-        }).then((result) => {
-            if (result.isConfirmed) {
-                swalWithBootstrapButtons.fire({
-                    title: "Deleted!",
-                    text: "Your file has been deleted.",
-                    icon: "success"
-                });
-            } else if (
-                /* Read more about handling dismissals below */
-                result.dismiss === Swal.DismissReason.cancel
-            ) {
-                swalWithBootstrapButtons.fire({
-                    title: "Cancelled",
-                    text: "Your imaginary file is safe :)",
-                    icon: "error"
-                });
-            }
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Sí, eliminar",
+            cancelButtonText: "Cancelar"
+        }).then(result => result.isConfirmed);
+    }
+
+    static alertaEliminado(message: string) {
+        return Swal.fire({
+            title: "Eliminado",
+            text: message,
+            icon: "success"
+        });
+    }
+
+    static alertaNoEliminado() {
+        return Swal.fire({
+            title: "Cancelado",
+            text: "El registro NO fue eliminado.",
+            icon: "info"
         });
     }
 
@@ -94,10 +117,5 @@ export class FormUtils {
         }
         return null;
     }
-
-
-    // fac_denmin: [{ value: '0.000', disabled: true }, [Validators.pattern(/^\d+(\.\d+)?$/)]],
-
-
 
 }

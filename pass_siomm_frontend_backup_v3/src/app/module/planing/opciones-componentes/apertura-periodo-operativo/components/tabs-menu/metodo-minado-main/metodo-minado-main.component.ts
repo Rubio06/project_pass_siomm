@@ -1,10 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, effect, inject, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, effect, inject, signal } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
 import { DATOS_METODO_MINADO, SelectExploracion, TH_METODOLO_MINADO, thTitulos } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/interface/aper-per-oper.interface';
 import { PlanningService } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/services/planning.service';
 import { PlaningCompartido } from '../../../services/planing-compartido.service';
+import { SemanasAvanceMainService } from '../../../services/semanas-avance-main/semanas-avance-main.service';
+import { FormUtils } from 'src/app/utils/form-utils';
 
 @Component({
     selector: 'app-metodo-minado-main',
@@ -21,8 +23,11 @@ export class MetodoMinadoMainComponent {
 
     planingCompartido = inject(PlaningCompartido);
 
-    fb = inject(FormBuilder);
+    semanasAvanceMainService = inject(SemanasAvanceMainService);
+    private utils = FormUtils;
     planingService = inject(PlanningService);
+
+    fb = inject(FormBuilder);
 
     // ========================================
     //   FORMULARIO PRINCIPAL
@@ -58,21 +63,36 @@ export class MetodoMinadoMainComponent {
         { value: 2, label: 'No' }
     ]);
 
+    private cd = inject(ChangeDetectorRef);
+
+
     constructor() {
 
         // ========================================
         //   EFECTO: CARGA INICIAL
         // ========================================
+        // effect(() => {
+        //     const data = this.planingService.dataRoutes();
+        //     if (!data) return;
+
+        //     // Solo cargar una vez si está vacío
+        //     if (this.semanas.length === 0) {
+        //         const backend = data.data?.metodo_minado ?? [];
+        //         this.loadSemanas(backend);
+        //         this.myForm.patchValue(data);
+        //     }
+        // });
+
+
         effect(() => {
             const data = this.planingService.dataRoutes();
-            if (!data) return;
+            const semanas = data?.data?.semana_avance || [];
 
-            // Solo cargar una vez si está vacío
-            if (this.semanas.length === 0) {
-                const backend = data.data?.metodo_minado ?? [];
-                this.loadSemanas(backend);
-                this.myForm.patchValue(data);
-            }
+            setTimeout(() => {
+                this.loadSemanas(semanas);           // refresca FormArray
+                this.myForm.patchValue(data || {});   // actualiza el formulario
+                this.cd.detectChanges();              // opcional
+            }, 0);
         });
 
 
@@ -148,11 +168,39 @@ export class MetodoMinadoMainComponent {
     // =====================================================
     //   ELIMINAR FILA
     // =====================================================
-    eliminarFila(index: number) {
-        this.semanas.removeAt(index);
-        this.message.set(`Fila ${index + 1} eliminada.`);
-    }
+    async eliminarFila(data: any, index: number) {
+        const semana = data.getRawValue ? data.getRawValue() : data.value;
 
+        const payload = {
+            cod_metexp: semana.cod_metexp,
+            anio: this.semanasAvanceMainService.anio(),
+            mes: this.semanasAvanceMainService.mes(),
+        };
+
+        const confirmado = await this.utils.confirmarEliminacion();
+        if (!confirmado) {
+            this.utils.alertaNoEliminado();
+            return;
+        }
+
+        this.semanasAvanceMainService.eliminarMetodoMinado(payload).subscribe({
+            next: (res: any) => {
+                if (res.success) {
+                    // 👉 Elimina del FormArray
+
+                    // 👉 Muestra alerta de éxito desde el utilitario
+                    this.utils.alertaEliminado(res.message);
+                    this.semanas.removeAt(index);
+                    this.cd.detectChanges();              // opcional
+
+                } else {
+                    this.utils.alertaEliminado(res.message);
+
+                }
+            },
+            error: (err) => this.utils.mensajeError(err.message)
+        });
+    }
     // =====================================================
     //   SUBMIT SOLO DE LA ÚLTIMA FILA
     // =====================================================
@@ -161,7 +209,6 @@ export class MetodoMinadoMainComponent {
             const filas = this.semanas.getRawValue();
 
             this.planingCompartido.setMetodoMinado(filas);
-            // console.log("📤 TAB semana actualizó servicio:", filas);
         });
     }
 

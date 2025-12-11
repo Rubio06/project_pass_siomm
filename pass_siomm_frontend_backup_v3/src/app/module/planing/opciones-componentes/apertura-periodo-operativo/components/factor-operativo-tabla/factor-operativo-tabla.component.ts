@@ -112,7 +112,6 @@ export class FactorOperativoTablaComponent {
 
     bloqueoFormulario() {
         const bloqueado = this.planingService.bloqueoForm();
-        console.log(bloqueado)
         if (bloqueado) {
             this.form.disable();
         } else {
@@ -125,7 +124,6 @@ export class FactorOperativoTablaComponent {
             const filas = this.form.getRawValue();
 
             this.planingCompartido.setFactor(filas);
-            // console.log("📤 TAB semana actualizó servicio:", filas);
         });
     }
 }

@@ -2,7 +2,7 @@
 
     <div
         class="w-full sm:w-96 md:w-[600px] lg:w-[700px] xl:w-[1100px] mx-auto border-gray-400 rounded-lg overflow-x-auto">
-        <table class="min-w-full border-collapse text-sm text-gray-800">
+        <table class="min-w-full text-sm text-gray-800">
             <thead>
                 <!-- Título general -->
                 <tr>
@@ -28,7 +28,7 @@
             </thead>
 
             <tbody>
-                <tr class="text-center bg-white hover:bg-gray-100 transition-colors duration-150">
+                <tr class="text-center bg-white">
                     @for (td of tdCampos(); track $index) {
                         <td class="border-2 border-gray-400 px-2 py-1">
 
@@ -39,7 +39,7 @@
                             </div>
 
                             @if ( formUtils.isValidField(form ,td.name) ) {
-    
+
                                 <div class="form-text text-danger text-[red] text-xs">
                                     <!-- Debe de ser de 3 letras -->
                                     {{ formUtils.getFiledError(form, td.name) }}

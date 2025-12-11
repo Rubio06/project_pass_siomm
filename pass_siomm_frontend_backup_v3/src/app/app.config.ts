@@ -23,7 +23,7 @@ export const appConfig: ApplicationConfig = {
         provideRouter(routes),
         {
             provide: RouteReuseStrategy,
-            useClass: AppRouteReuseStrategy 
+            useClass: AppRouteReuseStrategy
         }
     ],
 };

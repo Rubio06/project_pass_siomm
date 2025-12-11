@@ -69,8 +69,8 @@
                             <span>Guardar</span>
                         </button>
 
-                        <button type="button" (click)="desbloquearEdicion()"
-                            class="flex items-center space-x-2 px-4 py-2 text-gray-800 bg-yellow-400 rounded-md font-semibold text-sm shadow-md hover:bg-yellow-500 transition duration-300">
+                        <button type="button" (click)="desbloquearEdicion()" [disabled]="bloqueo()"
+                            class="flex items-center space-x-2 px-4 py-2 text-gray-800 bg-yellow-400 rounded-md font-semibold text-sm shadow-md hover:bg-yellow-500 transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                                 class="w-5 h-5">
                                 <path
@@ -79,14 +79,14 @@
                             <span>Editar</span>
                         </button>
 
-                        <button type="button"
-                            class="flex items-center space-x-2 px-4 py-2 text-gray-800 bg-yellow-400 rounded-md font-semibold text-sm shadow-md hover:bg-yellow-500 transition duration-300">
+                        <button type="button" [disabled]="bloqueo()"
+                            class="flex items-center space-x-2 px-4 py-2 text-gray-800 bg-yellow-400 rounded-md font-semibold text-sm shadow-md hover:bg-yellow-500 transition duration-300  disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                                 class="w-5 h-5">
                                 <path
                                     d="M21.731 2.269a2.68 2.68 0 0 0-3.791 0l-1.5 1.5 4.5 4.5 1.5-1.5a2.68 2.68 0 0 0 0-3.791l-1.5-1.5ZM16 5.25l1.5 1.5L5.75 18H4.25v-1.5L16 5.25ZM2.25 19.5v3h3l10.5-10.5-3-3L2.25 19.5Z" />
                             </svg>
-                            <span>Copiar</span>
+                            <span>Copiar Periodo</span>
                         </button>
                     </div>
                 </div>

@@ -12,12 +12,12 @@ export const routes: Routes = [
     {
         path: 'auth',
         loadChildren: () => import('./module/auth/auth.routes').then(m => m.default),
-        // canActivate: [LoginGuard],
+        canActivate: [LoginGuard],
     },
     {
         path: 'menu-principal',
         loadChildren: () => import('./module/main/main.routes').then(m => m.default),
-        // canActivate: [AuthGuard],
+        canActivate: [AuthGuard],
     },
     {
         path: '**',

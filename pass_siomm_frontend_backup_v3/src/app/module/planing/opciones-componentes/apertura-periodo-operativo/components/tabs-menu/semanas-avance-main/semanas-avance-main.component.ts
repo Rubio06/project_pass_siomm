@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, effect, inject, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, effect, inject, signal } from '@angular/core';
 import { FormArray, FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
 import { FormUtils } from 'src/app/utils/form-utils';
@@ -8,6 +8,8 @@ import { DATOS_SEMANA_AVANCE, EstructuraDatos, MaeSemanaAvance, TH_SEMANA_AVANCE
 import { PlanningService } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/services/planning.service';
 import { PlaningCompartido } from '../../../services/planing-compartido.service';
 import { SemanasAvanceMainService } from '../../../services/semanas-avance-main/semanas-avance-main.service';
+import Swal from 'sweetalert2'
+import 'sweetalert2/src/sweetalert2.scss'
 
 @Component({
     selector: 'app-semanas-avance-main',
@@ -23,10 +25,14 @@ export class SemanasAvanceMainComponent {
 
     planingCompartido = inject(PlaningCompartido);
 
+    utils = FormUtils;
+
     semanasAvanceMainService = inject(SemanasAvanceMainService);
 
     fb = inject(FormBuilder);
     planingService = inject(PlanningService);
+
+    private cd = inject(ChangeDetectorRef);
 
     // // Configuración de los datos de la columna
     datosColumna = signal<EstructuraDatos[]>(DATOS_SEMANA_AVANCE)
@@ -56,18 +62,31 @@ export class SemanasAvanceMainComponent {
          * - No usa setTimeout
          * - No entra en bucles
          */
+        // effect(() => {
+        //     const data = this.planingService.dataRoutes();
+
+        //     if (!data) return;
+
+        //     if (this.semanas.length === 0) {
+        //         const semanasBackend = data.data?.semana_avance ?? [];
+        //         this.semanas.clear();
+
+        //         this.loadSemanas(semanasBackend);
+
+        //         // Si tienes otros datos que cargar del backend en el formulario, aquí van
+        //         this.myForm.patchValue(data);
+        //     }
+        // });
+
         effect(() => {
             const data = this.planingService.dataRoutes();
+            const semanas = data?.data?.semana_avance || [];
 
-            if (!data) return;
-
-            if (this.semanas.length === 0) {
-                const semanasBackend = data.data?.semana_avance ?? [];
-                this.loadSemanas(semanasBackend);
-
-                // Si tienes otros datos que cargar del backend en el formulario, aquí van
-                this.myForm.patchValue(data);
-            }
+            setTimeout(() => {
+                this.loadSemanas(semanas);           // refresca FormArray
+                this.myForm.patchValue(data || {});   // actualiza el formulario
+                this.cd.detectChanges();              // opcional
+            }, 0);
         });
 
         /**
@@ -125,7 +144,6 @@ export class SemanasAvanceMainComponent {
      */
     agregarFilas() {
 
-        console.log("Hola")
         this.semanas.push(
             this.fb.group({
                 num_semana: ['', Validators.required],
@@ -142,39 +160,43 @@ export class SemanasAvanceMainComponent {
 
 
 
-    eliminarFila(data: any, index: number) {
+    async eliminarFila(data: any, index: number) {
         const semana = data.getRawValue ? data.getRawValue() : data.value;
 
         const payload = {
             num_semana: semana.num_semana,
-            fec_ini: FormUtils.convertToISO(semana.fec_ini),
-            fec_fin: FormUtils.convertToISO(semana.fec_fin),
+            fec_ini: this.utils.convertToISO(semana.fec_ini),
+            fec_fin: this.utils.convertToISO(semana.fec_fin),
             desc_semana: semana.desc_semana
         };
 
-        this.semanasAvanceMainService.eliminarSemana(payload).subscribe({
+        // 👉 Confirmación usando tu utilitario
+        const confirmado = await this.utils.confirmarEliminacion();
+        if (!confirmado) {
+            this.utils.alertaNoEliminado();
+            return;
+        }
+
+        this.semanasAvanceMainService.eliminarSemanaAvance(payload).subscribe({
             next: (res: any) => {
                 if (res.success) {
-                    console.log('Semana eliminada en backend', res);
-                    
+
+                    // 👉 Elimina del FormArray
+
+                    // 👉 Muestra alerta de éxito desde el utilitario
+                    this.utils.alertaEliminado(res.message);
+                    this.semanas.removeAt(index);
+
+                    this.cd.detectChanges();              // opcional
+
                 } else {
-                    console.error('No se pudo eliminar la semana:', res.message);
+                    this.utils.alertaEliminado(res.message);
+
                 }
             },
-            error: (err) => console.error('Error al eliminar semana', err)
+            error: (err) => this.utils.mensajeError(err.message)
         });
     }
-
-    // recargarSemanas() {
-    //     const yearMes = this.dataMes();
-    //     const anio = this.dataAnio();
-
-    //     this.planingService.getDate(yearMes, anio).subscribe({
-    //         next: (data: any) => this.planingService.setData(data), // ❗ Esto dispara el effect y recarga el FormArray
-    //         error: (err) => console.error(err)
-    //     });
-    // }
-
 
     /**
      * ENVIAR SOLO LA ÚLTIMA FILA NUEVA

@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '@environments/environments';
 import { catchError, Observable, of } from 'rxjs';
+import { FormUtils } from 'src/app/utils/form-utils';
 import Swal from 'sweetalert2'
 import 'sweetalert2/src/sweetalert2.scss'
 
@@ -19,13 +20,19 @@ export class SemanasAvanceMainService {
     public anio = this._anio.asReadonly();
     public mes = this._mes.asReadonly();
 
+    private utils = FormUtils;
 
+    // Método para actualizar
+    setPeriodo(mes: string, anio: string) {
+        this._mes.set(mes);
+        this._anio.set(anio);
+    }
     /* INGRESAR NUEVO REGISTRO */
     public saveDataSemanaAvance(payload: any): Observable<any> {
         return this.semanasAvanceHttp.post<any>(`${this.planingUrl}aper-periodo-operativo/semana/semana-avance-guardar`, payload)
             .pipe(
                 catchError(error => {
-                    this.mensajeError(error);
+                    this.utils.mensajeError(error);
                     return of(null);
                 })
             );
@@ -35,60 +42,69 @@ export class SemanasAvanceMainService {
         return this.semanasAvanceHttp.post<any>(`${this.planingUrl}aper-periodo-operativo/semana/semana-avance-guardar`, payload)
             .pipe(
                 catchError(error => {
-                    this.mensajeError(error);
+                    this.utils.mensajeError(error);
                     return of(null);
                 })
             );
     }
 
-    // Método para actualizar
-    setPeriodo(mes: string, anio: string) {
-        this._mes.set(mes);
-        this._anio.set(anio);
-    }
 
+    /**ENDPOINS ELIMINACION DE TABLAS**/
 
-    // public eliminarSemana(data: any): Observable<any> {
-    //     // Enviamos los datos eliminados al backend
-    //     return this.semanasAvanceHttp.post(`${this.planingUrl}/eliminar`, data);
-    // }
-
-
-    public eliminarSemana(payload: any): Observable<any> {
+    public eliminarSemanaAvance(payload: any): Observable<any> {
         return this.semanasAvanceHttp.post<any>(`${this.planingUrl}aper-periodo-operativo/semana/semana-avance-eliminar`, payload)
             .pipe(
                 catchError(error => {
-                    this.mensajeError(error);
+                    this.utils.mensajeError(error);
+                    return of(null);
+                })
+            );
+    }
+
+    public eliminarCiclo(payload: any): Observable<any> {
+        return this.semanasAvanceHttp.post<any>(`${this.planingUrl}aper-periodo-operativo/semana/semana-ciclo-eliminar`, payload)
+            .pipe(
+                catchError(error => {
+                    this.utils.mensajeError(error);
                     return of(null);
                 })
             );
     }
 
 
-    mensajeError(error: any) {
-        Swal.fire({
-            icon: "error",
-            title: "Ocurrió un error",
-            html: `
-                <div style="text-align:left;">
-                    <b>Detalle técnico:</b><br>
-                    <span style="font-size:14px; color:#444;">${error}</span><br><br>
-                    <b>Recomendación:</b><br>
-                    <span style="font-size:14px; color:#444;">
-                        Comuníquese con Soporte TI para más asistencia.
-                    </span>
-                </div>
-            `,
-            background: "#fefefe",
-            color: "#333",
-            confirmButtonText: "Entendido",
-            confirmButtonColor: "#d33",
-            showClass: {
-                popup: 'animate__animated animate__fadeInDown'
-            },
-            hideClass: {
-                popup: 'animate__animated animate__fadeOutUp'
-            }
-        });
+
+
+    public eliminarMetodoMinado(payload: any): Observable<any> {
+        return this.semanasAvanceHttp.post<any>(`${this.planingUrl}aper-periodo-operativo/semana/metodo-minado-eliminar`, payload)
+            .pipe(
+                catchError(error => {
+                    this.utils.mensajeError(error);
+                    return of(null);
+                })
+            );
+    }
+
+
+
+
+    public estandarExploracion(payload: any): Observable<any> {
+        return this.semanasAvanceHttp.post<any>(`${this.planingUrl}aper-periodo-operativo/semana/estandar-exploracion-eliminar`, payload)
+            .pipe(
+                catchError(error => {
+                    this.utils.mensajeError(error);
+                    return of(null);
+                })
+            );
+    }
+
+
+    public estandarAvance(payload: any): Observable<any> {
+        return this.semanasAvanceHttp.post<any>(`${this.planingUrl}aper-periodo-operativo/semana/estandar-avance-eliminar`, payload)
+            .pipe(
+                catchError(error => {
+                    this.utils.mensajeError(error);
+                    return of(null);
+                })
+            );
     }
 }

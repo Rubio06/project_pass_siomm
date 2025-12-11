@@ -45,24 +45,26 @@ export class ValoresComponent {
         this.form = this.fb.group(controls);
 
         effect(() => {
-            const response = this.planingService.data();
+            const response = this.planingService.dataRoutes();
+
             if (!response) return;
 
-            const factor = response.data.factorOperativo?.[0];
-            const factor_2 = response.data.factorSobredisolucion?.[0];
-            const factor_3 = response.data.recuperacionBudget?.[0];
+            const factor = response.data?.factorOperativo?.[0];
+
+            const factor_2 = response.data?.factorSobredisolucion?.[0];
+            const factor_3 = response.data?.recuperacionBudget?.[0];
 
             if (!factor || !factor_2 || !factor_3) return;
 
             this.form.patchValue({
                 val_pre_ag: factor.val_pre_ag,
                 val_fac_ag: factor_2.val_fac_ag,
-                val_fac_bud_ag: (0.85 * 100).toFixed(2) + ' %',
+                val_fac_bud_ag: factor_3.val_fac_bud_ag,
                 val_con_ag: factor_3.val_con_ag,
 
                 val_pre_cu: factor.val_pre_cu,
                 val_fac_cu: factor_2.val_fac_cu,
-                val_fac_bud_cu: (0.85 * 100).toFixed(2) + ' %',
+                val_fac_bud_cu: factor_3.val_fac_bud_cu,
                 // val_fac_bud_cu: factor_3.val_fac_bud_cu,
                 val_con_cu: factor_3.val_con_cu,
 

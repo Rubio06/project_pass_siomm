@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, effect, inject, signal, OnInit } from '@angular/core';
+import { Component, effect, inject, signal, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { FormUtils } from 'src/app/utils/form-utils';
@@ -8,8 +8,7 @@ import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.comp
 import { DATOS_COLUMNA_SEMANA_CICLO_MINADO, EstructuraDatos, TH_SEMANA_CICLO_MINADO, thTitulos } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/interface/aper-per-oper.interface';
 import { PlanningService } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/services/planning.service';
 import { PlaningCompartido } from '../../../services/planing-compartido.service';
-import Swal from 'sweetalert2'
-import 'sweetalert2/src/sweetalert2.scss'
+import { SemanasAvanceMainService } from '../../../services/semanas-avance-main/semanas-avance-main.service';
 
 
 @Component({
@@ -33,6 +32,9 @@ export class SemanasCicloMainComponent {
     loading = signal(false);
 
     planingCompartido = inject(PlaningCompartido);
+    semanasAvanceMainService = inject(SemanasAvanceMainService);
+
+    private utils = FormUtils;
 
     datosColumna = signal<EstructuraDatos[]>(DATOS_COLUMNA_SEMANA_CICLO_MINADO)
 
@@ -40,33 +42,10 @@ export class SemanasCicloMainComponent {
         return this.myForm.get('semanas') as FormArray;
     }
 
-    //     effect(() => {
-    //     const data = this.planingService.dataRoutes();
-    //     const savedData = this.planingCompartido.getSemanaCiclo();
-
-    //     if (!this.loaded && data) {
-    //         // Prioriza los datos guardados en el servicio
-    //         const semanasArray = Array.isArray(savedData) && savedData.length
-    //             ? savedData
-    //             : Array.isArray(data.data?.semana_ciclo)
-    //                 ? data.data.semana_ciclo
-    //                 : [];
-
-    //         this.loadSemanas(semanasArray);
-
-    //         // Guardar inmediatamente en el servicio
-    //         this.guardarCambios();
-
-    //         // Patch del resto del formulario si es necesario
-    //         this.myForm.patchValue(data);
-
-    //         this.loaded = true;
-    //     }
-    // });
-
     loaded: boolean = true;
 
 
+    private cd = inject(ChangeDetectorRef);
 
     constructor() {
 
@@ -75,40 +54,16 @@ export class SemanasCicloMainComponent {
          * 🔥 YA NO USA SETTIMEOUT
          * 🔥 NO SE DISPARA EN LOOP
          */
-        effect(() => {
-            const data = this.planingService.dataRoutes();
-
-            // Solo carga cuando dataRoutes viene del backend
-            if (!this.semanas.length) {
-                const semanas = data?.data?.semana_ciclo || [];
-                this.loadSemanas(semanas);
-                this.myForm.patchValue(data);
-            }
-        });
-
 
         effect(() => {
             const data = this.planingService.dataRoutes();
-            const savedData = this.planingCompartido.getSemanaCiclo();
+            const semanas = data?.data?.semana_ciclo || [];
 
-            if (!this.loaded && data) {
-                // Prioriza los datos guardados en el servicio
-                const semanasArray = Array.isArray(savedData) && savedData.length
-                    ? savedData
-                    : Array.isArray(data.data?.semana_ciclo)
-                        ? data.data.semana_ciclo
-                        : [];
-
-                this.loadSemanas(semanasArray);
-
-                // Guardar inmediatamente en el servicio
-                this.guardarCambios();
-
-                // Patch del resto del formulario si es necesario
-                this.myForm.patchValue(data);
-
-                this.loaded = true;
-            }
+            setTimeout(() => {
+                this.loadSemanas(semanas);           // refresca FormArray
+                this.myForm.patchValue(data || {});   // actualiza el formulario
+                this.cd.detectChanges();              // opcional
+            }, 0);
         });
 
         /**
@@ -143,7 +98,8 @@ export class SemanasCicloMainComponent {
 
 
     loadSemanas(data: any[]) {
-        this.semanas.clear();
+        this.semanas.clear();  // limpia todo
+
 
         const semanasArray = Array.isArray(data) ? data : [];
 
@@ -179,18 +135,45 @@ export class SemanasCicloMainComponent {
         );
     }
 
-    eliminarFila(data: any) {
+    async eliminarFila(data: any, index: number) {
+        const semana = data.getRawValue ? data.getRawValue() : data.value;
 
-        console.log("el numero es ", data.value)
-        // const codigo = this.semanas.removeAt(index);
-        // this.alertaEliminarFila(codigo)
+        const payload = {
+            num_semana: semana.num_semana,
+            fec_ini: this.utils.convertToISO(semana.fec_ini),
+            fec_fin: this.utils.convertToISO(semana.fec_fin),
+            desc_semana: semana.desc_semana
+        };
 
-        // FormUtils.alertaEliminarFila(data);
+        // 👉 Confirmación usando tu utilitario
+        const confirmado = await this.utils.confirmarEliminacion();
+        if (!confirmado) {
+            this.utils.alertaNoEliminado();
+            return;
+        }
 
-        // console.log(codigo)
+        this.semanasAvanceMainService.eliminarCiclo(payload).subscribe({
+            next: (res: any) => {
+                if (res.success) {
 
+                    // 👉 Elimina del FormArray
+
+                    // 👉 Muestra alerta de éxito desde el utilitario
+                    this.utils.alertaEliminado(res.message);
+                    this.semanas.removeAt(index);
+                    this.cd.detectChanges();              // opcional
+
+                    this.planingService.setBloqueoForm(false);
+
+
+                } else {
+                    this.utils.alertaEliminado(res.message);
+
+                }
+            },
+            error: (err) => this.utils.mensajeError(err.message)
+        });
     }
-
 
 
 
@@ -199,7 +182,6 @@ export class SemanasCicloMainComponent {
             const filas = this.semanas.getRawValue();
 
             this.planingCompartido.setSemanaCiclo(filas);
-            // console.log("📤 TAB semana actualizó servicio:", filas);
         });
     }
 

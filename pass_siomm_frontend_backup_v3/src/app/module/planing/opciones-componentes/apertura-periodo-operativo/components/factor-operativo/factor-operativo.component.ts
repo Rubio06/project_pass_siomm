@@ -120,7 +120,6 @@ export class FactorOperativoComonent {
 
     bloqueoFormulario() {
         const bloqueado = this.planingService.bloqueoForm();
-        console.log(bloqueado)
         if (bloqueado) {
             this.form.disable();
         } else {

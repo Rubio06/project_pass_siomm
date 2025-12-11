@@ -94,8 +94,6 @@ export class PlaningCompartido {
             semana_avance: this._semana_avance(),
         };
 
-        console.log('📤 Payload completo para guardar:', payload);
-
         return this.http.post('/api/guardar-todo', payload);
     }
 
@@ -176,5 +174,7 @@ export class PlaningCompartido {
     //     }
     // }
 
-    
+
+
+
 }

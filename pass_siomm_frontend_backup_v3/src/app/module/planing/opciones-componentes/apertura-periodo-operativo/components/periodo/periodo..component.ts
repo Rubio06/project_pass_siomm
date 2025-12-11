@@ -2,6 +2,7 @@ import { Component, effect, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { PlanningService } from '../../services/planning.service';
 import { FormUtils } from 'src/app/utils/form-utils';
+import { SemanasAvanceMainService } from '../../services/semanas-avance-main/semanas-avance-main.service';
 
 
 interface fieldName {
@@ -25,13 +26,13 @@ export class AperPerOperComponent {
     formUtils = FormUtils;
 
     form: FormGroup;
-    rutas = this.planingService.data;
+    rutas = this.planingService.dataRoutes;
 
     bloqueo = inject(PlanningService).bloqueo;
 
     private hoy = new Date();
 
-    
+    semanasAvanceMainService = inject(SemanasAvanceMainService);
     private anioActual = String(this.hoy.getFullYear());
     private mesActualIndex = this.hoy.getMonth(); // 0 = Enero
     private mesActualNombre = [
@@ -53,6 +54,7 @@ export class AperPerOperComponent {
         'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
     ]);
 
+
     fieldInputs = signal<fieldName[]>([
         { name: "cie_ano", type: "", label: "Año:", typeControl: 'select', array: this.anios() },
         { name: "cie_per", type: "", label: "Mes:", typeControl: 'select', array: this.meses() },
@@ -61,22 +63,21 @@ export class AperPerOperComponent {
     ]);
 
     constructor() {
+
         this.form = this.fb.group({
             cie_ano: this.anioActual,
             cie_per: this.mesActualNombre,
             fec_ini: '',
             fec_fin: ''
         });
-
         // 🟢 Carga datos del backend
         effect(() => {
             const response = this.rutas();
-
             if (response?.data?.cierre_periodo?.length) {
                 const periodo = response.data.cierre_periodo[0];
 
                 this.form.patchValue({
-                    cie_ano: String(periodo.cie_ano), // <- ⭐ Debe ser string
+                    cie_ano: String(this.semanasAvanceMainService.anio()), // <- ⭐ Debe ser string
                     cie_per: this.meses()[parseInt(periodo.cie_per, 10) - 1] || '',
                     fec_ini: this.formatDate(periodo.fec_ini),
                     fec_fin: this.formatDate(periodo.fec_fin)

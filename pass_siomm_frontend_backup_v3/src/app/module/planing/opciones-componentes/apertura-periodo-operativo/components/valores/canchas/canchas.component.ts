@@ -27,7 +27,7 @@ export class CanchasComponent {
         val_zn: ['0.000', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
         val_vpt: ['0.000', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]]
     });
-    
+
     constructor() {
 
         effect(() => {
@@ -48,7 +48,7 @@ export class CanchasComponent {
         });
 
         effect(() => {
-            const data = this.planingService.data();
+            const data = this.planingService.dataRoutes();
 
             if (data === null || data?.length === 0) {
                 this.resetearFormulario();   // 🔥 Se ejecuta en TODOS los componentes
