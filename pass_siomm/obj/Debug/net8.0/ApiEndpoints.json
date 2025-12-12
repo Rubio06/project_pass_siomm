@@ -1,8 +1,72 @@
 [
   {
     "ContainingType": "pass_siomm_backend.Controllers.PlaneamientoConroller.SemanaController",
-    "Method": "Eliminado",
+    "Method": "EliminarEstandarAvance",
+    "RelativePath": "aper-periodo-operativo/semana/estandar-avance-eliminar",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "semana",
+        "Type": "pass_siomm_backend.Data.Dto.PlaneamientoDto.MaeLaboratorioEstandarEliminarDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Controllers.PlaneamientoConroller.SemanaController",
+    "Method": "EliminarEstandarExploracion",
+    "RelativePath": "aper-periodo-operativo/semana/estandar-exploracion-eliminar",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "semana",
+        "Type": "pass_siomm_backend.Data.Dto.PlaneamientoDto.MaeExploEstandarEliminar",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Controllers.PlaneamientoConroller.SemanaController",
+    "Method": "EliminarMetodoMinado",
+    "RelativePath": "aper-periodo-operativo/semana/metodo-minado-eliminar",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "semana",
+        "Type": "pass_siomm_backend.Data.Dto.PlaneamientoDto.MaePerMetExplotacionEliminarDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Controllers.PlaneamientoConroller.SemanaController",
+    "Method": "EliminarSemanaAvance",
     "RelativePath": "aper-periodo-operativo/semana/semana-avance-eliminar",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "semana",
+        "Type": "pass_siomm_backend.Data.Dto.PlaneamientoDto.MaeSemanaAvanceEliminarDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Controllers.PlaneamientoConroller.SemanaController",
+    "Method": "EliminarSemanaCiclo",
+    "RelativePath": "aper-periodo-operativo/semana/semana-ciclo-eliminar",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,

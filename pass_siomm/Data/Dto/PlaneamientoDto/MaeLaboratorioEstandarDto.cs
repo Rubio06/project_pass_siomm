@@ -18,4 +18,18 @@
         public string? nro_lab_punmar { get; set; }
         public string? nro_lab_tabla { get; set; }
     }
+
+
+    public class MaeLaboratorioEstandarEliminarDto
+    {
+        public string cod_tiplab { get; set; }
+        public string mes { get; set; }
+        public string anio { get; set; }
+
+    }
+
+
+
+
+
 }

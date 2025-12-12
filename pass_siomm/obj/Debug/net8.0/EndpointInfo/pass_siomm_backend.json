@@ -175,6 +175,130 @@
           }
         }
       }
+    },
+    "/aper-periodo-operativo/semana/semana-ciclo-eliminar": {
+      "post": {
+        "tags": [
+          "Semana"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MaeSemanaAvanceEliminarDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MaeSemanaAvanceEliminarDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/MaeSemanaAvanceEliminarDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/aper-periodo-operativo/semana/metodo-minado-eliminar": {
+      "post": {
+        "tags": [
+          "Semana"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MaePerMetExplotacionEliminarDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MaePerMetExplotacionEliminarDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/MaePerMetExplotacionEliminarDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/aper-periodo-operativo/semana/estandar-exploracion-eliminar": {
+      "post": {
+        "tags": [
+          "Semana"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MaeExploEstandarEliminar"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MaeExploEstandarEliminar"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/MaeExploEstandarEliminar"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/aper-periodo-operativo/semana/estandar-avance-eliminar": {
+      "post": {
+        "tags": [
+          "Semana"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MaeLaboratorioEstandarEliminarDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MaeLaboratorioEstandarEliminarDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/MaeLaboratorioEstandarEliminarDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -193,6 +317,60 @@
           "password": {
             "minLength": 1,
             "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "MaeExploEstandarEliminar": {
+        "type": "object",
+        "properties": {
+          "cod_zona": {
+            "type": "string",
+            "nullable": true
+          },
+          "anio": {
+            "type": "string",
+            "nullable": true
+          },
+          "mes": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "MaeLaboratorioEstandarEliminarDto": {
+        "type": "object",
+        "properties": {
+          "cod_tiplab": {
+            "type": "string",
+            "nullable": true
+          },
+          "mes": {
+            "type": "string",
+            "nullable": true
+          },
+          "anio": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "MaePerMetExplotacionEliminarDto": {
+        "type": "object",
+        "properties": {
+          "anio": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_metexp": {
+            "type": "string",
+            "nullable": true
+          },
+          "mes": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false

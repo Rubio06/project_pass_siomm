@@ -19,20 +19,15 @@ namespace pass_siomm_backend.Controllers.PlaneamientoConroller
         }
 
         [HttpPost("semana/semana-avance-eliminar")]
-        public async Task<IActionResult> Eliminado([FromBody] MaeSemanaAvanceEliminarDto semana)
+        public async Task<IActionResult> EliminarSemanaAvance([FromBody] MaeSemanaAvanceEliminarDto semana)
         {
-            //Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(semana));
-
-            //return Ok(semana);
 
             try
             {
-                //Console.WriteLine(semana);
-                //return Ok(semana);
                 if (semana == null)
                     return BadRequest("Datos inválidos");
                 
-                bool result = await _service.EliminarRegistro(semana);
+                bool result = await _service.EliminarSemanaAvance(semana);
 
                 if (result)
                     return Ok(new { success = true, message = "Fila eliminada" });
@@ -43,9 +38,121 @@ namespace pass_siomm_backend.Controllers.PlaneamientoConroller
             catch (Exception ex)
             {
                 Console.WriteLine("ERROR REAL SQL:");
-                Console.WriteLine(ex.ToString());   // 🔥 imprime el error exacto con detalle
+                Console.WriteLine(ex.ToString()); 
 
-                throw; // 🔥 hace que el error llegue completo al controlador
+                throw; 
+            }
+        }
+
+
+        [HttpPost("semana/semana-ciclo-eliminar")]
+        public async Task<IActionResult> EliminarSemanaCiclo([FromBody] MaeSemanaAvanceEliminarDto semana)
+        {
+
+            try
+            {
+
+                if (semana == null)
+                    return BadRequest("Datos inválidos");
+
+                bool result = await _service.EliminarSemanaCiclo(semana);
+
+                if (result)
+                    return Ok(new { success = true, message = "Fila eliminada" });
+                else
+                    return StatusCode(500, new { success = false, message = "Error al eliminar fila" });
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ERROR REAL SQL:");
+                Console.WriteLine(ex.ToString());
+
+                throw; 
+            }
+        }
+
+        [HttpPost("semana/metodo-minado-eliminar")]
+        public async Task<IActionResult> EliminarMetodoMinado([FromBody] MaePerMetExplotacionEliminarDto semana)
+        {
+
+            try
+            {
+
+                if (semana == null)
+                    return BadRequest("Datos inválidos");
+
+                bool result = await _service.EliminarMetodoMinado(semana);
+
+                if (result)
+                    return Ok(new { success = true, message = "Fila eliminada" });
+                else
+                    return StatusCode(500, new { success = false, message = "Error al eliminar fila" });
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ERROR REAL SQL:");
+                Console.WriteLine(ex.ToString());
+
+                throw;
+            }
+        }
+
+
+
+        [HttpPost("semana/estandar-exploracion-eliminar")]
+        public async Task<IActionResult> EliminarEstandarExploracion([FromBody] MaeExploEstandarEliminar semana)
+        {
+
+            try
+            {
+
+                if (semana == null)
+                    return BadRequest("Datos inválidos");
+
+                bool result = await _service.EliminarEstandarExploracion(semana);
+
+                if (result)
+                    return Ok(new { success = true, message = "Fila eliminada" });
+                else
+                    return StatusCode(500, new { success = false, message = "Error al eliminar fila" });
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ERROR REAL SQL:");
+                Console.WriteLine(ex.ToString());
+
+                throw;
+            }
+        }
+
+
+        [HttpPost("semana/estandar-avance-eliminar")]
+        public async Task<IActionResult> EliminarEstandarAvance([FromBody] MaeLaboratorioEstandarEliminarDto semana)
+        {
+
+            try
+            {
+
+                if (semana == null)
+                    return BadRequest("Datos inválidos");
+
+                bool result = await _service.EliminarEstandarAvance(semana);
+
+                if (result)
+                    return Ok(new { success = true, message = "Fila eliminada" });
+                else
+                    return StatusCode(500, new { success = false, message = "Error al eliminar fila" });
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ERROR REAL SQL:");
+                Console.WriteLine(ex.ToString());
+
+                throw;
             }
         }
 

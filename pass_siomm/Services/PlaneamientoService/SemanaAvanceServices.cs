@@ -85,7 +85,7 @@ namespace pass_siomm_backend.Services.PlaneamientoService
 
 
 
-        public async Task<bool> EliminarRegistro(MaeSemanaAvanceEliminarDto semana)
+        public async Task<bool> EliminarSemanaAvance(MaeSemanaAvanceEliminarDto semana)
         {
 
             try
@@ -94,11 +94,11 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                 {
                     await connection.OpenAsync();
                     using (var cmd = new SqlCommand(@"
-DELETE FROM mae_semana_avance
-WHERE num_semana = @num_semana
-  AND CAST(fec_ini AS DATE) = @fec_ini
-  AND CAST(fec_fin AS DATE) = @fec_fin
-  AND desc_semana = @desc_semana", connection))
+                        DELETE FROM mae_semana_avance
+                        WHERE num_semana = @num_semana
+                        AND CAST(fec_ini AS DATE) = @fec_ini
+                        AND CAST(fec_fin AS DATE) = @fec_fin
+                        AND desc_semana = @desc_semana", connection))
                     {
                         cmd.Parameters.AddWithValue("@num_semana", semana.num_semana);
                         cmd.Parameters.Add("@fec_ini", SqlDbType.Date).Value = semana.fec_ini?.Date ?? (object)DBNull.Value;
@@ -119,6 +119,145 @@ WHERE num_semana = @num_semana
 
 
 
+        }
+
+
+        public async Task<bool> EliminarSemanaCiclo(MaeSemanaAvanceEliminarDto semana)
+        {
+
+            try
+            {
+                using (var connection = new SqlConnection(_connectionString))
+                {
+                    await connection.OpenAsync();
+                    using (var cmd = new SqlCommand(@"
+                        DELETE FROM mae_semana_periodo
+                        WHERE num_semana = @num_semana
+                        AND CAST(fec_ini AS DATE) = @fec_ini
+                        AND CAST(fec_fin AS DATE) = @fec_fin
+                        AND desc_semana = @desc_semana", connection))
+                    {
+                        cmd.Parameters.AddWithValue("@num_semana", semana.num_semana);
+                        cmd.Parameters.Add("@fec_ini", SqlDbType.Date).Value = semana.fec_ini?.Date ?? (object)DBNull.Value;
+                        cmd.Parameters.Add("@fec_fin", SqlDbType.Date).Value = semana.fec_fin?.Date ?? (object)DBNull.Value;
+                        cmd.Parameters.AddWithValue("@desc_semana", semana.desc_semana);
+
+                        int rowsAffected = await cmd.ExecuteNonQueryAsync();
+                        return rowsAffected > 0;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error al eliminar la semana: " + ex.Message);
+                return false;
+
+            }
+
+
+
+        }
+
+
+
+        public async Task<bool> EliminarMetodoMinado(MaePerMetExplotacionEliminarDto semana)
+        {
+            try
+            {
+                using (var connection = new SqlConnection(_connectionString))
+                {
+                    await connection.OpenAsync();
+
+                    string sql = @"
+                DELETE FROM mae_per_met_explotacion
+                WHERE cie_ano = @anio
+                  AND cie_per = @mes
+                  AND cod_metexp = @cod_metexp
+            ";
+
+                    using (var cmd = new SqlCommand(sql, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@anio", semana.anio);
+                        cmd.Parameters.AddWithValue("@mes", semana.mes);
+                        cmd.Parameters.AddWithValue("@cod_metexp", semana.cod_metexp);
+
+                        int rowsAffected = await cmd.ExecuteNonQueryAsync();
+                        return rowsAffected > 0;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error al eliminar la semana: " + ex.Message);
+                return false;
+            }
+        }
+
+        public async Task<bool> EliminarEstandarExploracion(MaeExploEstandarEliminar semana)
+        {
+            try
+            {
+                using (var connection = new SqlConnection(_connectionString))
+                {
+                    await connection.OpenAsync();
+
+                    string sql = @"
+                DELETE FROM mae_exp_estandar
+                WHERE cie_ano = @anio
+                  AND cie_per = @mes
+                  AND cod_zona = @cod_zona
+            ";
+
+                    using (var cmd = new SqlCommand(sql, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@anio", semana.anio);
+                        cmd.Parameters.AddWithValue("@mes", semana.mes);
+                        cmd.Parameters.AddWithValue("@cod_zona", semana.cod_zona);
+
+                        int rowsAffected = await cmd.ExecuteNonQueryAsync();
+                        return rowsAffected > 0;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error al eliminar la semana: " + ex.Message);
+                return false;
+            }
+        }
+
+
+        public async Task<bool> EliminarEstandarAvance(MaeLaboratorioEstandarEliminarDto semana)
+        {
+            try
+            {
+                using (var connection = new SqlConnection(_connectionString))
+                {
+                    await connection.OpenAsync();
+
+                    string sql = @"
+                DELETE FROM mae_tip_lab_estandar
+                WHERE cie_ano = @anio
+                  AND cie_per = @mes
+                  AND cod_tiplab = @cod_tiplab
+            ";
+
+                    using (var cmd = new SqlCommand(sql, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@anio", semana.anio);
+                        cmd.Parameters.AddWithValue("@mes", semana.mes);
+                        cmd.Parameters.AddWithValue("@cod_tiplab", semana.cod_tiplab);
+
+                        int rowsAffected = await cmd.ExecuteNonQueryAsync();
+                        return rowsAffected > 0;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error al eliminar la semana: " + ex.Message);
+                return false;
+            }
         }
     }
 

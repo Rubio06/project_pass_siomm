@@ -14,4 +14,12 @@
         public string lab_tabla { get; set; }
         public string lab_apr { get; set; }
     }
+
+
+    public class MaeExploEstandarEliminar
+    {
+        public string cod_zona { get; set; }
+        public string anio { get; set; }
+        public string mes { get; set; }
+    }
 }
