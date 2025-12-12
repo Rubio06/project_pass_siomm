@@ -7,6 +7,7 @@ import { MetodoMinadoMainComponent } from './components/tabs-menu/metodo-minado-
 import { SemanasAvanceMainComponent } from './components/tabs-menu/semanas-avance-main/semanas-avance-main.component';
 import { SemanasCicloMainComponent } from './components/tabs-menu/semanas-ciclo-main/semanas-ciclo-main.component';
 import { AperturPeriodoComponent } from './page/planning-main/aper-periodo-operativo.component';
+import { PendingChangesGuard } from 'src/app/core/guards/cambios-guard/cambios-pendientes.guard';
 
 // ⚠️ Coloca la ruta correcta del componente
 
@@ -24,7 +25,7 @@ export const aperturaPeriodoOperativoRouter: Routes = [
             { path: 'estandar-avance', component: EstandarAvanceComponent },
             { path: 'estandar-exploracion', component: EstandarExploracionMainComponent },
             { path: 'metodo-minado', component: MetodoMinadoMainComponent },
-            { path: 'semanas-avance', component: SemanasAvanceMainComponent },
+            { path: 'semanas-avance', component: SemanasAvanceMainComponent},
             { path: 'semanas-ciclo', component: SemanasCicloMainComponent },
         ]
     }

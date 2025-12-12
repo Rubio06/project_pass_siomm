@@ -25,33 +25,47 @@ export class AperPerOperComponent {
     private fb = inject(FormBuilder);
     formUtils = FormUtils;
 
-    form: FormGroup;
     rutas = this.planingService.dataRoutes;
 
     bloqueo = inject(PlanningService).bloqueo;
 
-    private hoy = new Date();
+    // private hoy = new Date();
 
     semanasAvanceMainService = inject(SemanasAvanceMainService);
-    private anioActual = String(this.hoy.getFullYear());
-    private mesActualIndex = this.hoy.getMonth(); // 0 = Enero
-    private mesActualNombre = [
-        'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
-    ][this.mesActualIndex];
+
+    // private anioActual = String(this.hoy.getFullYear());
+    // private mesActualIndex = this.hoy.getMonth(); // 0 = Enero
+    // private mesActualNombre = [
+    //     'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+    //     'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    // ][this.mesActualIndex];
 
 
-    // Años que realmente soporta tu select
-    anios = signal<string[]>([
-        '2007', '2008', '2009', '2010', '2011', '2012', '2013',
-        '2014', '2015', '2016', '2017', '2018', '2019', '2020',
-        '2021', '2022', '2023', '2024', '2025'
+    private hoy = new Date();
 
-    ]);
+    // Crear una nueva fecha sumándole 1 año y 1 mes
+    fechaFutura = new Date(
+        this.hoy.getFullYear(),
+        this.hoy.getMonth() + 1
+    );
+
+
+
 
     meses = signal<string[]>([
         'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
         'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    ]);
+
+    private anio = this.fechaFutura.getFullYear();
+    private mesNombre = this.meses()[this.fechaFutura.getMonth()];
+
+    // Años que realmente soporta tu select
+    anios = signal<string[]>([
+
+        '2014', '2015', '2016', '2017', '2018', '2019', '2020',
+        '2021', '2022', '2023', '2024', '2025', '2026'
+
     ]);
 
 
@@ -62,14 +76,17 @@ export class AperPerOperComponent {
         { name: "fec_fin", type: "date", label: "Fecha Fin:", typeControl: 'input', array: [] },
     ]);
 
+    form: FormGroup = this.fb.group({
+        cie_ano: '',
+        cie_per: '',
+        fec_ini: '',
+        fec_fin: ''
+    });
+
     constructor() {
 
-        this.form = this.fb.group({
-            cie_ano: this.anioActual,
-            cie_per: this.mesActualNombre,
-            fec_ini: '',
-            fec_fin: ''
-        });
+        console.log(this.anio, this.mesNombre)
+
         // 🟢 Carga datos del backend
         effect(() => {
             const response = this.rutas();
@@ -77,7 +94,7 @@ export class AperPerOperComponent {
                 const periodo = response.data.cierre_periodo[0];
 
                 this.form.patchValue({
-                    cie_ano: String(this.semanasAvanceMainService.anio()), // <- ⭐ Debe ser string
+                    cie_ano: periodo.cie_ano, // <- ⭐ Debe ser string
                     cie_per: this.meses()[parseInt(periodo.cie_per, 10) - 1] || '',
                     fec_ini: this.formatDate(periodo.fec_ini),
                     fec_fin: this.formatDate(periodo.fec_fin)
@@ -87,8 +104,9 @@ export class AperPerOperComponent {
 
         // 🟢 Solo resetea si NO hay data
         effect(() => {
-            const data = this.planingService.data();
+            const data = this.planingService.dataRoutes();
 
+            // console.log("di click")
             if (!data || data?.length === 0) {
                 this.resetearFormulario();
                 return;
@@ -101,6 +119,7 @@ export class AperPerOperComponent {
         effect(() => {
             this.bloqueoFormulario();
         });
+
     }
 
     bloqueoFormulario() {
@@ -110,14 +129,15 @@ export class AperPerOperComponent {
         else this.form.enable();
 
         // ❗ Campos que siempre deben quedar bloqueados
-        this.form.get('cie_ano')?.disable();
-        this.form.get('cie_per')?.disable();
     }
+
+    //     cie_ano: this.anioActual,
+    // cie_per: this.mesActualNombre,
 
     resetearFormulario() {
         this.form.reset({
-            cie_ano: this.anioActual,
-            cie_per: this.mesActualNombre,
+            cie_ano: this.anio,
+            cie_per: this.mesNombre,
             fec_ini: '',
             fec_fin: ''
         });

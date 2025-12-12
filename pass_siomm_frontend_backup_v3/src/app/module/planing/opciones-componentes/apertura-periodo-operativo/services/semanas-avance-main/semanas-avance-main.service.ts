@@ -27,6 +27,30 @@ export class SemanasAvanceMainService {
         this._mes.set(mes);
         this._anio.set(anio);
     }
+
+
+    get devolverAnio() { return this._anio(); }
+    get devolverMes() { return this._mes(); }
+
+
+    nuevoMode = signal(false);
+
+    setNuevoMode(value: boolean) {
+        this.nuevoMode.set(value);
+    }
+
+
+    tieneCambios = signal(false);
+
+    setCambios(valor: boolean) {
+        this.tieneCambios.set(valor);
+    }
+
+
+    getCambios(): boolean {
+        return this.tieneCambios();
+    }
+
     /* INGRESAR NUEVO REGISTRO */
     public saveDataSemanaAvance(payload: any): Observable<any> {
         return this.semanasAvanceHttp.post<any>(`${this.planingUrl}aper-periodo-operativo/semana/semana-avance-guardar`, payload)

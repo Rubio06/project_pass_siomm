@@ -80,8 +80,8 @@ export class ValoresComponent {
 
                 val_pre_au: factor.val_pre_au,
                 val_fac_au: factor_2.val_fac_au,
-                val_fac_bud_au: factor_3.val_fac_bud_au || '.00%',
-                val_con_au: factor_3.val_con_au || '.00%'
+                val_fac_bud_au: factor_3.val_fac_bud_au,
+                val_con_au: factor_3.val_con_au
             });
 
         });

@@ -24,6 +24,8 @@ export class ListDesktopComponent {
     router = inject(Router)
     iconos = signal<string>('');
 
+    private planingService = inject(PlanningService);
+
     asignarIcono(nombre: string) {
         const icons: Record<string, string> = {
             Geología: 'globe-alt',
@@ -54,6 +56,11 @@ export class ListDesktopComponent {
 
     getChildren(item: any) {
 
+        // this.planingService.setBloqueoForm(true);  // ← SIEMPRE desbloquear
+        // this.planingService.setData([]);
+        // console.log("toke la ruta")
+
+
         return item.rutas_secundarias
             || item.rutas_terciarias
             || item.rutas_cuartas
@@ -63,19 +70,24 @@ export class ListDesktopComponent {
 
     getName(item: any) {
 
+        // console.log("toke la ruta")
 
         return item.nom_ruta_primer
-            || item.nom_ruta_secun
-            || item.nom_ruta_terc
-            || item.nom_ruta_cuar
-            || item.nom_ruta_opc;
+        || item.nom_ruta_secun
+        || item.nom_ruta_terc
+        || item.nom_ruta_cuar
+        || item.nom_ruta_opc;
     }
 
     irRuta(path: string) {
+
         this.router.navigate(['/menu-principal', path]);
     }
 
     toUrl(text: string): string {
+        // this.planingService.setBloqueoForm(true);  // ← SIEMPRE desbloquear
+        // this.planingService.setData([]);
+        // console.log("toke la ruta")
         return text
             .toLowerCase()
             .normalize("NFD").replace(/[\u0300-\u036f]/g, "")  // quita acentos

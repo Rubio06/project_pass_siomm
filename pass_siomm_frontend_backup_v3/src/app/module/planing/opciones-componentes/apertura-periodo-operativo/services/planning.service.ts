@@ -26,6 +26,11 @@ export class PlanningService {
     }
 
 
+
+
+
+
+
     private _bloqueo = signal<boolean>(true);
     public bloqueo = this._bloqueo.asReadonly();
 
@@ -39,7 +44,7 @@ export class PlanningService {
     public bloqueoForm = this._bloqueoForm.asReadonly();
 
     setBloqueoForm(valor: boolean) {
-        this._bloqueoForm.set(false);
+        this._bloqueoForm.set(valor);
     }
 
 

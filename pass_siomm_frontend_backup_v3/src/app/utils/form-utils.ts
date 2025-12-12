@@ -66,6 +66,17 @@ export class FormUtils {
         }).then(result => result.isConfirmed);
     }
 
+
+    static guardarCambios() {
+        return Swal.fire({
+            icon: 'warning',
+            title: 'Cambios sin guardar',
+            text: 'Debe guardar los cambios antes de cambiar el periodo.',
+            confirmButtonColor: '#013B5C',
+            confirmButtonText: 'Entendido'
+        });
+    }
+
     static alertaEliminado(message: string) {
         return Swal.fire({
             title: "Eliminado",

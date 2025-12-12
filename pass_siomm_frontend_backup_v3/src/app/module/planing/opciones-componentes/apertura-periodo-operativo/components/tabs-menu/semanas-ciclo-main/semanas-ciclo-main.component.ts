@@ -9,6 +9,7 @@ import { DATOS_COLUMNA_SEMANA_CICLO_MINADO, EstructuraDatos, TH_SEMANA_CICLO_MIN
 import { PlanningService } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/services/planning.service';
 import { PlaningCompartido } from '../../../services/planing-compartido.service';
 import { SemanasAvanceMainService } from '../../../services/semanas-avance-main/semanas-avance-main.service';
+import { CanComponentDeactivate } from 'src/app/core/guards/cambios-guard/cambios-pendientes.guard';
 
 
 @Component({
@@ -184,5 +185,11 @@ export class SemanasCicloMainComponent {
             this.planingCompartido.setSemanaCiclo(filas);
         });
     }
+
+    hasPendingChanges(): boolean {
+        console.log("entra al metodo ")
+        return this.semanasAvanceMainService.getCambios(); // revisa los cambios pendientes
+    }
+
 
 }

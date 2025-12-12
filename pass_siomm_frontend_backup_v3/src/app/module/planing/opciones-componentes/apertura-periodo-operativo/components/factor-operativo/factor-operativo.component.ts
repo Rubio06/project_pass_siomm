@@ -5,6 +5,7 @@ import { PlanningService } from '../../services/planning.service';
 import { CommonModule } from '@angular/common';
 import { PlaningCompartido } from '../../services/planing-compartido.service';
 import { FormUtils } from 'src/app/utils/form-utils';
+import { SemanasAvanceMainService } from '../../services/semanas-avance-main/semanas-avance-main.service';
 
 interface fieldName {
     name: string;
@@ -24,9 +25,12 @@ export class FactorOperativoComonent {
     bloqueo = inject(PlanningService).bloqueo;
     rutas = this.planingService.dataRoutes;
     planingCompartido = inject(PlaningCompartido);
-	formUtils =  FormUtils;
-
+    formUtils = FormUtils;
     // form: FormGroup;
+
+
+    semanaAvance = inject(SemanasAvanceMainService);
+
 
     fieldInputs = signal<fieldName[]>([
         { name: "fac_denmin", type: "number", label: "D. Mineral:" },
@@ -53,11 +57,13 @@ export class FactorOperativoComonent {
     constructor() {
 
         effect(() => {
+            const a = this.semanaAvance.anio();
+            const m = this.semanaAvance.mes();
+
             const response = this.rutas();
 
             if (response?.data?.factor?.length) {
                 const periodo = response.data.factor?.[0];
-
                 this.form.patchValue({
                     fac_denmin: periodo.fac_denmin,
                     fac_dendes: periodo.fac_dendes,
@@ -69,8 +75,7 @@ export class FactorOperativoComonent {
                     fac_tms_dif: periodo.fac_tms_dif,
                 });
             }
-
-        });
+        })
 
         effect(() => {
             const data = this.planingService.dataRoutes();
@@ -137,6 +142,9 @@ export class FactorOperativoComonent {
         // No necesitamos un 'else' si tu objetivo es solo el desbloqueo.
     }
 
+
+
+
     ngOnInit() {
         this.form.valueChanges.subscribe(val => {
             const filas = this.form.getRawValue();
@@ -144,5 +152,6 @@ export class FactorOperativoComonent {
             this.planingCompartido.setFactorOperativo(filas);
             // console.log("📤 TAB semana actualizó servicio:", filas);
         });
+
     }
 }
