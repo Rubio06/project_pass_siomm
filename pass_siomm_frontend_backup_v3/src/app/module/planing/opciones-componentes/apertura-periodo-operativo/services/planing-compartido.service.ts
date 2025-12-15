@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal, WritableSignal } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -173,6 +172,16 @@ export class PlaningCompartido {
     //         }
     //     }
     // }
+
+    private bloqueoFormEditar = signal(true);
+
+    setBloqueoFormEditar(valor: boolean) {
+        this.bloqueoFormEditar.set(valor);
+    }
+
+    getBloqueoFormEditar() {
+        return this.bloqueoFormEditar;
+    }
 
 
 

@@ -78,33 +78,55 @@ export class SemanasAvanceMainComponent {
         //     }
         // });
 
+        // effect(() => {
+        //     const data = this.planingService.dataRoutes();
+        //     const semanas = data?.data?.semana_avance || [];
+
+        //     setTimeout(() => {
+        //         this.loadSemanas(semanas);           // refresca FormArray
+        //         this.myForm.patchValue(data || {});   // actualiza el formulario
+        //         this.cd.detectChanges();              // opcional
+        //     }, 0);
+        // });
+
         effect(() => {
             const data = this.planingService.dataRoutes();
             const semanas = data?.data?.semana_avance || [];
 
-            setTimeout(() => {
-                this.loadSemanas(semanas);           // refresca FormArray
-                this.myForm.patchValue(data || {});   // actualiza el formulario
-                this.cd.detectChanges();              // opcional
-            }, 0);
+            this.loadSemanas(semanas);
+            this.myForm.patchValue(data || {}, { emitEvent: false });
+            this.cd.detectChanges();              // opcional
+
+        });
+
+
+        effect(() => {
+
+            // this.planingCompartido.setBloqueoFormEditar(true);
+
+            const bloqueado = this.planingCompartido.getBloqueoFormEditar()();
+
+            console.log("bloqueo " + bloqueado);
+            bloqueado
+                ? this.myForm.disable({ emitEvent: false })
+                : this.myForm.enable({ emitEvent: false });
         });
 
         /**
          * 📌 BLOQUEO CENTRALIZADO (habilitar / deshabilitar formulario)
          */
-        effect(() => {
-            const bloqueado = this.planingService.bloqueoForm();
-            bloqueado ? this.myForm.disable() : this.myForm.enable();
-        });
+        // effect(() => {
+        //     const bloqueado = this.planingService.bloqueoForm();
+        //     bloqueado ? this.myForm.disable() : this.myForm.enable();
+        // });
 
-        effect(() => {
-            if (!this.planingService.bloqueoForm()) {
-                this.semanas.controls.forEach(control => control.enable());
-            } else {
-                this.semanas.controls.forEach(control => control.disable());
-            }
-        });
-
+        // effect(() => {
+        //     if (!this.planingService.bloqueoForm()) {
+        //         this.semanas.controls.forEach(control => control.enable());
+        //     } else {
+        //         this.semanas.controls.forEach(control => control.disable());
+        //     }
+        // });
     }
 
 
@@ -209,5 +231,7 @@ export class SemanasAvanceMainComponent {
             this.planingCompartido.setSemanaAvance(filas);
             // console.log("📤 TAB semana actualizó servicio:", filas);
         });
+
+
     }
 }

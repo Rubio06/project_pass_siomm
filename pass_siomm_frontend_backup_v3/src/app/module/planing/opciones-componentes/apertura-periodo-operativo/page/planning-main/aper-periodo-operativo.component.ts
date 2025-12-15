@@ -10,10 +10,11 @@ import { PlaningCompartido } from '../../services/planing-compartido.service';
 import { FormUtils } from 'src/app/utils/form-utils';
 import Swal from 'sweetalert2';
 import { CanComponentDeactivate } from 'src/app/core/guards/cambios-guard/cambios-pendientes.guard';
+import { ModalPeriodo } from "./modal-periodo/modal-periodo";
 
 @Component({
     selector: 'app-planning-main',
-    imports: [RouterOutlet, TransfornMonthPipe, RouterLink, ReactiveFormsModule, RouterLinkActive],
+    imports: [RouterOutlet, TransfornMonthPipe, RouterLink, ReactiveFormsModule, RouterLinkActive, ModalPeriodo],
     templateUrl: './aper-periodo-operativo.component.html',
     styleUrl: './aper-periodo-operativo.component.css',
 })
@@ -33,8 +34,10 @@ export class AperturPeriodoComponent {
     bloqueo = signal<boolean>(true);
     visualizarBLoqueo = signal<boolean>(true);
 
-    bloqueoEditar = signal<boolean>(false);
-    bloquearCopiarPeriodo = signal<boolean>(false);
+    bloqueoEditar = signal<boolean>(true);
+    bloquearCopiarPeriodo = signal<boolean>(true);
+
+    planingCompartido = inject(PlaningCompartido);
 
 
 
@@ -138,6 +141,16 @@ export class AperturPeriodoComponent {
             return;
         }
 
+        // 🚫 Si está en modo edición, NO permitir cambiar
+        const estaBloqueado = this.planingCompartido.getBloqueoFormEditar()(); // 👈 CLAVE
+
+        // 🚫 SI ESTÁ EN MODO EDICIÓN → NO PERMITIR CAMBIAR
+        if (!estaBloqueado) {
+            this.utils.editarCambios();
+            select.value = this.prevMonth;
+            return;
+        }
+
         this.prevMonth = newValue;
         this.planingService.setBloqueoForm(true);
         this.visualizarBLoqueo.set(true);
@@ -155,6 +168,10 @@ export class AperturPeriodoComponent {
                     this.planingService.setData(data);
                     this.loadingService.loadingOff();
                     this.bloqueo.set(false);
+
+                    this.bloqueoEditar = signal<boolean>(false);
+                    this.bloquearCopiarPeriodo = signal<boolean>(false);
+
                 }
             },
             error: (error) => {
@@ -178,6 +195,9 @@ export class AperturPeriodoComponent {
         this.semanaAvance.setCambios(true)
         this.bloqueoEditar.set(true);
 
+        this.bloqueoEditar = signal<boolean>(true);
+        this.bloquearCopiarPeriodo = signal<boolean>(true);
+
         this.bloquearCopiarPeriodo.set(true);
         this.bloqueo.set(true);
     }
@@ -194,45 +214,68 @@ export class AperturPeriodoComponent {
 
         this.bloqueoEditar.set(false);
 
+        this.bloqueoEditar = signal<boolean>(true);
+        this.bloquearCopiarPeriodo = signal<boolean>(true);
+
         this.bloquearCopiarPeriodo.set(false);
         this.limpiarFormulario();
     }
 
 
     desbloquearEdicion() {
-        // this.planingService.setBloqueoForm(false);
-        // this.bloqueoGuardar.set(false);
+        console.log('Entrando al editar');
+        this.bloqueoGuardar.set(false);
+        this.planingCompartido.setBloqueoFormEditar(false);
 
-        console.log("Entrando al editar")
+        this.bloqueo = signal<boolean>(true);
+        this.visualizarBLoqueo = signal<boolean>(true);
+
+        this.bloqueoEditar = signal<boolean>(true);
+
+        this.bloquearCopiarPeriodo = signal<boolean>(true);
+
+        // this.semanaAvance.setCambios(true);
     }
 
 
     guardarTodo() {
-        // this.planingCompartido.guardarTodo().subscribe({
-        //     next: () => {
-        //         this.planingService.setBloqueoForm(true);
-        //         this.bloqueoGuardar.set(true);
-        //         this.semanaAvance.setCambios(false);
-        //     },
-        //     error: err => console.error('❌ Error', err)
-        // });
+        if (!confirm("¿Desea guardar los datos?")) return;
 
-        Swal.fire({
-            icon: 'success',
-            title: 'Guardado correctamente',
-            text: 'Los cambios se han guardado exitosamente.',
-            confirmButtonColor: '#013B5C'
-        });
-        this.semanaAvance.setCambios(false)
-        this.visualizarBLoqueo.set(true);
-        this.planingService.setData([]);   // si deseas limpiar
-        this.planingService.setBloqueoForm(true);
-        this.bloqueoGuardar.set(true);
+        this.planingCompartido.guardarTodo().subscribe({
+            next: () => {
+                // ✅ Bloqueamos el formulario y volvemos a modo visualización
+                this.planingCompartido.setBloqueoFormEditar(true); // vuelve a bloqueado
+                this.planingService.setBloqueoForm(true);
+                this.bloqueoGuardar.set(true);
+                this.semanaAvance.setCambios(false);
+                this.visualizarBLoqueo.set(true);
 
+                // ✅ Reiniciamos flags de edición/copiar período
                 this.bloqueoEditar.set(false);
+                this.bloquearCopiarPeriodo.set(false);
 
-        this.bloquearCopiarPeriodo.set(false);
-        this.limpiarFormulario();
+                // ✅ Limpiamos datos si es necesario
+                this.planingService.setData([]);
+                this.limpiarFormulario();
+
+                // ✅ Mensaje de éxito
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Guardado correctamente',
+                    text: 'Los cambios se han guardado exitosamente.',
+                    confirmButtonColor: '#013B5C'
+                });
+            },
+            error: (err) => {
+                console.error('❌ Error al guardar', err);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'No se pudieron guardar los cambios',
+                    confirmButtonColor: '#013B5C'
+                });
+            }
+        });
     }
 
     limpiarFormulario() {
@@ -240,5 +283,16 @@ export class AperturPeriodoComponent {
             fechaInicio: '',
             fechaFin: ''
         });
+    }
+
+    abrirModal() {
+        const modal = document.getElementById('my_modal_3') as HTMLDialogElement;
+        modal.showModal();
+    }
+
+
+
+    recibirDatos(event: any) {
+        console.log("Datos recibidos", event)
     }
 }

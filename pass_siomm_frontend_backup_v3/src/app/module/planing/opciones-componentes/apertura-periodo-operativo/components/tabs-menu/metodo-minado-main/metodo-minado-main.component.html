@@ -54,7 +54,7 @@
 
                                     <td class="border-x border-gray-300 p-1.5 w-50">
                                         <select formControlName="cod_metexp"
-                                            class="select-xs disabled:opacity-50 disabled:bg-gray-100 disabled:cursor-not-allowed mx-auto select text-sm font-medium outline-none flex items-center border border-gray-300 rounded-lg px-2 py-1 bg-white shadow-sm hover:shadow-md transition-shadow duration-300 ease-in-out focus:border-[#033351] focus:ring-1 focus:ring-[rgb(3,102,157)] focus:ring-opacity-40 w-full disabled:bg-gray-100 disabled:text-gray-500">
+                                            class="select-xs disabled:opacity-30 disabled:bg-gray-100 disabled:cursor-not-allowed mx-auto select text-sm font-medium outline-none flex items-center border border-gray-300 rounded-lg px-2 py-1 bg-white shadow-sm hover:shadow-md transition-shadow duration-300 ease-in-out focus:border-[#033351] focus:ring-1 focus:ring-[rgb(3,102,157)] focus:ring-opacity-40 w-full">
                                             @for (opt of cod_metexp(); track $index) {
                                             <option [ngValue]="opt.nom_metexp">{{ opt.cod_metexp }} {{ opt.nom_metexp }}</option>
                                             }
@@ -72,7 +72,7 @@
                                                             focus-within:border-[#033351] focus-within:ring-1 focus-within:ring-[rgb(3,102,157)]
                                                             focus-within:ring-opacity-40 focus-within:shadow-md">
                                             <input type="text" formControlName="nom_metexp"
-                                                class="w-full disabled:opacity-50 disabled:cursor-not-allowed bg-transparent outline-none text-gray-800 placeholder-gray-400 text-xs font-medium disabled:bg-gray-100 disabled:text-gray-500" />
+                                                class="w-full disabled:opacity-30 disabled:cursor-not-allowed bg-transparent outline-none text-gray-800 placeholder-gray-400 text-xs font-medium" />
                                         </div>
                                         <!-- @if (formUtils.esInvalido(semanas, i, 'nom_metexp')) {
                                         <p class="text-red-600 text-xs mt-0.5 text-left ml-1">
@@ -83,7 +83,7 @@
 
                                     <td class="border-x border-gray-300 p-1.5 w-25">
                                         <select formControlName="ind_calculo_dilucion"
-                                            class="select-xs disabled:opacity-50  disabled:cursor-not-allowed mx-auto select text-sm font-medium outline-none flex items-center border border-gray-300 rounded-lg px-2 py-1 bg-white shadow-sm hover:shadow-md transition-shadow duration-300 ease-in-out focus:border-[#033351] focus:ring-1 focus:ring-[rgb(3,102,157)] focus:ring-opacity-40 w-full disabled:bg-gray-100 disabled:text-gray-500">
+                                            class="select-xs disabled:opacity-30  disabled:cursor-not-allowed mx-auto select text-sm font-medium outline-none flex items-center border border-gray-300 rounded-lg px-2 py-1 bg-white shadow-sm hover:shadow-md transition-shadow duration-300 ease-in-out focus:border-[#033351] focus:ring-1 focus:ring-[rgb(3,102,157)] focus:ring-opacity-40 w-full">
                                             @for (opt of ind_calculo_dilucion(); track $index) {
                                             <option [value]="opt.label">{{ opt.label }}</option>
                                             }
@@ -97,7 +97,7 @@
 
                                     <td class="border-x border-gray-300 p-1.5 w-25">
                                         <select formControlName="ind_calculo_leyes_min"
-                                            class="select-xs disabled:opacity-50 disabled:cursor-not-allowed mx-auto select text-sm font-medium outline-none flex items-center border border-gray-300 rounded-lg px-2 py-1 bg-white shadow-sm hover:shadow-md transition-shadow duration-300 ease-in-out focus:border-[#033351] focus:ring-1 focus:ring-[rgb(3,102,157)] focus:ring-opacity-40 w-full disabled:bg-gray-100 disabled:text-gray-500">
+                                            class="select-xs disabled:opacity-30 disabled:cursor-not-allowed mx-auto select text-sm font-medium outline-none flex items-center border border-gray-300 rounded-lg px-2 py-1 bg-white shadow-sm hover:shadow-md transition-shadow duration-300 ease-in-out focus:border-[#033351] focus:ring-1 focus:ring-[rgb(3,102,157)] focus:ring-opacity-40 w-full">
                                             @for (opt of ind_calculo_leyes_min(); track $index) {
                                             <option [value]="opt.label">{{ opt.label }}</option>
                                             }
@@ -111,7 +111,7 @@
 
                                     <td class="border-x border-gray-300 p-1.5 w-25">
                                         <select formControlName="ind_act"
-                                            class="select-xs disabled:opacity-50 disabled:cursor-not-allowed mx-auto select text-sm font-medium outline-none flex items-center border border-gray-300 rounded-lg px-2 py-1 bg-white shadow-sm hover:shadow-md transition-shadow duration-300 ease-in-out focus:border-[#033351] focus:ring-1 focus:ring-[rgb(3,102,157)] focus:ring-opacity-40 w-full disabled:bg-gray-100 disabled:text-gray-500">
+                                            class="select-xs disabled:opacity-30 disabled:cursor-not-allowed mx-auto select text-sm font-medium outline-none flex items-center border border-gray-300 rounded-lg px-2 py-1 bg-white shadow-sm hover:shadow-md transition-shadow duration-300 ease-in-out focus:border-[#033351] focus:ring-1 focus:ring-[rgb(3,102,157)] focus:ring-opacity-40 w-full">
                                             @for (opt of ind_act(); track $index) {
                                             <option [value]="opt.label">{{ opt.label }}</option>
                                             }
@@ -124,9 +124,9 @@
                                     </td>
 
                                     <td class="border-x border-gray-300 p-1.5 w-24 text-center">
-                                        <button type="button" (click)="eliminarFila(item, i)"
-                                            [disabled]="item.get('accion')?.disabled"
-                                            class="flex disabled:bg-gray-100 items-center justify-center gap-1 mx-auto bg-[#A3361D] hover:bg-red-700 text-white px-2 py-1.5 rounded-md shadow-sm transition-all duration-200 font-medium text-xs">
+                                        <button type="button" (click)="eliminarFila(item, i)" [disabled]="planingCompartido.getBloqueoFormEditar()()"
+                                            class="flex disabled:opacity-30 disabled:cursor-not-allowed
+                                            items-center justify-center gap-1 mx-auto bg-[#A3361D] hover:bg-red-700 text-white px-2 py-1.5 rounded-md shadow-sm transition-all duration-200 font-medium text-xs">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                                 stroke-linecap="round" stroke-linejoin="round">

@@ -40,6 +40,9 @@ export class PlanningService {
 
 
     readonly bloqueoFormEdit: WritableSignal<boolean> = signal(true);
+
+
+
     private _bloqueoForm = signal<boolean>(true); // true = bloqueado
     public bloqueoForm = this._bloqueoForm.asReadonly();
 

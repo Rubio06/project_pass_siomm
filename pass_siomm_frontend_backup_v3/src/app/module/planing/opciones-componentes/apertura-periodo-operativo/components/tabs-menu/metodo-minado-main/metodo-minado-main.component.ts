@@ -84,28 +84,50 @@ export class MetodoMinadoMainComponent {
         // });
 
 
+        // effect(() => {
+        //     const data = this.planingService.dataRoutes();
+        //     const semanas = data?.data?.semana_avance || [];
+
+        //     setTimeout(() => {
+        //         this.loadSemanas(semanas);           // refresca FormArray
+        //         this.myForm.patchValue(data || {});   // actualiza el formulario
+        //         this.cd.detectChanges();              // opcional
+        //     }, 0);
+        // });
+
         effect(() => {
             const data = this.planingService.dataRoutes();
-            const semanas = data?.data?.semana_avance || [];
+            const semanas = data?.data?.metodo_minado || [];
 
-            setTimeout(() => {
-                this.loadSemanas(semanas);           // refresca FormArray
-                this.myForm.patchValue(data || {});   // actualiza el formulario
-                this.cd.detectChanges();              // opcional
-            }, 0);
+            this.loadSemanas(semanas);
+            this.myForm.patchValue(data || {}, { emitEvent: false });
+
+            this.cd.detectChanges();              // opcional
+
         });
+
 
 
         // ========================================
         //   EFECTO: BLOQUEO DE FORMULARIO
         // ========================================
+        // effect(() => {
+        //     const bloqueado = this.planingService.bloqueoForm();
+        //     bloqueado ? this.myForm.disable() : this.myForm.enable();
+        // });
+
         effect(() => {
-            const bloqueado = this.planingService.bloqueoForm();
-            bloqueado ? this.myForm.disable() : this.myForm.enable();
-        });
+            const bloqueado = this.planingCompartido.getBloqueoFormEditar()();
+
+            bloqueado
+                ? this.myForm.disable({ emitEvent: false })
+                : this.myForm.enable({ emitEvent: false });
+        })
 
         // Lookups iniciales
         this.loadSelectExploracion();
+
+
     }
 
     // =====================================================
@@ -130,7 +152,7 @@ export class MetodoMinadoMainComponent {
                     ind_calculo_dilucion: [{ value: this.ind_calculo_dilucion()[0].label, disabled: true }], // Valor hardcodeado (lógica original)
                     ind_calculo_leyes_min: [{ value: this.ind_calculo_leyes_min()[0].label, disabled: true }], // Valor hardcodeado (lógica original)
                     ind_act: [{ value: this.ind_act()[0].label, disabled: true }], // Valor hardcodeado (lógica original)
-                    accion: new FormControl({ value: '', disabled: true })
+                    accion: [{ value: '', disabled: true }]
                 })
             );
         });

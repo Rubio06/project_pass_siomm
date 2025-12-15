@@ -15,11 +15,11 @@ export class CanchasComponent {
     private fb = inject(FormBuilder);
     rutas = this.planingService.data;
     planingCompartido = inject(PlaningCompartido);
-    formUtils =  FormUtils;
+    formUtils = FormUtils;
 
     bloqueo = inject(PlanningService).bloqueo;
 
-    form: FormGroup= this.fb.group({
+    form: FormGroup = this.fb.group({
         val_tms: ['0.000', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
         val_ag: ['0.000', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
         val_cu: ['0.000', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
@@ -62,6 +62,17 @@ export class CanchasComponent {
         effect(() => {
             this.bloqueoFormulario();
         })
+
+        effect(() => {
+            const bloqueado = this.planingCompartido.getBloqueoFormEditar()();
+
+            bloqueado
+                ? this.form.disable({ emitEvent: false })
+                : this.form.enable({ emitEvent: false });
+        });
+
+
+
     }
 
     bloqueoFormulario() {

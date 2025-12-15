@@ -1,0 +1,54 @@
+<dialog id="my_modal_3" class="modal">
+    <div class="modal-box max-w-md p-6 relative">
+        <!-- Botón de cerrar -->
+        <button class="btn btn-sm btn-circle btn-ghost absolute right-3 top-3"
+            onclick="document.getElementById('my_modal_3').close()">✕</button>
+
+        <!-- Título del modal -->
+        <h2 class="text-xl font-bold text-center mb-6">
+            Seleccionar el Período a donde se Copiará
+        </h2>
+
+        <!-- Formulario -->
+        <form class="space-y-4" [formGroup]="myFrom" (ngSubmit)=" onSubmit()">
+            <!-- Año y Mes -->
+            <div class="grid grid-cols-2 gap-4 items-center">
+                <div class="flex items-center space-x-2">
+                    <label for="anio" class="w-20 text-right font-medium">Año:</label>
+                    <input id="anio" type="text" value="2025" class="border rounded p-2 w-full" />
+                </div>
+                <div class="flex items-center space-x-2">
+                    <label for="mes" class="w-20 text-right font-medium">Mes:</label>
+                    <select id="mes" class="border rounded p-2 w-full">
+                        <option>Diciembre</option>
+                        <option>Noviembre</option>
+                        <option>Octubre</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Fecha Inicio y Fin -->
+            <div class="grid grid-cols-2 gap-4 items-center">
+                <div class="flex items-center space-x-2">
+                    <label for="fechaInicio" class="w-28 text-right font-medium">Fecha
+                        Inicio:</label>
+                    <input id="fechaInicio" type="text" value="00/00/0000" class="border rounded p-2 w-full" />
+                </div>
+                <div class="flex items-center space-x-2">
+                    <label for="fechaFin" class="w-28 text-right font-medium">Fecha Fin:</label>
+                    <input id="fechaFin" type="text" value="00/00/0000" class="border rounded p-2 w-full" />
+                </div>
+            </div>
+
+            <!-- Información adicional -->
+            <p class="text-gray-700">Factores a Copiar a partir del Año y Mes:</p>
+
+            <!-- Botones -->
+            <div class="flex justify-end gap-3 mt-4">
+                <button type="submit" class="btn btn-primary px-4 py-2 rounded" [disabled]="myFrom.valid">Aceptar</button>
+                <button type="button" class="btn btn-secondary px-4 py-2 rounded"
+                    onclick="document.getElementById('my_modal_3')">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</dialog>

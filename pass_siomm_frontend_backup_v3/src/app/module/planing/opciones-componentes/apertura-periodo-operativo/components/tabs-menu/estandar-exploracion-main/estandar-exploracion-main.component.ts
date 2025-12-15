@@ -63,15 +63,37 @@ export class EstandarExploracionMainComponent {
     constructor() {
 
 
+        // effect(() => {
+        //     const data = this.planingService.dataRoutes();
+        //     const semanas = data?.data?.exploracion_extandar || [];
+
+        //     setTimeout(() => {
+        //         this.loadSemanas(semanas);           // refresca FormArray
+        //         this.myForm.patchValue(data || {});   // actualiza el formulario
+        //         this.cd.detectChanges();              // opcional
+        //     }, 0);
+        // });
+
+
         effect(() => {
             const data = this.planingService.dataRoutes();
             const semanas = data?.data?.exploracion_extandar || [];
 
-            setTimeout(() => {
-                this.loadSemanas(semanas);           // refresca FormArray
-                this.myForm.patchValue(data || {});   // actualiza el formulario
-                this.cd.detectChanges();              // opcional
-            }, 0);
+            this.loadSemanas(semanas);
+            this.myForm.patchValue(data || {}, { emitEvent: false });
+
+            this.cd.detectChanges();              // opcional
+
+        });
+
+
+
+        // ========================================
+        //   EFECTO: BLOQUEO DE FORMULARIO
+        // ========================================
+        effect(() => {
+            const bloqueado = this.planingService.bloqueoForm();
+            bloqueado ? this.myForm.disable() : this.myForm.enable();
         });
 
 
@@ -79,22 +101,24 @@ export class EstandarExploracionMainComponent {
         /**
          * 📌 BLOQUEO CENTRALIZADO
          */
-        effect(() => {
-            const bloqueado = this.planingService.bloqueoForm();
-            this.estaBloqueado.set(bloqueado);
+        // effect(() => {
+        //     const bloqueado = this.planingService.bloqueoForm();
+        //     this.estaBloqueado.set(bloqueado);
 
-            bloqueado ? this.myForm.disable() : this.myForm.enable();
+        //     bloqueado ? this.myForm.disable() : this.myForm.enable();
 
-            // Si se desbloquea y no hay filas, recargar
-            if (!bloqueado && this.semanas.length === 0) {
-                const dataRoutes = this.planingService.data();
-                const exploracion = dataRoutes?.data?.exploracion_extandar ?? [];
-                this.loadSemanas(exploracion);
-            }
-        });
+        //     // Si se desbloquea y no hay filas, recargar
+        //     if (!bloqueado && this.semanas.length === 0) {
+        //         const dataRoutes = this.planingService.data();
+        //         const exploracion = dataRoutes?.data?.exploracion_extandar ?? [];
+        //         this.loadSemanas(exploracion);
+        //     }
+        // });
 
         // Carga de Lookups
         this.loadZonas();
+
+
     }
 
     // ===============================

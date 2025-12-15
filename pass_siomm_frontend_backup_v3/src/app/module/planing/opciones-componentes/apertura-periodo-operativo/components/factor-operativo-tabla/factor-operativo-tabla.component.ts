@@ -23,7 +23,7 @@ export class FactorOperativoTablaComponent {
 
     planingCompartido = inject(PlaningCompartido);
 
-    formUtils =  FormUtils;
+    formUtils = FormUtils;
 
     form: FormGroup = this.fb.group({
         val_des_tipo_fac: ['GENERAL'],
@@ -92,6 +92,17 @@ export class FactorOperativoTablaComponent {
         effect(() => {
             this.bloqueoFormulario()
         })
+
+        effect(() => {
+            const bloqueado = this.planingCompartido.getBloqueoFormEditar()();
+
+            bloqueado
+                ? this.form.disable({ emitEvent: false })
+                : this.form.enable({ emitEvent: false });
+        });
+
+
+
     }
 
     resetearFormulario() {

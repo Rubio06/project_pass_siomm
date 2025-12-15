@@ -70,49 +70,74 @@ export class EstandarAvanceComponent {
          */
 
 
+        // effect(() => {
+        //     const data = this.planingService.dataRoutes();
+        //     const semanas = data?.data?.laboratorio_estandar || [];
+
+        //     setTimeout(() => {
+        //         this.loadSemanas(semanas);           // refresca FormArray
+        //         this.myForm.patchValue(data || {});   // actualiza el formulario
+        //         this.cd.detectChanges();              // opcional
+        //     }, 0);
+        // });
+
+
+        // /**
+        //  * 📌 BLOQUEO CENTRALIZADO
+        //  */
+        // effect(() => {
+        //     const bloqueado = this.planingService.bloqueoForm();
+        //     this.estaBloqueado.set(bloqueado);
+
+        //     bloqueado ? this.myForm.disable() : this.myForm.enable();
+
+        //     if (!bloqueado && this.semanas.length === 0) {
+        //         const dataRoutes = this.planingService.data();
+        //         const labor = dataRoutes?.data?.laboratorio_estandar ?? [];
+        //         this.loadSemanas(labor);
+        //     }
+        // });
+
         effect(() => {
             const data = this.planingService.dataRoutes();
             const semanas = data?.data?.laboratorio_estandar || [];
 
-            setTimeout(() => {
-                this.loadSemanas(semanas);           // refresca FormArray
-                this.myForm.patchValue(data || {});   // actualiza el formulario
-                this.cd.detectChanges();              // opcional
-            }, 0);
+            this.loadSemanas(semanas);
+            this.myForm.patchValue(data || {}, { emitEvent: false });
+            this.cd.detectChanges();              // opcional
+
         });
 
 
-        /**
-         * 📌 BLOQUEO CENTRALIZADO
-         */
+
+        // ========================================
+        //   EFECTO: BLOQUEO DE FORMULARIO
+        // ========================================
         effect(() => {
             const bloqueado = this.planingService.bloqueoForm();
-            this.estaBloqueado.set(bloqueado);
-
             bloqueado ? this.myForm.disable() : this.myForm.enable();
-
-            if (!bloqueado && this.semanas.length === 0) {
-                const dataRoutes = this.planingService.data();
-                const labor = dataRoutes?.data?.laboratorio_estandar ?? [];
-                this.loadSemanas(labor);
-            }
         });
 
-        effect(() => {
-            this.bloqueoFormulario();
-        });
+
+
+
+        // effect(() => {
+        //     this.bloqueoFormulario();
+        // });
+
+
     }
 
-    bloqueoFormulario() {
-        const bloqueado = this.planingService.bloqueoForm();
+    // bloqueoFormulario() {
+    //     const bloqueado = this.planingService.bloqueoForm();
 
-        if (bloqueado) this.myForm.disable();
-        else this.myForm.enable();
+    //     if (bloqueado) this.myForm.disable();
+    //     else this.myForm.enable();
 
-        // ❗ Campos que siempre deben quedar bloqueados
-        // this.form.get('cie_ano')?.disable();
-        // this.form.get('cie_per')?.disable();
-    }
+    //     // ❗ Campos que siempre deben quedar bloqueados
+    //     // this.form.get('cie_ano')?.disable();
+    //     // this.form.get('cie_per')?.disable();
+    // }
 
     // ===============================
     //   MÉTODOS

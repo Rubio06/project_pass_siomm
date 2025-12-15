@@ -57,9 +57,6 @@ export class FactorOperativoComonent {
     constructor() {
 
         effect(() => {
-            const a = this.semanaAvance.anio();
-            const m = this.semanaAvance.mes();
-
             const response = this.rutas();
 
             if (response?.data?.factor?.length) {
@@ -103,6 +100,17 @@ export class FactorOperativoComonent {
             // Ejecuta tu lógica que deshabilita/habilita
             this.gestionBloqueoFormulario(bloqueado);
         });
+
+
+        effect(() => {
+            const bloqueado = this.planingCompartido.getBloqueoFormEditar()();
+
+            bloqueado
+                ? this.form.disable({ emitEvent: false })
+                : this.form.enable({ emitEvent: false });
+        });
+
+
 
 
     }

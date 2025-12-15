@@ -1,11 +1,27 @@
+import { PlaningCompartido } from './../module/planing/opciones-componentes/apertura-periodo-operativo/services/planing-compartido.service';
+import { effect, inject } from '@angular/core';
 import { FormGroup, ValidationErrors } from '@angular/forms';
 import Swal from 'sweetalert2'
 import 'sweetalert2/src/sweetalert2.scss'
 
 
+// export function syncFormWithLock(
+//     form: FormGroup,
+//     planningService: PlaningCompartido
+// ) {
+
+//     effect(() => {
+//         const bloqueado = planningService.getBloqueoFormEditar()();
+
+//         console.log('Entro al effect, bloqueado:', bloqueado);
+
+//         bloqueado
+//             ? form.disable({ emitEvent: false })
+//             : form.enable({ emitEvent: false });
+//     });
+// }
+
 export class FormUtils {
-
-
     static formatDate(dateStr: string | Date | null | undefined): string {
         if (!dateStr) return '';
 
@@ -72,6 +88,16 @@ export class FormUtils {
             icon: 'warning',
             title: 'Cambios sin guardar',
             text: 'Debe guardar los cambios antes de cambiar el periodo.',
+            confirmButtonColor: '#013B5C',
+            confirmButtonText: 'Entendido'
+        });
+    }
+
+    static editarCambios() {
+        return Swal.fire({
+            icon: 'warning',
+            title: 'Cambios sin guardar',
+            text: 'Debe editar y luego guardar cambios para continuar.',
             confirmButtonColor: '#013B5C',
             confirmButtonText: 'Entendido'
         });

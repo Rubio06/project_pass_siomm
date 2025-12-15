@@ -35,9 +35,8 @@
                             }
                         </select>
                     </div>
-                    <!-- [disabled]="bloqueo()"  -->
                     <div class="flex items-end gap-5">
-                        <button (click)="toggleBloqueo()" type="button"
+                        <button (click)="toggleBloqueo()" type="button" [disabled]="bloqueo()"
                             class="flex items-center space-x-2 px-4 py-2 text-white bg-[#1A7A40] rounded-md font-semibold text-sm shadow-lg hover:bg-green-700 transition duration-300 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-4 focus:ring-green-400/70">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                                 class="w-5 h-5">
@@ -79,7 +78,7 @@
                             <span>Editar</span>
                         </button>
 
-                        <button type="button" [disabled]="bloquearCopiarPeriodo()" onclick="my_modal_3.showModal()"
+                        <button type="button" [disabled]="bloquearCopiarPeriodo()" (click)="abrirModal()"
                             class="flex items-center space-x-2 px-4 py-2 text-gray-800 bg-yellow-400 rounded-md font-semibold text-sm shadow-md hover:bg-yellow-500 transition duration-300  disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                                 class="w-5 h-5">
@@ -89,15 +88,10 @@
                             <span>Copiar Periodo</span>
                         </button>
 
-                        <dialog id="my_modal_3" class="modal">
-                            <div class="modal-box">
-                                <form method="dialog">
-                                    <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-                                </form>
-                                <h3 class="text-lg font-bold">Hello!</h3>
-                                <p class="py-4">Press ESC key or click on ✕ button to close</p>
-                            </div>
-                        </dialog>
+                        <app-modal-periodo (aceptar)="recibirDatos($event)"></app-modal-periodo>
+
+
+
                     </div>
                 </div>
             </form>

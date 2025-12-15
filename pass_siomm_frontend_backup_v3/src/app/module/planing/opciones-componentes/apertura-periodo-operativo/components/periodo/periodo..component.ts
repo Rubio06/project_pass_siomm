@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { PlanningService } from '../../services/planning.service';
 import { FormUtils } from 'src/app/utils/form-utils';
 import { SemanasAvanceMainService } from '../../services/semanas-avance-main/semanas-avance-main.service';
+import { PlaningCompartido } from '../../services/planing-compartido.service';
 
 
 interface fieldName {
@@ -33,14 +34,6 @@ export class AperPerOperComponent {
 
     semanasAvanceMainService = inject(SemanasAvanceMainService);
 
-    // private anioActual = String(this.hoy.getFullYear());
-    // private mesActualIndex = this.hoy.getMonth(); // 0 = Enero
-    // private mesActualNombre = [
-    //     'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-    //     'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
-    // ][this.mesActualIndex];
-
-
     private hoy = new Date();
 
     // Crear una nueva fecha sumándole 1 año y 1 mes
@@ -49,6 +42,8 @@ export class AperPerOperComponent {
         this.hoy.getMonth() + 1
     );
 
+
+    planingCompartido = inject(PlaningCompartido);
 
 
 
@@ -119,6 +114,20 @@ export class AperPerOperComponent {
         effect(() => {
             this.bloqueoFormulario();
         });
+
+        effect(() => {
+
+
+            const bloqueado = this.planingCompartido.getBloqueoFormEditar()();
+
+            bloqueado
+                ? this.form.disable({ emitEvent: false })
+                : this.form.enable({ emitEvent: false });
+
+            this.form.get('cie_ano')?.disable();
+            this.form.get('cie_per')?.disable();
+        });
+
 
     }
 

@@ -18,7 +18,7 @@ export class ValoresComponent {
     private planingService = inject(PlanningService);
     private fb = inject(FormBuilder);
     rutas = this.planingService.dataRoutes;
-    formUtils =  FormUtils;
+    formUtils = FormUtils;
 
     planingCompartido = inject(PlaningCompartido);
 
@@ -101,6 +101,15 @@ export class ValoresComponent {
         effect(() => {
             this.bloqueoFormulario()
         })
+
+        effect(() => {
+            const bloqueado = this.planingCompartido.getBloqueoFormEditar()();
+
+            bloqueado
+                ? this.form.disable({ emitEvent: false })
+                : this.form.enable({ emitEvent: false });
+        });
+
     }
 
     bloqueoFormulario() {
