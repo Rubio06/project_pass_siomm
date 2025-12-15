@@ -17,7 +17,7 @@ import { CanComponentDeactivate } from 'src/app/core/guards/cambios-guard/cambio
     templateUrl: './aper-periodo-operativo.component.html',
     styleUrl: './aper-periodo-operativo.component.css',
 })
-export class AperturPeriodoComponent implements CanComponentDeactivate{
+export class AperturPeriodoComponent {
     planingService = inject(PlanningService);
     hasError = signal<string | null>('');
     _getMonths = signal<string[]>([]);
@@ -32,6 +32,11 @@ export class AperturPeriodoComponent implements CanComponentDeactivate{
     private utils = FormUtils;
     bloqueo = signal<boolean>(true);
     visualizarBLoqueo = signal<boolean>(true);
+
+    bloqueoEditar = signal<boolean>(false);
+    bloquearCopiarPeriodo = signal<boolean>(false);
+
+
 
     public loadingService = inject(LoadingService);
 
@@ -171,6 +176,9 @@ export class AperturPeriodoComponent implements CanComponentDeactivate{
         this.visualizarBLoqueo.set(false);
         // this.utils.alertaNoEliminado();
         this.semanaAvance.setCambios(true)
+        this.bloqueoEditar.set(true);
+
+        this.bloquearCopiarPeriodo.set(true);
         this.bloqueo.set(true);
     }
 
@@ -182,13 +190,20 @@ export class AperturPeriodoComponent implements CanComponentDeactivate{
         this.bloqueo.set(false);
         this.semanaAvance.setCambios(false)
         this.visualizarBLoqueo.set(true);
+
+
+        this.bloqueoEditar.set(false);
+
+        this.bloquearCopiarPeriodo.set(false);
         this.limpiarFormulario();
     }
 
 
     desbloquearEdicion() {
-        this.planingService.setBloqueoForm(false);
-        this.bloqueoGuardar.set(false);
+        // this.planingService.setBloqueoForm(false);
+        // this.bloqueoGuardar.set(false);
+
+        console.log("Entrando al editar")
     }
 
 
@@ -213,6 +228,10 @@ export class AperturPeriodoComponent implements CanComponentDeactivate{
         this.planingService.setData([]);   // si deseas limpiar
         this.planingService.setBloqueoForm(true);
         this.bloqueoGuardar.set(true);
+
+                this.bloqueoEditar.set(false);
+
+        this.bloquearCopiarPeriodo.set(false);
         this.limpiarFormulario();
     }
 
@@ -221,9 +240,5 @@ export class AperturPeriodoComponent implements CanComponentDeactivate{
             fechaInicio: '',
             fechaFin: ''
         });
-    }
-
-    hasPendingChanges(): boolean {
-        return this.semanaAvance.getCambios(); // revisa los cambios pendientes
     }
 }

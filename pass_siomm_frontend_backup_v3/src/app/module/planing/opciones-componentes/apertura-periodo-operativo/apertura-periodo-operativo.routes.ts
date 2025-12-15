@@ -21,12 +21,12 @@ export const aperturaPeriodoOperativoRouter: Routes = [
                 redirectTo: 'factor-operativo',
                 pathMatch: 'full' // ⚠️ Crucial: Asegura que solo redirija si el path es EXACTAMENTE vacío.
             },
-            { path: 'factor-operativo', component: FactorOperativoMainComponent },
+            { path: 'factor-operativo', component: FactorOperativoMainComponent, canDeactivate: [PendingChangesGuard]},
             { path: 'estandar-avance', component: EstandarAvanceComponent },
             { path: 'estandar-exploracion', component: EstandarExploracionMainComponent },
             { path: 'metodo-minado', component: MetodoMinadoMainComponent },
             { path: 'semanas-avance', component: SemanasAvanceMainComponent},
-            { path: 'semanas-ciclo', component: SemanasCicloMainComponent },
+            { path: 'semanas-ciclo', component: SemanasCicloMainComponent},
         ]
     }
 ];

@@ -190,6 +190,7 @@ export class SemanasCicloMainComponent {
         console.log("entra al metodo ")
         return this.semanasAvanceMainService.getCambios(); // revisa los cambios pendientes
     }
+    
 
 
 }
