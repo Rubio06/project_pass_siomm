@@ -1,3 +1,4 @@
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { Component, inject, input, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -12,7 +13,7 @@ import { PlanningService } from 'src/app/module/planing/opciones-componentes/ape
 
 @Component({
     selector: 'app-list-desktop',
-    imports: [CommonModule, MainPagePipe, IconosComponent, RouterLink],
+    imports: [CommonModule, MainPagePipe, IconosComponent, RouterLink, BrowserAnimationsModule  ],
     templateUrl: './list-desktop.component.html',
     styleUrl: './list-desktop.component.css',
 })
@@ -23,8 +24,6 @@ export class ListDesktopComponent {
     dataService = inject(PlanningService); // 👈 4. Inyectar tu DataService (Signal)
     router = inject(Router)
     iconos = signal<string>('');
-
-    private planingService = inject(PlanningService);
 
     asignarIcono(nombre: string) {
         const icons: Record<string, string> = {
@@ -73,10 +72,10 @@ export class ListDesktopComponent {
         // console.log("toke la ruta")
 
         return item.nom_ruta_primer
-        || item.nom_ruta_secun
-        || item.nom_ruta_terc
-        || item.nom_ruta_cuar
-        || item.nom_ruta_opc;
+            || item.nom_ruta_secun
+            || item.nom_ruta_terc
+            || item.nom_ruta_cuar
+            || item.nom_ruta_opc;
     }
 
     irRuta(path: string) {
@@ -92,5 +91,24 @@ export class ListDesktopComponent {
             .toLowerCase()
             .normalize("NFD").replace(/[\u0300-\u036f]/g, "")  // quita acentos
             .replace(/\s+/g, '-');                              // espacios → guiones
+    }
+
+    submenuHeights: number[] = [];
+
+    toggleSubmenu(event: Event, index: number) {
+        const details = event.target as HTMLDetailsElement;
+        const ul = details.querySelector('ul');
+
+        console.log(ul)
+
+        if (!ul) return;
+
+        if (details.open) {
+            // Abrir: guardar altura real para transición
+            this.submenuHeights[index] = ul.scrollHeight;
+        } else {
+            // Cerrar: poner altura 0
+            this.submenuHeights[index] = 0;
+        }
     }
 }

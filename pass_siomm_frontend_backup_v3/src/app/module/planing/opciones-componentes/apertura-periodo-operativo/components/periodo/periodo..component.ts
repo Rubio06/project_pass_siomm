@@ -29,14 +29,10 @@ export class AperPerOperComponent {
     rutas = this.planingService.dataRoutes;
 
     bloqueo = inject(PlanningService).bloqueo;
-
-    // private hoy = new Date();
-
     semanasAvanceMainService = inject(SemanasAvanceMainService);
 
     private hoy = new Date();
 
-    // Crear una nueva fecha sumándole 1 año y 1 mes
     fechaFutura = new Date(
         this.hoy.getFullYear(),
         this.hoy.getMonth() + 1
@@ -44,8 +40,6 @@ export class AperPerOperComponent {
 
 
     planingCompartido = inject(PlaningCompartido);
-
-
 
     meses = signal<string[]>([
         'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
@@ -55,34 +49,25 @@ export class AperPerOperComponent {
     private anio = this.fechaFutura.getFullYear();
     private mesNombre = this.meses()[this.fechaFutura.getMonth()];
 
-    // Años que realmente soporta tu select
-    anios = signal<string[]>([
-
-        '2014', '2015', '2016', '2017', '2018', '2019', '2020',
-        '2021', '2022', '2023', '2024', '2025', '2026'
-
-    ]);
-
+    anios = signal<string[]>([]);
 
     fieldInputs = signal<fieldName[]>([
-        { name: "cie_ano", type: "", label: "Año:", typeControl: 'select', array: this.anios() },
+        { name: "cie_ano", type: "", label: "Año:", typeControl: 'select', array: [] },
         { name: "cie_per", type: "", label: "Mes:", typeControl: 'select', array: this.meses() },
         { name: "fec_ini", type: "date", label: "Fecha Inicio:", typeControl: 'input', array: [] },
         { name: "fec_fin", type: "date", label: "Fecha Fin:", typeControl: 'input', array: [] },
     ]);
 
     form: FormGroup = this.fb.group({
-        cie_ano: '',
-        cie_per: '',
-        fec_ini: '',
-        fec_fin: ''
+        cie_ano: [this.anio],
+        cie_per: [this.mesNombre],
+        fec_ini: [''],
+        fec_fin: ['']
     });
 
     constructor() {
+        this.getYear();
 
-        console.log(this.anio, this.mesNombre)
-
-        // 🟢 Carga datos del backend
         effect(() => {
             const response = this.rutas();
             if (response?.data?.cierre_periodo?.length) {
@@ -97,11 +82,9 @@ export class AperPerOperComponent {
             }
         });
 
-        // 🟢 Solo resetea si NO hay data
         effect(() => {
             const data = this.planingService.dataRoutes();
 
-            // console.log("di click")
             if (!data || data?.length === 0) {
                 this.resetearFormulario();
                 return;
@@ -110,7 +93,6 @@ export class AperPerOperComponent {
             this.form.patchValue(data);
         });
 
-        // 🟢 Control bloqueo formulario
         effect(() => {
             this.bloqueoFormulario();
         });
@@ -128,20 +110,33 @@ export class AperPerOperComponent {
             this.form.get('cie_per')?.disable();
         });
 
-
     }
+
+    public getYear() {
+        this.planingService.getYear().subscribe({
+            next: (data: string[]) => {
+                const nextYear = (new Date().getFullYear() + 1).toString();
+
+                if (!data.includes(nextYear)) data.unshift(nextYear);
+                this.anios.set(data);
+
+                this.fieldInputs.update(fields =>
+                    fields.map(f =>
+                        f.name === 'cie_ano' ? { ...f, array: data } : f
+                    )
+                );
+            },
+            error: (err) => console.error(err)
+        });
+    }
+
 
     bloqueoFormulario() {
         const bloqueado = this.planingService.bloqueoForm();
 
         if (bloqueado) this.form.disable();
         else this.form.enable();
-
-        // ❗ Campos que siempre deben quedar bloqueados
     }
-
-    //     cie_ano: this.anioActual,
-    // cie_per: this.mesActualNombre,
 
     resetearFormulario() {
         this.form.reset({

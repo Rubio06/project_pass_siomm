@@ -2,7 +2,7 @@
     @for (ruta of routers(); track $index) {
     <li class="w-full">
 
-        <details>
+        <details (toggle)="toggleSubmenu($event, $index)">
             <summary class="flex items-center gap-2 cursor-pointer m-1" (click)="irRuta(toUrl(ruta.nom_ruta_primer))"
                 style="display: flex; justify-content: space-around;">
                 <app-iconos [iconos]="ruta.icon"></app-iconos>
@@ -11,13 +11,14 @@
                 </span>
             </summary>
 
-            <ul class="submenu p-2 w-57 bg-[#E6F2ED]" style="border-radius: 10px;">
-
+            <ul #submenu class="submenu p-2 w-57 bg-[#E6F2ED] overflow-hidden transition-all duration-300 ease-in-out"
+                [style.maxHeight.px]="submenuHeights[$index] || 0" style="border-radius: 10px;">
                 @for (subRuta of ruta.rutas_secundarias; track $index) {
                 <li>
                     <a class="flex items-center gap-2 p-1 rounded-lg text-xs transition-all duration-300
-                             text-gray-700 hover:text-white bg-transparent hover:bg-[#033351]"
-                        style="font-size: 12px; font-weight: bold;" [routerLink]="['planeamiento', toUrl(subRuta.nom_ruta_secun)]">
+                     text-gray-700 hover:text-white bg-transparent hover:bg-[#033351]"
+                        style="font-size: 12px; font-weight: bold;"
+                        [routerLink]="['planeamiento', toUrl(subRuta.nom_ruta_secun)]">
                         <span class="transition-all duration-300">
                             {{ subRuta.nom_ruta_secun | replaceUnderscore }}
                         </span>

@@ -65,39 +65,23 @@ export class MetodoMinadoMainComponent {
 
     private cd = inject(ChangeDetectorRef);
 
+    bloqueoBotonNuevo = signal<boolean>(true);
 
     constructor() {
-
-        // ========================================
-        //   EFECTO: CARGA INICIAL
-        // ========================================
-        // effect(() => {
-        //     const data = this.planingService.dataRoutes();
-        //     if (!data) return;
-
-        //     // Solo cargar una vez si está vacío
-        //     if (this.semanas.length === 0) {
-        //         const backend = data.data?.metodo_minado ?? [];
-        //         this.loadSemanas(backend);
-        //         this.myForm.patchValue(data);
-        //     }
-        // });
-
-
-        // effect(() => {
-        //     const data = this.planingService.dataRoutes();
-        //     const semanas = data?.data?.semana_avance || [];
-
-        //     setTimeout(() => {
-        //         this.loadSemanas(semanas);           // refresca FormArray
-        //         this.myForm.patchValue(data || {});   // actualiza el formulario
-        //         this.cd.detectChanges();              // opcional
-        //     }, 0);
-        // });
 
         effect(() => {
             const data = this.planingService.dataRoutes();
             const semanas = data?.data?.metodo_minado || [];
+
+
+
+            // 🚨 Si NO hay metodo minado → reset completo
+            // if (!semanas || semanas.length === 0) {
+            //     this.resetForm();
+            //     this.cd.detectChanges();              // opcional
+
+            //     return;
+            // }
 
             this.loadSemanas(semanas);
             this.myForm.patchValue(data || {}, { emitEvent: false });
@@ -105,16 +89,6 @@ export class MetodoMinadoMainComponent {
             this.cd.detectChanges();              // opcional
 
         });
-
-
-
-        // ========================================
-        //   EFECTO: BLOQUEO DE FORMULARIO
-        // ========================================
-        // effect(() => {
-        //     const bloqueado = this.planingService.bloqueoForm();
-        //     bloqueado ? this.myForm.disable() : this.myForm.enable();
-        // });
 
         effect(() => {
             const bloqueado = this.planingCompartido.getBloqueoFormEditar()();
@@ -144,11 +118,12 @@ export class MetodoMinadoMainComponent {
     loadSemanas(data: any[]) {
         this.semanas.clear();
 
+
         data.forEach((item, index) => {
             this.semanas.push(
                 this.fb.group({
-                    cod_metexp: [{ value: this.cod_metexp()[index]?.nom_metexp || item.cod_metexp, disabled: true }, [Validators.required]],
-                    nom_metexp: [{ value: item.nom_metexp || '', disabled: true }, [Validators.required]],
+                    cod_metexp: [{ value: this.cod_metexp()[index].nom_metexp, disabled: true }, [Validators.required]],
+                    nom_metexp: [{ value: item.nom_metexp, disabled: true }, [Validators.required]],
                     ind_calculo_dilucion: [{ value: this.ind_calculo_dilucion()[0].label, disabled: true }], // Valor hardcodeado (lógica original)
                     ind_calculo_leyes_min: [{ value: this.ind_calculo_leyes_min()[0].label, disabled: true }], // Valor hardcodeado (lógica original)
                     ind_act: [{ value: this.ind_act()[0].label, disabled: true }], // Valor hardcodeado (lógica original)
@@ -226,13 +201,13 @@ export class MetodoMinadoMainComponent {
     // =====================================================
     //   SUBMIT SOLO DE LA ÚLTIMA FILA
     // =====================================================
-    ngOnInit() {
-        this.myForm.valueChanges.subscribe(val => {
-            const filas = this.semanas.getRawValue();
+    // ngOnInit() {
+    //     this.myForm.valueChanges.subscribe(val => {
+    //         const filas = this.semanas.getRawValue();
 
-            this.planingCompartido.setMetodoMinado(filas);
-        });
-    }
+    //         this.planingCompartido.setMetodoMinado(filas);
+    //     });
+    // }
 
     // =====================================================
     //   LOOKUP SELECT EXPLORACIÓN
@@ -243,6 +218,9 @@ export class MetodoMinadoMainComponent {
             error: (e) => console.error('Error cargando métodos de exploración', e)
         });
     }
+
+
+
 
 
 

@@ -53,6 +53,8 @@ export class SemanasAvanceMainComponent {
     // ===============================
     loading = signal(false);
 
+    bloqueoBotonNuevo = signal<boolean>(true);
+
 
     constructor() {
 
@@ -183,41 +185,47 @@ export class SemanasAvanceMainComponent {
 
 
     async eliminarFila(data: any, index: number) {
-        const semana = data.getRawValue ? data.getRawValue() : data.value;
+        // const semana = data.getRawValue ? data.getRawValue() : data.value;
 
-        const payload = {
-            num_semana: semana.num_semana,
-            fec_ini: this.utils.convertToISO(semana.fec_ini),
-            fec_fin: this.utils.convertToISO(semana.fec_fin),
-            desc_semana: semana.desc_semana
-        };
 
-        // 👉 Confirmación usando tu utilitario
-        const confirmado = await this.utils.confirmarEliminacion();
-        if (!confirmado) {
-            this.utils.alertaNoEliminado();
-            return;
-        }
 
-        this.semanasAvanceMainService.eliminarSemanaAvance(payload).subscribe({
-            next: (res: any) => {
-                if (res.success) {
+        // const payload = {
+        //     num_semana: semana.num_semana,
+        //     fec_ini: this.utils.convertToISO(semana.fec_ini),
+        //     fec_fin: this.utils.convertToISO(semana.fec_fin),
+        //     desc_semana: semana.desc_semana
+        // };
 
-                    // 👉 Elimina del FormArray
+        // // 👉 Confirmación usando tu utilitario
+        // const confirmado = await this.utils.confirmarEliminacion();
+        // if (!confirmado) {
+        //     this.utils.alertaNoEliminado();
+        //     return;
+        // }
 
-                    // 👉 Muestra alerta de éxito desde el utilitario
-                    this.utils.alertaEliminado(res.message);
-                    this.semanas.removeAt(index);
+        // this.semanasAvanceMainService.eliminarSemanaAvance(payload).subscribe({
+        //     next: (res: any) => {
+        //         if (res.success) {
 
-                    this.cd.detectChanges();              // opcional
+        //             // 👉 Elimina del FormArray
 
-                } else {
-                    this.utils.alertaEliminado(res.message);
+        //             // 👉 Muestra alerta de éxito desde el utilitario
+        //             this.utils.alertaEliminado(res.message);
+        //             this.semanas.removeAt(index);
 
-                }
-            },
-            error: (err) => this.utils.mensajeError(err.message)
-        });
+        //             this.cd.detectChanges();              // opcional
+
+        //         } else {
+        //             this.utils.alertaEliminado(res.message);
+
+        //         }
+        //     },
+        //     error: (err) => this.utils.mensajeError(err.message)
+        // });
+
+        this.semanas.removeAt(index);
+
+        this.cd.detectChanges();
     }
 
     /**

@@ -60,6 +60,9 @@ export class EstandarExploracionMainComponent {
     // ===============================
     //   CONSTRUCTOR
     // ===============================
+    bloqueoBotonNuevo = signal<boolean>(true);
+
+
     constructor() {
 
 

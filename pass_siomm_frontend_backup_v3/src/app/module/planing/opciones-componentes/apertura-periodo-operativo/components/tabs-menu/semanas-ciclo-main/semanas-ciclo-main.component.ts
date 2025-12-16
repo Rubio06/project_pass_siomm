@@ -46,6 +46,8 @@ export class SemanasCicloMainComponent {
 
 
     private cd = inject(ChangeDetectorRef);
+    
+    bloqueoBotonNuevo = signal<boolean>(true);
 
     constructor() {
 
@@ -219,7 +221,4 @@ export class SemanasCicloMainComponent {
         console.log("entra al metodo ")
         return this.semanasAvanceMainService.getCambios(); // revisa los cambios pendientes
     }
-
-
-
 }

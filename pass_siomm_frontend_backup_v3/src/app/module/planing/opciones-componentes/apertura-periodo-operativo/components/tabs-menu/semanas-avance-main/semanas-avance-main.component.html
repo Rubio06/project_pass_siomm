@@ -99,8 +99,10 @@
                         </table>
                     </div>
                     <div>
+
+                        <!-- [disabled]="bloqueoBotonNuevo()" -->
                         <button type="button" (click)="agregarFilas()"
-                            class="flex items-center space-x-2 px-4 py-2 transition duration-300 w-30"
+                            class="flex items-center space-x-2 px-4 py-2 transition duration-300 w-30 disabled:opacity-30 disabled:cursor-not-allowed"
                             title="Agregar registro">
                             <img src="icono-agregar.png"
                                 class="object-contain w-20 h-20 transition-transform duration-300 hover:scale-110 cursor-pointer"

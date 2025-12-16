@@ -63,6 +63,9 @@ export class EstandarAvanceComponent {
     // ===============================
     //   CONSTRUCTOR
     // ===============================
+
+    bloqueoBotonNuevo = signal<boolean>(true);
+
     constructor() {
 
         /**

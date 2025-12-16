@@ -10,63 +10,46 @@ import { FormUtils } from 'src/app/utils/form-utils';
 })
 export class ModalPeriodo {
 
-    @Output() aceptar = new EventEmitter<{ anio: string; mes: string; fechaInicio: string; fechaFin: string }>();
+    aceptar = output<any[]>();
 
-    // modalForm!: FormGroup;
-
-    // constructor(private fb: FormBuilder) { }
-
-    // ngOnInit() {
-    //     this.modalForm = this.fb.group({
-    //         anio: ['', Validators.required],
-    //         mes: ['', Validators.required],
-    //         fechaInicio: ['', Validators.required],
-    //         fechaFin: ['', Validators.required],
-    //     });
-    // }
-
-    // onAceptar() {
-    //     if (this.modalForm.valid) {
-    //         this.aceptar.emit(this.modalForm.value);
-    //         const modal = document.getElementById('my_modal_3') as HTMLDialogElement;
-    //         modal.close();
-    //     } else {
-    //         // Si el formulario no es válido, puedes mostrar un mensaje de error
-    //         console.log('Formulario no válido');
-    //     }
-    // }
-
-    // onCancelar() {
-    //     const modal = document.getElementById('my_modal_3') as HTMLDialogElement;
-    //     modal.close();
-    // }
-
+    formsUtils = FormUtils;
 
     private fb = inject(FormBuilder);
 
+    private hoy = new Date();
+
+
     myFrom: FormGroup = this.fb.group({
-        anio: ['', [Validators.required, Validators.minLength(4)]],
-        mes: ['', Validators.required],
+        anio: [ this.hoy.getFullYear().toString(), [Validators.required, Validators.pattern(/^(19\d{2}|20\d{2}|2100)$/)]],
+        mes: [this.hoy.toLocaleString('es-PE', { month: 'long' }).replace(/^./, m => m.toUpperCase()), Validators.required],
         fechaInicio: ['', Validators.required],
         fechaFin: ['', Validators.required],
     });
 
     onSubmit() {
-        if (!this.myFrom.invalid) {
+        if (this.myFrom.invalid) {
             this.myFrom.markAllAsTouched();
             return;
         }
 
-        // Emitimos los datos al componente padre
         this.aceptar.emit(this.myFrom.value);
 
-        // Reinicia el formulario si quieres
-        // this.myFrom.reset({
-        //     anio: '2025',
-        //     mes: 'Diciembre',
-        //     fechaInicio: '00/00/0000',
-        //     fechaFin: '00/00/0000',
-        // });
+        this.onReset();
+
+        const modal = document.getElementById('my_modal_3') as HTMLDialogElement;
+        modal.close();
+    }
+
+
+
+
+    onReset() {
+        this.myFrom.reset({
+            anio: this.hoy.getFullYear().toString(),
+            mes: this.hoy.toLocaleString('es-PE', { month: 'long' }).replace(/^./, m => m.toUpperCase()),
+            fechaInicio: '',
+            fechaFin: '',
+        });
     }
 
 

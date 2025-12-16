@@ -35,7 +35,7 @@ export class AperturPeriodoComponent {
     visualizarBLoqueo = signal<boolean>(true);
 
     bloqueoEditar = signal<boolean>(true);
-    bloquearCopiarPeriodo = signal<boolean>(true);
+    bloquearCopiarPeriodo = signal<boolean>(false);
 
     planingCompartido = inject(PlaningCompartido);
 
@@ -238,44 +238,59 @@ export class AperturPeriodoComponent {
     }
 
 
-    guardarTodo() {
-        if (!confirm("¿Desea guardar los datos?")) return;
-
-        this.planingCompartido.guardarTodo().subscribe({
-            next: () => {
-                // ✅ Bloqueamos el formulario y volvemos a modo visualización
-                this.planingCompartido.setBloqueoFormEditar(true); // vuelve a bloqueado
-                this.planingService.setBloqueoForm(true);
-                this.bloqueoGuardar.set(true);
-                this.semanaAvance.setCambios(false);
-                this.visualizarBLoqueo.set(true);
-
-                // ✅ Reiniciamos flags de edición/copiar período
-                this.bloqueoEditar.set(false);
-                this.bloquearCopiarPeriodo.set(false);
-
-                // ✅ Limpiamos datos si es necesario
-                this.planingService.setData([]);
-                this.limpiarFormulario();
-
-                // ✅ Mensaje de éxito
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Guardado correctamente',
-                    text: 'Los cambios se han guardado exitosamente.',
-                    confirmButtonColor: '#013B5C'
-                });
-            },
-            error: (err) => {
-                console.error('❌ Error al guardar', err);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'No se pudieron guardar los cambios',
-                    confirmButtonColor: '#013B5C'
-                });
-            }
+    async guardarTodo() {
+        const result = await Swal.fire({
+            title: '¿Desea guardar los datos?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, guardar',
+            cancelButtonText: 'Cancelar',
+            reverseButtons: true
         });
+
+        if (result.isConfirmed) {
+            // Aquí va la lógica de guardado
+            console.log('Datos guardados');
+        } else {
+            console.log('Se canceló el guardado');
+            return;
+        }
+        // ✅ Bloqueamos el formulario y volvemos a modo visualización
+        this.planingCompartido.setBloqueoFormEditar(true); // vuelve a bloqueado
+        this.planingService.setBloqueoForm(true);
+        this.bloqueoGuardar.set(true);
+        this.semanaAvance.setCambios(false);
+        this.visualizarBLoqueo.set(true);
+
+        // ✅ Reiniciamos flags de edición/copiar período
+        this.bloqueoEditar.set(false);
+        this.bloquearCopiarPeriodo.set(false);
+
+        // ✅ Limpiamos datos si es necesario
+        this.planingService.setData([]);
+        this.limpiarFormulario();
+
+        // ✅ Mensaje de éxito
+        Swal.fire({
+            icon: 'success',
+            title: 'Guardado correctamente',
+            text: 'Los cambios se han guardado exitosamente.',
+            confirmButtonColor: '#013B5C'
+        });
+
+        // this.planingCompartido.guardarTodo().subscribe({
+        //     next: () => {
+        //     },
+        //     error: (err) => {
+        //         console.error('❌ Error al guardar', err);
+        //         Swal.fire({
+        //             icon: 'error',
+        //             title: 'Error',
+        //             text: 'No se pudieron guardar los cambios',
+        //             confirmButtonColor: '#013B5C'
+        //         });
+        //     }
+        // });
     }
 
     limpiarFormulario() {
