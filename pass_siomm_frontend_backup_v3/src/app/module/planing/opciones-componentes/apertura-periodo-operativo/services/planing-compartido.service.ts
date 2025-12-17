@@ -96,8 +96,6 @@ export class PlaningCompartido {
         return this.http.post('/api/guardar-todo', payload);
     }
 
-
-    // Método para actualizar los Signals localmente
     guardarEnMemoria() {
         const payload = {
             valores: this._valores(),
@@ -122,56 +120,16 @@ export class PlaningCompartido {
         this._semana_ciclo.set(payload.semana_ciclo);
         this._semana_avance.set(payload.semana_avance);
     }
-
-    // Método para asignar valores
-    // setSemanaCiclo(data: any[]) {
-    //     this._semana_ciclo.set(data);
-    // }
-
-    // setter
-    // setSemanaCiclo(data: any[]) {
-    //     this._semana_ciclo.set(data);
-    // }
-
-    // getter
-    // Signal que almacena las semanas
-    // private _semana_ciclo = signal<any[]>([]);
-
-    // ===============================
-    // GETTER: devuelve el valor actual
-    // ===============================
     getSemanaCiclo(): any[] {
         // Aseguramos que siempre sea un array
         const val = this._semana_ciclo();
         return Array.isArray(val) ? val : [];
     }
 
-    // ===============================
-    // SETTER: actualiza el Signal
-    // ===============================
     setSemanaCiclo(data: any[]) {
         // Aseguramos que siempre se guarde un array
         this._semana_ciclo.set(Array.isArray(data) ? data : []);
     }
-
-    // ===============================
-    // OPCIONAL: guardar en localStorage para persistencia al recargar la página
-    // ===============================
-    // guardarEnLocalStorage() {
-    //     localStorage.setItem('semana_ciclo', JSON.stringify(this._semana_ciclo()));
-    // }
-
-    // cargarDesdeLocalStorage() {
-    //     const raw = localStorage.getItem('semana_ciclo');
-    //     if (raw) {
-    //         try {
-    //             const parsed = JSON.parse(raw);
-    //             this.setSemanaCiclo(Array.isArray(parsed) ? parsed : []);
-    //         } catch (e) {
-    //             console.error('Error cargando semana_ciclo desde localStorage', e);
-    //         }
-    //     }
-    // }
 
     private bloqueoFormEditar = signal(true);
 
@@ -181,6 +139,18 @@ export class PlaningCompartido {
 
     getBloqueoFormEditar() {
         return this.bloqueoFormEditar;
+    }
+
+
+
+    public tableButtonEnabled = signal(false);
+
+    enableTableButton() {
+        this.tableButtonEnabled.set(true);
+    }
+
+    disableTableButton() {
+        this.tableButtonEnabled.set(false);
     }
 
 

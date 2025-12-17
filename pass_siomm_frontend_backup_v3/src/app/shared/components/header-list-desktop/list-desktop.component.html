@@ -1,33 +1,41 @@
-<ul class="menu p-0 m-0 text-base-content w-full space-y-0.5">
+<ul class="menu p-0 m-0 text-base-content w-full">
     @for (ruta of routers(); track $index) {
-    <li class="w-full">
+        <li class="w-full active" routerLinkActive="active">
 
-        <details (toggle)="toggleSubmenu($event, $index)">
-            <summary class="flex items-center gap-2 cursor-pointer m-1" (click)="irRuta(toUrl(ruta.nom_ruta_primer))"
-                style="display: flex; justify-content: space-around;">
+            <!-- BOTÓN PADRE -->
+            <button class="flex items-center gap-4 cursor-pointer m-1 w-full" (click)="toggle($index)">
                 <app-iconos [iconos]="ruta.icon"></app-iconos>
                 <span class="font-bold text-sm w-35">
                     {{ ruta.nom_ruta_primer | replaceUnderscore }}
                 </span>
-            </summary>
+            </button>
 
-            <ul #submenu class="submenu p-2 w-57 bg-[#E6F2ED] overflow-hidden transition-all duration-300 ease-in-out"
-                [style.maxHeight.px]="submenuHeights[$index] || 0" style="border-radius: 10px;">
+            <!-- SUBMENÚ INDENTADO -->
+            <ul class="submenu ml-8 pl-2 border-l-2 border-[#033351]/30
+                                       bg-[#E6F2ED] rounded w-55
+                                       overflow-hidden
+                                       transition-all duration-300 ease-in-out" [ngClass]="{
+                                  'max-h-0 opacity-0 translate-x-[-4px]': !isOpen($index),
+                                  'max-h-96 opacity-100 translate-x-0': isOpen($index)}">
+
+
                 @for (subRuta of ruta.rutas_secundarias; track $index) {
-                <li>
-                    <a class="flex items-center gap-2 p-1 rounded-lg text-xs transition-all duration-300
-                     text-gray-700 hover:text-white bg-transparent hover:bg-[#033351]"
-                        style="font-size: 12px; font-weight: bold;"
-                        [routerLink]="['planeamiento', toUrl(subRuta.nom_ruta_secun)]">
-                        <span class="transition-all duration-300">
+                    <li routerLinkActive="active" class="flex ">
+                        <a class="flex items-center gap-2 p-1 text-xs font-bold
+                                                     transition-colors duration-200
+                                                     text-gray-700 hover:text-white
+                                                     hover:bg-[#033351] rounded"   (click)="closeDrawer()"
+                            [routerLink]="['planeamiento', toUrl(subRuta.nom_ruta_secun)]">
                             {{ subRuta.nom_ruta_secun | replaceUnderscore }}
-                        </span>
-                    </a>
-                </li>
+                        </a>
+                    </li>
                 }
             </ul>
-        </details>
 
-    </li>
+        </li>
     }
 </ul>
+
+
+
+

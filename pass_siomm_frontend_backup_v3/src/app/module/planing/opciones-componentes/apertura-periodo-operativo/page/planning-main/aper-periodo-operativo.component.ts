@@ -32,9 +32,15 @@ export class AperturPeriodoComponent {
 
     private utils = FormUtils;
     bloqueo = signal<boolean>(true);
+
+
+
     visualizarBLoqueo = signal<boolean>(true);
+    bloqueoGuardar = signal(true);
 
     bloqueoEditar = signal<boolean>(true);
+
+
     bloquearCopiarPeriodo = signal<boolean>(false);
 
     planingCompartido = inject(PlaningCompartido);
@@ -49,7 +55,6 @@ export class AperturPeriodoComponent {
     _getDate = signal<AperPeriodo[]>([]);
 
     textoBoton = 'Bloqueado';
-    bloqueoGuardar = signal(true);
     prevMonth = '';   // ← GUARDA el mes anterior
 
 
@@ -154,6 +159,8 @@ export class AperturPeriodoComponent {
         this.prevMonth = newValue;
         this.planingService.setBloqueoForm(true);
         this.visualizarBLoqueo.set(true);
+        this.bloqueoEditar = signal<boolean>(true);
+
         this.dataMes.set(newValue);
         this.loadingService.loadingOn();
         const anio = this.dataAnio();
@@ -183,9 +190,12 @@ export class AperturPeriodoComponent {
 
 
 
-
+    //   unlockTableButton() {
+    //     this.buttonState.enableTableButton();
+    //   }
 
     toggleBloqueo() {
+
         this.semanaAvance.setNuevoMode(true);  // ← ahora sí
         this.planingService.setData([]);   // si deseas limpiar
         this.planingService.setBloqueoForm(false);  // ← SIEMPRE desbloquear
@@ -200,6 +210,15 @@ export class AperturPeriodoComponent {
 
         this.bloquearCopiarPeriodo.set(true);
         this.bloqueo.set(true);
+
+
+        /**bloqueo boton flotante */
+        this.planingCompartido.enableTableButton();
+        console.log(
+            "boton presionado"
+        )
+
+
     }
 
 
@@ -230,7 +249,7 @@ export class AperturPeriodoComponent {
         this.bloqueo = signal<boolean>(true);
         this.visualizarBLoqueo = signal<boolean>(true);
 
-        this.bloqueoEditar = signal<boolean>(true);
+        // this.bloqueoEditar = signal<boolean>(true);
 
         this.bloquearCopiarPeriodo = signal<boolean>(true);
 
@@ -241,11 +260,22 @@ export class AperturPeriodoComponent {
     async guardarTodo() {
         const result = await Swal.fire({
             title: '¿Desea guardar los datos?',
+            text: 'Los cambios se guardarán de forma permanente.',
             icon: 'question',
             showCancelButton: true,
             confirmButtonText: 'Sí, guardar',
             cancelButtonText: 'Cancelar',
-            reverseButtons: true
+            confirmButtonColor: '#00426F',   // verde
+            cancelButtonColor: '#9E9E9E',    // gris
+            reverseButtons: true,
+            focusCancel: true,
+            backdrop: `rgba(0,0,0,0.4)`,
+            customClass: {
+                popup: 'rounded-xl',
+                title: 'text-lg font-bold',
+                confirmButton: 'px-6 py-2 rounded-lg font-semibold',
+                cancelButton: 'px-6 py-2 rounded-lg font-semibold'
+            }
         });
 
         if (result.isConfirmed) {
@@ -263,8 +293,13 @@ export class AperturPeriodoComponent {
         this.visualizarBLoqueo.set(true);
 
         // ✅ Reiniciamos flags de edición/copiar período
-        this.bloqueoEditar.set(false);
+        this.bloqueoEditar.set(true);
         this.bloquearCopiarPeriodo.set(false);
+
+
+        // BOTON GUARDAR
+        this.planingCompartido.disableTableButton();
+
 
         // ✅ Limpiamos datos si es necesario
         this.planingService.setData([]);

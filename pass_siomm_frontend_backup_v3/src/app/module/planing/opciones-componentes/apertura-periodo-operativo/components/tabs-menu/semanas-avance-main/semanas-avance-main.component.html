@@ -50,40 +50,44 @@
                                 @else if (semanas.controls.length > 0) {
 
                                 @for (item of semanas.controls; track $index; let i = $index) {
-                                <tr [formGroupName]="i"
-                                    class="even:bg-gray-50 odd:bg-white hover:bg-blue-50/70 transition duration-150">
+                                    <tr [formGroupName]="i"
+                                        class="even:bg-gray-50 odd:bg-white hover:bg-blue-50/70 transition duration-150">
 
-                                    @for (col of datosColumna(); track $index) {
-                                    <td class="border-x border-gray-300 p-1.5 w-40">
-                                        <div
-                                            class="flex items-center border border-gray-300 rounded-md px-2 py-1 bg-white shadow-sm">
-                                            <input [type]="col.type" [formControlName]="col.name"
-                                                class="w-full bg-transparent outline-none text-gray-800 placeholder-gray-400 text-sm font-medium disabled:opacity-30 disabled:cursor-not-allowed"  />
-
-                                        </div>
+                                        @for (col of datosColumna(); track $index) {
+                                            <td class="border-x border-gray-300 p-1.5 w-40">
+                                                <div
+                                                    class="flex items-center border border-gray-300 rounded-md px-2 py-1 bg-white shadow-sm">
+                                                    <input [type]="col.type" [formControlName]="col.name"
+                                                        class="w-full  bg-transparent outline-none text-gray-800 placeholder-gray-400 text-sm font-medium disabled:opacity-30 disabled:cursor-not-allowed" />
 
 
-                                    </td>
+                                                                                                <!-- @if ( formUtils.isValidField(myForm , semanas.controls) ) {
+                                                                                                    <div class="form-text text-danger text-[red] text-xs">
+                                                                                                        {{ formUtils.getFiledError(myForm, col.name) }}
+                                                                                                    </div>
+                                                                                                } -->
+                                                </div>
+                                            </td>
+                                        }
+
+                                        <!-- [disabled]="item.get('accion')?.disabled" -->
+                                        <td class="border-x border-gray-300 p-1.5 w-24 text-center">
+                                            <button type="button" (click)="eliminarFila(item, i)"
+                                                [disabled]="planingCompartido.getBloqueoFormEditar()()"
+                                                class="flex items-center justify-center gap-1 mx-auto bg-[#A3361D] hover:bg-red-700 text-white px-2 py-1.5 rounded-md shadow-sm transition-all duration-200 font-medium text-xs disabled:opacity-30 disabled:cursor-not-allowed">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                    stroke-linecap="round" stroke-linejoin="round">
+                                                    <polyline points="3 6 5 6 21 6"></polyline>
+                                                    <path
+                                                        d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6m5 0V4a2 2 0 0 1 2-2h0a2 2 0 0 1 2 2v2">
+                                                    </path>
+                                                </svg>
+                                                <b>Eliminar</b>
+                                            </button>
+                                        </td>
+                                    </tr>
                                     }
-
-                                    <!-- [disabled]="item.get('accion')?.disabled" -->
-                                    <td class="border-x border-gray-300 p-1.5 w-24 text-center">
-                                        <button type="button" (click)="eliminarFila(item, i)"     [disabled]="planingCompartido.getBloqueoFormEditar()()"
-
-                                            class="flex items-center justify-center gap-1 mx-auto bg-[#A3361D] hover:bg-red-700 text-white px-2 py-1.5 rounded-md shadow-sm transition-all duration-200 font-medium text-xs disabled:opacity-30 disabled:cursor-not-allowed">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                stroke-linecap="round" stroke-linejoin="round">
-                                                <polyline points="3 6 5 6 21 6"></polyline>
-                                                <path
-                                                    d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6m5 0V4a2 2 0 0 1 2-2h0a2 2 0 0 1 2 2v2">
-                                                </path>
-                                            </svg>
-                                            <b>Eliminar</b>
-                                        </button>
-                                    </td>
-                                </tr>
-                                }
                                 }
 
                                 @else {
@@ -99,10 +103,10 @@
                         </table>
                     </div>
                     <div>
-
                         <!-- [disabled]="bloqueoBotonNuevo()" -->
                         <button type="button" (click)="agregarFilas()"
-                            class="flex items-center space-x-2 px-4 py-2 transition duration-300 w-30 disabled:opacity-30 disabled:cursor-not-allowed"
+                            [disabled]="!planingCompartido.tableButtonEnabled()"
+                            class="flex flex-start space-x-2 transition duration-300 w-10 disabled:opacity-30 disabled:cursor-not-allowed"
                             title="Agregar registro">
                             <img src="icono-agregar.png"
                                 class="object-contain w-20 h-20 transition-transform duration-300 hover:scale-110 cursor-pointer"

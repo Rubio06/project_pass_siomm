@@ -18,14 +18,12 @@ import 'sweetalert2/src/sweetalert2.scss'
     styleUrl: './semanas-avance-main.component.css',
 })
 export class SemanasAvanceMainComponent {
-
-
     columnas = signal<thTitulos[]>(TH_SEMANA_AVANCE);
     titulo = this.columnas().map(titulo => titulo.titulo);
 
     planingCompartido = inject(PlaningCompartido);
 
-    utils = FormUtils;
+    formUtils = FormUtils;
 
     semanasAvanceMainService = inject(SemanasAvanceMainService);
 
@@ -34,12 +32,8 @@ export class SemanasAvanceMainComponent {
 
     private cd = inject(ChangeDetectorRef);
 
-    // // Configuración de los datos de la columna
     datosColumna = signal<EstructuraDatos[]>(DATOS_SEMANA_AVANCE)
 
-    // ===============================
-    //   FORMULARIO PRINCIPAL
-    // ===============================
     myForm = this.fb.group({
         semanas: this.fb.array([]),
     });
@@ -48,48 +42,12 @@ export class SemanasAvanceMainComponent {
         return this.myForm.get('semanas') as FormArray;
     }
 
-    // ===============================
-    //   SIGNALS
-    // ===============================
     loading = signal(false);
 
     bloqueoBotonNuevo = signal<boolean>(true);
 
 
     constructor() {
-
-        /**
-         * 📌 CARGA INICIAL (solo 1 vez)
-         * - No repite llamadas
-         * - No usa setTimeout
-         * - No entra en bucles
-         */
-        // effect(() => {
-        //     const data = this.planingService.dataRoutes();
-
-        //     if (!data) return;
-
-        //     if (this.semanas.length === 0) {
-        //         const semanasBackend = data.data?.semana_avance ?? [];
-        //         this.semanas.clear();
-
-        //         this.loadSemanas(semanasBackend);
-
-        //         // Si tienes otros datos que cargar del backend en el formulario, aquí van
-        //         this.myForm.patchValue(data);
-        //     }
-        // });
-
-        // effect(() => {
-        //     const data = this.planingService.dataRoutes();
-        //     const semanas = data?.data?.semana_avance || [];
-
-        //     setTimeout(() => {
-        //         this.loadSemanas(semanas);           // refresca FormArray
-        //         this.myForm.patchValue(data || {});   // actualiza el formulario
-        //         this.cd.detectChanges();              // opcional
-        //     }, 0);
-        // });
 
         effect(() => {
             const data = this.planingService.dataRoutes();
@@ -104,48 +62,25 @@ export class SemanasAvanceMainComponent {
 
         effect(() => {
 
-            // this.planingCompartido.setBloqueoFormEditar(true);
-
-            const bloqueado = this.planingCompartido.getBloqueoFormEditar()();
-
-            console.log("bloqueo " + bloqueado);
-            bloqueado
-                ? this.myForm.disable({ emitEvent: false })
-                : this.myForm.enable({ emitEvent: false });
+            this.bloqueoEliminar();
         });
-
-        /**
-         * 📌 BLOQUEO CENTRALIZADO (habilitar / deshabilitar formulario)
-         */
-        // effect(() => {
-        //     const bloqueado = this.planingService.bloqueoForm();
-        //     bloqueado ? this.myForm.disable() : this.myForm.enable();
-        // });
-
-        // effect(() => {
-        //     if (!this.planingService.bloqueoForm()) {
-        //         this.semanas.controls.forEach(control => control.enable());
-        //     } else {
-        //         this.semanas.controls.forEach(control => control.disable());
-        //     }
-        // });
     }
 
+    bloqueoEliminar() {
 
+        const bloqueado = this.planingCompartido.getBloqueoFormEditar()();
 
-
-    // =====================================================
-    //   MÉTODOS PARA MANEJAR SEMANAS
-    // =====================================================
+        console.log("bloquo de boton eliminar" + bloqueado);
+        bloqueado
+            ? this.myForm.disable({ emitEvent: false })
+            : this.myForm.enable({ emitEvent: false });
+    }
 
     resetForm() {
         this.myForm.reset();
         this.semanas.clear();
     }
 
-    /**
-     * CARGA DESDE BACKEND
-     */
     loadSemanas(data: MaeSemanaAvance[]) {
         this.semanas.clear();
 
@@ -157,36 +92,30 @@ export class SemanasAvanceMainComponent {
                     fec_fin: [{ value: FormUtils.formatDate(item.fec_fin), disabled: true }],
                     desc_semana: [{ value: item.desc_semana, disabled: true }],
                     accion: [{ value: '', disabled: true }]
-
                 })
             );
         });
     }
 
-    /**
-     * AÑADIR FILA NUEVA (EDITABLE)
-     */
+
     agregarFilas() {
+        this.planingCompartido.setBloqueoFormEditar(false);
 
         this.semanas.push(
             this.fb.group({
-                num_semana: ['', Validators.required],
+                num_semana: ['', Validators.required, Validators.min(1), Validators.max(7), Validators.pattern(/^[1-7]$/)],
                 fec_ini: ['', Validators.required],
                 fec_fin: ['', Validators.required],
-                desc_semana: ['', Validators.required],
+                desc_semana: ['', Validators.required]
             })
         );
     }
-
-    /**
-     * ELIMINAR FILA
-     */
-
 
 
     async eliminarFila(data: any, index: number) {
         // const semana = data.getRawValue ? data.getRawValue() : data.value;
 
+        console.log("el indice es " + index)
 
 
         // const payload = {

@@ -130,7 +130,9 @@ export class FormUtils {
                     return `Valor minimo de  ${error['min'].min}`;
 
                 case 'pattern':
-                    return 'Debe colocar un año correcto';
+                    // Puedes usar requiredPattern o dar un mensaje genérico según el control
+                    const pattern = error['pattern'].requiredPattern;
+                    return `Formato inválido. Debe cumplir con: ${pattern}`;
             }
         }
         return null;

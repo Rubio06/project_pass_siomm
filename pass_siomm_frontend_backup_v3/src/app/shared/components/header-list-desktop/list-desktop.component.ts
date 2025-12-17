@@ -1,9 +1,6 @@
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { Component, inject, input, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
-
 import { IconosComponent } from './iconos/iconos';
 import { MainPagePipe } from 'src/app/module/main/pipe/main-page-pipe';
 import { AuthService } from 'src/app/module/auth/services/auth.service';
@@ -13,7 +10,7 @@ import { PlanningService } from 'src/app/module/planing/opciones-componentes/ape
 
 @Component({
     selector: 'app-list-desktop',
-    imports: [CommonModule, MainPagePipe, IconosComponent, RouterLink, BrowserAnimationsModule  ],
+    imports: [CommonModule, MainPagePipe, IconosComponent, RouterLink, RouterLinkActive],
     templateUrl: './list-desktop.component.html',
     styleUrl: './list-desktop.component.css',
 })
@@ -93,22 +90,23 @@ export class ListDesktopComponent {
             .replace(/\s+/g, '-');                              // espacios → guiones
     }
 
-    submenuHeights: number[] = [];
+    openIndex: number | null = null;
 
-    toggleSubmenu(event: Event, index: number) {
-        const details = event.target as HTMLDetailsElement;
-        const ul = details.querySelector('ul');
-
-        console.log(ul)
-
-        if (!ul) return;
-
-        if (details.open) {
-            // Abrir: guardar altura real para transición
-            this.submenuHeights[index] = ul.scrollHeight;
-        } else {
-            // Cerrar: poner altura 0
-            this.submenuHeights[index] = 0;
-        }
+    toggle(index: number) {
+        this.openIndex = this.openIndex === index ? null : index;
     }
+
+    isOpen(index: number): boolean {
+        return this.openIndex === index;
+    }
+
+
+    closeDrawer() {
+        const drawer = document.getElementById('my-drawer-4') as HTMLInputElement;
+        if (drawer) {
+            drawer.checked = false;
+        }
+
+    }
+    
 }

@@ -12,4 +12,14 @@ import { AuthService } from 'src/app/module/auth/services/auth.service';
 })
 export class MainPageComponent {
     authService = inject(AuthService);
+
+    sidebarOpen = false;
+
+    toggleSidebar() {
+        this.sidebarOpen = !this.sidebarOpen;
+    }
+
+    closeSidebar() {
+        this.sidebarOpen = false;
+    }
 }
