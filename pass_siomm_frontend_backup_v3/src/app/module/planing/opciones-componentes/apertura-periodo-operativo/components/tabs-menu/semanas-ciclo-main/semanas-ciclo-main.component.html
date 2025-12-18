@@ -61,12 +61,17 @@
                                             <input [type]="col.type" [formControlName]="col.name"
                                                 class="w-full bg-transparent outline-none text-gray-800 placeholder-gray-400 text-sm font-medium disabled:opacity-30 disabled:cursor-not-allowed " />
                                         </div>
+                                        @if ( formUtils.isValidFieldInArray(item, col.name) ) {
+                                            <span class="text-[10px] text-error block">
+                                                <b>{{formUtils.getFiledErrorArray(item, col.name)}}</b>
+                                            </span>
+                                        }
                                     </td>
                                     }
-                                                                                <!-- [disabled]="item.get('accion')?.disabled" -->
 
                                     <td class="border-x border-gray-300 p-1.5 w-24 text-center">
-                                        <button type="button" (click)="eliminarFila(item, i)"  [disabled]="planingCompartido.getBloqueoFormEditar()()"
+                                        <button type="button" (click)="eliminarFila(item, i)"
+                                            [disabled]="planingCompartido.getBloqueoFormEditar()()"
                                             class="flex items-center justify-center gap-1 mx-auto bg-[#A3361D] hover:bg-red-700 text-white px-2 py-1.5 rounded-md shadow-sm transition-all duration-200 font-medium text-xs disabled:opacity-30 disabled:cursor-not-allowed">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -97,7 +102,7 @@
                         </table>
                     </div>
                     <div>
-                        <button type="button" (click)="agregarFilas()" [disabled]="bloqueoBotonNuevo()"
+                        <button type="button" (click)="agregarFilas()" [disabled]="!planingCompartido.tableButtonEnabled()"
                             class="flex items-center space-x-2 px-4 py-2 transition duration-300 w-30 disabled:opacity-30 disabled:cursor-not-allowed"
                             title="Agregar registro">
                             <img src="icono-agregar.png"

@@ -19,13 +19,13 @@ import { SemanasAvanceMainService } from '../../../services/semanas-avance-main/
     styleUrl: './semanas-ciclo-main.component.css',
 })
 export class SemanasCicloMainComponent {
-
     fb = inject(FormBuilder);
     planingService = inject(PlanningService);
 
     myForm = this.fb.group({
         semanas: this.fb.array([])
     });
+
     columnas = signal<thTitulos[]>(TH_SEMANA_CICLO_MINADO);
     titulo = this.columnas().map(titulo => titulo.titulo);
 
@@ -34,7 +34,7 @@ export class SemanasCicloMainComponent {
     planingCompartido = inject(PlaningCompartido);
     semanasAvanceMainService = inject(SemanasAvanceMainService);
 
-    private utils = FormUtils;
+    formUtils = FormUtils;
 
     datosColumna = signal<EstructuraDatos[]>(DATOS_COLUMNA_SEMANA_CICLO_MINADO)
 
@@ -46,81 +46,34 @@ export class SemanasCicloMainComponent {
 
 
     private cd = inject(ChangeDetectorRef);
-    
+
     bloqueoBotonNuevo = signal<boolean>(true);
 
     constructor() {
 
-        /**
-         * Carga inicial / recarga si cambian dataRoutes
-         * 🔥 YA NO USA SETTIMEOUT
-         * 🔥 NO SE DISPARA EN LOOP
-         */
-
-        // effect(() => {
-        //     const data = this.planingService.dataRoutes();
-        //     const semanas = data?.data?.semana_ciclo || [];
-
-        //     setTimeout(() => {
-        //         this.loadSemanas(semanas);           // refresca FormArray
-        //         this.myForm.patchValue(data || {});   // actualiza el formulario
-        //         this.cd.detectChanges();              // opcional
-        //     }, 0);
-        // });
-
-
         effect(() => {
-            const data = this.planingService.dataRoutes();
+            const data = this.planingCompartido.dataRoutes();
             const semanas = data?.data?.semana_ciclo || [];
 
             this.loadSemanas(semanas);
             this.myForm.patchValue(data || {}, { emitEvent: false });
-            this.cd.detectChanges();              // opcional
-
+            this.cd.detectChanges();
         });
-
-        /**
-         * Manejo de bloqueo centralizado
-         */
-        // effect(() => {
-        //     const bloqueado = this.planingService.bloqueoForm();
-
-        //     if (bloqueado) this.myForm.disable();
-        //     else this.myForm.enable();
-        // });
-
-        // effect(() => {
-        //     if (!this.planingService.bloqueoForm()) {
-        //         this.semanas.controls.forEach(control => control.enable());
-        //     } else {
-        //         this.semanas.controls.forEach(control => control.disable());
-        //     }
-        // });
-
 
         effect(() => {
-            const bloqueado = this.planingCompartido.getBloqueoFormEditar()();
 
-            bloqueado
-                ? this.myForm.disable({ emitEvent: false })
-                : this.myForm.enable({ emitEvent: false });
+            this.bloqueoEliminar();
         });
-
-        // effect(() => {
-        //     if (!this.planingCompartido.getBloqueoFormEditar()) {
-        //         this.semanas.controls.forEach(control => control.enable());
-        //     } else {
-        //         this.semanas.controls.forEach(control => control.disable());
-        //     }
-        // });
 
     }
 
+    bloqueoEliminar() {
+        const bloqueado = this.planingCompartido.getBloqueoFormEditar()();
 
-
-    // ===============================
-    //   METODOS CENTRALIZADOS
-    // ===============================
+        bloqueado
+            ? this.myForm.disable({ emitEvent: false })
+            : this.myForm.enable({ emitEvent: false });
+    }
 
     resetForm() {
         this.myForm.reset();
@@ -131,17 +84,14 @@ export class SemanasCicloMainComponent {
     loadSemanas(data: any[]) {
         this.semanas.clear();  // limpia todo
 
-
-        const semanasArray = Array.isArray(data) ? data : [];
-
-        semanasArray.forEach(item => {
+        data.forEach((item) => {
             this.semanas.push(
                 this.fb.group({
-                    num_semana: [{ value: item.num_semana || '', disabled: true }],
-                    fec_ini: [{ value: FormUtils.formatDate(item.fec_ini) || '', disabled: true }],
-                    fec_fin: [{ value: FormUtils.formatDate(item.fec_fin) || '', disabled: true }],
-                    desc_semana: [{ value: item.desc_semana || '', disabled: true }],
-                    accion: [{ value: item.accion || '', disabled: true }]
+                    num_semana: [{ value: item.num_semana, disabled: true }],
+                    fec_ini: [{ value: FormUtils.formatDate(item.fec_ini), disabled: true }],
+                    fec_fin: [{ value: FormUtils.formatDate(item.fec_fin), disabled: true }],
+                    desc_semana: [{ value: item.desc_semana, disabled: true }],
+                    accion: [{ value: '', disabled: true }]
                 })
             );
         });
@@ -153,15 +103,18 @@ export class SemanasCicloMainComponent {
     }
 
     agregarFilas() {
-        // const correlativo = this.semanas.length + 1;
+        if (this.semanas.length >= 1) {
+            return;
+        }
+
+        this.planingCompartido.setBloqueoFormEditar(false);
+
         this.semanas.push(
             this.fb.group({
-                num_semana: ['', Validators.required],
-                fec_ini: ['', Validators.required],
-                fec_fin: ['', Validators.required],
-                desc_semana: ['', Validators.required],
-                accion: [{ value: '', disabled: true }]
-
+                num_semana: ['', [Validators.required, Validators.min(1), Validators.max(7), Validators.pattern(/^[1-7]$/)]],
+                fec_ini: ['', [Validators.required, Validators.pattern(/^(0[1-9]|[12]\d|3[01])\/(0[1-9]|1[0-2])\/(19\d{2}|20\d{2}|2100)$/)]],
+                fec_fin: ['', [Validators.required, Validators.pattern(/^(0[1-9]|[12]\d|3[01])\/(0[1-9]|1[0-2])\/(19\d{2}|20\d{2}|2100)$/)]],
+                desc_semana: ['', [Validators.required]]
             })
         );
     }
@@ -169,47 +122,47 @@ export class SemanasCicloMainComponent {
     async eliminarFila(data: any, index: number) {
         const semana = data.getRawValue ? data.getRawValue() : data.value;
 
-        const payload = {
-            num_semana: semana.num_semana,
-            fec_ini: this.utils.convertToISO(semana.fec_ini),
-            fec_fin: this.utils.convertToISO(semana.fec_fin),
-            desc_semana: semana.desc_semana
-        };
+        this.semanas.removeAt(index);
+        this.cd.detectChanges();
+
+
+        // opcional
+        // const payload = {
+        //     num_semana: semana.num_semana,
+        //     fec_ini: this.formUtils.convertToISO(semana.fec_ini),
+        //     fec_fin: this.formUtils.convertToISO(semana.fec_fin),
+        //     desc_semana: semana.desc_semana
+        // };
 
         // 👉 Confirmación usando tu utilitario
-        const confirmado = await this.utils.confirmarEliminacion();
-        if (!confirmado) {
-            this.utils.alertaNoEliminado();
-            return;
-        }
+        // const confirmado = await this.formUtils.confirmarEliminacion();
+        // if (!confirmado) {
+        //     this.formUtils.alertaNoEliminado();
+        //     return;
+        // }
 
-        this.semanasAvanceMainService.eliminarCiclo(payload).subscribe({
-            next: (res: any) => {
-                if (res.success) {
+        // this.semanasAvanceMainService.eliminarCiclo(payload).subscribe({
+        //     next: (res: any) => {
+        //         if (res.success) {
 
-                    // 👉 Elimina del FormArray
+        //             // 👉 Elimina del FormArray
 
-                    // 👉 Muestra alerta de éxito desde el utilitario
-                    this.utils.alertaEliminado(res.message);
-                    this.semanas.removeAt(index);
-                    this.cd.detectChanges();              // opcional
+        //             // 👉 Muestra alerta de éxito desde el utilitario
+        //             this.formUtils.alertaEliminado(res.message);
 
-                    this.planingService.setBloqueoForm(false);
+        //             this.planingService.setBloqueoForm(false);
 
 
-                } else {
-                    this.utils.alertaEliminado(res.message);
+        //         } else {
+        //             this.formUtils.alertaEliminado(res.message);
 
-                }
-            },
-            error: (err) => this.utils.mensajeError(err.message)
-        });
+        //         }
+        //     },
+        //     error: (err) => this.formUtils.mensajeError(err.message)
+        // });
     }
 
-
-
     ngOnInit() {
-
         this.myForm.valueChanges.subscribe(val => {
             const filas = this.semanas.getRawValue();
 
@@ -218,7 +171,6 @@ export class SemanasCicloMainComponent {
     }
 
     hasPendingChanges(): boolean {
-        console.log("entra al metodo ")
         return this.semanasAvanceMainService.getCambios(); // revisa los cambios pendientes
     }
 }

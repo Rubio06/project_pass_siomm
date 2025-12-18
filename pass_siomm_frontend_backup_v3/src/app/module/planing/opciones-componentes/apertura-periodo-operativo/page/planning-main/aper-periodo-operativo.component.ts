@@ -54,15 +54,15 @@ export class AperturPeriodoComponent {
 
     _getDate = signal<AperPeriodo[]>([]);
 
-    textoBoton = 'Bloqueado';
+    // textoBoton = 'Bloqueado';
     prevMonth = '';   // ← GUARDA el mes anterior
 
 
 
     ngOnDestroy() {
-        this.planingService.setData(null);
+        this.planingCompartido.setData(null);
         this.semanaAvance.setPeriodo("", "");
-        this.planingService.setBloqueoForm(true);  // ← SIEMPRE desbloquear
+        this.planingCompartido.setBloqueoForm(true);  // ← SIEMPRE desbloquear
     }
 
     constructor() {
@@ -71,9 +71,9 @@ export class AperturPeriodoComponent {
         this.getYear();
 
 
-        effect(() => {
-            this.textoBoton = this.planingService.bloqueo() ? 'Bloqueado' : 'Desbloqueado';
-        });
+        // effect(() => {
+        //     this.textoBoton = this.planingCompartido.bloqueo() ? 'Bloqueado' : 'Desbloqueado';
+        // });
     }
 
 
@@ -131,10 +131,6 @@ export class AperturPeriodoComponent {
         })
     }
 
-
-
-
-
     sendMonth(event: Event) {
         const select = event.target as HTMLSelectElement;
         const newValue = select.value;
@@ -157,9 +153,9 @@ export class AperturPeriodoComponent {
         }
 
         this.prevMonth = newValue;
-        this.planingService.setBloqueoForm(true);
+        this.planingCompartido.setBloqueoForm(true);
         this.visualizarBLoqueo.set(true);
-        this.bloqueoEditar = signal<boolean>(true);
+        // this.bloqueoEditar = signal<boolean>(true);
 
         this.dataMes.set(newValue);
         this.loadingService.loadingOn();
@@ -172,7 +168,9 @@ export class AperturPeriodoComponent {
                     this.hasError.set('No se encontraron rutas disponibles.');
                 } else {
                     this.hasError.set(null);
-                    this.planingService.setData(data);
+
+
+                    this.planingCompartido.setData(data);
                     this.loadingService.loadingOff();
                     this.bloqueo.set(false);
 
@@ -188,17 +186,11 @@ export class AperturPeriodoComponent {
         });
     }
 
-
-
-    //   unlockTableButton() {
-    //     this.buttonState.enableTableButton();
-    //   }
-
     toggleBloqueo() {
 
         this.semanaAvance.setNuevoMode(true);  // ← ahora sí
-        this.planingService.setData([]);   // si deseas limpiar
-        this.planingService.setBloqueoForm(false);  // ← SIEMPRE desbloquear
+        this.planingCompartido.setData([]);   // si deseas limpiar
+        this.planingCompartido.setBloqueoForm(false);  // ← SIEMPRE desbloquear
         this.bloqueoGuardar.set(false);
         this.visualizarBLoqueo.set(false);
         // this.utils.alertaNoEliminado();
@@ -221,11 +213,8 @@ export class AperturPeriodoComponent {
 
     }
 
-
-
-
     visualizar() {
-        this.planingService.setBloqueoForm(true);  // ← SIEMPRE desbloquear
+        this.planingCompartido.setBloqueoForm(true);  // ← SIEMPRE desbloquear
         this.bloqueo.set(false);
         this.semanaAvance.setCambios(false)
         this.visualizarBLoqueo.set(true);
@@ -278,6 +267,7 @@ export class AperturPeriodoComponent {
             }
         });
 
+
         if (result.isConfirmed) {
             // Aquí va la lógica de guardado
             console.log('Datos guardados');
@@ -287,7 +277,7 @@ export class AperturPeriodoComponent {
         }
         // ✅ Bloqueamos el formulario y volvemos a modo visualización
         this.planingCompartido.setBloqueoFormEditar(true); // vuelve a bloqueado
-        this.planingService.setBloqueoForm(true);
+        this.planingCompartido.setBloqueoForm(true);
         this.bloqueoGuardar.set(true);
         this.semanaAvance.setCambios(false);
         this.visualizarBLoqueo.set(true);
@@ -302,7 +292,7 @@ export class AperturPeriodoComponent {
 
 
         // ✅ Limpiamos datos si es necesario
-        this.planingService.setData([]);
+        this.planingCompartido.setData([]);
         this.limpiarFormulario();
 
         // ✅ Mensaje de éxito
@@ -313,19 +303,20 @@ export class AperturPeriodoComponent {
             confirmButtonColor: '#013B5C'
         });
 
-        // this.planingCompartido.guardarTodo().subscribe({
-        //     next: () => {
-        //     },
-        //     error: (err) => {
-        //         console.error('❌ Error al guardar', err);
-        //         Swal.fire({
-        //             icon: 'error',
-        //             title: 'Error',
-        //             text: 'No se pudieron guardar los cambios',
-        //             confirmButtonColor: '#013B5C'
-        //         });
-        //     }
-        // });
+        this.planingCompartido.guardarTodo().subscribe({
+            next: () => {
+
+            },
+            error: (err) => {
+                console.error('❌ Error al guardar', err);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'No se pudieron guardar los cambios',
+                    confirmButtonColor: '#013B5C'
+                });
+            }
+        });
     }
 
     limpiarFormulario() {
@@ -339,8 +330,6 @@ export class AperturPeriodoComponent {
         const modal = document.getElementById('my_modal_3') as HTMLDialogElement;
         modal.showModal();
     }
-
-
 
     recibirDatos(event: any) {
         console.log("Datos recibidos", event)

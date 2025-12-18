@@ -56,14 +56,9 @@
                                         <select formControlName="cod_metexp"
                                             class="select-xs disabled:opacity-30 disabled:bg-gray-100 disabled:cursor-not-allowed mx-auto select text-sm font-medium outline-none flex items-center border border-gray-300 rounded-lg px-2 py-1 bg-white shadow-sm hover:shadow-md transition-shadow duration-300 ease-in-out focus:border-[#033351] focus:ring-1 focus:ring-[rgb(3,102,157)] focus:ring-opacity-40 w-full">
                                             @for (opt of cod_metexp(); track $index) {
-                                            <option [ngValue]="opt.nom_metexp">{{ opt.cod_metexp }} {{ opt.nom_metexp }}</option>
+                                                <option [ngValue]="opt.nom_metexp">{{ opt.cod_metexp }} {{ opt.nom_metexp }}</option>
                                             }
                                         </select>
-                                        <!-- @if (formUtils.esInvalido(semanas, i, 'cod_metexp')) {
-                                        <p class="text-red-600 text-xs mt-0.5 text-left ml-1">
-                                            {{ formUtils.obtenerMensajeError(semanas, i, 'cod_metexp') }}
-                                        </p>
-                                        } -->
                                     </td>
 
                                     <td class="border-x border-gray-300 p-1.5 w-25">
@@ -73,12 +68,13 @@
                                                             focus-within:ring-opacity-40 focus-within:shadow-md">
                                             <input type="text" formControlName="nom_metexp"
                                                 class="w-full disabled:opacity-30 disabled:cursor-not-allowed bg-transparent outline-none text-gray-800 placeholder-gray-400 text-xs font-medium" />
+
                                         </div>
-                                        <!-- @if (formUtils.esInvalido(semanas, i, 'nom_metexp')) {
-                                        <p class="text-red-600 text-xs mt-0.5 text-left ml-1">
-                                            {{ formUtils.obtenerMensajeError(semanas, i, 'nom_metexp') }}
-                                        </p>
-                                        } -->
+                                            @if ( formUtils.isValidFieldInArray(item, "nom_metexp") ) {
+                                                <span class="text-[10px] text-error block">
+                                                    <b>{{formUtils.getFiledErrorArray(item, "nom_metexp")}}</b>
+                                                </span>
+                                            }
                                     </td>
 
                                     <td class="border-x border-gray-300 p-1.5 w-25">
@@ -88,11 +84,6 @@
                                             <option [value]="opt.label">{{ opt.label }}</option>
                                             }
                                         </select>
-                                        <!-- @if (formUtils.esInvalido(semanas, i, 'ind_calculo_dilucion')) {
-                                        <p class="text-red-600 text-xs mt-0.5 text-left ml-1">
-                                            {{ formUtils.obtenerMensajeError(semanas, i, 'ind_calculo_dilucion') }}
-                                        </p>
-                                        } -->
                                     </td>
 
                                     <td class="border-x border-gray-300 p-1.5 w-25">
@@ -102,11 +93,6 @@
                                             <option [value]="opt.label">{{ opt.label }}</option>
                                             }
                                         </select>
-                                        <!-- @if (formUtils.esInvalido(semanas, i, 'ind_calculo_leyes_min')) {
-                                        <p class="text-red-600 text-xs mt-0.5 text-left ml-1">
-                                            {{ formUtils.obtenerMensajeError(semanas, i, 'ind_calculo_leyes_min') }}
-                                        </p>
-                                        } -->
                                     </td>
 
                                     <td class="border-x border-gray-300 p-1.5 w-25">
@@ -116,11 +102,6 @@
                                             <option [value]="opt.label">{{ opt.label }}</option>
                                             }
                                         </select>
-                                        <!-- @if (formUtils.esInvalido(semanas, i, 'ind_act')) {
-                                        <p class="text-red-600 text-xs mt-0.5 text-left ml-1">
-                                            {{ formUtils.obtenerMensajeError(semanas, i, 'ind_act') }}
-                                        </p>
-                                        } -->
                                     </td>
 
                                     <td class="border-x border-gray-300 p-1.5 w-24 text-center">
@@ -155,7 +136,7 @@
                     </div>
 
                     <div>
-                        <button type="button" (click)="agregarFilas()" [disabled]="bloqueoBotonNuevo()"
+                        <button type="button" (click)="agregarFilas()" [disabled]="!planingCompartido.tableButtonEnabled()"
                             class="flex items-center space-x-2 px-4 py-2 transition duration-300 w-30  disabled:opacity-30 disabled:cursor-not-allowed"
                             title="Agregar registro">
                             <img src="icono-agregar.png"

@@ -12,12 +12,12 @@ import { FormUtils } from 'src/app/utils/form-utils';
 })
 export class CanchasComponent {
     private planingService = inject(PlanningService);
-    private fb = inject(FormBuilder);
-    rutas = this.planingService.data;
     planingCompartido = inject(PlaningCompartido);
+    private fb = inject(FormBuilder);
+    rutas = this.planingCompartido.data;
     formUtils = FormUtils;
 
-    bloqueo = inject(PlanningService).bloqueo;
+    bloqueo = inject(PlaningCompartido).bloqueo;
 
     form: FormGroup = this.fb.group({
         val_tms: ['0.000', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
@@ -48,7 +48,7 @@ export class CanchasComponent {
         });
 
         effect(() => {
-            const data = this.planingService.dataRoutes();
+            const data = this.planingCompartido.dataRoutes();
 
             if (data === null || data?.length === 0) {
                 this.resetearFormulario();   // 🔥 Se ejecuta en TODOS los componentes
@@ -76,7 +76,7 @@ export class CanchasComponent {
     }
 
     bloqueoFormulario() {
-        const bloqueado = this.planingService.bloqueoForm();
+        const bloqueado = this.planingCompartido.bloqueoForm();
         console.log(bloqueado)
         if (bloqueado) {
             this.form.disable();

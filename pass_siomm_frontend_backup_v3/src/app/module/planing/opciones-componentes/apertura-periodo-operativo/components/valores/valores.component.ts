@@ -15,15 +15,14 @@ import { FormUtils } from 'src/app/utils/form-utils';
     styleUrl: './valores.component.css',
 })
 export class ValoresComponent {
-    private planingService = inject(PlanningService);
+    planingCompartido = inject(PlaningCompartido);
     private fb = inject(FormBuilder);
-    rutas = this.planingService.dataRoutes;
+    rutas = this.planingCompartido.dataRoutes;
     formUtils = FormUtils;
 
-    planingCompartido = inject(PlaningCompartido);
 
     form!: FormGroup;
-    bloqueo = inject(PlanningService).bloqueo;
+    bloqueo = inject(PlaningCompartido).bloqueo;
     headers = ['Precio', 'Sobredilución', 'Recuperación Budget', 'Factor Conversión'];
 
     elements = [
@@ -45,7 +44,7 @@ export class ValoresComponent {
         this.form = this.fb.group(controls);
 
         effect(() => {
-            const response = this.planingService.dataRoutes();
+            const response = this.planingCompartido.dataRoutes();
 
             if (!response) return;
 
@@ -87,7 +86,7 @@ export class ValoresComponent {
         });
 
         effect(() => {
-            const data = this.planingService.dataRoutes();
+            const data = this.planingCompartido.dataRoutes();
 
             if (data === null || data?.length === 0) {
                 this.resetearFormulario();   // 🔥 Se ejecuta en TODOS los componentes
@@ -113,7 +112,7 @@ export class ValoresComponent {
     }
 
     bloqueoFormulario() {
-        const bloqueado = this.planingService.bloqueoForm();
+        const bloqueado = this.planingCompartido.bloqueoForm();
         console.log(bloqueado)
         if (bloqueado) {
             this.form.disable();
@@ -133,7 +132,6 @@ export class ValoresComponent {
             val_pre_cu: "0.000",
             val_fac_cu: "0.000",
             val_fac_bud_cu: "0.000",
-            // val_fac_bud_cu: factor_3.val_fac_bud_cu,
             val_con_cu: "0.000",
 
             val_pre_pb: "0.000",

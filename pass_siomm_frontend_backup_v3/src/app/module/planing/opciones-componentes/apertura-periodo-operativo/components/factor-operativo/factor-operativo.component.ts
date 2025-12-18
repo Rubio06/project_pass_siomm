@@ -21,10 +21,10 @@ interface fieldName {
 })
 export class FactorOperativoComonent {
     public planingService = inject(PlanningService);
-    private fb = inject(FormBuilder);
-    bloqueo = inject(PlanningService).bloqueo;
-    rutas = this.planingService.dataRoutes;
     planingCompartido = inject(PlaningCompartido);
+    private fb = inject(FormBuilder);
+    bloqueo = inject(PlaningCompartido).bloqueo;
+    rutas = this.planingCompartido.dataRoutes;
     formUtils = FormUtils;
     // form: FormGroup;
 
@@ -61,6 +61,7 @@ export class FactorOperativoComonent {
 
             if (response?.data?.factor?.length) {
                 const periodo = response.data.factor?.[0];
+
                 this.form.patchValue({
                     fac_denmin: periodo.fac_denmin,
                     fac_dendes: periodo.fac_dendes,
@@ -75,7 +76,7 @@ export class FactorOperativoComonent {
         })
 
         effect(() => {
-            const data = this.planingService.dataRoutes();
+            const data = this.planingCompartido.dataRoutes();
 
             if (data === null || data?.length === 0) {
                 this.resetearFormulario();   // 🔥 Se ejecuta en TODOS los componentes
@@ -95,7 +96,7 @@ export class FactorOperativoComonent {
 
         effect(() => {
             // ⚠️ Asegúrate de leer la signal correcta: bloqueoFormEdit
-            const bloqueado = this.planingService.bloqueoFormEdit();
+            const bloqueado = this.planingCompartido.bloqueoFormEdit();
 
             // Ejecuta tu lógica que deshabilita/habilita
             this.gestionBloqueoFormulario(bloqueado);
@@ -132,7 +133,7 @@ export class FactorOperativoComonent {
 
 
     bloqueoFormulario() {
-        const bloqueado = this.planingService.bloqueoForm();
+        const bloqueado = this.planingCompartido.bloqueoForm();
         if (bloqueado) {
             this.form.disable();
         } else {

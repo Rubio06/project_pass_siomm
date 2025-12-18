@@ -50,7 +50,7 @@ export class SemanasAvanceMainComponent {
     constructor() {
 
         effect(() => {
-            const data = this.planingService.dataRoutes();
+            const data = this.planingCompartido.dataRoutes();
             const semanas = data?.data?.semana_avance || [];
 
             this.loadSemanas(semanas);
@@ -99,14 +99,19 @@ export class SemanasAvanceMainComponent {
 
 
     agregarFilas() {
+
+        if (this.semanas.length >= 1) {
+            return;
+        }
+
         this.planingCompartido.setBloqueoFormEditar(false);
 
         this.semanas.push(
             this.fb.group({
-                num_semana: ['', Validators.required, Validators.min(1), Validators.max(7), Validators.pattern(/^[1-7]$/)],
-                fec_ini: ['', Validators.required],
-                fec_fin: ['', Validators.required],
-                desc_semana: ['', Validators.required]
+                num_semana: ['', [Validators.required, Validators.min(1), Validators.max(7), Validators.pattern(/^[1-7]$/)]],
+                fec_ini: ['', [Validators.required, Validators.pattern(/^(0[1-9]|[12]\d|3[01])\/(0[1-9]|1[0-2])\/(19\d{2}|20\d{2}|2100)$/)]],
+                fec_fin: ['', [Validators.required, Validators.pattern(/^(0[1-9]|[12]\d|3[01])\/(0[1-9]|1[0-2])\/(19\d{2}|20\d{2}|2100)$/)]],
+                desc_semana: ['', [Validators.required]]
             })
         );
     }
@@ -117,6 +122,11 @@ export class SemanasAvanceMainComponent {
 
         console.log("el indice es " + index)
 
+        const confirmado = await this.formUtils.confirmarEliminacion();
+        if (!confirmado) {
+            this.formUtils.alertaNoEliminado();
+            return;
+        }
 
         // const payload = {
         //     num_semana: semana.num_semana,
@@ -126,11 +136,6 @@ export class SemanasAvanceMainComponent {
         // };
 
         // // 👉 Confirmación usando tu utilitario
-        // const confirmado = await this.utils.confirmarEliminacion();
-        // if (!confirmado) {
-        //     this.utils.alertaNoEliminado();
-        //     return;
-        // }
 
         // this.semanasAvanceMainService.eliminarSemanaAvance(payload).subscribe({
         //     next: (res: any) => {

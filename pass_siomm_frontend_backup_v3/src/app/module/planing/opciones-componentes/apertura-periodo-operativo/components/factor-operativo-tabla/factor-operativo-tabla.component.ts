@@ -15,13 +15,13 @@ import { FormUtils } from 'src/app/utils/form-utils';
 export class FactorOperativoTablaComponent {
     private planingService = inject(PlanningService);
     private fb = inject(FormBuilder);
+    planingCompartido = inject(PlaningCompartido);
 
-    rutas = this.planingService.dataRoutes;
+    rutas = this.planingCompartido.dataRoutes;
     thCampos = signal<TableHeader[]>(TH_CAMPOS_TABLE);
     tdCampos = signal<TableField[]>(TD_CAMPOS_TABLE);
-    bloqueo = inject(PlanningService).bloqueo;
+    bloqueo = inject(PlaningCompartido).bloqueo;
 
-    planingCompartido = inject(PlaningCompartido);
 
     formUtils = FormUtils;
 
@@ -43,7 +43,6 @@ export class FactorOperativoTablaComponent {
 
         effect(() => {
             const response = this.rutas();
-
 
             if (response?.data?.factorOperativo?.length) {
                 const factorOperativo = response.data.factorOperativo[0];
@@ -78,14 +77,12 @@ export class FactorOperativoTablaComponent {
         });
 
         effect(() => {
-            const data = this.planingService.dataRoutes();
+            const data = this.planingCompartido.dataRoutes();
 
             if (data === null || data?.length === 0) {
                 this.resetearFormulario();   // 🔥 Se ejecuta en TODOS los componentes
                 return;
             }
-
-            // si hay data, llenas tus formularios
             this.form.patchValue(data);
         });
 
@@ -95,7 +92,6 @@ export class FactorOperativoTablaComponent {
 
         effect(() => {
             const bloqueado = this.planingCompartido.getBloqueoFormEditar()();
-
             bloqueado
                 ? this.form.disable({ emitEvent: false })
                 : this.form.enable({ emitEvent: false });
@@ -122,7 +118,7 @@ export class FactorOperativoTablaComponent {
     }
 
     bloqueoFormulario() {
-        const bloqueado = this.planingService.bloqueoForm();
+        const bloqueado = this.planingCompartido.bloqueoForm();
         if (bloqueado) {
             this.form.disable();
         } else {

@@ -102,7 +102,7 @@ export class EstandarAvanceComponent {
         // });
 
         effect(() => {
-            const data = this.planingService.dataRoutes();
+            const data = this.planingCompartido.dataRoutes();
             const semanas = data?.data?.laboratorio_estandar || [];
 
             this.loadSemanas(semanas);
@@ -117,7 +117,7 @@ export class EstandarAvanceComponent {
         //   EFECTO: BLOQUEO DE FORMULARIO
         // ========================================
         effect(() => {
-            const bloqueado = this.planingService.bloqueoForm();
+            const bloqueado = this.planingCompartido.bloqueoForm();
             bloqueado ? this.myForm.disable() : this.myForm.enable();
         });
 
@@ -163,7 +163,7 @@ export class EstandarAvanceComponent {
         data.forEach((item, index) => {
             this.semanas.push(
                 this.fb.group({
-                    cod_tiplab: [{ value: item.cod_tiplab, disabled: true }, Validators.required],
+                    cod_tiplab: [{ value: this.loadTiposLabor(), disabled: true }, Validators.required],
                     nro_lab_ancho: [{ value: item.nro_lab_ancho || '', disabled: true }],
                     nro_lab_altura: [{ value: item.nro_lab_altura || '', disabled: true }],
                     nro_lab_pieper: [{ value: item.nro_lab_pieper || '', disabled: true }],
@@ -202,7 +202,7 @@ export class EstandarAvanceComponent {
             })
         );
 
-        this.planingService.setBloqueo(false);
+        this.planingCompartido.setBloqueo(false);
         this.message.set('');
     }
 

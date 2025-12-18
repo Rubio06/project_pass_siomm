@@ -23,6 +23,8 @@ export class MetodoMinadoMainComponent {
 
     planingCompartido = inject(PlaningCompartido);
 
+    formUtils = FormUtils;
+
     semanasAvanceMainService = inject(SemanasAvanceMainService);
     private utils = FormUtils;
     planingService = inject(PlanningService);
@@ -70,7 +72,7 @@ export class MetodoMinadoMainComponent {
     constructor() {
 
         effect(() => {
-            const data = this.planingService.dataRoutes();
+            const data = this.planingCompartido.dataRoutes();
             const semanas = data?.data?.metodo_minado || [];
 
 
@@ -116,17 +118,25 @@ export class MetodoMinadoMainComponent {
     //   CARGAR DATOS DESDE BACKEND
     // =====================================================
     loadSemanas(data: any[]) {
+        // if (!data?.length || !this.cod_metexp()?.length) {
+        //     return;
+        // }
+
         this.semanas.clear();
 
 
         data.forEach((item, index) => {
+            const cod = this.cod_metexp()[index];
+            if (!cod) return;
+
+
             this.semanas.push(
                 this.fb.group({
                     cod_metexp: [{ value: this.cod_metexp()[index].nom_metexp, disabled: true }, [Validators.required]],
                     nom_metexp: [{ value: item.nom_metexp, disabled: true }, [Validators.required]],
-                    ind_calculo_dilucion: [{ value: this.ind_calculo_dilucion()[0].label, disabled: true }], // Valor hardcodeado (lógica original)
-                    ind_calculo_leyes_min: [{ value: this.ind_calculo_leyes_min()[0].label, disabled: true }], // Valor hardcodeado (lógica original)
-                    ind_act: [{ value: this.ind_act()[0].label, disabled: true }], // Valor hardcodeado (lógica original)
+                    ind_calculo_dilucion: [{ value: this.ind_calculo_dilucion()[0].label, disabled: true }],
+                    ind_calculo_leyes_min: [{ value: this.ind_calculo_leyes_min()[0].label, disabled: true }],
+                    ind_act: [{ value: this.ind_act()[0].label, disabled: true }],
                     accion: [{ value: '', disabled: true }]
                 })
             );
@@ -138,16 +148,23 @@ export class MetodoMinadoMainComponent {
     // =====================================================
     agregarFilas() {
 
-        // Verificar que la última fila esté completa
-        if (this.semanas.length > 0) {
-            const last = this.semanas.at(this.semanas.length - 1);
 
-            if (last.invalid) {
-                last.markAllAsTouched();
-                this.message.set("Debes completar la fila antes de agregar otra.");
-                return;
-            }
+
+        if (this.semanas.length >= 1) {
+            return;
         }
+
+        this.planingCompartido.setBloqueoFormEditar(false);
+
+        // if (this.semanas.length > 0) {
+        //     const last = this.semanas.at(this.semanas.length - 1);
+
+        //     if (last.invalid) {
+        //         last.markAllAsTouched();
+        //         this.message.set("Debes completar la fila antes de agregar otra.");
+        //         return;
+        //     }
+        // }
 
         this.semanas.push(
             this.fb.group({
@@ -158,8 +175,6 @@ export class MetodoMinadoMainComponent {
                 ind_act: ['', Validators.required]
             })
         );
-
-        this.message.set('');
     }
 
     // =====================================================

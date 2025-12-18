@@ -13,44 +13,7 @@ import { FormUtils } from 'src/app/utils/form-utils';
 export class PlanningService {
     planningHttp = inject(HttpClient);
     private planingUrl = environment.baseUrl;
-
     utils = FormUtils;
-
-    data = signal<any>(null);
-    private _dataRoutes: WritableSignal<any> = signal([]);
-    public readonly dataRoutes: Signal<any> = this._dataRoutes.asReadonly();
-
-
-    setData(data: any): void {
-        this._dataRoutes.set(data);
-    }
-
-
-
-
-
-
-
-    private _bloqueo = signal<boolean>(true);
-    public bloqueo = this._bloqueo.asReadonly();
-
-    setBloqueo(v: boolean) {
-        this._bloqueo.set(v);
-    }
-
-
-    readonly bloqueoFormEdit: WritableSignal<boolean> = signal(true);
-
-
-
-    private _bloqueoForm = signal<boolean>(true); // true = bloqueado
-    public bloqueoForm = this._bloqueoForm.asReadonly();
-
-    setBloqueoForm(valor: boolean) {
-        this._bloqueoForm.set(valor);
-    }
-
-
 
     public getMonths(yearData: string): Observable<string[]> {
         return this.planningHttp.get<string[]>(`${this.planingUrl}planeamiento/aper-periodo-operativo/meses`,
@@ -119,33 +82,5 @@ export class PlanningService {
             return of([]);
         }));
     }
-
-    // mensajeError(error: any) {
-    //     Swal.fire({
-    //         icon: "error",
-    //         title: "Ocurrió un error",
-    //         html: `
-    //         <div style="text-align:left;">
-    //             <b>Detalle técnico:</b><br>
-    //             <span style="font-size:14px; color:#444;">${error}</span><br><br>
-    //             <b>Recomendación:</b><br>
-    //             <span style="font-size:14px; color:#444;">
-    //                 Comuníquese con Soporte TI para más asistencia.
-    //             </span>
-    //         </div>
-    //     `,
-    //         background: "#fefefe",
-    //         color: "#333",
-    //         confirmButtonText: "Entendido",
-    //         confirmButtonColor: "#d33",
-    //         showClass: {
-    //             popup: 'animate__animated animate__fadeInDown'
-    //         },
-    //         hideClass: {
-    //             popup: 'animate__animated animate__fadeOutUp'
-    //         }
-    //     });
-    // }
-
 
 }

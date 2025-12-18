@@ -1,4 +1,6 @@
-import { FormGroup, ValidationErrors } from '@angular/forms';
+import { PlaningCompartido } from './../module/planing/opciones-componentes/apertura-periodo-operativo/services/planing-compartido.service';
+import { effect, inject } from '@angular/core';
+import { AbstractControl, FormGroup, ValidationErrors } from '@angular/forms';
 import Swal from 'sweetalert2'
 import 'sweetalert2/src/sweetalert2.scss'
 
@@ -130,12 +132,37 @@ export class FormUtils {
                     return `Valor minimo de  ${error['min'].min}`;
 
                 case 'pattern':
-                    // Puedes usar requiredPattern o dar un mensaje genérico según el control
-                    const pattern = error['pattern'].requiredPattern;
-                    return `Formato inválido. Debe cumplir con: ${pattern}`;
+                    return this.getPatternErrorMessage(
+                        error['pattern'].requiredPattern
+                    );
             }
         }
         return null;
     }
+
+    private static getPatternErrorMessage(pattern: string): string {
+        const patterns: Record<string, string> = {
+            '/^[1-7]$/': 'Solo se permiten semanas del 1 al 7',
+            '/^(19\\d{2}|20\\d{2}|2100)$/': 'Debe ingresar un año válido ejem.(2025)',
+            '/^(0[1-9]|[12]\\d|3[01])\\/(0[1-9]|1[0-2])\\/(19\\d{2}|20\\d{2}|2100)$/': 'Debe ingresar fecha valida ejem.(22/12/2025)'
+        };
+        return patterns[pattern] ?? 'Formato inválido';
+    }
+
+
+
+    static isValidFieldInArray(formGroup: AbstractControl, field: string): boolean {
+        const control = formGroup.get(field);
+        return !!(control && control.invalid && (control.touched || control.dirty));
+    }
+
+    static getFiledErrorArray(formGroup: AbstractControl, field: string): string | null {
+        const control = formGroup.get(field);
+        if (!control || !control.errors) return null;
+
+        const errors = control.errors;
+        return FormUtils.getFieldError(errors);
+    }
+
 
 }

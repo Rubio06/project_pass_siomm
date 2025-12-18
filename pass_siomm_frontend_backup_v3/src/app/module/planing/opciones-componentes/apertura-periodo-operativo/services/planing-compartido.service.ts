@@ -1,16 +1,12 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, signal, WritableSignal } from '@angular/core';
+import { inject, Injectable, Signal, signal, WritableSignal } from '@angular/core';
+import { PlanningData } from '../interface/aper-per-oper.interface';
 
 @Injectable({
     providedIn: 'root'
 })
 export class PlaningCompartido {
-    // Bloqueo de formulario
-    private _bloqueoForm: WritableSignal<boolean> = signal(false);
     private http = inject(HttpClient);
-
-    public readonly bloqueoForm = this._bloqueoForm.asReadonly();
-    setBloqueoForm(valor: boolean) { this._bloqueoForm.set(valor); }
 
     // Persistencia de cada tab/form
     private _canchas: WritableSignal<any[]> = signal([]);
@@ -25,10 +21,7 @@ export class PlaningCompartido {
     private _recuperacionBudget: WritableSignal<any[]> = signal([]);
     private _semana_avance: WritableSignal<any[]> = signal([]);
     private _semana_ciclo: WritableSignal<any[]> = signal([]);
-
-
     private _valores: WritableSignal<any[]> = signal([]);
-
 
     // Readonly para cada tab
     readonly canchas = this._canchas.asReadonly();
@@ -43,9 +36,7 @@ export class PlaningCompartido {
     readonly recuperacionBudget = this._recuperacionBudget.asReadonly();
     readonly semana_avance = this._semana_avance.asReadonly();
     readonly semana_ciclo = this._semana_ciclo.asReadonly();
-
     readonly valores = this._semana_ciclo.asReadonly();
-
 
     // Métodos para setear datos
     setCanchas(data: any[]) { this._canchas.set(data); }
@@ -59,10 +50,7 @@ export class PlaningCompartido {
     setOperativoDetalle(data: any[]) { this._operativo_detalle.set(data); }
     setRecuperacionBudget(data: any[]) { this._recuperacionBudget.set(data); }
     setSemanaAvance(data: any[]) { this._semana_avance.set(data); }
-    // setSemanaCiclo(data: any[]) { this._semana_ciclo.set(data); }
-
     setValores(data: any[]) { this._semana_ciclo.set(data); }
-
 
     // Limpiar todo
     clearAll() {
@@ -96,38 +84,12 @@ export class PlaningCompartido {
         return this.http.post('/api/guardar-todo', payload);
     }
 
-    guardarEnMemoria() {
-        const payload = {
-            valores: this._valores(),
-            canchas: this._canchas(),
-            factor: this._factor(),
-            factorOperativo: this._factorOperativo(),
-            laboratorio_estandar: this._laboratorio_estandar(),
-            exploracion_extandar: this._exploracion_extandar(),
-            metodo_minado: this._metodo_minado(),
-            semana_ciclo: this._semana_ciclo(),
-            semana_avance: this._semana_avance(),
-        };
-
-        // Aquí solo actualizas los Signals
-        this._valores.set(payload.valores);
-        this._canchas.set(payload.canchas);
-        this._factor.set(payload.factor);
-        this._factorOperativo.set(payload.factorOperativo);
-        this._laboratorio_estandar.set(payload.laboratorio_estandar);
-        this._exploracion_extandar.set(payload.exploracion_extandar);
-        this._metodo_minado.set(payload.metodo_minado);
-        this._semana_ciclo.set(payload.semana_ciclo);
-        this._semana_avance.set(payload.semana_avance);
-    }
     getSemanaCiclo(): any[] {
-        // Aseguramos que siempre sea un array
         const val = this._semana_ciclo();
         return Array.isArray(val) ? val : [];
     }
 
-    setSemanaCiclo(data: any[]) {
-        // Aseguramos que siempre se guarde un array
+    setSemanaCiclo(data: PlanningData[]) {
         this._semana_ciclo.set(Array.isArray(data) ? data : []);
     }
 
@@ -151,6 +113,37 @@ export class PlaningCompartido {
 
     disableTableButton() {
         this.tableButtonEnabled.set(false);
+    }
+
+
+
+
+    data = signal<any>(null);
+    private _dataRoutes: WritableSignal<any> = signal([]);
+    public readonly dataRoutes: Signal<any> = this._dataRoutes.asReadonly();
+
+
+    setData(data: any): void {
+        this._dataRoutes.set(data);
+    }
+
+
+    private _bloqueo = signal<boolean>(true);
+    public bloqueo = this._bloqueo.asReadonly();
+
+    setBloqueo(v: boolean) {
+        this._bloqueo.set(v);
+    }
+
+
+    readonly bloqueoFormEdit: WritableSignal<boolean> = signal(true);
+
+
+    private _bloqueoForm = signal<boolean>(true); // true = bloqueado
+    public bloqueoForm = this._bloqueoForm.asReadonly();
+
+    setBloqueoForm(valor: boolean) {
+        this._bloqueoForm.set(valor);
     }
 
 

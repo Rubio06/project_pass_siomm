@@ -79,7 +79,7 @@ export class EstandarExploracionMainComponent {
 
 
         effect(() => {
-            const data = this.planingService.dataRoutes();
+            const data = this.planingCompartido.dataRoutes();
             const semanas = data?.data?.exploracion_extandar || [];
 
             this.loadSemanas(semanas);
@@ -95,7 +95,7 @@ export class EstandarExploracionMainComponent {
         //   EFECTO: BLOQUEO DE FORMULARIO
         // ========================================
         effect(() => {
-            const bloqueado = this.planingService.bloqueoForm();
+            const bloqueado = this.planingCompartido.bloqueoForm();
             bloqueado ? this.myForm.disable() : this.myForm.enable();
         });
 
@@ -168,6 +168,13 @@ export class EstandarExploracionMainComponent {
      */
 
     agregarFilas() {
+
+        if (this.semanas.length >= 1) {
+            return;
+        }
+
+        this.planingCompartido.setBloqueoFormEditar(false);
+
         this.semanas.push(
             this.fb.group({
                 cod_zona: ['', Validators.required],
@@ -185,7 +192,7 @@ export class EstandarExploracionMainComponent {
             })
         );
 
-        this.planingService.setBloqueo(false);
+        this.planingCompartido.setBloqueo(false);
         this.message.set('');
     }
 

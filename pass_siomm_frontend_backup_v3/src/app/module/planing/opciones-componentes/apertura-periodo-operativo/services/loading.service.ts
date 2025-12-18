@@ -5,7 +5,6 @@ import { Injectable, signal } from '@angular/core';
 })
 export class LoadingService {
     private loading = signal(false);   // el signal principal
-
     spinner = this.loading.asReadonly(); // el que se usa en los componentes
 
     loadingOn() {

@@ -25,10 +25,11 @@ export class AperPerOperComponent {
     private planingService = inject(PlanningService);
     private fb = inject(FormBuilder);
     formUtils = FormUtils;
+    planingCompartido = inject(PlaningCompartido);
 
-    rutas = this.planingService.dataRoutes;
+    rutas = this.planingCompartido.dataRoutes;
 
-    bloqueo = inject(PlanningService).bloqueo;
+    bloqueo = inject(PlaningCompartido).bloqueo;
     semanasAvanceMainService = inject(SemanasAvanceMainService);
 
     private hoy = new Date();
@@ -39,7 +40,6 @@ export class AperPerOperComponent {
     );
 
 
-    planingCompartido = inject(PlaningCompartido);
 
     meses = signal<string[]>([
         'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
@@ -83,7 +83,7 @@ export class AperPerOperComponent {
         });
 
         effect(() => {
-            const data = this.planingService.dataRoutes();
+            const data = this.planingCompartido.dataRoutes();
 
             if (!data || data?.length === 0) {
                 this.resetearFormulario();
@@ -132,7 +132,7 @@ export class AperPerOperComponent {
 
 
     bloqueoFormulario() {
-        const bloqueado = this.planingService.bloqueoForm();
+        const bloqueado = this.planingCompartido.bloqueoForm();
 
         if (bloqueado) this.form.disable();
         else this.form.enable();
