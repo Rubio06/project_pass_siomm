@@ -21,10 +21,10 @@ import { SemanasAvanceMainService } from '../../../services/semanas-avance-main/
 export class FactorOperativoMainComponent {
 
 
-    semanasAvanceMainService = inject(SemanasAvanceMainService);
+    // semanasAvanceMainService = inject(SemanasAvanceMainService);
 
-    hasPendingChanges(): boolean {
-        return this.semanasAvanceMainService.getCambios(); // revisa los cambios pendientes
-    }
+    // hasPendingChanges(): boolean {
+    //     return this.semanasAvanceMainService.getCambios(); // revisa los cambios pendientes
+    // }
 
 }

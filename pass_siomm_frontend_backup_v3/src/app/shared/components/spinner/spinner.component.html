@@ -1,6 +1,6 @@
 <!-- Loader superpuesto -->
-
-    <div>
-        <div class="loader"></div>
-    </div>
-
+@if (spinner()) {
+<div class="overlay">
+    <div class="loader"></div>
+</div>
+}

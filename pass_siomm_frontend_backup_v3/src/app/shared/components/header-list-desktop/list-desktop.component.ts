@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/module/auth/services/auth.service';
 import { MainPageService } from 'src/app/module/main/services/main-page.service';
 import { MainPagePrimer } from 'src/app/module/main/interfaces/main-page.interface';
 import { PlanningService } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/services/planning.service';
+import { SemanasAvanceMainService } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/services/semanas-avance-main/semanas-avance-main.service';
 
 @Component({
     selector: 'app-list-desktop',
@@ -33,6 +34,9 @@ export class ListDesktopComponent {
 
         return icons[nombre] || 'square-3-stack-3d';
     }
+
+
+
 
     routers = signal<MainPagePrimer[]>([]);
 
@@ -90,6 +94,8 @@ export class ListDesktopComponent {
             .replace(/\s+/g, '-');                              // espacios → guiones
     }
 
+
+
     openIndex: number | null = null;
 
     toggle(index: number) {
@@ -108,5 +114,5 @@ export class ListDesktopComponent {
         }
 
     }
-    
+
 }

@@ -91,7 +91,9 @@ export class SemanasCicloMainComponent {
                     fec_ini: [{ value: FormUtils.formatDate(item.fec_ini), disabled: true }],
                     fec_fin: [{ value: FormUtils.formatDate(item.fec_fin), disabled: true }],
                     desc_semana: [{ value: item.desc_semana, disabled: true }],
-                    accion: [{ value: '', disabled: true }]
+                    accion: [{ value: '', disabled: true }],
+                    esNuevo: [false]
+
                 })
             );
         });
@@ -114,52 +116,47 @@ export class SemanasCicloMainComponent {
                 num_semana: ['', [Validators.required, Validators.min(1), Validators.max(7), Validators.pattern(/^[1-7]$/)]],
                 fec_ini: ['', [Validators.required, Validators.pattern(/^(0[1-9]|[12]\d|3[01])\/(0[1-9]|1[0-2])\/(19\d{2}|20\d{2}|2100)$/)]],
                 fec_fin: ['', [Validators.required, Validators.pattern(/^(0[1-9]|[12]\d|3[01])\/(0[1-9]|1[0-2])\/(19\d{2}|20\d{2}|2100)$/)]],
-                desc_semana: ['', [Validators.required]]
+                desc_semana: ['', [Validators.required]],
+                esNuevo: [true]
+
             })
         );
     }
 
     async eliminarFila(data: any, index: number) {
         const semana = data.getRawValue ? data.getRawValue() : data.value;
+        const esNuevo = semana.esNuevo;
 
-        this.semanas.removeAt(index);
-        this.cd.detectChanges();
+        if (esNuevo) {
+            this.semanas.removeAt(index);
+            this.cd.detectChanges();
+            return;
+        }
 
+        const payload = {
+            num_semana: semana.num_semana,
+            fec_ini: this.formUtils.convertToISO(semana.fec_ini),
+            fec_fin: this.formUtils.convertToISO(semana.fec_fin),
+            desc_semana: semana.desc_semana
+        };
 
-        // opcional
-        // const payload = {
-        //     num_semana: semana.num_semana,
-        //     fec_ini: this.formUtils.convertToISO(semana.fec_ini),
-        //     fec_fin: this.formUtils.convertToISO(semana.fec_fin),
-        //     desc_semana: semana.desc_semana
-        // };
+        const confirmado = await this.formUtils.confirmarEliminacion();
+        if (!confirmado) {
+            this.formUtils.alertaNoEliminado();
+            return;
+        }
 
-        // 👉 Confirmación usando tu utilitario
-        // const confirmado = await this.formUtils.confirmarEliminacion();
-        // if (!confirmado) {
-        //     this.formUtils.alertaNoEliminado();
-        //     return;
-        // }
-
-        // this.semanasAvanceMainService.eliminarCiclo(payload).subscribe({
-        //     next: (res: any) => {
-        //         if (res.success) {
-
-        //             // 👉 Elimina del FormArray
-
-        //             // 👉 Muestra alerta de éxito desde el utilitario
-        //             this.formUtils.alertaEliminado(res.message);
-
-        //             this.planingService.setBloqueoForm(false);
-
-
-        //         } else {
-        //             this.formUtils.alertaEliminado(res.message);
-
-        //         }
-        //     },
-        //     error: (err) => this.formUtils.mensajeError(err.message)
-        // });
+        this.semanasAvanceMainService.eliminarCiclo(payload).subscribe({
+            next: (res: any) => {
+                if (res.success) {
+                    this.formUtils.alertaEliminado(res.message);
+                    this.planingCompartido.setBloqueoForm(false);
+                } else {
+                    this.formUtils.alertaEliminado(res.message);
+                }
+            },
+            error: (err) => this.formUtils.mensajeError(err.message)
+        });
     }
 
     ngOnInit() {
@@ -171,6 +168,6 @@ export class SemanasCicloMainComponent {
     }
 
     hasPendingChanges(): boolean {
-        return this.semanasAvanceMainService.getCambios(); // revisa los cambios pendientes
+        return this.semanasAvanceMainService.getCambios();
     }
 }

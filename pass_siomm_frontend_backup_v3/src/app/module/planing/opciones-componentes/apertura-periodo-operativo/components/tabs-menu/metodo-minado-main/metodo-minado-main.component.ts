@@ -93,17 +93,21 @@ export class MetodoMinadoMainComponent {
         });
 
         effect(() => {
-            const bloqueado = this.planingCompartido.getBloqueoFormEditar()();
-
-            bloqueado
-                ? this.myForm.disable({ emitEvent: false })
-                : this.myForm.enable({ emitEvent: false });
+            this.bloqueoEditar();
         })
 
         // Lookups iniciales
         this.loadSelectExploracion();
 
 
+    }
+
+    bloqueoEditar() {
+        const bloqueado = this.planingCompartido.getBloqueoFormEditar()();
+
+        bloqueado
+            ? this.myForm.disable({ emitEvent: false })
+            : this.myForm.enable({ emitEvent: false });
     }
 
     // =====================================================
@@ -118,10 +122,6 @@ export class MetodoMinadoMainComponent {
     //   CARGAR DATOS DESDE BACKEND
     // =====================================================
     loadSemanas(data: any[]) {
-        // if (!data?.length || !this.cod_metexp()?.length) {
-        //     return;
-        // }
-
         this.semanas.clear();
 
 
@@ -137,7 +137,9 @@ export class MetodoMinadoMainComponent {
                     ind_calculo_dilucion: [{ value: this.ind_calculo_dilucion()[0].label, disabled: true }],
                     ind_calculo_leyes_min: [{ value: this.ind_calculo_leyes_min()[0].label, disabled: true }],
                     ind_act: [{ value: this.ind_act()[0].label, disabled: true }],
-                    accion: [{ value: '', disabled: true }]
+                    accion: [{ value: '', disabled: true }],
+                    esNuevo: [false]
+
                 })
             );
         });
@@ -147,32 +149,20 @@ export class MetodoMinadoMainComponent {
     //   AGREGAR FILA NUEVA (EDITABLE)
     // =====================================================
     agregarFilas() {
-
-
-
         if (this.semanas.length >= 1) {
             return;
         }
 
         this.planingCompartido.setBloqueoFormEditar(false);
 
-        // if (this.semanas.length > 0) {
-        //     const last = this.semanas.at(this.semanas.length - 1);
-
-        //     if (last.invalid) {
-        //         last.markAllAsTouched();
-        //         this.message.set("Debes completar la fila antes de agregar otra.");
-        //         return;
-        //     }
-        // }
-
         this.semanas.push(
             this.fb.group({
-                cod_metexp: ['', Validators.required],
+                cod_metexp: ['', Validators.required], // 👈 CLAVE
                 nom_metexp: ['', Validators.required],
                 ind_calculo_dilucion: ['', Validators.required],
                 ind_calculo_leyes_min: ['', Validators.required],
-                ind_act: ['', Validators.required]
+                ind_act: ['', Validators.required],
+                esNuevo: [true]
             })
         );
     }
@@ -182,6 +172,13 @@ export class MetodoMinadoMainComponent {
     // =====================================================
     async eliminarFila(data: any, index: number) {
         const semana = data.getRawValue ? data.getRawValue() : data.value;
+        const esNuevo = semana.esNuevo;
+
+        if (esNuevo) {
+            this.semanas.removeAt(index);
+            this.cd.detectChanges();
+            return;
+        }
 
         const payload = {
             cod_metexp: semana.cod_metexp,
@@ -198,12 +195,9 @@ export class MetodoMinadoMainComponent {
         this.semanasAvanceMainService.eliminarMetodoMinado(payload).subscribe({
             next: (res: any) => {
                 if (res.success) {
-                    // 👉 Elimina del FormArray
-
-                    // 👉 Muestra alerta de éxito desde el utilitario
                     this.utils.alertaEliminado(res.message);
                     this.semanas.removeAt(index);
-                    this.cd.detectChanges();              // opcional
+                    this.cd.detectChanges();
 
                 } else {
                     this.utils.alertaEliminado(res.message);
@@ -233,10 +227,4 @@ export class MetodoMinadoMainComponent {
             error: (e) => console.error('Error cargando métodos de exploración', e)
         });
     }
-
-
-
-
-
-
 }

@@ -128,15 +128,10 @@ END;
 		  
 		  
 		  	SELECT 
-		msp.num_semana AS num_semana,
-		msp.fec_ini AS fec_ini,
-		msp.fec_fin AS fec_fin,
-		msp.desc_semana AS desc_semana
+*
 	FROM mae_semana_periodo as msp
 	WHERE msp.cod_empresa = 03
 	  AND msp.cod_empresa_unidad = 01
-	  AND msp.cie_ano = 2019
-	  AND msp.cie_per = 12;
 	  
 	  
 	      SELECT *
@@ -150,9 +145,14 @@ INSERT INTO mae_per_met_explotacion (cod_empresa, cod_empresa_unidad, cie_ano, c
 DELETE mae_per_met_explotacion WHERE cie_ano = '2019' AND cie_per = '12' AND cod_metexp = 'LM'
 
 
-    
-    
+sp_IR_obtener_anio
 
+sp_helptext 'sp_IR_obtener_anio'
+
+
+  select distinct cie_ano from trb_cierre_periodo order by cie_ano desc   
+  
+  select * from  trb_cierre_periodo
 
 SELECT
 *
@@ -178,4 +178,75 @@ INSERT INTO mae_exp_estandar (cod_empresa, cod_empresa_unidad, cie_ano, cie_per,
       AND L.cie_ano = '2019' AND L.cie_per = '12';
       
       
+      select * from mae_exp_estandar
+      
+      
 INSERT INTO mae_tip_lab_estandar (cod_empresa, cod_empresa_unidad, cie_ano, cie_per, cod_tiplab, nro_lab_ancho, nro_lab_altura) VALUES('03', '01','2019','12', 'AFFFF', '0.666', '0.67')
+
+
+INSERT INTO trb_cierre_periodo
+(
+    cod_empresa,
+    cod_empresa_unidad,
+    cie_ano,
+    cie_per,
+    fec_ini,
+    fec_fin,
+    usu_creo,
+    fec_creo,
+    usu_modi,
+    fec_modi
+)
+VALUES
+(
+    '03',
+    '01',
+    '2019',
+    '04',
+    '2019-12-01 00:00:00.000',
+    '2019-12-31 00:00:00.000',
+    'pracl_ir.sist.cmc',
+    '2025-12-18 00:00:00.000',
+    NULL,
+    NULL
+);
+
+	SELECT 
+		msp.num_semana AS num_semana,
+		msp.fec_ini AS fec_ini,
+		msp.fec_fin AS fec_fin,
+		msp.desc_semana AS desc_semana
+	FROM mae_semana_periodo as msp
+	WHERE msp.cod_empresa = 03
+	  AND msp.cod_empresa_unidad = 01
+	  AND msp.cie_ano = '2019'
+	  AND msp.cie_per = '04';
+	  
+
+SELECT
+expl.cod_zona as cod_zona,
+expl.lab_pieper as lab_pieper,
+expl.lab_broca as lab_broca,
+expl.lab_barcon as lab_barcon,
+expl.lab_barren as lab_barren,
+expl.lab_facpot as  lab_facpot,
+expl.lab_fulmin as lab_fulmin,
+expl.lab_conect as lab_conect,
+expl.lab_punmar as  lab_punmar,
+expl.lab_tabla as  lab_tabla,
+expl.lab_apr as lab_apr
+FROM
+    mae_exp_estandar as expl
+WHERE
+    (expl.cod_empresa = 03)
+    AND (expl.cod_empresa_unidad = 01)
+    AND (expl.cie_ano = '2019')
+    AND (expl.cie_per = '04');
+
+
+
+
+select * From trb_cierre_periodo
+
+delete from trb_cierre_periodo 
+where cod_empresa = '03' AND cod_empresa_unidad = '01' AND cie_per = '04' and usu_creo = 'pracl_ir.sist.cmc'

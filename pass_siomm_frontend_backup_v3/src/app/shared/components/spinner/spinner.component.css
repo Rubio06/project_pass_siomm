@@ -1,11 +1,22 @@
 .loader {
-    border: 10px solid #f3f3f3;
-    border-top: 10px solid #013b5c;
+    border: 10px solid rgba(243, 243, 243, 0.4); /* fondo suave */
+    border-top: 10px solid rgba(1, 59, 92, 0.9); /* color principal */
     border-radius: 50%;
     width: 67px;
     height: 67px;
     animation: spin 1s linear infinite;
     margin: auto;
+}
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35); /* 👈 opacidad de toda la pantalla */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    backdrop-filter: blur(2px); /* opcional, se ve pro */
 }
 
 @keyframes spin {

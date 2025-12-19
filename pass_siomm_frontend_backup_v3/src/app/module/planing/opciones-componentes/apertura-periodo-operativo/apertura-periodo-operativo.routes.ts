@@ -15,6 +15,8 @@ export const aperturaPeriodoOperativoRouter: Routes = [
     {
         path: '',
         component: AperturPeriodoComponent,
+        canDeactivate: [PendingChangesGuard],
+
         children: [
             {
                 path: '',
@@ -23,12 +25,12 @@ export const aperturaPeriodoOperativoRouter: Routes = [
             },
 
             // canDeactivate: [PendingChangesGuard]
-            { path: 'factor-operativo', component: FactorOperativoMainComponent},
+            { path: 'factor-operativo', component: FactorOperativoMainComponent },
             { path: 'estandar-avance', component: EstandarAvanceComponent },
             { path: 'estandar-exploracion', component: EstandarExploracionMainComponent },
             { path: 'metodo-minado', component: MetodoMinadoMainComponent },
-            { path: 'semanas-avance', component: SemanasAvanceMainComponent},
-            { path: 'semanas-ciclo', component: SemanasCicloMainComponent},
+            { path: 'semanas-avance', component: SemanasAvanceMainComponent },
+            { path: 'semanas-ciclo', component: SemanasCicloMainComponent },
         ]
     }
 ];

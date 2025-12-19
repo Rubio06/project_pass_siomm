@@ -32,7 +32,7 @@ export class EstandarExploracionMainComponent {
 
     datosColumna = signal<EstructuraDatosOtros[]>(DATOS_METODO_EXPLORACION);
 
-    listZona = signal<SelectZona[]>([]);
+    cod_zona = signal<SelectZona[]>([]);
     cod_metexp = signal<any[]>([]);
 
     private utils = FormUtils;
@@ -143,9 +143,13 @@ export class EstandarExploracionMainComponent {
         this.semanas.clear();
 
         data.forEach((item, index) => {
+
+            const cod = this.cod_zona()[index];
+            if (!cod) return;
+
             this.semanas.push(
                 this.fb.group({
-                    cod_zona: [{ value: item.cod_zona || '', disabled: true }, Validators.required],
+                    cod_zona: [{ value: item.cod_zona(index).des_zona, disabled: true }, Validators.required],
                     lab_pieper: [{ value: item.lab_pieper || '', disabled: true }],
                     lab_broca: [{ value: item.lab_broca || '', disabled: true }],
                     lab_barcon: [{ value: item.lab_barcon || '', disabled: true }],
@@ -158,6 +162,8 @@ export class EstandarExploracionMainComponent {
                     ind_act: [{ value: item.ind_act || '', disabled: true }],
                     lab_apr: [{ value: item.lab_apr || '', disabled: true }],
                     accion: [{ value: '', disabled: true }],
+                    esNuevo: [false]
+
                 })
             );
         });
@@ -189,6 +195,8 @@ export class EstandarExploracionMainComponent {
                 lab_tabla: ['', Validators.required],
                 ind_act: ['', Validators.required],
                 lab_apr: ['', Validators.required],
+                esNuevo: [true]
+
             })
         );
 
@@ -199,6 +207,16 @@ export class EstandarExploracionMainComponent {
 
     async eliminarFila(data: any, index: number) {
         const semana = data.getRawValue ? data.getRawValue() : data.value;
+
+
+        const esNuevo = semana.esNuevo;
+
+        if (esNuevo) {
+            this.semanas.removeAt(index);
+            this.cd.detectChanges();
+            return;
+        }
+
 
         const payload = {
             cod_zona: semana.cod_zona,
@@ -248,7 +266,7 @@ export class EstandarExploracionMainComponent {
      */
     private loadZonas() {
         this.planingService.SelectZona().subscribe({
-            next: (data: any) => this.listZona.set(data),
+            next: (data: any) => this.cod_zona.set(data),
             error: (err) => console.error('Error al cargar zonas:', err),
         });
     }

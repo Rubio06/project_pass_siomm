@@ -1,7 +1,7 @@
 <div class="container mx-auto px-4 gap-10 justify-center">
     <div class="w-full">
         <h2 class="text-[20px] font-bold text-[#013B5C] border-b-2 border-gray-300 pb-2">
-            Registro de Labores y Métodos de Explotación
+            Registro de Labores y Estándar Avance
         </h2>
         <form [formGroup]="myForm">
 
@@ -57,7 +57,9 @@
 
                                         <select [formControlName]="colData.name" [style.width]="colData.width"
                                             class="select-xs disabled:opacity-50 disabled:cursor-not-allowed mx-auto select text-sm font-medium outline-none flex items-center border border-gray-300 rounded-lg px-2 py-1 bg-white shadow-sm hover:shadow-md transition-shadow duration-300 ease-in-out focus:border-[#033351] focus:ring-1 focus:ring-[rgb(3,102,157)] focus:ring-opacity-40 w-full">
-                                            @for (opt of listLabor(); track $index) {
+
+                                            <option value="" disabled> Selecione una opción</option>
+                                            @for (opt of cod_tiplab(); track $index) {
                                             <option [value]="opt.cod_tipo_labor ">{{ opt.cod_tipo_labor }} {{
                                                 opt.nom_tipo_labor }}
                                             </option>
@@ -79,7 +81,8 @@
                                     }
 
                                     <td class="border-x border-gray-300 p-1.5 w-24 text-center">
-                                        <button type="button" (click)="eliminarFila(item, i)"  [disabled]="planingCompartido.getBloqueoFormEditar()()"
+                                        <button type="button" (click)="eliminarFila(item, i)"
+                                            [disabled]="planingCompartido.getBloqueoFormEditar()()"
                                             [disabled]="item.get('accion')?.disabled"
                                             class="flex disabled:bg-gray-100 items-center justify-center gap-1 mx-auto bg-[#A3361D] hover:bg-red-700 text-white px-2 py-1.5 rounded-md shadow-sm transition-all duration-200 font-medium text-xs disabled:opacity-50 disabled:cursor-not-allowed">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"

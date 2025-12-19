@@ -37,7 +37,7 @@ export class EstandarAvanceComponent {
     // ===============================
     //   LOOKUPS
     // ===============================
-    listLabor = signal<SelectTipoLabor[]>([]);
+    cod_tiplab = signal<SelectTipoLabor[]>([]);
 
     // ===============================
     //   FORMULARIO PRINCIPAL
@@ -67,40 +67,6 @@ export class EstandarAvanceComponent {
     bloqueoBotonNuevo = signal<boolean>(true);
 
     constructor() {
-
-        /**
-         * 📌 CARGA INICIAL DESDE BACKEND
-         */
-
-
-        // effect(() => {
-        //     const data = this.planingService.dataRoutes();
-        //     const semanas = data?.data?.laboratorio_estandar || [];
-
-        //     setTimeout(() => {
-        //         this.loadSemanas(semanas);           // refresca FormArray
-        //         this.myForm.patchValue(data || {});   // actualiza el formulario
-        //         this.cd.detectChanges();              // opcional
-        //     }, 0);
-        // });
-
-
-        // /**
-        //  * 📌 BLOQUEO CENTRALIZADO
-        //  */
-        // effect(() => {
-        //     const bloqueado = this.planingService.bloqueoForm();
-        //     this.estaBloqueado.set(bloqueado);
-
-        //     bloqueado ? this.myForm.disable() : this.myForm.enable();
-
-        //     if (!bloqueado && this.semanas.length === 0) {
-        //         const dataRoutes = this.planingService.data();
-        //         const labor = dataRoutes?.data?.laboratorio_estandar ?? [];
-        //         this.loadSemanas(labor);
-        //     }
-        // });
-
         effect(() => {
             const data = this.planingCompartido.dataRoutes();
             const semanas = data?.data?.laboratorio_estandar || [];
@@ -116,13 +82,13 @@ export class EstandarAvanceComponent {
         // ========================================
         //   EFECTO: BLOQUEO DE FORMULARIO
         // ========================================
-        effect(() => {
-            const bloqueado = this.planingCompartido.bloqueoForm();
-            bloqueado ? this.myForm.disable() : this.myForm.enable();
-        });
+        // effect(() => {
+        //     const bloqueado = this.planingCompartido.bloqueoForm();
+        //     bloqueado ? this.myForm.disable() : this.myForm.enable();
+        // });
 
 
-
+        this.loadTiposLabor();
 
         // effect(() => {
         //     this.bloqueoFormulario();
@@ -131,24 +97,6 @@ export class EstandarAvanceComponent {
 
     }
 
-    // bloqueoFormulario() {
-    //     const bloqueado = this.planingService.bloqueoForm();
-
-    //     if (bloqueado) this.myForm.disable();
-    //     else this.myForm.enable();
-
-    //     // ❗ Campos que siempre deben quedar bloqueados
-    //     // this.form.get('cie_ano')?.disable();
-    //     // this.form.get('cie_per')?.disable();
-    // }
-
-    // ===============================
-    //   MÉTODOS
-    // ===============================
-
-    /**
-     * Limpia el formulario
-     */
     resetForm() {
         this.myForm.reset();
         this.semanas.clear();
@@ -161,9 +109,13 @@ export class EstandarAvanceComponent {
         this.semanas.clear();
 
         data.forEach((item, index) => {
+
+            const cod = this.cod_tiplab()[index];
+            if (!cod) return;
+
             this.semanas.push(
                 this.fb.group({
-                    cod_tiplab: [{ value: this.loadTiposLabor(), disabled: true }, Validators.required],
+                    cod_tiplab: [{ value: this.cod_tiplab(), disabled: true }, Validators.required],
                     nro_lab_ancho: [{ value: item.nro_lab_ancho || '', disabled: true }],
                     nro_lab_altura: [{ value: item.nro_lab_altura || '', disabled: true }],
                     nro_lab_pieper: [{ value: item.nro_lab_pieper || '', disabled: true }],
@@ -176,6 +128,8 @@ export class EstandarAvanceComponent {
                     nro_lab_punmar: [{ value: item.nro_lab_punmar || '', disabled: true }],
                     nro_lab_tabla: [{ value: item.nro_lab_tabla || '', disabled: true }],
                     accion: [{ value: '', disabled: true }],
+                    esNuevo: [false]
+
                 })
             );
         });
@@ -199,6 +153,8 @@ export class EstandarAvanceComponent {
                 nro_lab_conect: ['', Validators.required],
                 nro_lab_punmar: ['', Validators.required],
                 nro_lab_tabla: ['', Validators.required],
+                esNuevo: [true]
+
             })
         );
 
@@ -211,6 +167,14 @@ export class EstandarAvanceComponent {
      */
     async eliminarFila(data: any, index: number) {
         const semana = data.getRawValue ? data.getRawValue() : data.value;
+
+        const esNuevo = semana.esNuevo;
+
+        if (esNuevo) {
+            this.semanas.removeAt(index);
+            this.cd.detectChanges();
+            return;
+        }
 
         const payload = {
             cod_tiplab: semana.cod_tiplab,
@@ -227,16 +191,11 @@ export class EstandarAvanceComponent {
         this.semanasAvanceMainService.estandarAvance(payload).subscribe({
             next: (res: any) => {
                 if (res.success) {
-                    // 👉 Elimina del FormArray
-
-                    // 👉 Muestra alerta de éxito desde el utilitario
                     this.utils.alertaEliminado(res.message);
                     this.semanas.removeAt(index);
-                    this.cd.detectChanges();              // opcional
-
+                    this.cd.detectChanges();
                 } else {
                     this.utils.alertaEliminado(res.message);
-
                 }
             },
             error: (err) => this.utils.mensajeError(err.message)
@@ -260,7 +219,7 @@ export class EstandarAvanceComponent {
      */
     private loadTiposLabor() {
         this.planingService.SelectTipoLabor().subscribe({
-            next: (data: any) => this.listLabor.set(data),
+            next: (data: any) => this.cod_tiplab.set(data),
             error: (err) => console.error('Error al cargar tipos de labor:', err),
         });
     }

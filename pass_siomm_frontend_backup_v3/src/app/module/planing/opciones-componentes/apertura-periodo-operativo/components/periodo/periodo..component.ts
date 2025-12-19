@@ -103,6 +103,7 @@ export class AperPerOperComponent {
             const bloqueado = this.planingCompartido.getBloqueoFormEditar()();
 
             bloqueado
+
                 ? this.form.disable({ emitEvent: false })
                 : this.form.enable({ emitEvent: false });
 

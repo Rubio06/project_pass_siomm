@@ -15,6 +15,8 @@ import { FormUtils } from 'src/app/utils/form-utils';
     styleUrl: './valores.component.css',
 })
 export class ValoresComponent {
+    private planingService = inject(PlanningService);
+
     planingCompartido = inject(PlaningCompartido);
     private fb = inject(FormBuilder);
     rutas = this.planingCompartido.dataRoutes;

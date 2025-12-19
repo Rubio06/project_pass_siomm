@@ -91,7 +91,9 @@ export class SemanasAvanceMainComponent {
                     fec_ini: [{ value: FormUtils.formatDate(item.fec_ini), disabled: true }],
                     fec_fin: [{ value: FormUtils.formatDate(item.fec_fin), disabled: true }],
                     desc_semana: [{ value: item.desc_semana, disabled: true }],
-                    accion: [{ value: '', disabled: true }]
+                    accion: [{ value: '', disabled: true }],
+                    esNuevo: [false]
+
                 })
             );
         });
@@ -111,16 +113,25 @@ export class SemanasAvanceMainComponent {
                 num_semana: ['', [Validators.required, Validators.min(1), Validators.max(7), Validators.pattern(/^[1-7]$/)]],
                 fec_ini: ['', [Validators.required, Validators.pattern(/^(0[1-9]|[12]\d|3[01])\/(0[1-9]|1[0-2])\/(19\d{2}|20\d{2}|2100)$/)]],
                 fec_fin: ['', [Validators.required, Validators.pattern(/^(0[1-9]|[12]\d|3[01])\/(0[1-9]|1[0-2])\/(19\d{2}|20\d{2}|2100)$/)]],
-                desc_semana: ['', [Validators.required]]
+                desc_semana: ['', [Validators.required]],
+                esNuevo: [true]
+
             })
         );
     }
 
 
     async eliminarFila(data: any, index: number) {
-        // const semana = data.getRawValue ? data.getRawValue() : data.value;
+        const semana = data.getRawValue ? data.getRawValue() : data.value;
 
-        console.log("el indice es " + index)
+        const esNuevo = semana.esNuevo;
+
+        if (esNuevo) {
+            this.semanas.removeAt(index);
+            this.cd.detectChanges();
+            return;
+        }
+
 
         const confirmado = await this.formUtils.confirmarEliminacion();
         if (!confirmado) {
@@ -128,34 +139,31 @@ export class SemanasAvanceMainComponent {
             return;
         }
 
-        // const payload = {
-        //     num_semana: semana.num_semana,
-        //     fec_ini: this.utils.convertToISO(semana.fec_ini),
-        //     fec_fin: this.utils.convertToISO(semana.fec_fin),
-        //     desc_semana: semana.desc_semana
-        // };
+        const payload = {
+            num_semana: semana.num_semana,
+            fec_ini: this.formUtils.convertToISO(semana.fec_ini),
+            fec_fin: this.formUtils.convertToISO(semana.fec_fin),
+            desc_semana: semana.desc_semana
+        };
 
-        // // 👉 Confirmación usando tu utilitario
+        // 👉 Confirmación usando tu utilitario
 
-        // this.semanasAvanceMainService.eliminarSemanaAvance(payload).subscribe({
-        //     next: (res: any) => {
-        //         if (res.success) {
+        this.semanasAvanceMainService.eliminarSemanaAvance(payload).subscribe({
+            next: (res: any) => {
+                if (res.success) {
 
-        //             // 👉 Elimina del FormArray
+                    this.formUtils.alertaEliminado(res.message);
+                    this.semanas.removeAt(index);
 
-        //             // 👉 Muestra alerta de éxito desde el utilitario
-        //             this.utils.alertaEliminado(res.message);
-        //             this.semanas.removeAt(index);
+                    this.cd.detectChanges();              // opcional
 
-        //             this.cd.detectChanges();              // opcional
+                } else {
+                    this.formUtils.alertaEliminado(res.message);
 
-        //         } else {
-        //             this.utils.alertaEliminado(res.message);
-
-        //         }
-        //     },
-        //     error: (err) => this.utils.mensajeError(err.message)
-        // });
+                }
+            },
+            error: (err) => this.formUtils.mensajeError(err.message)
+        });
 
         this.semanas.removeAt(index);
 

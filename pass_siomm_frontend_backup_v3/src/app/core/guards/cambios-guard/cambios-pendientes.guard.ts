@@ -12,6 +12,7 @@ export interface CanComponentDeactivate {
 })
 export class PendingChangesGuard implements CanDeactivate<CanComponentDeactivate> {
     canDeactivate(component: CanComponentDeactivate): boolean | Observable<boolean> {
+
         if (component.hasPendingChanges()) {
             Swal.fire({
                 icon: 'warning',
@@ -19,7 +20,8 @@ export class PendingChangesGuard implements CanDeactivate<CanComponentDeactivate
                 text: 'Debes guardar los cambios antes de salir.',
                 confirmButtonText: 'Entendido',
                 allowOutsideClick: false,
-                allowEscapeKey: false
+                allowEscapeKey: false,
+                confirmButtonColor: '#00426F',
             });
             return false;
         }

@@ -93,6 +93,10 @@ export class PlaningCompartido {
         this._semana_ciclo.set(Array.isArray(data) ? data : []);
     }
 
+
+
+
+
     private bloqueoFormEditar = signal(true);
 
     setBloqueoFormEditar(valor: boolean) {
@@ -145,8 +149,5 @@ export class PlaningCompartido {
     setBloqueoForm(valor: boolean) {
         this._bloqueoForm.set(valor);
     }
-
-
-
 
 }

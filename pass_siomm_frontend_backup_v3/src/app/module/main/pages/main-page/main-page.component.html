@@ -1,3 +1,8 @@
+@if (loadingService.spinner()) {
+<div class="absolute inset-0 flex items-center justify-center">
+    <app-spinner />
+</div>
+}@else {
 <div class="drawer lg:drawer-open">
     <input id="my-drawer-4" type="checkbox" class="drawer-toggle" />
     <div class="drawer-content">
@@ -14,16 +19,16 @@
                 </svg>
             </label>
             <div class="px-4 w-full flex flex-col gap-4
-            md:flex-row md:items-center md:justify-between">
+                md:flex-row md:items-center md:justify-between">
                 <h1 class="font-bold text-lg md:text-2xl text-[#013B5C]
-             text-center md:text-left">
+                 text-center md:text-left">
                     SISTEMA DE OPERACIONES MINERO METALURGICO (SIOMM)
                 </h1>
 
                 <div class="flex justify-center md:justify-end">
                     <button class="btn btn-error flex items-center gap-2
-             hover:scale-105 transition-transform duration-200
-             h-10 px-5 min-w-[160px]" (click)="authService.logout()">
+                 hover:scale-105 transition-transform duration-200
+                 h-10 px-5 min-w-[160px]" (click)="authService.logout()">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -34,27 +39,28 @@
                 </div>
 
             </div>
-
-
         </nav>
+
+
         <!-- Page content here -->
         <div class="p-1">
             <router-outlet />
         </div>
     </div>
 
-    <div class="drawer-side" style="background-color: #e8eaeb;">
+    <div class="drawer-side">
         <label for="my-drawer-4" aria-label="close sidebar" class="drawer-overlay"></label>
 
-        <div class="flex min-h-full flex-col shadow-xl
+        <!-- PANEL -->
+        <div class="menu min-h-full w-76 bg-[#e8eaeb] p-4
+                flex flex-col shadow-xl
+                transition-all duration-300 ease-in-out">
 
-        transition-all duration-300 ease-in-out">
-
-            <div class="w-full p-4 h-20 flex items-center justify-center ">
-                <img src="logo-empresa.png" alt="Logo empresa" class="w-auto h-30 mt-10 " />
+            <div class="w-full h-20 flex items-center justify-center">
+                <img src="logo-empresa.png" alt="Logo empresa" class="w-auto h-30 mt-10" />
             </div>
 
-            <ul class="menu w-full grow px-4 py-6 space-y-1 text-gray-700 mt-10">
+            <ul class="grow px-4 py-6 space-y-1 text-gray-700 mt-10">
                 <app-list-desktop />
             </ul>
 
@@ -64,8 +70,10 @@
 
         </div>
     </div>
+
 </div>
 
+}
 
 <!-- CONTENIDO PRINCIPAL -->
 <!-- <div class="">

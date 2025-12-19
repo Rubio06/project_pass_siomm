@@ -1,7 +1,7 @@
 <div class="container mx-auto px-4 gap-10 justify-center">
     <div class="w-full">
         <h2 class="text-[20px] font-bold text-[#013B5C] border-b-2 border-gray-300 pb-2">
-            Registro de Labores y Métodos de Explotación
+            Registro de Labores y Método Minado
         </h2>
         <form [formGroup]="myForm">
 
@@ -55,8 +55,14 @@
                                     <td class="border-x border-gray-300 p-1.5 w-50">
                                         <select formControlName="cod_metexp"
                                             class="select-xs disabled:opacity-30 disabled:bg-gray-100 disabled:cursor-not-allowed mx-auto select text-sm font-medium outline-none flex items-center border border-gray-300 rounded-lg px-2 py-1 bg-white shadow-sm hover:shadow-md transition-shadow duration-300 ease-in-out focus:border-[#033351] focus:ring-1 focus:ring-[rgb(3,102,157)] focus:ring-opacity-40 w-full">
+
+
+                                            <option value="" disabled>
+                                                ===== Seleccione una opción =====
+                                            </option>
                                             @for (opt of cod_metexp(); track $index) {
-                                                <option [ngValue]="opt.nom_metexp">{{ opt.cod_metexp }} {{ opt.nom_metexp }}</option>
+                                            <option [value]="opt.nom_metexp">{{ opt.cod_metexp }} {{ opt.nom_metexp }}
+                                            </option>
                                             }
                                         </select>
                                     </td>
@@ -70,16 +76,20 @@
                                                 class="w-full disabled:opacity-30 disabled:cursor-not-allowed bg-transparent outline-none text-gray-800 placeholder-gray-400 text-xs font-medium" />
 
                                         </div>
-                                            @if ( formUtils.isValidFieldInArray(item, "nom_metexp") ) {
-                                                <span class="text-[10px] text-error block">
-                                                    <b>{{formUtils.getFiledErrorArray(item, "nom_metexp")}}</b>
-                                                </span>
-                                            }
+                                        @if ( formUtils.isValidFieldInArray(item, "nom_metexp") ) {
+                                        <span class="text-[10px] text-error block">
+                                            <b>{{formUtils.getFiledErrorArray(item, "nom_metexp")}}</b>
+                                        </span>
+                                        }
                                     </td>
 
                                     <td class="border-x border-gray-300 p-1.5 w-25">
                                         <select formControlName="ind_calculo_dilucion"
                                             class="select-xs disabled:opacity-30  disabled:cursor-not-allowed mx-auto select text-sm font-medium outline-none flex items-center border border-gray-300 rounded-lg px-2 py-1 bg-white shadow-sm hover:shadow-md transition-shadow duration-300 ease-in-out focus:border-[#033351] focus:ring-1 focus:ring-[rgb(3,102,157)] focus:ring-opacity-40 w-full">
+
+                                            <option value="" disabled>
+                                                Seleccione una opción
+                                            </option>
                                             @for (opt of ind_calculo_dilucion(); track $index) {
                                             <option [value]="opt.label">{{ opt.label }}</option>
                                             }
@@ -89,6 +99,10 @@
                                     <td class="border-x border-gray-300 p-1.5 w-25">
                                         <select formControlName="ind_calculo_leyes_min"
                                             class="select-xs disabled:opacity-30 disabled:cursor-not-allowed mx-auto select text-sm font-medium outline-none flex items-center border border-gray-300 rounded-lg px-2 py-1 bg-white shadow-sm hover:shadow-md transition-shadow duration-300 ease-in-out focus:border-[#033351] focus:ring-1 focus:ring-[rgb(3,102,157)] focus:ring-opacity-40 w-full">
+
+                                            <option value="" disabled>
+                                                Seleccione una opción
+                                            </option>
                                             @for (opt of ind_calculo_leyes_min(); track $index) {
                                             <option [value]="opt.label">{{ opt.label }}</option>
                                             }
@@ -98,6 +112,9 @@
                                     <td class="border-x border-gray-300 p-1.5 w-25">
                                         <select formControlName="ind_act"
                                             class="select-xs disabled:opacity-30 disabled:cursor-not-allowed mx-auto select text-sm font-medium outline-none flex items-center border border-gray-300 rounded-lg px-2 py-1 bg-white shadow-sm hover:shadow-md transition-shadow duration-300 ease-in-out focus:border-[#033351] focus:ring-1 focus:ring-[rgb(3,102,157)] focus:ring-opacity-40 w-full">
+                                            <option value="" disabled>
+                                                Seleccione una opción
+                                            </option>
                                             @for (opt of ind_act(); track $index) {
                                             <option [value]="opt.label">{{ opt.label }}</option>
                                             }
@@ -105,7 +122,8 @@
                                     </td>
 
                                     <td class="border-x border-gray-300 p-1.5 w-24 text-center">
-                                        <button type="button" (click)="eliminarFila(item, i)" [disabled]="planingCompartido.getBloqueoFormEditar()()"
+                                        <button type="button" (click)="eliminarFila(item, i)"
+                                            [disabled]="planingCompartido.getBloqueoFormEditar()()"
                                             class="flex disabled:opacity-30 disabled:cursor-not-allowed
                                             items-center justify-center gap-1 mx-auto bg-[#A3361D] hover:bg-red-700 text-white px-2 py-1.5 rounded-md shadow-sm transition-all duration-200 font-medium text-xs">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -136,7 +154,8 @@
                     </div>
 
                     <div>
-                        <button type="button" (click)="agregarFilas()" [disabled]="!planingCompartido.tableButtonEnabled()"
+                        <button type="button" (click)="agregarFilas()"
+                            [disabled]="!planingCompartido.tableButtonEnabled()"
                             class="flex items-center space-x-2 px-4 py-2 transition duration-300 w-30  disabled:opacity-30 disabled:cursor-not-allowed"
                             title="Agregar registro">
                             <img src="icono-agregar.png"
