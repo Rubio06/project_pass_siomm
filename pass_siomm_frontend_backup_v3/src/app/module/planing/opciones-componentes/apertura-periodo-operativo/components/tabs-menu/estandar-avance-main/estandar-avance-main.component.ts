@@ -77,24 +77,44 @@ export class EstandarAvanceComponent {
 
         });
 
+        ///BOTON EDITAR
+        effect(() => {
+            if (!this.myForm) return;
+
+            if (this.planingCompartido.bloqueoFormGeneral()) {
+                this.myForm.disable({ emitEvent: false });
+            } else {
+                this.myForm.enable({ emitEvent: false });
+            }
+        });
+
+        ///BOTON NUEVO
+        effect(() => {
+            const resetSignal = this.planingCompartido.resetAllForms();
+            if (resetSignal > 0) {
+                this.resetForm();
+            }
+        });
 
 
-        // ========================================
-        //   EFECTO: BLOQUEO DE FORMULARIO
-        // ========================================
-        // effect(() => {
-        //     const bloqueado = this.planingCompartido.bloqueoForm();
-        //     bloqueado ? this.myForm.disable() : this.myForm.enable();
-        // });
+        // BOTON VISUALIZAR
 
+        effect(() => {
+            const signal = this.planingCompartido.visualizarForms();
+            if (signal > 0) {
+                this.blockForm();
+                this.resetForm();
+            }
+        });
 
         this.loadTiposLabor();
 
-        // effect(() => {
-        //     this.bloqueoFormulario();
-        // });
 
+    }
 
+    blockForm() {
+        this.myForm.disable(); // bloquea todos los campos
+        // this.filas.forEach(f => f.disable()); // bloquea filas si tienes tabla
     }
 
     resetForm() {
@@ -115,24 +135,26 @@ export class EstandarAvanceComponent {
 
             this.semanas.push(
                 this.fb.group({
-                    cod_tiplab: [{ value: this.cod_tiplab(), disabled: true }, Validators.required],
-                    nro_lab_ancho: [{ value: item.nro_lab_ancho || '', disabled: true }],
-                    nro_lab_altura: [{ value: item.nro_lab_altura || '', disabled: true }],
-                    nro_lab_pieper: [{ value: item.nro_lab_pieper || '', disabled: true }],
-                    nro_lab_broca: [{ value: item.nro_lab_broca || '', disabled: true }],
-                    nro_lab_barcon: [{ value: item.nro_lab_barcon || '', disabled: true }],
-                    nro_lab_barren: [{ value: item.nro_lab_barren || '', disabled: true }],
-                    nro_lab_facpot: [{ value: item.nro_lab_facpot || '', disabled: true }],
-                    nro_lab_fulmin: [{ value: item.nro_lab_fulmin || '', disabled: true }],
-                    nro_lab_conect: [{ value: item.nro_lab_conect || '', disabled: true }],
-                    nro_lab_punmar: [{ value: item.nro_lab_punmar || '', disabled: true }],
-                    nro_lab_tabla: [{ value: item.nro_lab_tabla || '', disabled: true }],
-                    accion: [{ value: '', disabled: true }],
+                    cod_tiplab: [this.cod_tiplab(), Validators.required],
+                    nro_lab_ancho: [item.nro_lab_ancho || ''],
+                    nro_lab_altura: [item.nro_lab_altura || ''],
+                    nro_lab_pieper: [item.nro_lab_pieper || ''],
+                    nro_lab_broca: [item.nro_lab_broca || ''],
+                    nro_lab_barcon: [item.nro_lab_barcon || ''],
+                    nro_lab_barren: [item.nro_lab_barren || ''],
+                    nro_lab_facpot: [item.nro_lab_facpot || ''],
+                    nro_lab_fulmin: [item.nro_lab_fulmin || ''],
+                    nro_lab_conect: [item.nro_lab_conect || ''],
+                    nro_lab_punmar: [item.nro_lab_punmar || ''],
+                    nro_lab_tabla: [item.nro_lab_tabla || ''],
+                    accion: [''],
                     esNuevo: [false]
 
                 })
             );
         });
+        this.planingCompartido.notifyFormChanged();
+
     }
 
     /**

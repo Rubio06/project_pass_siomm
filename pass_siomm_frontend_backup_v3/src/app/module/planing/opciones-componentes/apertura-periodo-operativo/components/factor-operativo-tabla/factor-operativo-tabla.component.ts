@@ -77,54 +77,59 @@ export class FactorOperativoTablaComponent {
         });
 
         effect(() => {
-            const data = this.planingCompartido.dataRoutes();
+            if (!this.form) return;
 
-            if (data === null || data?.length === 0) {
-                this.resetearFormulario();   // 🔥 Se ejecuta en TODOS los componentes
-                return;
+            if (this.planingCompartido.bloqueoFormGeneral()) {
+                this.form.disable({ emitEvent: false });
+            } else {
+                this.form.enable({ emitEvent: false });
             }
-            this.form.patchValue(data);
         });
 
         effect(() => {
-            this.bloqueoFormulario()
-        })
-
-        effect(() => {
-            const bloqueado = this.planingCompartido.getBloqueoFormEditar()();
-            bloqueado
-                ? this.form.disable({ emitEvent: false })
-                : this.form.enable({ emitEvent: false });
+            this.planingCompartido.resetAllForms();
+            this.resetearFormulario();
         });
 
 
+        effect(() => {
+            const signal = this.planingCompartido.visualizarForms();
+            if (signal > 0) {
+                this.blockForm();
+            }
+        });
 
     }
+
+    blockForm() {
+        this.form.disable();
+    }
+
 
     resetearFormulario() {
         this.form.reset({
-            val_des_tipo_fac: ['GENERAL'],
-            val_fac_ag: ['0.0000'],
-            val_fac_cu: ['0.0000'],
-            val_fac_pb: ['0.0000'],
-            val_fac_zn: ['0.0000'],
-            val_fac_au: ['0.0000'],
-            val_fac_rec_ag: ['.00%'],
-            val_fac_rec_cu: ['.00%'],
-            val_fac_rec_pb: ['.00%'],
-            val_fac_rec_zn: ['.00%'],
-            val_fac_rec_au: ['.00%'],
+            val_des_tipo_fac: 'GENERAL',
+            val_fac_ag: '0.0000',
+            val_fac_cu: '0.0000',
+            val_fac_pb: '0.0000',
+            val_fac_zn: '0.0000',
+            val_fac_au: '0.0000',
+            val_fac_rec_ag: '.00%',
+            val_fac_rec_cu: '.00%',
+            val_fac_rec_pb: '.00%',
+            val_fac_rec_zn: '.00%',
+            val_fac_rec_au: '.00%',
         });
     }
 
-    bloqueoFormulario() {
-        const bloqueado = this.planingCompartido.bloqueoForm();
-        if (bloqueado) {
-            this.form.disable();
-        } else {
-            this.form.enable();
-        }
-    }
+    // bloqueoFormulario() {
+    //     const bloqueado = this.planingCompartido.bloqueoForm();
+    //     if (bloqueado) {
+    //         this.form.disable();
+    //     } else {
+    //         this.form.enable();
+    //     }
+    // }
 
     ngOnInit() {
         this.form.valueChanges.subscribe(val => {

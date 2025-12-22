@@ -99,28 +99,37 @@ export class ValoresComponent {
             this.form.patchValue(data);
         });
 
+        //BOTON EDITAR
         effect(() => {
-            this.bloqueoFormulario()
-        })
+            if (!this.form) return;
 
-        effect(() => {
-            const bloqueado = this.planingCompartido.getBloqueoFormEditar()();
-
-            bloqueado
-                ? this.form.disable({ emitEvent: false })
-                : this.form.enable({ emitEvent: false });
+            if (this.planingCompartido.bloqueoFormGeneral()) {
+                this.form.disable({ emitEvent: false });
+            } else {
+                this.form.enable({ emitEvent: false });
+            }
         });
+
+        ///BOTON NUEVO
+        effect(() => {
+            this.planingCompartido.resetAllForms();
+            this.resetearFormulario();
+        });
+
+        //BOTON VISUALIZAR
+        effect(() => {
+            const signal = this.planingCompartido.visualizarForms();
+            if (signal > 0) {
+                this.blockForm();
+                this.resetearFormulario();
+            }
+        });
+
 
     }
 
-    bloqueoFormulario() {
-        const bloqueado = this.planingCompartido.bloqueoForm();
-        console.log(bloqueado)
-        if (bloqueado) {
-            this.form.disable();
-        } else {
-            this.form.enable();
-        }
+    blockForm() {
+        this.form.disable();
     }
 
 

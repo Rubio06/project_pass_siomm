@@ -21,7 +21,7 @@
                 <!-- Tercer nivel: subcolumnas -->
                 <tr class="text-center text-gray-700 font-medium bg-gray-100">
                     @for (th of thCampos(); track $index) {
-                        <th class="border-2 border-gray-400 px-3 py-1">{{ th.label }}</th>
+                    <th class="border-2 border-gray-400 px-3 py-1">{{ th.label }}</th>
                     }
                 </tr>
 
@@ -30,23 +30,25 @@
             <tbody>
                 <tr class="text-center bg-white">
                     @for (td of tdCampos(); track $index) {
-                        <td class="border-2 border-gray-400 px-2 py-1">
+                    <td class="border-2 border-gray-400 px-2 py-1">
 
-                            <div class="col-2">
+                        <div class="col-2">
 
-                                <input [type]="td.type" [formControlName]="td.name"
-                                class="w-full bg-transparent outline-none text-gray-800 placeholder-gray-400 text-xs font-medium disabled:opacity-50 disabled:bg-gray-100 disabled:cursor-not-allowed" />
-                            </div>
+                            <input [type]="td.type" [formControlName]="td.name"
+                                [class.opacity-30]="planingCompartido.bloqueoFormGeneral()"
+                                [class.pointer-events-none]="planingCompartido.bloqueoFormGeneral()"
+                                class="w-full bg-transparent outline-none text-gray-800 placeholder-gray-400 text-xs font-medium" />
+                        </div>
 
-                            @if ( formUtils.isValidField(form ,td.name) ) {
+                        @if ( formUtils.isValidField(form ,td.name) ) {
 
-                                <div class="form-text text-danger text-[red] text-xs">
-                                    <!-- Debe de ser de 3 letras -->
-                                    {{ formUtils.getFiledError(form, td.name) }}
-                                </div>
-                            }
+                        <div class="form-text text-danger text-[red] text-xs">
+                            <!-- Debe de ser de 3 letras -->
+                            {{ formUtils.getFiledError(form, td.name) }}
+                        </div>
+                        }
 
-                        </td>
+                    </td>
                     }
                 </tr>
             </tbody>

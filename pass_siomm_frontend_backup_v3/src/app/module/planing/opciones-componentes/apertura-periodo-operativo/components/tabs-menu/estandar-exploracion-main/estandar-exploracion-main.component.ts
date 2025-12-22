@@ -89,39 +89,44 @@ export class EstandarExploracionMainComponent {
 
         });
 
-
-
-        // ========================================
-        //   EFECTO: BLOQUEO DE FORMULARIO
-        // ========================================
+        ///boton editar
         effect(() => {
-            const bloqueado = this.planingCompartido.bloqueoForm();
-            bloqueado ? this.myForm.disable() : this.myForm.enable();
+            if (!this.myForm) return;
+
+            if (this.planingCompartido.bloqueoFormGeneral()) {
+                this.myForm.disable({ emitEvent: false });
+            } else {
+                this.myForm.enable({ emitEvent: false });
+            }
         });
 
+        ///BOTON NUEVO
+        effect(() => {
+            const resetSignal = this.planingCompartido.resetAllForms();
+            if (resetSignal > 0) {
+                this.resetForm();
+            }
+        });
 
+        ///BOTON VISUALIZAR
 
-        /**
-         * 📌 BLOQUEO CENTRALIZADO
-         */
-        // effect(() => {
-        //     const bloqueado = this.planingService.bloqueoForm();
-        //     this.estaBloqueado.set(bloqueado);
+        effect(() => {
+            const signal = this.planingCompartido.visualizarForms();
+            if (signal > 0) {
+                this.blockForm();
+                this.resetForm();
 
-        //     bloqueado ? this.myForm.disable() : this.myForm.enable();
-
-        //     // Si se desbloquea y no hay filas, recargar
-        //     if (!bloqueado && this.semanas.length === 0) {
-        //         const dataRoutes = this.planingService.data();
-        //         const exploracion = dataRoutes?.data?.exploracion_extandar ?? [];
-        //         this.loadSemanas(exploracion);
-        //     }
-        // });
-
-        // Carga de Lookups
+                // this.resetSelects(); // limpia selects
+            }
+        });
         this.loadZonas();
 
 
+    }
+
+    blockForm() {
+        this.myForm.disable(); // bloquea todos los campos
+        // this.filas.forEach(f => f.disable()); // bloquea filas si tienes tabla
     }
 
     // ===============================
@@ -149,24 +154,26 @@ export class EstandarExploracionMainComponent {
 
             this.semanas.push(
                 this.fb.group({
-                    cod_zona: [{ value: item.cod_zona(index).des_zona, disabled: true }, Validators.required],
-                    lab_pieper: [{ value: item.lab_pieper || '', disabled: true }],
-                    lab_broca: [{ value: item.lab_broca || '', disabled: true }],
-                    lab_barcon: [{ value: item.lab_barcon || '', disabled: true }],
-                    lab_barren: [{ value: item.lab_barren || '', disabled: true }],
-                    lab_facpot: [{ value: item.lab_facpot || '', disabled: true }],
-                    lab_fulmin: [{ value: item.lab_fulmin || '', disabled: true }],
-                    lab_conect: [{ value: item.lab_conect || '', disabled: true }],
-                    lab_punmar: [{ value: item.lab_punmar || '', disabled: true }],
-                    lab_tabla: [{ value: item.lab_tabla || '', disabled: true }],
-                    ind_act: [{ value: item.ind_act || '', disabled: true }],
-                    lab_apr: [{ value: item.lab_apr || '', disabled: true }],
-                    accion: [{ value: '', disabled: true }],
+                    cod_zona: [item.cod_zona(index).des_zona, Validators.required],
+                    lab_pieper: [item.lab_pieper || ''],
+                    lab_broca: [item.lab_broca || ''],
+                    lab_barcon: [item.lab_barcon || ''],
+                    lab_barren: [item.lab_barren || ''],
+                    lab_facpot: [item.lab_facpot || ''],
+                    lab_fulmin: [item.lab_fulmin || ''],
+                    lab_conect: [item.lab_conect || ''],
+                    lab_punmar: [item.lab_punmar || ''],
+                    lab_tabla: [item.lab_tabla || ''],
+                    ind_act: [item.ind_act || ''],
+                    lab_apr: [item.lab_apr || ''],
+                    accion: [''],
                     esNuevo: [false]
 
                 })
             );
         });
+        this.planingCompartido.notifyFormChanged();
+
     }
 
     /**

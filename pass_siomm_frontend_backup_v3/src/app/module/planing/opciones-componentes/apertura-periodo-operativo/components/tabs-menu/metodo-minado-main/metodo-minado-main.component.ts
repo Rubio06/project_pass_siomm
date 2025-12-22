@@ -67,23 +67,14 @@ export class MetodoMinadoMainComponent {
 
     private cd = inject(ChangeDetectorRef);
 
-    bloqueoBotonNuevo = signal<boolean>(true);
-
     constructor() {
 
         effect(() => {
+
+
             const data = this.planingCompartido.dataRoutes();
             const semanas = data?.data?.metodo_minado || [];
 
-
-
-            // 🚨 Si NO hay metodo minado → reset completo
-            // if (!semanas || semanas.length === 0) {
-            //     this.resetForm();
-            //     this.cd.detectChanges();              // opcional
-
-            //     return;
-            // }
 
             this.loadSemanas(semanas);
             this.myForm.patchValue(data || {}, { emitEvent: false });
@@ -92,22 +83,64 @@ export class MetodoMinadoMainComponent {
 
         });
 
-        effect(() => {
-            this.bloqueoEditar();
-        })
 
-        // Lookups iniciales
+        // effect(() => {
+        //     const data = this.planingCompartido.dataRoutes();
+        //     const semanas = data?.data?.semana_avance || [];
+
+        //     this.loadSemanas(semanas);
+        //     this.myForm.patchValue(data || {}, { emitEvent: false });
+        //     this.cd.detectChanges();              // opcional
+        // });
+
+
         this.loadSelectExploracion();
 
+        // Lookups iniciales
 
+
+        effect(() => {
+            this.planingCompartido.formVersion(); // dependencia
+            if (!this.myForm) return;
+
+            if (this.planingCompartido.bloqueoFormGeneral()) {
+                this.myForm.disable({ emitEvent: false });
+            } else {
+                this.myForm.enable({ emitEvent: false });
+            }
+        });
+
+        ///BOTON NUEVO
+        effect(() => {
+            const resetSignal = this.planingCompartido.resetAllForms();
+            if (resetSignal > 0) {
+                this.resetForm();
+            }
+        });
+
+        ///BOTON VISUALIZAR
+
+        effect(() => {
+            const signal = this.planingCompartido.visualizarForms();
+
+            if (signal > 0) {
+                this.blockForm();
+                this.resetForm();
+                this.cod_metexp.set([]);
+                this.ind_calculo_dilucion.set([]);
+                this.ind_calculo_leyes_min.set([]);
+                this.ind_act.set([]);
+
+                // this.resetSelects(); // limpia selects
+            }
+        });
     }
 
-    bloqueoEditar() {
-        const bloqueado = this.planingCompartido.getBloqueoFormEditar()();
-
-        bloqueado
-            ? this.myForm.disable({ emitEvent: false })
-            : this.myForm.enable({ emitEvent: false });
+    blockForm() {
+        if (this.myForm) {
+            this.myForm.disable({ emitEvent: false });
+        }// bloquea todos los campos
+        // this.filas.forEach(f => f.disable()); // bloquea filas si tienes tabla
     }
 
     // =====================================================
@@ -116,6 +149,10 @@ export class MetodoMinadoMainComponent {
     resetForm() {
         this.myForm.reset();
         this.semanas.clear();
+
+        setTimeout(() => this.semanas.clear());
+
+        // this.planingCompartido.notifyFormChanged();
     }
 
     // =====================================================
@@ -132,17 +169,22 @@ export class MetodoMinadoMainComponent {
 
             this.semanas.push(
                 this.fb.group({
-                    cod_metexp: [{ value: this.cod_metexp()[index].nom_metexp, disabled: true }, [Validators.required]],
-                    nom_metexp: [{ value: item.nom_metexp, disabled: true }, [Validators.required]],
-                    ind_calculo_dilucion: [{ value: this.ind_calculo_dilucion()[0].label, disabled: true }],
-                    ind_calculo_leyes_min: [{ value: this.ind_calculo_leyes_min()[0].label, disabled: true }],
-                    ind_act: [{ value: this.ind_act()[0].label, disabled: true }],
-                    accion: [{ value: '', disabled: true }],
+                    cod_metexp: [this.cod_metexp()[index].nom_metexp, [Validators.required]],
+                    nom_metexp: [item.nom_metexp, [Validators.required]],
+                    ind_calculo_dilucion: [this.ind_calculo_dilucion()[0].label],
+                    ind_calculo_leyes_min: [this.ind_calculo_leyes_min()[0].label],
+                    ind_act: [this.ind_act()[0].label],
+                    accion: ['',],
                     esNuevo: [false]
 
                 })
             );
         });
+        // this.myForm.disable({ emitEvent: false });
+
+        this.planingCompartido.notifyFormChanged();
+
+
     }
 
     // =====================================================

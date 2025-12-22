@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, Signal, signal, WritableSignal } from '@angular/core';
+import { computed, inject, Injectable, Signal, signal, WritableSignal } from '@angular/core';
 import { PlanningData } from '../interface/aper-per-oper.interface';
 
 @Injectable({
@@ -100,6 +100,8 @@ export class PlaningCompartido {
     private bloqueoFormEditar = signal(true);
 
     setBloqueoFormEditar(valor: boolean) {
+
+        console.log("el valor es" + valor)
         this.bloqueoFormEditar.set(valor);
     }
 
@@ -119,19 +121,6 @@ export class PlaningCompartido {
         this.tableButtonEnabled.set(false);
     }
 
-
-
-
-    data = signal<any>(null);
-    private _dataRoutes: WritableSignal<any> = signal([]);
-    public readonly dataRoutes: Signal<any> = this._dataRoutes.asReadonly();
-
-
-    setData(data: any): void {
-        this._dataRoutes.set(data);
-    }
-
-
     private _bloqueo = signal<boolean>(true);
     public bloqueo = this._bloqueo.asReadonly();
 
@@ -149,5 +138,83 @@ export class PlaningCompartido {
     setBloqueoForm(valor: boolean) {
         this._bloqueoForm.set(valor);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+    // ===============================
+    //  ESTADO DE EDITAR
+    // ===============================
+    private _formBloqueadoCentral = signal<boolean>(true);
+    readonly formBloqueadoCentral = this._formBloqueadoCentral.asReadonly();
+
+    setFormBloqueadoCentral(valor: boolean) {
+        this._formBloqueadoCentral.set(valor);
+    }
+
+    readonly bloqueoFormGeneral = computed(
+        () => this.formBloqueadoCentral()
+    );
+
+    // 🔁 Trigger de recreación del form
+    private _formVersion = signal(0);
+    readonly formVersion = this._formVersion.asReadonly();
+
+    notifyFormChanged() {
+        this._formVersion.update(v => v + 1);
+    }
+
+
+    // ===============================
+    //  EVENTO RESET DE FORMS PARA BOTON NUEVO
+    // ===============================
+    private _resetAllForms = signal(0);
+    readonly resetAllForms = this._resetAllForms.asReadonly();
+
+    notifyResetForms() {
+        this._resetAllForms.update(v => v + 1);
+    }
+
+
+
+
+
+    ////////PERMANECE BLOQUEADO DOS INPUTS EN PERIODO
+    private _modoEditar = signal(false);
+    readonly modoEditar = this._modoEditar.asReadonly();
+
+    setModoEditar(valor: boolean) {
+        this._modoEditar.set(valor);
+    }
+
+
+
+    ////////////SE RESETEA TODO HASTA LOS SECTS CON EL BOTON VISUALIZAR
+
+    private _visualizarForms = signal(0);
+    readonly visualizarForms = this._visualizarForms.asReadonly();
+
+    notifyVisualizar() {
+        this._visualizarForms.update(v => v + 1);
+    }
+
+
+    data = signal<any>(null);
+    private _dataRoutes: WritableSignal<any> = signal([]);
+    public readonly dataRoutes: Signal<any> = this._dataRoutes.asReadonly();
+
+
+    setData(data: any): void {
+        this._dataRoutes.set(data);
+    }
+
 
 }

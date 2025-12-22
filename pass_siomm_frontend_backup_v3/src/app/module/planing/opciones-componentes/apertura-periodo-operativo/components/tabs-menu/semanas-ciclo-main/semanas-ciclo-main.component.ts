@@ -60,20 +60,45 @@ export class SemanasCicloMainComponent {
             this.cd.detectChanges();
         });
 
-        effect(() => {
 
-            this.bloqueoEliminar();
+        //BOTRON EDITAR///
+        effect(() => {
+            if (!this.myForm) return;
+
+            if (this.planingCompartido.bloqueoFormGeneral()) {
+                this.myForm.disable({ emitEvent: false });
+
+            } else {
+                this.myForm.enable({ emitEvent: false });
+            }
         });
 
+
+        ///BOTON NUEVO
+        effect(() => {
+            const resetSignal = this.planingCompartido.resetAllForms();
+            if (resetSignal > 0) {
+                this.resetForm();
+            }
+        });
+
+        //BOTON VISUALIZAR
+        effect(() => {
+            const signal = this.planingCompartido.visualizarForms();
+            if (signal > 0) {
+                this.blockForm();
+                this.resetForm();
+
+                // this.resetSelects(); // limpia selects
+            }
+        });
     }
 
-    bloqueoEliminar() {
-        const bloqueado = this.planingCompartido.getBloqueoFormEditar()();
-
-        bloqueado
-            ? this.myForm.disable({ emitEvent: false })
-            : this.myForm.enable({ emitEvent: false });
+    blockForm() {
+        this.myForm.disable(); // bloquea todos los campos
+        // this.filas.forEach(f => f.disable()); // bloquea filas si tienes tabla
     }
+
 
     resetForm() {
         this.myForm.reset();
@@ -87,16 +112,19 @@ export class SemanasCicloMainComponent {
         data.forEach((item) => {
             this.semanas.push(
                 this.fb.group({
-                    num_semana: [{ value: item.num_semana, disabled: true }],
-                    fec_ini: [{ value: FormUtils.formatDate(item.fec_ini), disabled: true }],
-                    fec_fin: [{ value: FormUtils.formatDate(item.fec_fin), disabled: true }],
-                    desc_semana: [{ value: item.desc_semana, disabled: true }],
-                    accion: [{ value: '', disabled: true }],
+                    num_semana: [item.num_semana],
+                    fec_ini: [FormUtils.formatDate(item.fec_ini)],
+                    fec_fin: [FormUtils.formatDate(item.fec_fin)],
+                    desc_semana: [item.desc_semana],
+                    accion: [''],
                     esNuevo: [false]
 
                 })
             );
         });
+
+        this.planingCompartido.notifyFormChanged();
+
     }
 
     guardarCambios() {

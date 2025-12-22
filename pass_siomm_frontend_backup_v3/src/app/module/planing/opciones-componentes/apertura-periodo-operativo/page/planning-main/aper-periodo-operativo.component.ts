@@ -14,6 +14,15 @@ import { ModalPeriodo } from "./modal-periodo/modal-periodo";
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
 import { delay, finalize } from 'rxjs';
 
+
+
+export enum ViewMode {
+    VISUALIZAR = 'VISUALIZAR',
+    NUEVO = 'NUEVO',
+    EDITAR = 'EDITAR'
+}
+
+
 @Component({
     selector: 'app-planning-main',
     imports: [RouterOutlet, TransfornMonthPipe, RouterLink, ReactiveFormsModule, RouterLinkActive, ModalPeriodo],
@@ -116,8 +125,8 @@ export class AperturPeriodoComponent {
 
         this.prevMonth = newValue;
         this.dataMes.set(newValue);
-        this.planingCompartido.setBloqueoForm(true);
-        this.visualizarBLoqueo.set(true);
+        // this.planingCompartido.setBloqueoForm(true);
+        // this.visualizarBLoqueo.set(true);
 
 
         const anio = this.dataAnio();
@@ -134,69 +143,120 @@ export class AperturPeriodoComponent {
                         this.hasError.set(null);
                         this.planingCompartido.setData(data);
                         this.loadingService.loadingOff();
-                        this.bloqueo.set(false);
-                        this.bloqueoEditar.set(false);
-                        this.bloquearCopiarPeriodo.set(false);
+                        // this.bloqueo.set(false);
+                        // this.bloqueoEditar.set(false);
+                        // this.bloquearCopiarPeriodo.set(false);
                     }
                 },
                 error: () => this.hasError.set('Ocurrió un error al cargar las rutas.'),
             });
     }
 
+    viewMode = signal<ViewMode>(ViewMode.VISUALIZAR);
+
+
+    private applyViewMode(mode: ViewMode) {
+        this.viewMode.set(mode);
+
+        switch (mode) {
+            case ViewMode.VISUALIZAR:
+                this.planingCompartido.setBloqueoForm(true);
+                this.planingCompartido.setBloqueoFormEditar(true);
+                this.bloqueoGuardar.set(true);
+                this.visualizarBLoqueo.set(true);
+                this.bloquearCopiarPeriodo.set(false);
+                this.semanaAvance.setCambios(false);
+                this.limpiarFormulario();
+                break;
+
+            case ViewMode.NUEVO:
+                this.planingCompartido.setData([]);
+                this.planingCompartido.setBloqueoFormEditar(false);
+                this.bloqueoGuardar.set(false);
+                this.visualizarBLoqueo.set(false);
+                this.bloquearCopiarPeriodo.set(true);
+                this.semanaAvance.setCambios(true);
+                break;
+
+            case ViewMode.EDITAR:
+                this.planingCompartido.setBloqueoFormEditar(false);
+                this.bloqueoGuardar.set(false);
+                this.visualizarBLoqueo.set(false);
+                this.bloquearCopiarPeriodo.set(true);
+                this.semanaAvance.setCambios(true);
+                break;
+        }
+    }
+
+
+
     botonNuevo() {
-        // Configuración para crear un nuevo registro
-        this.semanaAvance.setNuevoMode(true);
-        this.semanaAvance.setCambios(true);
-
-        // Limpiar datos temporales
-        this.planingCompartido.setData([]);
-        this.limpiarFormulario();
-
-        // Permitir edición
-        // this.planingCompartido.setBloqueoForm(false);
-        this.planingCompartido.setBloqueoFormEditar(false);
-
-        // Flags visuales
-        this.bloqueoGuardar.set(false);
-        this.visualizarBLoqueo.set(false);
-        this.bloqueoEditar.set(true);
-        this.bloquearCopiarPeriodo.set(true);
-        this.bloqueo.set(true);
-
-        // Botones de tabla
-        this.planingCompartido.enableTableButton();
+        this.applyViewMode(ViewMode.NUEVO);
     }
 
     visualizar() {
-        // Bloquear edición de todos los formularios
-        // this.planingCompartido.setBloqueoForm(true);       // Bloquea edición general
-        this.planingCompartido.setBloqueoFormEditar(true); // Bloquea edición específica de formularios
-        this.semanaAvance.setCambios(false);               // No hay cambios pendientes
-
-        // Flags de visualización
-        this.bloqueo.set(true);            // Bloqueo general
-        this.visualizarBLoqueo.set(true);  // Indica modo solo visualización
-        this.bloqueoEditar.set(true);      // No se puede editar
-        this.bloqueoGuardar.set(true);     // Guardar deshabilitado
-        this.bloquearCopiarPeriodo.set(false); // Copiar periodo deshabilitado
-
-        // Resetear datos temporales y formularios a su estado inicial
-        this.planingCompartido.setData([]);
-        this.limpiarFormulario();          // Limpia inputs y deja valores iniciales
+        this.applyViewMode(ViewMode.VISUALIZAR);
     }
 
     desbloquearEdicion() {
-        // Permitir edición nuevamente
-        // this.planingCompartido.setBloqueoForm(false);
-        this.planingCompartido.setBloqueoFormEditar(false);
-        // Flags visuales
-        this.bloqueoGuardar.set(false);
-        this.bloquearCopiarPeriodo.set(true);
-        this.semanaAvance.setCambios(true);
-        this.visualizarBLoqueo.set(false);
-        this.bloqueo.set(true);
-        this.bloqueoEditar.set(true);
+        this.applyViewMode(ViewMode.EDITAR);
     }
+
+
+    // botonNuevo() {
+    //     // // Configuración para crear un nuevo registro
+    //     // this.semanaAvance.setNuevoMode(true);
+    //     // this.semanaAvance.setCambios(true);
+
+    //     // // Limpiar datos temporales
+    //     // this.planingCompartido.setData([]);
+    //     // this.limpiarFormulario();
+
+    //     // // Permitir edición
+    //     // // this.planingCompartido.setBloqueoForm(false);
+    //     // this.planingCompartido.setBloqueoFormEditar(false);
+
+    //     // // Flags visuales
+    //     // this.bloqueoGuardar.set(false);
+    //     // this.visualizarBLoqueo.set(false);
+    //     // this.bloqueoEditar.set(true);
+    //     // this.bloquearCopiarPeriodo.set(true);
+    //     // this.bloqueo.set(true);
+
+    //     // // Botones de tabla
+    //     // this.planingCompartido.enableTableButton();
+    // }
+
+    // visualizar() {
+    //     // // Bloquear edición de todos los formularios
+    //     // // this.planingCompartido.setBloqueoForm(true);       // Bloquea edición general
+    //     // this.planingCompartido.setBloqueoFormEditar(true); // Bloquea edición específica de formularios
+    //     // this.semanaAvance.setCambios(false);               // No hay cambios pendientes
+
+    //     // // Flags de visualización
+    //     // this.bloqueo.set(true);            // Bloqueo general
+    //     // this.visualizarBLoqueo.set(true);  // Indica modo solo visualización
+    //     // this.bloqueoEditar.set(true);      // No se puede editar
+    //     // this.bloqueoGuardar.set(true);     // Guardar deshabilitado
+    //     // this.bloquearCopiarPeriodo.set(false); // Copiar periodo deshabilitado
+
+    //     // // Resetear datos temporales y formularios a su estado inicial
+    //     // this.planingCompartido.setData([]);
+    //     // this.limpiarFormulario();          // Limpia inputs y deja valores iniciales
+    // }
+
+    // desbloquearEdicion() {
+    //     // // Permitir edición nuevamente
+    //     // // this.planingCompartido.setBloqueoForm(false);
+    //     // this.planingCompartido.setBloqueoFormEditar(false);
+    //     // // Flags visuales
+    //     // this.bloqueoGuardar.set(false);
+    //     // this.bloquearCopiarPeriodo.set(true);
+    //     // this.semanaAvance.setCambios(true);
+    //     // this.visualizarBLoqueo.set(false);
+    //     // this.bloqueo.set(true);
+    //     // this.bloqueoEditar.set(true);
+    // }
 
     async guardarTodo() {
         // Confirmación antes de guardar
@@ -221,20 +281,6 @@ export class AperturPeriodoComponent {
 
         if (!result.isConfirmed) return;
 
-        // Bloquear edición mientras se guarda
-        // this.planingCompartido.setBloqueoForm(true);
-        this.planingCompartido.setBloqueoFormEditar(true);
-        this.bloqueoGuardar.set(true);
-        this.semanaAvance.setCambios(false);
-        this.visualizarBLoqueo.set(true);
-        this.bloqueoEditar.set(true);
-        this.bloquearCopiarPeriodo.set(false);
-
-        // Desactivar botones de tabla y limpiar temporal
-        this.planingCompartido.disableTableButton();
-        this.planingCompartido.setData([]);
-        this.limpiarFormulario();
-
         // Feedback de guardado
         Swal.fire({
             icon: 'success',
@@ -243,20 +289,26 @@ export class AperturPeriodoComponent {
             confirmButtonColor: '#013B5C'
         });
 
-        // Guardado real
         this.loadingService.loadingOn();
-        this.planingCompartido.guardarTodo().subscribe({
-            next: () => this.loadingService.loadingOff(),
-            error: (err) => {
-                this.loadingService.loadingOff();
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'No se pudieron guardar los cambios',
-                    confirmButtonColor: '#013B5C'
-                });
-            }
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No se pudieron guardar los cambios',
+            confirmButtonColor: '#013B5C'
         });
+        this.onVisualizar();
+
+        this.loadingService.loadingOff();
+
+
+
+        // Guardado real
+        // this.loadingService.loadingOn();
+        // this.planingCompartido.guardarTodo().subscribe({
+        //     next: () => this.loadingService.loadingOff(),
+        //     error: (err) => {
+        //     }
+        // });
     }
 
     limpiarFormulario() {
@@ -276,4 +328,34 @@ export class AperturPeriodoComponent {
     hasPendingChanges(): boolean {
         return this.semanasAvanceMainService.getCambios(); // revisa los cambios pendientes
     }
+
+
+
+
+
+    ///FORMULARIOS EDITAR
+    onEditar() {
+        this.semanaAvance.setCambios(true);
+        this.planingCompartido.setFormBloqueadoCentral(false);
+        this.planingCompartido.setModoEditar(true);
+    }
+
+    ///FORMULARIOS NUEVO
+    onNuevo() {
+        this.planingCompartido.setModoEditar(false);
+        this.planingCompartido.setFormBloqueadoCentral(false);
+        this.planingCompartido.enableTableButton();
+
+        // 🔔 reset global
+        this.planingCompartido.notifyResetForms();
+    }
+
+    //FORMULARIO visualizar
+    onVisualizar() {
+        this.planingCompartido.setFormBloqueadoCentral(true);
+        this.planingCompartido.setModoEditar(false);
+        this.planingCompartido.notifyVisualizar();
+        this.limpiarFormulario();
+    }
+
 }

@@ -74,7 +74,7 @@ export class AperPerOperComponent {
                 const periodo = response.data.cierre_periodo[0];
 
                 this.form.patchValue({
-                    cie_ano: periodo.cie_ano, // <- ⭐ Debe ser string
+                    cie_ano: periodo.cie_ano,  // <- ⭐ Debe ser string
                     cie_per: this.meses()[parseInt(periodo.cie_per, 10) - 1] || '',
                     fec_ini: this.formatDate(periodo.fec_ini),
                     fec_fin: this.formatDate(periodo.fec_fin)
@@ -93,25 +93,55 @@ export class AperPerOperComponent {
             this.form.patchValue(data);
         });
 
+        //BOTON EDITAR //
         effect(() => {
-            this.bloqueoFormulario();
+            if (!this.form) return;
+
+            if (this.planingCompartido.bloqueoFormGeneral()) {
+                this.form.disable({ emitEvent: false });
+            } else {
+                this.form.enable({ emitEvent: false });
+
+                // 👇 VUELVES A BLOQUEAR SOLO LOS CAMPOS PROHIBIDOS EN EDITAR
+                if (this.planingCompartido.modoEditar()) {
+                    this.bloquearCamposEditar();
+                }
+            }
         });
 
+        //BOTON NUEVO///
+
         effect(() => {
-
-
-            const bloqueado = this.planingCompartido.getBloqueoFormEditar()();
-
-            bloqueado
-
-                ? this.form.disable({ emitEvent: false })
-                : this.form.enable({ emitEvent: false });
-
-            this.form.get('cie_ano')?.disable();
-            this.form.get('cie_per')?.disable();
+            this.planingCompartido.resetAllForms();
+            this.resetearFormulario();
         });
 
+        //BOTON VISUALIZAR
+        effect(() => {
+            const signal = this.planingCompartido.visualizarForms();
+            if (signal > 0) {
+                this.blockForm();
+                this.bloqueoFormulario();
+            }
+        });
     }
+
+    blockForm() {
+        this.form.disable();
+    }
+
+
+    readonly camposBloqueadosEnEditar = ['cie_ano', 'cie_per'];
+
+    private bloquearCamposEditar() {
+        this.camposBloqueadosEnEditar.forEach(campo => {
+            const control = this.form.get(campo);
+            if (control && control.enabled) {
+                control.disable({ emitEvent: false });
+            }
+        });
+    }
+
 
     public getYear() {
         this.planingService.getYear().subscribe({

@@ -1,4 +1,3 @@
-
 <div class="flex-1 flex justify-center items-start w-full transition-all duration-300 mt-2">
 
 
@@ -39,9 +38,11 @@
                         </select>
                     </div>
 
+                    <!-- Nuevo CORREGIDO -->
+
                     <div
                         class="flex items-end gap-5 sm:max-w-xl md:max-w-3xl lg:max-w-5xl xl:max-w-[1500px] overflow-x-auto">
-                        <button (click)="botonNuevo()" type="button" [disabled]="bloqueo()"
+                        <button (click)="onNuevo()" type="button"
                             class="flex items-center space-x-2 px-4 py-2 text-white bg-[green] rounded-md font-semibold text-sm shadow-md hover:bg-[#green] transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
                             <!-- Icono: Plus -->
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -53,7 +54,7 @@
                         </button>
 
                         <!-- Visualizar -->
-                        <button type="button" (click)="visualizar()" [disabled]="visualizarBLoqueo()"
+                        <button type="button" (click)="onVisualizar()"
                             class="flex items-center space-x-2 px-4 py-2 text-white bg-[#012D96] rounded-md font-semibold text-sm shadow-md hover:bg-[#001F6B] transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
                             <!-- Icono: Eye -->
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -67,7 +68,7 @@
                         </button>
 
                         <!-- Guardar -->
-                        <button type="button" (click)="guardarTodo()" [disabled]="bloqueoGuardar()"
+                        <button type="button" (click)="guardarTodo()"
                             class="flex items-center space-x-2 px-4 py-2 text-white bg-[#002B48] rounded-md font-semibold text-sm shadow-md hover:bg-[#001F35] transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-4 focus:ring-blue-900/50">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor" class="w-5 h-5">
@@ -78,8 +79,11 @@
                             <span>Guardar</span>
                         </button>
 
-                        <!-- Editar -->
-                        <button type="button" (click)="desbloquearEdicion()" [disabled]="bloqueoEditar()"
+
+
+
+                        <!-- Editar CORREGIDO -->
+                        <button type="button" (click)="onEditar()"
                             class="flex items-center space-x-2 px-4 py-2 text-white bg-[#455A64] rounded-md font-semibold text-sm shadow-md hover:bg-[#37474F] transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none">
                             <!-- Icono: Pencil -->
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -91,7 +95,7 @@
                         </button>
 
                         <!-- Copiar Periodo -->
-                        <button type="button" [disabled]="bloquearCopiarPeriodo()" (click)="abrirModal()"
+                        <button type="button" (click)="abrirModal()"
                             class="flex items-center space-x-2 px-4 py-2 text-white bg-[#808080] rounded-md font-semibold text-sm shadow-md hover:bg-[#666666] transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none">
                             <!-- Icono: Copy -->
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -178,4 +182,3 @@
         </div>
     </div>
 </div>
-

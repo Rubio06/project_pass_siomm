@@ -60,40 +60,42 @@ export class CanchasComponent {
         });
 
         effect(() => {
-            this.bloqueoFormulario();
-        })
+            if (!this.form) return;
 
-        effect(() => {
-            const bloqueado = this.planingCompartido.getBloqueoFormEditar()();
-
-            bloqueado
-                ? this.form.disable({ emitEvent: false })
-                : this.form.enable({ emitEvent: false });
+            if (this.planingCompartido.bloqueoFormGeneral()) {
+                this.form.disable({ emitEvent: false });
+            } else {
+                this.form.enable({ emitEvent: false });
+            }
         });
 
+        effect(() => {
+            this.planingCompartido.resetAllForms();
+            this.resetearFormulario();
+        });
 
-
+        //BOTON VISUALIZAR
+        effect(() => {
+            const signal = this.planingCompartido.visualizarForms();
+            if (signal > 0) {
+                this.blockForm();
+            }
+        });
     }
 
-    bloqueoFormulario() {
-        const bloqueado = this.planingCompartido.bloqueoForm();
-        console.log(bloqueado)
-        if (bloqueado) {
-            this.form.disable();
-        } else {
-            this.form.enable();
-        }
+    blockForm() {
+        this.form.disable();
     }
 
 
     resetearFormulario() {
         this.form.reset({
-            val_tms: ['0.000'],
-            val_ag: ['0.000'],
-            val_cu: ['0.000'],
-            val_pb: ['0.000'],
-            val_zn: ['0.000'],
-            val_vpt: ['0.000']
+            val_tms: '0.000',
+            val_ag: '0.000',
+            val_cu: '0.000',
+            val_pb: '0.000',
+            val_zn: '0.000',
+            val_vpt: '0.000'
         })
 
     }
