@@ -102,6 +102,60 @@ export class FormUtils {
         });
     }
 
+    static async confirmarGuardado(): Promise<boolean> {
+        const result = await Swal.fire({
+            title: '¿Desea guardar los datos?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, guardar',
+            cancelButtonText: 'Cancelar',
+            confirmButtonColor: '#00426F',
+            cancelButtonColor: '#9E9E9E',
+            reverseButtons: true,
+            focusCancel: true,
+            backdrop: 'rgba(0,0,0,0.4)',
+            customClass: {
+                popup: 'rounded-xl',
+                title: 'text-lg font-bold',
+                confirmButton: 'px-6 py-2 rounded-lg font-semibold',
+                cancelButton: 'px-6 py-2 rounded-lg font-semibold'
+            }
+        });
+
+        return result.isConfirmed;
+    }
+
+    static mostrarExito() {
+        Swal.fire({
+            icon: 'success',
+            title: 'Guardado correctamente',
+            text: 'Los cambios se han guardado exitosamente.',
+            confirmButtonColor: '#013B5C'
+        });
+    }
+
+    static mostrarError() {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No se pudieron guardar los cambios',
+            confirmButtonColor: '#013B5C'
+        });
+    }
+
+    static confirmarDescartarCambios(): Promise<boolean> {
+        return Swal.fire({
+            title: 'Cambios sin guardar',
+            text: 'Tiene cambios pendientes. ¿Desea descartarlos?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, descartar',
+            cancelButtonText: 'No',
+            confirmButtonColor: '#A3361D',
+            cancelButtonColor: '#033351'
+        }).then(result => result.isConfirmed);
+    }
+
 
     static isValidField(form: FormGroup, fildName: string): boolean | null {
         return (

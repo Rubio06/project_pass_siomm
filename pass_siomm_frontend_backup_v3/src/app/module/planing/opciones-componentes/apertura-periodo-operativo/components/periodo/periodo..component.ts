@@ -29,7 +29,7 @@ export class AperPerOperComponent {
 
     rutas = this.planingCompartido.dataRoutes;
 
-    bloqueo = inject(PlaningCompartido).bloqueo;
+    // bloqueo = inject(PlaningCompartido).bloqueo;
     semanasAvanceMainService = inject(SemanasAvanceMainService);
 
     private hoy = new Date();
@@ -121,7 +121,7 @@ export class AperPerOperComponent {
             const signal = this.planingCompartido.visualizarForms();
             if (signal > 0) {
                 this.blockForm();
-                this.bloqueoFormulario();
+                // this.bloqueoFormulario();
             }
         });
     }
@@ -162,12 +162,12 @@ export class AperPerOperComponent {
     }
 
 
-    bloqueoFormulario() {
-        const bloqueado = this.planingCompartido.bloqueoForm();
+    // bloqueoFormulario() {
+    //     const bloqueado = this.planingCompartido.bloqueoForm();
 
-        if (bloqueado) this.form.disable();
-        else this.form.enable();
-    }
+    //     if (bloqueado) this.form.disable();
+    //     else this.form.enable();
+    // }
 
     resetearFormulario() {
         this.form.reset({

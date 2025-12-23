@@ -20,7 +20,7 @@ export class FactorOperativoTablaComponent {
     rutas = this.planingCompartido.dataRoutes;
     thCampos = signal<TableHeader[]>(TH_CAMPOS_TABLE);
     tdCampos = signal<TableField[]>(TD_CAMPOS_TABLE);
-    bloqueo = inject(PlaningCompartido).bloqueo;
+    // bloqueo = inject(PlaningCompartido).bloqueo;
 
 
     formUtils = FormUtils;

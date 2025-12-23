@@ -53,9 +53,21 @@ export class SemanasAvanceMainComponent {
             const data = this.planingCompartido.dataRoutes();
             const semanas = data?.data?.semana_avance || [];
 
+            if (this.planingCompartido.modoVisualizar()) {
+
+                    this.resetForm(); // fuerza limpieza si estaba en modo visualizar
+                    this.blockForm();
+                    this.cd.detectChanges(); // fuerza actualización después del cambio
+
+                    return;
+            }
+
+
             this.loadSemanas(semanas);
             this.myForm.patchValue(data || {}, { emitEvent: false });
+
             this.cd.detectChanges();              // opcional
+
 
         });
 
@@ -132,7 +144,7 @@ export class SemanasAvanceMainComponent {
             return;
         }
 
-        this.planingCompartido.setBloqueoFormEditar(false);
+        // this.planingCompartido.setBloqueoFormEditar(false);
 
         this.semanas.push(
             this.fb.group({

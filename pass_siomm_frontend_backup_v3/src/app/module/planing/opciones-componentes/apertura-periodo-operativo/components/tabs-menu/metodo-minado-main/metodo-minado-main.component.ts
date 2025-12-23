@@ -48,6 +48,8 @@ export class MetodoMinadoMainComponent {
     loading = signal(false);
     message = signal<string>('');
 
+    modoVisualizar = signal<boolean>(false);
+
     cod_metexp = signal<SelectExploracion[]>([]);
 
     ind_calculo_dilucion = signal<any[]>([
@@ -68,31 +70,24 @@ export class MetodoMinadoMainComponent {
     private cd = inject(ChangeDetectorRef);
 
     constructor() {
-
         effect(() => {
-
-
             const data = this.planingCompartido.dataRoutes();
             const semanas = data?.data?.metodo_minado || [];
 
+            if (this.planingCompartido.modoVisualizar()) {
+
+                    this.resetForm(); // fuerza limpieza si estaba en modo visualizar
+                    this.blockForm();
+                    this.cd.detectChanges(); // fuerza actualización después del cambio
+
+                    return;
+            }
 
             this.loadSemanas(semanas);
             this.myForm.patchValue(data || {}, { emitEvent: false });
-
-            this.cd.detectChanges();              // opcional
+            this.cd.detectChanges();
 
         });
-
-
-        // effect(() => {
-        //     const data = this.planingCompartido.dataRoutes();
-        //     const semanas = data?.data?.semana_avance || [];
-
-        //     this.loadSemanas(semanas);
-        //     this.myForm.patchValue(data || {}, { emitEvent: false });
-        //     this.cd.detectChanges();              // opcional
-        // });
-
 
         this.loadSelectExploracion();
 
@@ -124,36 +119,25 @@ export class MetodoMinadoMainComponent {
             const signal = this.planingCompartido.visualizarForms();
 
             if (signal > 0) {
-                this.blockForm();
-                this.resetForm();
-                this.cod_metexp.set([]);
-                this.ind_calculo_dilucion.set([]);
-                this.ind_calculo_leyes_min.set([]);
-                this.ind_act.set([]);
 
-                // this.resetSelects(); // limpia selects
+                this.resetForm();
+
             }
         });
     }
 
+
     blockForm() {
-        if (this.myForm) {
-            this.myForm.disable({ emitEvent: false });
-        }// bloquea todos los campos
+        this.myForm.disable(); // bloquea todos los campos
         // this.filas.forEach(f => f.disable()); // bloquea filas si tienes tabla
     }
 
-    // =====================================================
-    //   RESETEAR FORMULARIO
-    // =====================================================
     resetForm() {
         this.myForm.reset();
         this.semanas.clear();
-
-        setTimeout(() => this.semanas.clear());
-
-        // this.planingCompartido.notifyFormChanged();
     }
+
+
 
     // =====================================================
     //   CARGAR DATOS DESDE BACKEND
@@ -175,7 +159,6 @@ export class MetodoMinadoMainComponent {
                     ind_calculo_leyes_min: [this.ind_calculo_leyes_min()[0].label],
                     ind_act: [this.ind_act()[0].label],
                     accion: ['',],
-                    esNuevo: [false]
 
                 })
             );
@@ -195,7 +178,7 @@ export class MetodoMinadoMainComponent {
             return;
         }
 
-        this.planingCompartido.setBloqueoFormEditar(false);
+        // this.planingCompartido.setBloqueoFormEditar(false);
 
         this.semanas.push(
             this.fb.group({

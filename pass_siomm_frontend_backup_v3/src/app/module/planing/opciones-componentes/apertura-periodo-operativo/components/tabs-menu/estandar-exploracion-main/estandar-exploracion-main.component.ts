@@ -78,14 +78,39 @@ export class EstandarExploracionMainComponent {
         // });
 
 
+
         effect(() => {
             const data = this.planingCompartido.dataRoutes();
             const semanas = data?.data?.exploracion_extandar || [];
 
+            if (this.planingCompartido.modoVisualizar()) {
+
+                this.resetForm(); // fuerza limpieza si estaba en modo visualizar
+                this.blockForm();
+                this.cd.detectChanges(); // fuerza actualización después del cambio
+
+                return;
+            }
+
+
+            if (this.planingCompartido.modoVisualizar()) {
+
+
+                this.resetForm(); // fuerza limpieza si estaba en modo visualizar
+                this.blockForm();
+                this.cd.detectChanges(); // fuerza actualización después del cambio
+
+                return;
+
+            }
+
+
             this.loadSemanas(semanas);
             this.myForm.patchValue(data || {}, { emitEvent: false });
 
+
             this.cd.detectChanges();              // opcional
+
 
         });
 
@@ -186,7 +211,7 @@ export class EstandarExploracionMainComponent {
             return;
         }
 
-        this.planingCompartido.setBloqueoFormEditar(false);
+        // this.planingCompartido.setBloqueoFormEditar(false);
 
         this.semanas.push(
             this.fb.group({
@@ -207,7 +232,7 @@ export class EstandarExploracionMainComponent {
             })
         );
 
-        this.planingCompartido.setBloqueo(false);
+        // this.planingCompartido.setBloqueo(false);
         this.message.set('');
     }
 

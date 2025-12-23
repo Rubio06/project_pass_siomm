@@ -23,7 +23,7 @@ export class FactorOperativoComonent {
     public planingService = inject(PlanningService);
     planingCompartido = inject(PlaningCompartido);
     private fb = inject(FormBuilder);
-    bloqueo = inject(PlaningCompartido).bloqueo;
+    // bloqueo = inject(PlaningCompartido).bloqueo;
     rutas = this.planingCompartido.dataRoutes;
     formUtils = FormUtils;
     // form: FormGroup;

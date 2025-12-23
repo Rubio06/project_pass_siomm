@@ -22,104 +22,103 @@
                     </div>
                 </div>
 
-                <div class="flex gap-5">
-                    <div class="w-full mx-auto rounded-lg overflow-x-auto shadow-md border-gray-300 border">
-                        <table class="min-w-full border-collapse text-sm text-gray-800">
+                <div class="relative flex">
+                    <div class="flex-11">
+                        <div class="w-full mx-auto rounded-lg overflow-x-auto shadow-md border-gray-300 border">
+                            <table class="min-w-full border-collapse text-sm text-gray-800">
 
-                            <thead>
-                                <tr class="text-center text-gray-700 font-bold bg-gray-200 uppercase text-xs">
-                                    @for (col of titulo; track $index) {
-                                    <th class="border border-gray-300 px-4 py-2">{{ col }}</th>
-                                    }
-                                    <th class="border border-gray-300 px-4 py-2">ACCIÓN</th>
-
-                                </tr>
-                            </thead>
-
-                            <tbody formArrayName="semanas">
-
-                                @if (loading()) {
-                                <tr class="border">
-                                    <td [attr.colspan]="datosColumna().length + 2"
-                                        class="text-center p-4 mx-auto border border-gray-300">
-                                        <app-spinner></app-spinner>
-                                    </td>
-                                </tr>
-                                }
-
-                                @else if (semanas.controls.length > 0) {
-
-                                @for (item of semanas.controls; track $index; let i = $index) {
-                                <tr [formGroupName]="i"
-                                    class="even:bg-gray-50 odd:bg-white hover:bg-blue-50/70 transition duration-150">
-
-                                    @for (col of datosColumna(); track $index) {
-                                    <td class="border-x border-gray-300 p-1.5 w-40">
-                                        <div
-                                            class="flex items-center border border-gray-300 rounded-md px-2 py-1 bg-white shadow-sm">
-                                            <input [type]="col.type" [formControlName]="col.name"
-                                                [class.opacity-30]="planingCompartido.bloqueoFormGeneral()"
-                                                [class.pointer-events-none]="planingCompartido.bloqueoFormGeneral()"
-                                                class="w-full  bg-transparent outline-none text-gray-800 placeholder-gray-400 text-sm font-medium" />
-                                        </div>
-
-                                        @if ( formUtils.isValidFieldInArray(item, col.name) ) {
-                                        <span class="text-[10px] text-error block">
-                                            <b>{{formUtils.getFiledErrorArray(item, col.name)}}</b>
-                                        </span>
+                                <thead>
+                                    <tr class="text-center text-gray-700 font-bold bg-gray-200 uppercase text-xs">
+                                        @for (col of titulo; track $index) {
+                                        <th class="border border-gray-300 px-4 py-2">{{ col }}</th>
                                         }
-                                    </td>
+                                        <th class="border border-gray-300 px-4 py-2">ACCIÓN</th>
+
+                                    </tr>
+                                </thead>
+
+                                <tbody formArrayName="semanas">
+
+                                    @if (loading()) {
+                                    <tr class="border">
+                                        <td [attr.colspan]="datosColumna().length + 2"
+                                            class="text-center p-4 mx-auto border border-gray-300">
+                                            <app-spinner></app-spinner>
+                                        </td>
+                                    </tr>
                                     }
 
+                                    @else if (semanas.controls.length > 0) {
 
-                                    <!-- [disabled]="planingCompartido.getBloqueoFormEditar()()" -->
+                                    @for (item of semanas.controls; track $index; let i = $index) {
+                                    <tr [formGroupName]="i"
+                                        class="even:bg-gray-50 odd:bg-white hover:bg-blue-50/70 transition duration-150">
 
-                                    <!-- [disabled]="item.get('accion')?.disabled" -->
-                                    <td class="border-x border-gray-300 p-1.5 w-24 text-center">
-                                        <button type="button" (click)="eliminarFila(item, i)"
-                                            [disabled]="planingCompartido.bloqueoFormGeneral()"
-                                            class="flex items-center justify-center gap-1 mx-auto bg-[#A3361D] hover:bg-red-700 text-white px-2 py-1.5 rounded-md shadow-sm transition-all duration-200 font-medium text-xs disabled:opacity-30 disabled:cursor-not-allowed">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                stroke-linecap="round" stroke-linejoin="round">
-                                                <polyline points="3 6 5 6 21 6"></polyline>
-                                                <path
-                                                    d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6m5 0V4a2 2 0 0 1 2-2h0a2 2 0 0 1 2 2v2">
-                                                </path>
-                                            </svg>
-                                            <b>Eliminar</b>
-                                        </button>
-                                    </td>
-                                </tr>
-                                }
-                                }
+                                        @for (col of datosColumna(); track $index) {
+                                        <td class="border-x border-gray-300 p-1.5 w-40">
+                                            <div
+                                                class="flex items-center border border-gray-300 rounded-md px-2 py-1 bg-white shadow-sm">
+                                                <input [type]="col.type" [formControlName]="col.name"
+                                                    [class.opacity-30]="planingCompartido.bloqueoFormGeneral()"
+                                                    [class.pointer-events-none]="planingCompartido.bloqueoFormGeneral()"
+                                                    class="w-full  bg-transparent outline-none text-gray-800 placeholder-gray-400 text-sm font-medium" />
+                                            </div>
 
-                                @else {
-                                <tr class="border-y border-gray-300">
-                                    <td [attr.colspan]="datosColumna().length + 2"
-                                        class="p-4 text-center font-semibold text-red-700 bg-red-50 border border-gray-300">
-                                        No existen datos para mostrar.
-                                    </td>
-                                </tr>
-                                }
+                                            @if ( formUtils.isValidFieldInArray(item, col.name) ) {
+                                            <span class="text-[10px] text-error block">
+                                                <b>{{formUtils.getFiledErrorArray(item, col.name)}}</b>
+                                            </span>
+                                            }
+                                        </td>
+                                        }
 
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                        <div>
-                            <button type="button" (click)="agregarFilas()"
-                                [disabled]="!planingCompartido.tableButtonEnabled()"
-                                class="flex items-center space-x-2 px-4 py-2 transition duration-300 w-30  disabled:opacity-30 disabled:cursor-not-allowed"
-                                title="Agregar registro">
-                                <img src="icono-agregar.png"
-                                    class="object-contain w-20 h-20 transition-transform duration-300 hover:scale-110 cursor-pointer"
-                                    alt="Logo empresa" />
 
-                            </button>
+                                        <!-- [disabled]="planingCompartido.getBloqueoFormEditar()()" -->
+
+                                        <!-- [disabled]="item.get('accion')?.disabled" -->
+                                        <td class="border-x border-gray-300 p-1.5 w-24 text-center">
+                                            <button type="button" (click)="eliminarFila(item, i)"
+                                                [disabled]="planingCompartido.bloqueoFormGeneral()"
+                                                class="flex items-center justify-center gap-1 mx-auto bg-[#A3361D] hover:bg-red-700 text-white px-2 py-1.5 rounded-md shadow-sm transition-all duration-200 font-medium text-xs disabled:opacity-30 disabled:cursor-not-allowed">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                    stroke-linecap="round" stroke-linejoin="round">
+                                                    <polyline points="3 6 5 6 21 6"></polyline>
+                                                    <path
+                                                        d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6m5 0V4a2 2 0 0 1 2-2h0a2 2 0 0 1 2 2v2">
+                                                    </path>
+                                                </svg>
+                                                <b>Eliminar</b>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    }
+                                    }
+
+                                    @else {
+                                    <tr class="border-y border-gray-300">
+                                        <td [attr.colspan]="datosColumna().length + 2"
+                                            class="p-4 text-center font-semibold text-red-700 bg-red-50 border border-gray-300">
+                                            No existen datos para mostrar.
+                                        </td>
+                                    </tr>
+                                    }
+
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-
+                    <button type="button" (click)="agregarFilas()" [disabled]="planingCompartido.bloqueoFormGeneral()"
+                        title="Agregar registro" class="
+                            self-start flex-1
+                            sticky top-24
+                            flex items-center justify-center
+                            rounded-full
+                            transition-all duration-300
+                            disabled:opacity-40 disabled:cursor-not-allowed
+                        ">
+                        <img src="icono-agregar.png" class="w-20 h-20 object-contain" alt="Agregar" />
+                    </button>
                 </div>
 
             </div>

@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, Signal, signal, WritableSignal } from '@angular/core';
-import { PlanningData } from '../interface/aper-per-oper.interface';
 
 @Injectable({
     providedIn: 'root'
@@ -36,7 +35,7 @@ export class PlaningCompartido {
     readonly recuperacionBudget = this._recuperacionBudget.asReadonly();
     readonly semana_avance = this._semana_avance.asReadonly();
     readonly semana_ciclo = this._semana_ciclo.asReadonly();
-    readonly valores = this._semana_ciclo.asReadonly();
+    readonly valores = this._valores.asReadonly();
 
     // Métodos para setear datos
     setCanchas(data: any[]) { this._canchas.set(data); }
@@ -50,23 +49,11 @@ export class PlaningCompartido {
     setOperativoDetalle(data: any[]) { this._operativo_detalle.set(data); }
     setRecuperacionBudget(data: any[]) { this._recuperacionBudget.set(data); }
     setSemanaAvance(data: any[]) { this._semana_avance.set(data); }
-    setValores(data: any[]) { this._semana_ciclo.set(data); }
+    setSemanaCiclo(data: any[]) { this._semana_ciclo.set(data); }
+    setValores(data: any[]) { this._valores.set(data); }
+
 
     // Limpiar todo
-    clearAll() {
-        this._canchas.set([]);
-        this._cierre_periodo.set([]);
-        this._exploracion_extandar.set([]);
-        this._factor.set([]);
-        this._factorOperativo.set([]);
-        this._factorSobredisolucion.set([]);
-        this._laboratorio_estandar.set([]);
-        this._metodo_minado.set([]);
-        this._operativo_detalle.set([]);
-        this._recuperacionBudget.set([]);
-        this._semana_avance.set([]);
-        this._semana_ciclo.set([]);
-    }
 
     guardarTodo() {
         const payload = {
@@ -80,73 +67,42 @@ export class PlaningCompartido {
             semana_ciclo: this._semana_ciclo(),
             semana_avance: this._semana_avance(),
         };
+        console.log("la data es " + payload.semana_avance)
 
         return this.http.post('/api/guardar-todo', payload);
     }
 
-    getSemanaCiclo(): any[] {
-        const val = this._semana_ciclo();
-        return Array.isArray(val) ? val : [];
+
+
+
+
+    private cambios = signal(false);
+
+    setCambios(valor: boolean): void {
+        this.cambios.set(valor);
     }
 
-    setSemanaCiclo(data: PlanningData[]) {
-        this._semana_ciclo.set(Array.isArray(data) ? data : []);
+    getCambios(): boolean {
+        return this.cambios();
     }
 
+    /////////GUARD PARA VISUALIAZAR DATOS
 
 
 
 
-    private bloqueoFormEditar = signal(true);
 
-    setBloqueoFormEditar(valor: boolean) {
 
-        console.log("el valor es" + valor)
-        this.bloqueoFormEditar.set(valor);
+
+
+
+
+    private _hasChanges = signal(false);
+    readonly hasChanges = this._hasChanges.asReadonly();
+
+    setChanges(v: boolean) {
+        this._hasChanges.set(v);
     }
-
-    getBloqueoFormEditar() {
-        return this.bloqueoFormEditar;
-    }
-
-
-
-    public tableButtonEnabled = signal(false);
-
-    enableTableButton() {
-        this.tableButtonEnabled.set(true);
-    }
-
-    disableTableButton() {
-        this.tableButtonEnabled.set(false);
-    }
-
-    private _bloqueo = signal<boolean>(true);
-    public bloqueo = this._bloqueo.asReadonly();
-
-    setBloqueo(v: boolean) {
-        this._bloqueo.set(v);
-    }
-
-
-    readonly bloqueoFormEdit: WritableSignal<boolean> = signal(true);
-
-
-    private _bloqueoForm = signal<boolean>(true); // true = bloqueado
-    public bloqueoForm = this._bloqueoForm.asReadonly();
-
-    setBloqueoForm(valor: boolean) {
-        this._bloqueoForm.set(valor);
-    }
-
-
-
-
-
-
-
-
-
 
 
 
@@ -183,10 +139,6 @@ export class PlaningCompartido {
         this._resetAllForms.update(v => v + 1);
     }
 
-
-
-
-
     ////////PERMANECE BLOQUEADO DOS INPUTS EN PERIODO
     private _modoEditar = signal(false);
     readonly modoEditar = this._modoEditar.asReadonly();
@@ -195,22 +147,25 @@ export class PlaningCompartido {
         this._modoEditar.set(valor);
     }
 
-
-
     ////////////SE RESETEA TODO HASTA LOS SECTS CON EL BOTON VISUALIZAR
 
     private _visualizarForms = signal(0);
     readonly visualizarForms = this._visualizarForms.asReadonly();
+    private _modoVisualizar = signal(false);
+    readonly modoVisualizar = this._modoVisualizar.asReadonly();
 
     notifyVisualizar() {
         this._visualizarForms.update(v => v + 1);
+        this._modoVisualizar.set(true); // flag activo
     }
 
+    salirModoVisualizar() {
+        this._modoVisualizar.set(false);
+    }
 
     data = signal<any>(null);
     private _dataRoutes: WritableSignal<any> = signal([]);
     public readonly dataRoutes: Signal<any> = this._dataRoutes.asReadonly();
-
 
     setData(data: any): void {
         this._dataRoutes.set(data);

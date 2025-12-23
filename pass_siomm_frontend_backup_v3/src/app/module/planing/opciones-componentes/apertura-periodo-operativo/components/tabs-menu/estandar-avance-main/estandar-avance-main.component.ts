@@ -71,9 +71,23 @@ export class EstandarAvanceComponent {
             const data = this.planingCompartido.dataRoutes();
             const semanas = data?.data?.laboratorio_estandar || [];
 
+            if (this.planingCompartido.modoVisualizar()) {
+
+
+                this.resetForm(); // fuerza limpieza si estaba en modo visualizar
+                this.blockForm();
+                this.cd.detectChanges(); // fuerza actualización después del cambio
+
+                return;
+
+            }
+
+
             this.loadSemanas(semanas);
             this.myForm.patchValue(data || {}, { emitEvent: false });
+
             this.cd.detectChanges();              // opcional
+
 
         });
 
@@ -180,7 +194,7 @@ export class EstandarAvanceComponent {
             })
         );
 
-        this.planingCompartido.setBloqueo(false);
+        // this.planingCompartido.setBloqueo(false);
         this.message.set('');
     }
 

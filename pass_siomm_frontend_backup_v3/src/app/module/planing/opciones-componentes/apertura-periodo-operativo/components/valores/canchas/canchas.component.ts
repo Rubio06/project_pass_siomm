@@ -17,7 +17,7 @@ export class CanchasComponent {
     rutas = this.planingCompartido.data;
     formUtils = FormUtils;
 
-    bloqueo = inject(PlaningCompartido).bloqueo;
+    // bloqueo = inject(PlaningCompartido).bloqueo;
 
     form: FormGroup = this.fb.group({
         val_tms: ['0.000', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],

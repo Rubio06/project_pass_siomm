@@ -24,7 +24,7 @@ export class ValoresComponent {
 
 
     form!: FormGroup;
-    bloqueo = inject(PlaningCompartido).bloqueo;
+    // bloqueo = inject(PlaningCompartido).bloqueo;
     headers = ['Precio', 'Sobredilución', 'Recuperación Budget', 'Factor Conversión'];
 
     elements = [

@@ -21,7 +21,8 @@ export const aperturaPeriodoOperativoRouter: Routes = [
             {
                 path: '',
                 redirectTo: 'factor-operativo',
-                pathMatch: 'full' // ⚠️ Crucial: Asegura que solo redirija si el path es EXACTAMENTE vacío.
+                pathMatch: 'full',  // ⚠️ Crucial: Asegura que solo redirija si el path es EXACTAMENTE vacío.
+                canDeactivate: [PendingChangesGuard]
             },
 
             // canDeactivate: [PendingChangesGuard]

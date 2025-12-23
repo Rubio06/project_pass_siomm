@@ -4,6 +4,7 @@ import { FactorOperativoComonent } from '../../factor-operativo/factor-operativo
 import { ValoresComponent } from '../../valores/valores.component';
 import { FactorOperativoTablaComponent } from '../../factor-operativo-tabla/factor-operativo-tabla.component';
 import { SemanasAvanceMainService } from '../../../services/semanas-avance-main/semanas-avance-main.service';
+import { PlaningCompartido } from '../../../services/planing-compartido.service';
 
 
 
@@ -23,8 +24,10 @@ export class FactorOperativoMainComponent {
 
     semanasAvanceMainService = inject(SemanasAvanceMainService);
 
+    planingCompartido = inject(PlaningCompartido);
+
     hasPendingChanges(): boolean {
-        return this.semanasAvanceMainService.getCambios(); // revisa los cambios pendientes
+        return this.planingCompartido.getCambios(); // revisa los cambios pendientes
     }
 
 }

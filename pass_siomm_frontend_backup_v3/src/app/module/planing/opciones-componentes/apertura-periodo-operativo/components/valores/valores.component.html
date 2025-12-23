@@ -10,34 +10,33 @@
                 <div class="grid grid-cols-5 gap-x-4 gap-y-2">
                     <div class="font-semibold"></div>
                     @for (header of headers; track $index) {
-                        <div class="font-semibold flex items-center justify-end text-gray-700 text-sm mx-auto">
-                            {{ header }}
-                        </div>
+                    <div class="font-semibold flex items-center justify-end text-gray-700 text-sm mx-auto">
+                        {{ header }}
+                    </div>
                     }
 
                     @for (item of elements; track $index) {
-                        <div class="flex items-center justify-end font-medium text-gray-700 text-sm">
-                            {{ item.label }}
-                        </div>
+                    <div class="flex items-center justify-end font-medium text-gray-700 text-sm">
+                        {{ item.label }}
+                    </div>
 
-                        @for (field of item.fields; track field) {
-                            <div class="flex flex-col">
-                                <!-- INPUT -->
-                                <input type="number"
-                                    class="text-xs font-medium border border-gray-300 rounded-lg px-1 py-0.5 text-right bg-white
+                    @for (field of item.fields; track field) {
+                    <div class="flex flex-col">
+                        <!-- INPUT -->
+                        <input type="number" [class.opacity-30]="planingCompartido.bloqueoFormGeneral()"
+                            [class.pointer-events-none]="planingCompartido.bloqueoFormGeneral()" class="text-xs font-medium border border-gray-300 rounded-lg px-1 py-0.5 text-right bg-white
                                            shadow-sm hover:shadow-md transition-shadow duration-200
                                            focus:border-[#033351] focus:ring-2 focus:ring-[rgb(3,102,157)]
-                                           focus:ring-opacity-40 outline-none w-full disabled:opacity-50 disabled:bg-gray-100 disabled:cursor-not-allowed"
-                                    [formControlName]="field" />
+                                           focus:ring-opacity-40 outline-none w-full" [formControlName]="field" />
 
-                                <!-- ERROR DEBAJO DEL INPUT -->
-                                @if ( formUtils.isValidField(form ,field) ) {
-                                    <div class="form-text text-[red] text-xs mt-1">
-                                        {{ formUtils.getFiledError(form, field) }}
-                                    </div>
-                                }
-                            </div>
+                        <!-- ERROR DEBAJO DEL INPUT -->
+                        @if ( formUtils.isValidField(form ,field) ) {
+                        <div class="form-text text-[red] text-xs mt-1">
+                            {{ formUtils.getFiledError(form, field) }}
+                        </div>
                         }
+                    </div>
+                    }
 
                     }
                 </div>

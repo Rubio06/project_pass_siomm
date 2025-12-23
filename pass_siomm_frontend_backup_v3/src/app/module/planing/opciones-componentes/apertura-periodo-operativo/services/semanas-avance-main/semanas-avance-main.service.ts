@@ -40,16 +40,6 @@ export class SemanasAvanceMainService {
     }
 
 
-    tieneCambios = signal(false);
-
-    setCambios(valor: boolean) {
-        this.tieneCambios.set(valor);
-    }
-
-
-    getCambios(): boolean {
-        return this.tieneCambios();
-    }
 
     /* INGRESAR NUEVO REGISTRO */
     public saveDataSemanaAvance(payload: any): Observable<any> {

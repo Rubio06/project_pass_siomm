@@ -21,7 +21,7 @@
                         <select formControlName="fechaInicio" (change)="sendYear($event)"
                             class="select-sm mx-auto select text-sm font-medium outline-none flex items-center border border-gray-300 rounded-lg px-2 py-1 bg-gray-50 shadow-sm hover:shadow-md transition-shadow duration-300 ease-in-out focus-within:border-[#033351] focus-within:ring-1 focus-within:ring-[rgb(3,102,157)] focus-within:ring-opacity-40 w-75">
                             <option disabled value="">Selecciona un año</option>
-                            @for (item of _getYear(); track $index) {
+                            @for (item of years(); track $index) {
                             <option [value]="item">{{ item }}</option>
                             }
                         </select>
@@ -32,7 +32,7 @@
                         <select formControlName="fechaFin" (change)="sendMonth($event)"
                             class="select-sm mx-auto select text-sm font-medium outline-none flex items-center border border-gray-300 rounded-lg px-2 py-1 bg-gray-50 shadow-sm hover:shadow-md transition-shadow duration-300 ease-in-out focus-within:border-[#033351] focus-within:ring-1 focus-within:ring-[rgb(3,102,157)] focus-within:ring-opacity-40 w-75">
                             <option disabled value="">Selecciona un mes</option>
-                            @for (item of _getMonths(); track $index) {
+                            @for (item of months(); track $index) {
                             <option [value]="item">{{ item | transfornMonth }}</option>
                             }
                         </select>
@@ -42,7 +42,7 @@
 
                     <div
                         class="flex items-end gap-5 sm:max-w-xl md:max-w-3xl lg:max-w-5xl xl:max-w-[1500px] overflow-x-auto">
-                        <button (click)="onNuevo()" type="button"
+                        <button (click)="onNuevo()" type="button" [disabled]="botonesState().nuevo"
                             class="flex items-center space-x-2 px-4 py-2 text-white bg-[green] rounded-md font-semibold text-sm shadow-md hover:bg-[#green] transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
                             <!-- Icono: Plus -->
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -54,7 +54,7 @@
                         </button>
 
                         <!-- Visualizar -->
-                        <button type="button" (click)="onVisualizar()"
+                        <button type="button" (click)="onVisualizar()" [disabled]="botonesState().visualizar"
                             class="flex items-center space-x-2 px-4 py-2 text-white bg-[#012D96] rounded-md font-semibold text-sm shadow-md hover:bg-[#001F6B] transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
                             <!-- Icono: Eye -->
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -68,7 +68,7 @@
                         </button>
 
                         <!-- Guardar -->
-                        <button type="button" (click)="guardarTodo()"
+                        <button type="button" (click)="onGuardar()" [disabled]="botonesState().guardar"
                             class="flex items-center space-x-2 px-4 py-2 text-white bg-[#002B48] rounded-md font-semibold text-sm shadow-md hover:bg-[#001F35] transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-4 focus:ring-blue-900/50">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor" class="w-5 h-5">
@@ -83,7 +83,7 @@
 
 
                         <!-- Editar CORREGIDO -->
-                        <button type="button" (click)="onEditar()"
+                        <button type="button" (click)="onEditar()" [disabled]="botonesState().editar"
                             class="flex items-center space-x-2 px-4 py-2 text-white bg-[#455A64] rounded-md font-semibold text-sm shadow-md hover:bg-[#37474F] transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none">
                             <!-- Icono: Pencil -->
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -95,7 +95,7 @@
                         </button>
 
                         <!-- Copiar Periodo -->
-                        <button type="button" (click)="abrirModal()"
+                        <button type="button" (click)="abrirModal()" [disabled]="botonesState().copiarPeriodo"
                             class="flex items-center space-x-2 px-4 py-2 text-white bg-[#808080] rounded-md font-semibold text-sm shadow-md hover:bg-[#666666] transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none">
                             <!-- Icono: Copy -->
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -105,7 +105,7 @@
                             </svg>
                             <span>Copiar Periodo</span>
                         </button>
-                        <app-modal-periodo (aceptar)="recibirDatos($event)"></app-modal-periodo>
+                        <app-modal-periodo (aceptar)="recibirDatosPeriodo($event)"></app-modal-periodo>
                     </div>
                 </div>
             </form>

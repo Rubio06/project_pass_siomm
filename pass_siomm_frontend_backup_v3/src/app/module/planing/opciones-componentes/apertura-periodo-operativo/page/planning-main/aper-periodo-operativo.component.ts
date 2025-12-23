@@ -14,14 +14,19 @@ import { ModalPeriodo } from "./modal-periodo/modal-periodo";
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
 import { delay, finalize } from 'rxjs';
 
-
-
 export enum ViewMode {
     VISUALIZAR = 'VISUALIZAR',
     NUEVO = 'NUEVO',
     EDITAR = 'EDITAR'
 }
 
+interface BotonesState {
+    nuevo: boolean;
+    editar: boolean;
+    copiarPeriodo: boolean;
+    visualizar: boolean;
+    guardar: boolean;
+}
 
 @Component({
     selector: 'app-planning-main',
@@ -30,324 +35,243 @@ export enum ViewMode {
     styleUrl: './aper-periodo-operativo.component.css',
 })
 export class AperturPeriodoComponent {
-    planingService = inject(PlanningService);
-    planingCompartido = inject(PlaningCompartido);
-    semanaAvance = inject(SemanasAvanceMainService);
-    loadingService = inject(LoadingService);
-    fb = inject(FormBuilder);
-    semanasAvanceMainService = inject(SemanasAvanceMainService);
-
-    // Signals
-    hasError = signal<string | null>('');
-    _getMonths = signal<string[]>([]);
-    _getYear = signal<string[]>([]);
-    dataAnio = signal<string>('');
-    dataMes = signal<string>('');
 
 
-    bloqueo = signal<boolean>(true);
-    visualizarBLoqueo = signal<boolean>(true);
-    bloqueoGuardar = signal(true);
-    bloqueoEditar = signal<boolean>(true);
-    bloquearCopiarPeriodo = signal<boolean>(false);
 
-    // Form
+    /* ============================
+     * 🔹 INYECCIONES
+     * ============================ */
+    private planingService = inject(PlanningService);
+    private planingCompartido = inject(PlaningCompartido);
+    private semanasAvanceService = inject(SemanasAvanceMainService);
+    private loadingService = inject(LoadingService);
+    private fb = inject(FormBuilder);
+
+    formsUtils = FormUtils;
+
+    /* ============================
+     * 🔹 SIGNALS
+     * ============================ */
+    hasError = signal<string | null>(null);
+
+    private _years = signal<string[]>([]);
+    readonly years = this._years.asReadonly();
+
+    private _months = signal<string[]>([]);
+    readonly months = this._months.asReadonly();
+
+    dataAnio = signal('');
+    dataMes = signal('');
+
+    /* ============================
+     * 🔹 FORMULARIO
+     * ============================ */
     showData: FormGroup = this.fb.group({
-        fechaInicio: ['', [Validators.required]],
-        fechaFin: ['', [Validators.required]],
+        fechaInicio: ['', Validators.required],
+        fechaFin: ['', Validators.required],
     });
 
-    private prevMonth = '';
+    /* ============================
+     * 🔹 ESTADO INTERNO
+     * ============================ */
     private prevYear = '';
+    private prevMonth = '';
 
+    /* ============================
+     * 🔹 CONSTRUCTOR
+     * ============================ */
     constructor() {
-        this.prevMonth = this.dataMes();
-        this.getYear();
+        this.cargarAnios();
     }
 
-    ngOnDestroy() {
-        this.planingCompartido.setData(null);
-        this.semanaAvance.setPeriodo('', '');
-        this.planingCompartido.setBloqueoForm(true);
+    /* ============================
+     * 🔹 CICLO DE VIDA
+     * ============================ */
+    ngOnDestroy(): void {
+        this.resetEstadoGlobal();
     }
 
-    /** ------------------- MÉTODOS ------------------- */
-    getYear() {
+    /* ============================
+     * 🔹 CARGA DE DATOS
+     * ============================ */
+    private cargarAnios(): void {
         this.planingService.getYear().subscribe({
-            next: (data: string[]) => {
-                if (data.length === 0) this.hasError.set('No se encontraron rutas disponibles.');
-                else this._getYear.set(data);
-            },
-            error: () => this.hasError.set('Ocurrió un error al cargar las rutas.'),
-        });
-    }
-
-    sendYear(event: Event) {
-        const yearData = (event.target as HTMLSelectElement).value;
-
-        if (this.semanaAvance.tieneCambios()) {
-            FormUtils.guardarCambios();
-            (event.target as HTMLSelectElement).value = this.prevYear;
-            return;
-        }
-
-        this.prevYear = yearData;
-
-        this.planingService.getMonths(yearData).subscribe({
-            next: (data: string[]) => {
-                if (data.length === 0) this.hasError.set('No hay meses disponibles.');
-                else {
-                    this.hasError.set(null);
-                    this._getMonths.set(data);
-                    this.dataAnio.set(yearData);
+            next: years => {
+                if (!years.length) {
+                    this.hasError.set('No se encontraron rutas disponibles.');
+                    return;
                 }
+                this._years.set(years);
             },
-            error: () => this.hasError.set('Ocurrió un error al cargar las rutas.'),
+            error: () => this.hasError.set('Ocurrió un error al cargar los años.'),
         });
     }
 
-    sendMonth(event: Event) {
-        const select = event.target as HTMLSelectElement;
-        const newValue = select.value;
+    private cargarMeses(year: string): void {
+        this.planingService.getMonths(year).subscribe({
+            next: months => {
+                if (!months.length) {
+                    this.hasError.set('No hay meses disponibles.');
+                    return;
+                }
+                this.hasError.set(null);
+                this._months.set(months);
+            },
+            error: () => this.hasError.set('Ocurrió un error al cargar los meses.'),
+        });
+    }
 
-        if (this.semanaAvance.tieneCambios()) {
-            FormUtils.guardarCambios();
-            select.value = this.prevMonth;
-            return;
-        }
+    private cargarPeriodo(mes: string, anio: string): void {
+        // this.loadingService.loadingOn();
 
-        const bloqueadoEditar = this.planingCompartido.getBloqueoFormEditar()();
-        if (!bloqueadoEditar) {
-            FormUtils.editarCambios();
-            select.value = this.prevMonth;
-            return;
-        }
-
-        this.prevMonth = newValue;
-        this.dataMes.set(newValue);
-        // this.planingCompartido.setBloqueoForm(true);
-        // this.visualizarBLoqueo.set(true);
-
-
-        const anio = this.dataAnio();
-        this.semanaAvance.setPeriodo(newValue, anio);
-
-        this.planingService.getDate(newValue, anio)
-            .pipe(
-                delay(400), // solo UX, no lógica
-                finalize(() => this.loadingService.loadingOff())
-            ).subscribe({
-                next: (data: any) => {
-                    if (data.length === 0) this.hasError.set('No se encontraron rutas disponibles.');
-                    else {
-                        this.hasError.set(null);
-                        this.planingCompartido.setData(data);
-                        this.loadingService.loadingOff();
-                        // this.bloqueo.set(false);
-                        // this.bloqueoEditar.set(false);
-                        // this.bloquearCopiarPeriodo.set(false);
-                    }
+        this.planingService.getDate(mes, anio)
+            .subscribe({
+                next: data => {
+                    this.onPeriodoCargado(data)
                 },
                 error: () => this.hasError.set('Ocurrió un error al cargar las rutas.'),
             });
     }
 
-    viewMode = signal<ViewMode>(ViewMode.VISUALIZAR);
 
 
-    private applyViewMode(mode: ViewMode) {
-        this.viewMode.set(mode);
+    /* ============================
+     * 🔹 HANDLERS
+     * ============================ */
+    sendYear(event: Event): void {
+        const year = (event.target as HTMLSelectElement).value;
 
-        switch (mode) {
-            case ViewMode.VISUALIZAR:
-                this.planingCompartido.setBloqueoForm(true);
-                this.planingCompartido.setBloqueoFormEditar(true);
-                this.bloqueoGuardar.set(true);
-                this.visualizarBLoqueo.set(true);
-                this.bloquearCopiarPeriodo.set(false);
-                this.semanaAvance.setCambios(false);
-                this.limpiarFormulario();
-                break;
+        this.prevYear = year;
+        this.dataAnio.set(year);
 
-            case ViewMode.NUEVO:
-                this.planingCompartido.setData([]);
-                this.planingCompartido.setBloqueoFormEditar(false);
-                this.bloqueoGuardar.set(false);
-                this.visualizarBLoqueo.set(false);
-                this.bloquearCopiarPeriodo.set(true);
-                this.semanaAvance.setCambios(true);
-                break;
-
-            case ViewMode.EDITAR:
-                this.planingCompartido.setBloqueoFormEditar(false);
-                this.bloqueoGuardar.set(false);
-                this.visualizarBLoqueo.set(false);
-                this.bloquearCopiarPeriodo.set(true);
-                this.semanaAvance.setCambios(true);
-                break;
-        }
+        this.cargarMeses(year);
     }
 
+    sendMonth(event: Event): void {
+        const month = (event.target as HTMLSelectElement).value;
 
+        this.prevMonth = month;
+        this.dataMes.set(month);
 
-    botonNuevo() {
-        this.applyViewMode(ViewMode.NUEVO);
+        const anio = this.dataAnio();
+        this.semanasAvanceService.setPeriodo(month, anio);
+
+        this.cargarPeriodo(month, anio);
     }
 
-    visualizar() {
-        this.applyViewMode(ViewMode.VISUALIZAR);
-    }
+    /* ============================
+     * 🔹 CALLBACKS
+     * ============================ */
+    private onPeriodoCargado(data: any[]): void {
+        this.hasError.set(null);
+        this.planingCompartido.setData(data);
+        this.planingCompartido.salirModoVisualizar();
 
-    desbloquearEdicion() {
-        this.applyViewMode(ViewMode.EDITAR);
-    }
-
-
-    // botonNuevo() {
-    //     // // Configuración para crear un nuevo registro
-    //     // this.semanaAvance.setNuevoMode(true);
-    //     // this.semanaAvance.setCambios(true);
-
-    //     // // Limpiar datos temporales
-    //     // this.planingCompartido.setData([]);
-    //     // this.limpiarFormulario();
-
-    //     // // Permitir edición
-    //     // // this.planingCompartido.setBloqueoForm(false);
-    //     // this.planingCompartido.setBloqueoFormEditar(false);
-
-    //     // // Flags visuales
-    //     // this.bloqueoGuardar.set(false);
-    //     // this.visualizarBLoqueo.set(false);
-    //     // this.bloqueoEditar.set(true);
-    //     // this.bloquearCopiarPeriodo.set(true);
-    //     // this.bloqueo.set(true);
-
-    //     // // Botones de tabla
-    //     // this.planingCompartido.enableTableButton();
-    // }
-
-    // visualizar() {
-    //     // // Bloquear edición de todos los formularios
-    //     // // this.planingCompartido.setBloqueoForm(true);       // Bloquea edición general
-    //     // this.planingCompartido.setBloqueoFormEditar(true); // Bloquea edición específica de formularios
-    //     // this.semanaAvance.setCambios(false);               // No hay cambios pendientes
-
-    //     // // Flags de visualización
-    //     // this.bloqueo.set(true);            // Bloqueo general
-    //     // this.visualizarBLoqueo.set(true);  // Indica modo solo visualización
-    //     // this.bloqueoEditar.set(true);      // No se puede editar
-    //     // this.bloqueoGuardar.set(true);     // Guardar deshabilitado
-    //     // this.bloquearCopiarPeriodo.set(false); // Copiar periodo deshabilitado
-
-    //     // // Resetear datos temporales y formularios a su estado inicial
-    //     // this.planingCompartido.setData([]);
-    //     // this.limpiarFormulario();          // Limpia inputs y deja valores iniciales
-    // }
-
-    // desbloquearEdicion() {
-    //     // // Permitir edición nuevamente
-    //     // // this.planingCompartido.setBloqueoForm(false);
-    //     // this.planingCompartido.setBloqueoFormEditar(false);
-    //     // // Flags visuales
-    //     // this.bloqueoGuardar.set(false);
-    //     // this.bloquearCopiarPeriodo.set(true);
-    //     // this.semanaAvance.setCambios(true);
-    //     // this.visualizarBLoqueo.set(false);
-    //     // this.bloqueo.set(true);
-    //     // this.bloqueoEditar.set(true);
-    // }
-
-    async guardarTodo() {
-        // Confirmación antes de guardar
-        const result = await Swal.fire({
-            title: '¿Desea guardar los datos?',
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonText: 'Sí, guardar',
-            cancelButtonText: 'Cancelar',
-            confirmButtonColor: '#00426F',
-            cancelButtonColor: '#9E9E9E',
-            reverseButtons: true,
-            focusCancel: true,
-            backdrop: 'rgba(0,0,0,0.4)',
-            customClass: {
-                popup: 'rounded-xl',
-                title: 'text-lg font-bold',
-                confirmButton: 'px-6 py-2 rounded-lg font-semibold',
-                cancelButton: 'px-6 py-2 rounded-lg font-semibold'
-            }
+        this.setBotonesState({
+            nuevo: false,
+            editar: false,
+            copiarPeriodo: false,
+            visualizar: true,
+            guardar: true,
         });
-
-        if (!result.isConfirmed) return;
-
-        // Feedback de guardado
-        Swal.fire({
-            icon: 'success',
-            title: 'Guardado correctamente',
-            text: 'Los cambios se han guardado exitosamente.',
-            confirmButtonColor: '#013B5C'
-        });
-
-        this.loadingService.loadingOn();
-        Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'No se pudieron guardar los cambios',
-            confirmButtonColor: '#013B5C'
-        });
-        this.onVisualizar();
-
-        this.loadingService.loadingOff();
-
-
-
-        // Guardado real
-        // this.loadingService.loadingOn();
-        // this.planingCompartido.guardarTodo().subscribe({
-        //     next: () => this.loadingService.loadingOff(),
-        //     error: (err) => {
-        //     }
-        // });
     }
 
-    limpiarFormulario() {
+    /* ============================
+     * 🔹 UI
+     * ============================ */
+    limpiarFormulario(): void {
         this.showData.reset({ fechaInicio: '', fechaFin: '' });
     }
 
-    abrirModal() {
+    abrirModal(): void {
         const modal = document.getElementById('my_modal_3') as HTMLDialogElement;
-        modal.showModal();
+        modal?.showModal();
     }
 
-    recibirDatos(event: any) {
-        console.log('Datos recibidos', event);
+    recibirDatosPeriodo(data: any): void {
+        console.log('Datos recibidos:', data);
+    }
+
+    /* ============================
+     * 🔹 UTILIDADES
+     * ============================ */
+
+
+
+
+    ////GUARD PARA CAMBIAR DE RUTAS
+    // hasPendingChanges(): boolean {
+    //     return this.planingCompartido.getCambios();
+    // }
+
+
+
+
+
+
+
+    private resetEstadoGlobal(): void {
+        this.planingCompartido.setData(null);
+        this.semanasAvanceService.setPeriodo('', '');
+        // this.planingCompartido.setBloqueoForm(true);
     }
 
 
-    hasPendingChanges(): boolean {
-        return this.semanasAvanceMainService.getCambios(); // revisa los cambios pendientes
+    botonesState = signal({
+        nuevo: true,
+        editar: true,
+        copiarPeriodo: true,
+        visualizar: true,
+        guardar: true
+    });
+
+
+    setBotonesState(state: Partial<BotonesState>) {
+        this.botonesState.update(current => ({ ...current, ...state }));
     }
-
-
-
-
 
     ///FORMULARIOS EDITAR
     onEditar() {
-        this.semanaAvance.setCambios(true);
+        this.planingCompartido.setCambios(true);
         this.planingCompartido.setFormBloqueadoCentral(false);
         this.planingCompartido.setModoEditar(true);
+
+        this.setBotonesState({
+            nuevo: true,          // 🔒 se bloquea
+            editar: true,         // 🔒
+            copiarPeriodo: true,  // 🔒
+            guardar: false,       // ✅
+            visualizar: false     // ✅
+        });
+
+        this.planingCompartido.setCambios(true); // 👈 IMPORTANTE
+
+        this.planingCompartido.setChanges(true);
     }
 
     ///FORMULARIOS NUEVO
     onNuevo() {
         this.planingCompartido.setModoEditar(false);
         this.planingCompartido.setFormBloqueadoCentral(false);
-        this.planingCompartido.enableTableButton();
+        // this.planingCompartido.enableTableButton();
 
         // 🔔 reset global
         this.planingCompartido.notifyResetForms();
+
+
+        this.setBotonesState({
+            nuevo: true,          // 🔒 se bloquea
+            editar: true,         // 🔒
+            copiarPeriodo: true,  // 🔒
+            guardar: false,       // ✅
+            visualizar: false     // ✅
+        });
+
+        this.planingCompartido.setCambios(true); // 👈 IMPORTANTE
+
+
+        this.planingCompartido.setChanges(false);
+
     }
 
     //FORMULARIO visualizar
@@ -356,6 +280,50 @@ export class AperturPeriodoComponent {
         this.planingCompartido.setModoEditar(false);
         this.planingCompartido.notifyVisualizar();
         this.limpiarFormulario();
+
+        this.setBotonesState({
+            nuevo: true,          // 🔒 se bloquea
+            editar: true,         // 🔒
+            copiarPeriodo: true,  // 🔒
+            guardar: true,       // ✅
+            visualizar: true     // ✅
+        });
+
+    }
+
+    async onGuardar() {
+        const confirmado = await this.formsUtils.confirmarGuardado();
+        if (!confirmado) return;
+
+        this.loadingService.loadingOn();
+
+        try {
+            await this.guardarDatos(); // 👈 SOLO lógica de guardado
+
+            this.formsUtils.mostrarExito();
+            this.onVisualizar();
+            this.planingCompartido.setCambios(true); // 👈 IMPORTANTE
+
+            // this.estadoPostGuardar();
+
+        } catch (error) {
+            // this.mostrarError();
+            console.error(error);
+
+        } finally {
+            this.loadingService.loadingOff();
+        }
+    }
+
+    private async guardarDatos() {
+        this.planingCompartido.guardarTodo().subscribe({
+            next: () => {
+
+            },
+            error: (err) => {
+
+            }
+        });
     }
 
 }

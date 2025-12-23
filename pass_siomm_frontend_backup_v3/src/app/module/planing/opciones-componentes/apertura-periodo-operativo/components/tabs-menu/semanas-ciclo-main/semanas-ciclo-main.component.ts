@@ -55,9 +55,23 @@ export class SemanasCicloMainComponent {
             const data = this.planingCompartido.dataRoutes();
             const semanas = data?.data?.semana_ciclo || [];
 
+
+            if (this.planingCompartido.modoVisualizar()) {
+
+                    this.resetForm(); // fuerza limpieza si estaba en modo visualizar
+                    this.blockForm();
+                    this.cd.detectChanges(); // fuerza actualización después del cambio
+
+                    return;
+            }
+
+
             this.loadSemanas(semanas);
             this.myForm.patchValue(data || {}, { emitEvent: false });
+
+
             this.cd.detectChanges();
+
         });
 
 
@@ -127,17 +141,17 @@ export class SemanasCicloMainComponent {
 
     }
 
-    guardarCambios() {
-        const filas = this.semanas.getRawValue();
-        this.planingCompartido.setSemanaCiclo(filas);
-    }
+    // guardarCambios() {
+    //     const filas = this.semanas.getRawValue();
+    //     this.planingCompartido.setSemanaCiclo(filas);
+    // }
 
     agregarFilas() {
         if (this.semanas.length >= 1) {
             return;
         }
 
-        this.planingCompartido.setBloqueoFormEditar(false);
+        // this.planingCompartido.setBloqueoFormEditar(false);
 
         this.semanas.push(
             this.fb.group({
@@ -178,7 +192,7 @@ export class SemanasCicloMainComponent {
             next: (res: any) => {
                 if (res.success) {
                     this.formUtils.alertaEliminado(res.message);
-                    this.planingCompartido.setBloqueoForm(false);
+                    // this.planingCompartido.setBloqueoForm(false);
                 } else {
                     this.formUtils.alertaEliminado(res.message);
                 }
@@ -196,6 +210,6 @@ export class SemanasCicloMainComponent {
     }
 
     hasPendingChanges(): boolean {
-        return this.semanasAvanceMainService.getCambios();
+        return this.planingCompartido.getCambios();
     }
 }
