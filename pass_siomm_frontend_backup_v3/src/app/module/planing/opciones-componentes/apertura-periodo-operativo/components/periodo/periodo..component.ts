@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { PlanningService } from '../../services/planning.service';
 import { FormUtils } from 'src/app/utils/form-utils';
 import { SemanasAvanceMainService } from '../../services/semanas-avance-main/semanas-avance-main.service';
-import { PlaningCompartido } from '../../services/planing-compartido.service';
+import { PlaningCompartidoService } from '../../services/planing-compartido.service';
 
 
 interface fieldName {
@@ -25,7 +25,7 @@ export class AperPerOperComponent {
     private planingService = inject(PlanningService);
     private fb = inject(FormBuilder);
     formUtils = FormUtils;
-    planingCompartido = inject(PlaningCompartido);
+    planingCompartido = inject(PlaningCompartidoService);
 
     rutas = this.planingCompartido.dataRoutes;
 

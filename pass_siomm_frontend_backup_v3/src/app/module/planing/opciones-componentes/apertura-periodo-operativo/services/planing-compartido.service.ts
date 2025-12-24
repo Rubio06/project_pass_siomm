@@ -4,7 +4,7 @@ import { computed, inject, Injectable, Signal, signal, WritableSignal } from '@a
 @Injectable({
     providedIn: 'root'
 })
-export class PlaningCompartido {
+export class PlaningCompartidoService {
     private http = inject(HttpClient);
 
     // Persistencia de cada tab/form
@@ -72,6 +72,30 @@ export class PlaningCompartido {
         return this.http.post('/api/guardar-todo', payload);
     }
 
+
+    ///COMPONENTE VISUALIZAR
+    onVisualizarGlobal() {
+
+        // 🔓 Bloquea formularios
+        this.setFormBloqueadoCentral(true);
+        this.setModoEditar(false);
+
+        // 👀 Activa modo visualizar
+        this.notifyVisualizar();
+
+        // 🟢 Opcional: limpia "modo cambios"
+        this.setCambios(false);
+
+
+
+        console.log('➡️ Volviendo a modo VISUALIZACIÓN');
+    }
+
+    estadoActual = signal('Visualización');
+
+    setEstado(valor: string) {
+        this.estadoActual.set(valor);
+    }
 
 
 
@@ -151,11 +175,11 @@ export class PlaningCompartido {
 
     private _visualizarForms = signal(0);
     readonly visualizarForms = this._visualizarForms.asReadonly();
-    private _modoVisualizar = signal(false);
+    public _modoVisualizar = signal(false);
     readonly modoVisualizar = this._modoVisualizar.asReadonly();
 
     notifyVisualizar() {
-        this._visualizarForms.update(v => v + 1);
+        this._visualizarForms.update(v => v + 1); // modo visualizar es 2
         this._modoVisualizar.set(true); // flag activo
     }
 

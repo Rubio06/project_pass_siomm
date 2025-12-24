@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, input, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { IconosComponent } from './iconos/iconos';
 import { MainPagePipe } from 'src/app/module/main/pipe/main-page-pipe';
@@ -7,7 +7,6 @@ import { AuthService } from 'src/app/module/auth/services/auth.service';
 import { MainPageService } from 'src/app/module/main/services/main-page.service';
 import { MainPagePrimer } from 'src/app/module/main/interfaces/main-page.interface';
 import { PlanningService } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/services/planning.service';
-import { SemanasAvanceMainService } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/services/semanas-avance-main/semanas-avance-main.service';
 
 @Component({
     selector: 'app-list-desktop',

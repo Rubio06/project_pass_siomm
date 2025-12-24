@@ -2,7 +2,7 @@ import { Component, effect, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PlanningService } from '../../services/planning.service';
 import { TableField, TableHeader, TD_CAMPOS_TABLE, TH_CAMPOS_TABLE } from '../../interface/aper-per-oper.interface';
-import { PlaningCompartido } from '../../services/planing-compartido.service';
+import { PlaningCompartidoService } from '../../services/planing-compartido.service';
 import { FormUtils } from 'src/app/utils/form-utils';
 
 
@@ -15,7 +15,7 @@ import { FormUtils } from 'src/app/utils/form-utils';
 export class FactorOperativoTablaComponent {
     private planingService = inject(PlanningService);
     private fb = inject(FormBuilder);
-    planingCompartido = inject(PlaningCompartido);
+    planingCompartido = inject(PlaningCompartidoService);
 
     rutas = this.planingCompartido.dataRoutes;
     thCampos = signal<TableHeader[]>(TH_CAMPOS_TABLE);

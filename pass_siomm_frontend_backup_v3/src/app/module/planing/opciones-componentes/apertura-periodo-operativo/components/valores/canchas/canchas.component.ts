@@ -1,7 +1,7 @@
 import { Component, effect, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PlanningService } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/services/planning.service';
-import { PlaningCompartido } from '../../../services/planing-compartido.service';
+import { PlaningCompartidoService } from '../../../services/planing-compartido.service';
 import { FormUtils } from 'src/app/utils/form-utils';
 
 @Component({
@@ -12,7 +12,7 @@ import { FormUtils } from 'src/app/utils/form-utils';
 })
 export class CanchasComponent {
     private planingService = inject(PlanningService);
-    planingCompartido = inject(PlaningCompartido);
+    planingCompartido = inject(PlaningCompartidoService);
     private fb = inject(FormBuilder);
     rutas = this.planingCompartido.data;
     formUtils = FormUtils;

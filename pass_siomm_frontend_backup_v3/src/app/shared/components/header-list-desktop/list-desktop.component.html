@@ -1,17 +1,17 @@
 <ul class="menu p-0 m-0 text-base-content w-full">
     @for (ruta of routers(); track $index) {
-        <li class="w-full active" routerLinkActive="active">
+    <li class="w-full active" routerLinkActive="active">
 
-            <!-- BOTÓN PADRE -->
-            <button class="flex items-center gap-4 cursor-pointer m-1 w-full" (click)="toggle($index)">
-                <app-iconos [iconos]="ruta.icon"></app-iconos>
-                <span class="font-bold text-sm w-35">
-                    {{ ruta.nom_ruta_primer | replaceUnderscore }}
-                </span>
-            </button>
+        <!-- BOTÓN PADRE -->
+        <button class="flex items-center gap-4 cursor-pointer m-1 w-full" (click)="toggle($index)">
+            <app-iconos [iconos]="ruta.icon"></app-iconos>
+            <span class="font-bold text-sm w-35">
+                {{ ruta.nom_ruta_primer | replaceUnderscore }}
+            </span>
+        </button>
 
-            <!-- SUBMENÚ INDENTADO -->
-            <ul class="submenu ml-8 pl-2 border-l-2 border-[#033351]/30
+        <!-- SUBMENÚ INDENTADO -->
+        <ul class="submenu ml-8 pl-2 border-l-2 border-[#033351]/30
                                        bg-[#E6F2ED] rounded w-55
                                        overflow-hidden
                                        transition-all duration-300 ease-in-out" [ngClass]="{
@@ -19,23 +19,17 @@
                                   'max-h-96 opacity-100 translate-x-0': isOpen($index)}">
 
 
-                @for (subRuta of ruta.rutas_secundarias; track $index) {
-                    <li routerLinkActive="active" class="flex ">
-                        <a class="flex items-center gap-2 p-1 text-xs font-bold
-                                                     transition-colors duration-200
-                                                     text-gray-700 hover:text-white
-                                                     hover:bg-[#033351] rounded"   (click)="closeDrawer()"
-                            [routerLink]="['planeamiento', toUrl(subRuta.nom_ruta_secun)]">
-                            {{ subRuta.nom_ruta_secun | replaceUnderscore }}
-                        </a>
-                    </li>
-                }
-            </ul>
+            @for (subRuta of ruta.rutas_secundarias; track $index) {
+            <li routerLinkActive="router-link" (click)="closeDrawer()" [routerLinkActiveOptions]="{ exact: false }"
+                [routerLink]="['planeamiento', toUrl(subRuta.nom_ruta_secun)]" class="flex gap-2 p-1 text-xs font-bold
+         transition-colors duration-200 cursor-pointer
+         text-gray-700 hover:text-white
+         hover:bg-[#03335169] rounded">
+                {{ subRuta.nom_ruta_secun | replaceUnderscore }}
+            </li>
+            }
+        </ul>
 
-        </li>
+    </li>
     }
 </ul>
-
-
-
-

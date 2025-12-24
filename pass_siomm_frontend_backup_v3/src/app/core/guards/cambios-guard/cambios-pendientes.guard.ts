@@ -1,6 +1,8 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { CanDeactivate } from '@angular/router';
 import { Observable } from 'rxjs';
+import { PlaningCompartidoService } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/services/planing-compartido.service';
+import { FormUtils } from 'src/app/utils/form-utils';
 import Swal from 'sweetalert2';
 
 export interface CanComponentDeactivate {
@@ -13,45 +15,22 @@ export interface CanComponentDeactivate {
     providedIn: 'root'
 })
 export class PendingChangesGuard implements CanDeactivate<CanComponentDeactivate> {
-    canDeactivate(
-        component: CanComponentDeactivate
-    ): Observable<boolean> {
+    planingCompartido = inject(PlaningCompartidoService);
 
-        // Si no hay cambios, salir libre
-        if (!component.hasPendingChanges()) {
-            return new Observable(observer => {
-                observer.next(true);
-                observer.complete();
-            });
-        }
+    canDeactivate(): any {
 
-        return new Observable<boolean>(observer => {
+        if (!this.planingCompartido.getCambios()) return true;
 
-            Swal.fire({
-                icon: 'warning',
-                title: 'Cambios sin guardar',
-                text: '¿Desea salir sin guardar cambios?',
-                showCancelButton: true,
-                confirmButtonText: 'Sí',
-                cancelButtonText: 'No',
-                allowOutsideClick: false,
-                allowEscapeKey: false,
-                confirmButtonColor: '#00426F',
-            }).then(result => {
+        return FormUtils.confirmarDescartarCambios().then(confirm => {
+            if (confirm) {
 
-                // 👉 SÍ: salir sin guardar
-                if (result.isConfirmed) {
-                    component.onVisualizar(); // activa modo visualización
-                    observer.next(true);      // permite cambiar de ruta
-                }
+                // 👇 volvemos a modo visualizar
+                this.planingCompartido.onVisualizarGlobal();
 
-                // 👉 NO: quedarse en el formulario
-                else {
-                    observer.next(false);     // bloquea navegación
-                }
+                return true;
+            }
 
-                observer.complete();
-            });
+            return false;
         });
     }
 }

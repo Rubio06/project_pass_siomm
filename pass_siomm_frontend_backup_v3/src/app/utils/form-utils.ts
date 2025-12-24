@@ -1,4 +1,4 @@
-import { PlaningCompartido } from './../module/planing/opciones-componentes/apertura-periodo-operativo/services/planing-compartido.service';
+import { PlaningCompartidoService } from './../module/planing/opciones-componentes/apertura-periodo-operativo/services/planing-compartido.service';
 import { effect, inject } from '@angular/core';
 import { AbstractControl, FormGroup, ValidationErrors } from '@angular/forms';
 import Swal from 'sweetalert2'

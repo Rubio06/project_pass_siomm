@@ -3,7 +3,7 @@ import { FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angula
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
 import { DATOS_METODO_EXPLORACION, EstructuraDatosOtros, SelectZona, TH_ESTANDAR_EXPLORACION, thTitulos } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/interface/aper-per-oper.interface';
 import { PlanningService } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/services/planning.service';
-import { PlaningCompartido } from '../../../services/planing-compartido.service';
+import { PlaningCompartidoService } from '../../../services/planing-compartido.service';
 import { FormUtils } from 'src/app/utils/form-utils';
 import { SemanasAvanceMainService } from '../../../services/semanas-avance-main/semanas-avance-main.service';
 
@@ -21,7 +21,7 @@ export class EstandarExploracionMainComponent {
     private fb = inject(FormBuilder);
     private planingService = inject(PlanningService);
 
-    planingCompartido = inject(PlaningCompartido);
+    planingCompartido = inject(PlaningCompartidoService);
     semanasAvanceMainService = inject(SemanasAvanceMainService);
 
     // ===============================
@@ -135,15 +135,15 @@ export class EstandarExploracionMainComponent {
 
         ///BOTON VISUALIZAR
 
-        effect(() => {
-            const signal = this.planingCompartido.visualizarForms();
-            if (signal > 0) {
-                this.blockForm();
-                this.resetForm();
+        // effect(() => {
+        //     const signal = this.planingCompartido.visualizarForms();
+        //     if (signal > 0) {
+        //         this.blockForm();
+        //         this.resetForm();
 
-                // this.resetSelects(); // limpia selects
-            }
-        });
+        //         // this.resetSelects(); // limpia selects
+        //     }
+        // });
         this.loadZonas();
 
 

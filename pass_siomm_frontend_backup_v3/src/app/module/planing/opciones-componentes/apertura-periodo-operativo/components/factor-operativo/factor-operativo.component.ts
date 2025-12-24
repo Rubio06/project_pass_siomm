@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Subscription } from 'rxjs';
 import { PlanningService } from '../../services/planning.service';
 import { CommonModule } from '@angular/common';
-import { PlaningCompartido } from '../../services/planing-compartido.service';
+import { PlaningCompartidoService } from '../../services/planing-compartido.service';
 import { FormUtils } from 'src/app/utils/form-utils';
 import { SemanasAvanceMainService } from '../../services/semanas-avance-main/semanas-avance-main.service';
 
@@ -21,7 +21,7 @@ interface fieldName {
 })
 export class FactorOperativoComonent {
     public planingService = inject(PlanningService);
-    planingCompartido = inject(PlaningCompartido);
+    planingCompartido = inject(PlaningCompartidoService);
     private fb = inject(FormBuilder);
     // bloqueo = inject(PlaningCompartido).bloqueo;
     rutas = this.planingCompartido.dataRoutes;

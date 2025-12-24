@@ -7,7 +7,7 @@ import { FormUtils } from 'src/app/utils/form-utils';
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
 import { DATOS_COLUMNA_SEMANA_CICLO_MINADO, EstructuraDatos, TH_SEMANA_CICLO_MINADO, thTitulos } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/interface/aper-per-oper.interface';
 import { PlanningService } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/services/planning.service';
-import { PlaningCompartido } from '../../../services/planing-compartido.service';
+import { PlaningCompartidoService } from '../../../services/planing-compartido.service';
 import { SemanasAvanceMainService } from '../../../services/semanas-avance-main/semanas-avance-main.service';
 
 
@@ -31,7 +31,7 @@ export class SemanasCicloMainComponent {
 
     loading = signal(false);
 
-    planingCompartido = inject(PlaningCompartido);
+    planingCompartido = inject(PlaningCompartidoService);
     semanasAvanceMainService = inject(SemanasAvanceMainService);
 
     formUtils = FormUtils;
@@ -76,7 +76,9 @@ export class SemanasCicloMainComponent {
 
 
         //BOTRON EDITAR///
+        ///
         effect(() => {
+
             if (!this.myForm) return;
 
             if (this.planingCompartido.bloqueoFormGeneral()) {
@@ -97,15 +99,15 @@ export class SemanasCicloMainComponent {
         });
 
         //BOTON VISUALIZAR
-        effect(() => {
-            const signal = this.planingCompartido.visualizarForms();
-            if (signal > 0) {
-                this.blockForm();
-                this.resetForm();
+        // effect(() => {
+        //     const signal = this.planingCompartido.visualizarForms();
+        //     if (signal > 0) {
+        //         this.blockForm();
+        //         // this.resetForm();
 
-                // this.resetSelects(); // limpia selects
-            }
-        });
+        //         // this.resetSelects(); // limpia selects
+        //     }
+        // });
     }
 
     blockForm() {

@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, effect, Inject, inject, input, signal, ViewChild, WritableSignal } from '@angular/core';
 import { PlanningService } from '../../services/planning.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -6,7 +7,7 @@ import { LoadingService } from '../../services/loading.service';
 import { SemanasAvanceMainService } from '../../services/semanas-avance-main/semanas-avance-main.service';
 import { TransfornMonthPipe } from 'src/app/core/pipe/transforn-month-pipe';
 import { AperPeriodo } from '../../interface/aper-per-oper.interface';
-import { PlaningCompartido } from '../../services/planing-compartido.service';
+import { PlaningCompartidoService } from '../../services/planing-compartido.service';
 import { FormUtils } from 'src/app/utils/form-utils';
 import Swal from 'sweetalert2';
 import { CanComponentDeactivate } from 'src/app/core/guards/cambios-guard/cambios-pendientes.guard';
@@ -30,7 +31,7 @@ interface BotonesState {
 
 @Component({
     selector: 'app-planning-main',
-    imports: [RouterOutlet, TransfornMonthPipe, RouterLink, ReactiveFormsModule, RouterLinkActive, ModalPeriodo],
+    imports: [CommonModule, RouterOutlet, TransfornMonthPipe, RouterLink, ReactiveFormsModule, RouterLinkActive, ModalPeriodo],
     templateUrl: './aper-periodo-operativo.component.html',
     styleUrl: './aper-periodo-operativo.component.css',
 })
@@ -42,10 +43,11 @@ export class AperturPeriodoComponent {
      * 🔹 INYECCIONES
      * ============================ */
     private planingService = inject(PlanningService);
-    private planingCompartido = inject(PlaningCompartido);
+    private planingCompartido = inject(PlaningCompartidoService);
     private semanasAvanceService = inject(SemanasAvanceMainService);
     private loadingService = inject(LoadingService);
     private fb = inject(FormBuilder);
+
 
     formsUtils = FormUtils;
 
@@ -116,6 +118,7 @@ export class AperturPeriodoComponent {
                 }
                 this.hasError.set(null);
                 this._months.set(months);
+
             },
             error: () => this.hasError.set('Ocurrió un error al cargar los meses.'),
         });
@@ -141,14 +144,50 @@ export class AperturPeriodoComponent {
     sendYear(event: Event): void {
         const year = (event.target as HTMLSelectElement).value;
 
+        if (this.planingCompartido.getCambios()) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Cambios sin guardar',
+                text: 'Debes guardar o visualizar los cambios antes de cambiar de año.',
+                confirmButtonText: 'Entendido',
+                confirmButtonColor: '#00426F',
+                allowOutsideClick: false
+            });
+
+            // Revertir al mes anterior
+            (event.target as HTMLSelectElement).value = this.prevYear;
+            return;
+        }
+
         this.prevYear = year;
         this.dataAnio.set(year);
+
+        // this.showData.get('fechaFin')?.enable();
+
 
         this.cargarMeses(year);
     }
 
     sendMonth(event: Event): void {
         const month = (event.target as HTMLSelectElement).value;
+
+        // Bloquea cambio si hay cambios pendientes
+        if (this.planingCompartido.getCambios()) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Cambios sin guardar',
+                text: 'Debes guardar o visualzar los cambios antes de cambiar de mes.',
+                confirmButtonText: 'Entendido',
+                confirmButtonColor: '#00426F',
+                allowOutsideClick: false
+            });
+
+            // Revertir al mes anterior
+            (event.target as HTMLSelectElement).value = this.prevMonth;
+            return;
+        }
+
+        // this.showData.get('fechaInicio')?.disable();
 
         this.prevMonth = month;
         this.dataMes.set(month);
@@ -193,17 +232,17 @@ export class AperturPeriodoComponent {
     }
 
     /* ============================
-     * 🔹 UTILIDADES
-     * ============================ */
+    * 🔹 UTILIDADES
+    * ============================ */
 
 
 
 
     ////GUARD PARA CAMBIAR DE RUTAS
-    // hasPendingChanges(): boolean {
-    //     return this.planingCompartido.getCambios();
-    // }
 
+    hasPendingChanges(): boolean {
+        return this.planingCompartido.getCambios();
+    }
 
 
 
@@ -257,6 +296,7 @@ export class AperturPeriodoComponent {
 
         // 🔔 reset global
         this.planingCompartido.notifyResetForms();
+        this.limpiarFormulario();
 
 
         this.setBotonesState({
@@ -276,10 +316,12 @@ export class AperturPeriodoComponent {
 
     //FORMULARIO visualizar
     onVisualizar() {
-        this.planingCompartido.setFormBloqueadoCentral(true);
-        this.planingCompartido.setModoEditar(false);
-        this.planingCompartido.notifyVisualizar();
-        this.limpiarFormulario();
+        // this.planingCompartido.setFormBloqueadoCentral(true);
+        // this.planingCompartido.setModoEditar(false);
+        // this.planingCompartido.notifyVisualizar();
+        // this.planingCompartido.setCambios(false); // 👈 IMPORTANTE
+        this.planingCompartido.onVisualizarGlobal();
+
 
         this.setBotonesState({
             nuevo: true,          // 🔒 se bloquea
@@ -288,6 +330,8 @@ export class AperturPeriodoComponent {
             guardar: true,       // ✅
             visualizar: true     // ✅
         });
+
+        this.limpiarFormulario();
 
     }
 
@@ -298,22 +342,20 @@ export class AperturPeriodoComponent {
         this.loadingService.loadingOn();
 
         try {
-            await this.guardarDatos(); // 👈 SOLO lógica de guardado
+            await this.guardarDatos();  // ⏳ ahora sí espera
+            this.planingCompartido.setCambios(false);
 
+            this.onVisualizar();        // 👈 aquí es PERFECTO
             this.formsUtils.mostrarExito();
-            this.onVisualizar();
-            this.planingCompartido.setCambios(true); // 👈 IMPORTANTE
-
-            // this.estadoPostGuardar();
 
         } catch (error) {
-            // this.mostrarError();
             console.error(error);
 
         } finally {
             this.loadingService.loadingOff();
         }
     }
+
 
     private async guardarDatos() {
         this.planingCompartido.guardarTodo().subscribe({

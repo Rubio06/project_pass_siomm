@@ -3,7 +3,7 @@ import { Component, effect, inject, signal } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CanchasComponent } from './canchas/canchas.component';
 import { PlanningService } from '../../services/planning.service';
-import { PlaningCompartido } from '../../services/planing-compartido.service';
+import { PlaningCompartidoService } from '../../services/planing-compartido.service';
 import { FormUtils } from 'src/app/utils/form-utils';
 
 
@@ -17,7 +17,7 @@ import { FormUtils } from 'src/app/utils/form-utils';
 export class ValoresComponent {
     private planingService = inject(PlanningService);
 
-    planingCompartido = inject(PlaningCompartido);
+    planingCompartido = inject(PlaningCompartidoService);
     private fb = inject(FormBuilder);
     rutas = this.planingCompartido.dataRoutes;
     formUtils = FormUtils;

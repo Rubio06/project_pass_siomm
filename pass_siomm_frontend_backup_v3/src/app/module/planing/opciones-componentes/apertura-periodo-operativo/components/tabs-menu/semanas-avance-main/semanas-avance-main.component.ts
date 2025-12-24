@@ -6,7 +6,7 @@ import { FormUtils } from 'src/app/utils/form-utils';
 
 import { DATOS_SEMANA_AVANCE, EstructuraDatos, MaeSemanaAvance, TH_SEMANA_AVANCE, thTitulos } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/interface/aper-per-oper.interface';
 import { PlanningService } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/services/planning.service';
-import { PlaningCompartido } from '../../../services/planing-compartido.service';
+import { PlaningCompartidoService } from '../../../services/planing-compartido.service';
 import { SemanasAvanceMainService } from '../../../services/semanas-avance-main/semanas-avance-main.service';
 import Swal from 'sweetalert2'
 import 'sweetalert2/src/sweetalert2.scss'
@@ -21,7 +21,7 @@ export class SemanasAvanceMainComponent {
     columnas = signal<thTitulos[]>(TH_SEMANA_AVANCE);
     titulo = this.columnas().map(titulo => titulo.titulo);
 
-    planingCompartido = inject(PlaningCompartido);
+    planingCompartido = inject(PlaningCompartidoService);
 
     formUtils = FormUtils;
 
@@ -52,6 +52,7 @@ export class SemanasAvanceMainComponent {
         effect(() => {
             const data = this.planingCompartido.dataRoutes();
             const semanas = data?.data?.semana_avance || [];
+
 
             if (this.planingCompartido.modoVisualizar()) {
 
@@ -92,18 +93,16 @@ export class SemanasAvanceMainComponent {
 
         ////BOTON VISUALIZAR
 
-        effect(() => {
-            const signal = this.planingCompartido.visualizarForms();
-            if (signal > 0) {
+        // effect(() => {
+        //     const signal = this.planingCompartido.visualizarForms();
+        //     console.log("la señal es "+ signal)
+        //     if (signal > 0) {
+        //         this.blockForm();
+        //         // this.resetForm();
 
-                console.log(signal)
-
-                this.blockForm();
-                this.resetForm();
-
-                // this.resetSelects(); // limpia selects
-            }
-        });
+        //         // this.resetSelects(); // limpia selects
+        //     }
+        // });
     }
 
     blockForm() {
@@ -132,7 +131,7 @@ export class SemanasAvanceMainComponent {
                 })
             );
         });
-
+        console.log("la data es " + data)
         this.planingCompartido.notifyFormChanged();
 
     }

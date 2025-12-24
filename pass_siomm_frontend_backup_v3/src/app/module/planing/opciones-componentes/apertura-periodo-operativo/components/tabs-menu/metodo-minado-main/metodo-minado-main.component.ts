@@ -4,7 +4,7 @@ import { FormArray, FormBuilder, FormControl, FormsModule, ReactiveFormsModule, 
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
 import { DATOS_METODO_MINADO, SelectExploracion, TH_METODOLO_MINADO, thTitulos } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/interface/aper-per-oper.interface';
 import { PlanningService } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/services/planning.service';
-import { PlaningCompartido } from '../../../services/planing-compartido.service';
+import { PlaningCompartidoService } from '../../../services/planing-compartido.service';
 import { SemanasAvanceMainService } from '../../../services/semanas-avance-main/semanas-avance-main.service';
 import { FormUtils } from 'src/app/utils/form-utils';
 
@@ -21,7 +21,7 @@ export class MetodoMinadoMainComponent {
 
     datosColumna = signal<any[]>(DATOS_METODO_MINADO);
 
-    planingCompartido = inject(PlaningCompartido);
+    planingCompartido = inject(PlaningCompartidoService);
 
     formUtils = FormUtils;
 
@@ -115,15 +115,15 @@ export class MetodoMinadoMainComponent {
 
         ///BOTON VISUALIZAR
 
-        effect(() => {
-            const signal = this.planingCompartido.visualizarForms();
+        // effect(() => {
+        //     const signal = this.planingCompartido.visualizarForms();
 
-            if (signal > 0) {
+        //     if (signal > 0) {
 
-                this.resetForm();
-
-            }
-        });
+        //         // this.resetForm();
+        //         this.blockForm();
+        //     }
+        // });
     }
 
 

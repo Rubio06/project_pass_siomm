@@ -5,7 +5,7 @@ import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.comp
 import { FormUtils } from 'src/app/utils/form-utils';
 import { DATOS_ESTANDER_AVANCE, SelectTipoLabor, TH_ESTANDAR_AVANCE, thTitulos } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/interface/aper-per-oper.interface';
 import { PlanningService } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/services/planning.service';
-import { PlaningCompartido } from '../../../services/planing-compartido.service';
+import { PlaningCompartidoService } from '../../../services/planing-compartido.service';
 import { SemanasAvanceMainService } from '../../../services/semanas-avance-main/semanas-avance-main.service';
 
 @Component({
@@ -32,7 +32,7 @@ export class EstandarAvanceComponent {
     semanasAvanceMainService = inject(SemanasAvanceMainService);
     datosColumna = signal<any[]>(DATOS_ESTANDER_AVANCE);
 
-    planingCompartido = inject(PlaningCompartido);
+    planingCompartido = inject(PlaningCompartidoService);
 
     // ===============================
     //   LOOKUPS
@@ -113,13 +113,13 @@ export class EstandarAvanceComponent {
 
         // BOTON VISUALIZAR
 
-        effect(() => {
-            const signal = this.planingCompartido.visualizarForms();
-            if (signal > 0) {
-                this.blockForm();
-                this.resetForm();
-            }
-        });
+        // effect(() => {
+        //     const signal = this.planingCompartido.visualizarForms();
+        //     if (signal > 0) {
+        //         this.blockForm();
+        //         this.resetForm();
+        //     }
+        // });
 
         this.loadTiposLabor();
 
