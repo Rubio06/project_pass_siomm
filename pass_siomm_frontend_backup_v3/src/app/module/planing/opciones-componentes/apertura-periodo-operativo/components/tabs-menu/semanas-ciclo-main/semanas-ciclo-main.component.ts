@@ -52,26 +52,21 @@ export class SemanasCicloMainComponent {
     constructor() {
 
         effect(() => {
-            const data = this.planingCompartido.dataRoutes();
-            const semanas = data?.data?.semana_ciclo || [];
 
+            const data = this.planingCompartido.dataRoutes();
+            const tabSemanaCiclo = data?.data?.semana_ciclo || [];
 
             if (this.planingCompartido.modoVisualizar()) {
-
-                    this.resetForm(); // fuerza limpieza si estaba en modo visualizar
-                    this.blockForm();
-                    this.cd.detectChanges(); // fuerza actualización después del cambio
-
-                    return;
+                console.log('haciendo un clickkkk')
+                this.resetForm();
+                this.blockForm();
+                this.cd.detectChanges();
+                return;
             }
 
-
-            this.loadSemanas(semanas);
+            this.loadSemanas(tabSemanaCiclo);
             this.myForm.patchValue(data || {}, { emitEvent: false });
-
-
             this.cd.detectChanges();
-
         });
 
 
@@ -93,8 +88,13 @@ export class SemanasCicloMainComponent {
         ///BOTON NUEVO
         effect(() => {
             const resetSignal = this.planingCompartido.resetAllForms();
+
+
             if (resetSignal > 0) {
-                this.resetForm();
+                this.myForm.enable({ emitEvent: false });
+                this.myForm.reset();
+                this.semanas.clear();  // vaciar tabla
+                this.cd.detectChanges();
             }
         });
 
@@ -117,10 +117,15 @@ export class SemanasCicloMainComponent {
 
 
     resetForm() {
-        this.myForm.reset();
-        this.semanas.clear();
-    }
+        // // 1️⃣ habilitar temporalmente el form
+        // this.myForm.enable({ emitEvent: false });
 
+        // // 2️⃣ limpiar todo
+        // this.myForm.reset();
+        this.semanas.clear();
+        // 3️⃣ actualizar cambios
+        this.cd.detectChanges();
+    }
 
     loadSemanas(data: any[]) {
         this.semanas.clear();  // limpia todo
@@ -138,8 +143,9 @@ export class SemanasCicloMainComponent {
                 })
             );
         });
-
         this.planingCompartido.notifyFormChanged();
+
+        // this.planingCompartido.notifyFormChanged();
 
     }
 
@@ -203,13 +209,13 @@ export class SemanasCicloMainComponent {
         });
     }
 
-    ngOnInit() {
-        this.myForm.valueChanges.subscribe(val => {
-            const filas = this.semanas.getRawValue();
+    // ngOnInit() {
+    //     this.myForm.valueChanges.subscribe(val => {
+    //         const filas = this.tabSemanaCiclo.getRawValue();
 
-            this.planingCompartido.setSemanaCiclo(filas);
-        });
-    }
+    //         this.planingCompartido.setSemanaCiclo(filas);
+    //     });
+    // }
 
     hasPendingChanges(): boolean {
         return this.planingCompartido.getCambios();

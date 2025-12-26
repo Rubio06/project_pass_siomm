@@ -1,19 +1,17 @@
 import { CommonModule } from '@angular/common';
-import { Component, effect, Inject, inject, input, signal, ViewChild, WritableSignal } from '@angular/core';
+import { Component, computed, inject, signal, WritableSignal } from '@angular/core';
 import { PlanningService } from '../../services/planning.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { LoadingService } from '../../services/loading.service';
 import { SemanasAvanceMainService } from '../../services/semanas-avance-main/semanas-avance-main.service';
 import { TransfornMonthPipe } from 'src/app/core/pipe/transforn-month-pipe';
-import { AperPeriodo } from '../../interface/aper-per-oper.interface';
+import { PlanningData } from '../../interface/aper-per-oper.interface';
 import { PlaningCompartidoService } from '../../services/planing-compartido.service';
 import { FormUtils } from 'src/app/utils/form-utils';
 import Swal from 'sweetalert2';
-import { CanComponentDeactivate } from 'src/app/core/guards/cambios-guard/cambios-pendientes.guard';
 import { ModalPeriodo } from "./modal-periodo/modal-periodo";
-import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
-import { delay, finalize } from 'rxjs';
+
 
 export enum ViewMode {
     VISUALIZAR = 'VISUALIZAR',
@@ -36,9 +34,6 @@ interface BotonesState {
     styleUrl: './aper-periodo-operativo.component.css',
 })
 export class AperturPeriodoComponent {
-
-
-
     /* ============================
      * 🔹 INYECCIONES
      * ============================ */
@@ -84,6 +79,9 @@ export class AperturPeriodoComponent {
      * ============================ */
     constructor() {
         this.cargarAnios();
+
+        this.sendYear();
+        this.sendMonth();
     }
 
     /* ============================
@@ -131,77 +129,73 @@ export class AperturPeriodoComponent {
             .subscribe({
                 next: data => {
                     this.onPeriodoCargado(data)
+                    this.planingCompartido.notifyFormChanged(); // notifica a los tabs
+
                 },
                 error: () => this.hasError.set('Ocurrió un error al cargar las rutas.'),
             });
     }
 
-
-
     /* ============================
      * 🔹 HANDLERS
      * ============================ */
-    sendYear(event: Event): void {
-        const year = (event.target as HTMLSelectElement).value;
 
-        if (this.planingCompartido.getCambios()) {
-            Swal.fire({
-                icon: 'warning',
-                title: 'Cambios sin guardar',
-                text: 'Debes guardar o visualizar los cambios antes de cambiar de año.',
-                confirmButtonText: 'Entendido',
-                confirmButtonColor: '#00426F',
-                allowOutsideClick: false
-            });
+    sendYear() {
 
-            // Revertir al mes anterior
-            (event.target as HTMLSelectElement).value = this.prevYear;
-            return;
-        }
+        this.showData.get('fechaFin')?.valueChanges.subscribe((month) => {
+            if (!month) return;
 
-        this.prevYear = year;
-        this.dataAnio.set(year);
+            // Bloquea cambio si hay cambios pendientes
+            if (this.planingCompartido.getCambios()) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Cambios sin guardar',
+                    text: 'Debes guardar o visualizar los cambios antes de cambiar de mes.',
+                    confirmButtonText: 'Entendido',
+                    confirmButtonColor: '#00426F',
+                    allowOutsideClick: false
+                });
 
-        // this.showData.get('fechaFin')?.enable();
+                // Revertir el FormControl al valor anterior
+                this.showData.get('fechaFin')?.setValue(this.prevMonth, { emitEvent: false });
+                return;
+            }
 
+            const anio = this.showData.get('fechaInicio')?.value || '';
+            this.cargarPeriodo(month, anio);
 
-        this.cargarMeses(year);
+        });
     }
 
-    sendMonth(event: Event): void {
-        const month = (event.target as HTMLSelectElement).value;
+    sendMonth(): void {
 
-        // Bloquea cambio si hay cambios pendientes
-        if (this.planingCompartido.getCambios()) {
-            Swal.fire({
-                icon: 'warning',
-                title: 'Cambios sin guardar',
-                text: 'Debes guardar o visualzar los cambios antes de cambiar de mes.',
-                confirmButtonText: 'Entendido',
-                confirmButtonColor: '#00426F',
-                allowOutsideClick: false
-            });
+        this.showData.get('fechaInicio')?.valueChanges.subscribe((year) => {
+            if (!year) return;
 
-            // Revertir al mes anterior
-            (event.target as HTMLSelectElement).value = this.prevMonth;
-            return;
-        }
+            if (this.planingCompartido.getCambios()) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Cambios sin guardar',
+                    text: 'Debes guardar o visualizar los cambios antes de cambiar de año.',
+                    confirmButtonText: 'Entendido',
+                    confirmButtonColor: '#00426F',
+                    allowOutsideClick: false
+                });
 
-        // this.showData.get('fechaInicio')?.disable();
+                this.showData.get('fechaInicio')?.setValue(this.prevYear, { emitEvent: false });
+                return;
+            }
 
-        this.prevMonth = month;
-        this.dataMes.set(month);
-
-        const anio = this.dataAnio();
-        this.semanasAvanceService.setPeriodo(month, anio);
-
-        this.cargarPeriodo(month, anio);
+            // this.prevYear = year;
+            // this.dataAnio.set(year);
+            this.cargarMeses(year);
+        });
     }
 
     /* ============================
      * 🔹 CALLBACKS
      * ============================ */
-    private onPeriodoCargado(data: any[]): void {
+    private onPeriodoCargado(data: PlanningData[]): void {
         this.hasError.set(null);
         this.planingCompartido.setData(data);
         this.planingCompartido.salirModoVisualizar();
@@ -219,7 +213,17 @@ export class AperturPeriodoComponent {
      * 🔹 UI
      * ============================ */
     limpiarFormulario(): void {
+        // Limpiar formulario
         this.showData.reset({ fechaInicio: '', fechaFin: '' });
+
+        // Limpiar variables de control
+        this.prevYear = '';
+        this.prevMonth = '';
+        this.dataAnio.set('');
+        this.dataMes.set('');
+
+        // Limpiar select de meses
+        this._months.set([]);
     }
 
     abrirModal(): void {
@@ -235,19 +239,11 @@ export class AperturPeriodoComponent {
     * 🔹 UTILIDADES
     * ============================ */
 
-
-
-
     ////GUARD PARA CAMBIAR DE RUTAS
 
     hasPendingChanges(): boolean {
         return this.planingCompartido.getCambios();
     }
-
-
-
-
-
 
     private resetEstadoGlobal(): void {
         this.planingCompartido.setData(null);
@@ -286,9 +282,14 @@ export class AperturPeriodoComponent {
         this.planingCompartido.setCambios(true); // 👈 IMPORTANTE
 
         this.planingCompartido.setChanges(true);
+        const inicioControl = this.showData.get('fechaInicio');
+        const finControl = this.showData.get('fechaFin');
+
+        if (inicioControl) inicioControl.disable({ emitEvent: false });
+        if (finControl) finControl.disable({ emitEvent: false });
     }
 
-    ///FORMULARIOS NUEVO
+
     onNuevo() {
         this.planingCompartido.setModoEditar(false);
         this.planingCompartido.setFormBloqueadoCentral(false);
@@ -297,6 +298,7 @@ export class AperturPeriodoComponent {
         // 🔔 reset global
         this.planingCompartido.notifyResetForms();
         this.limpiarFormulario();
+
 
 
         this.setBotonesState({
@@ -308,8 +310,8 @@ export class AperturPeriodoComponent {
         });
 
         this.planingCompartido.setCambios(true); // 👈 IMPORTANTE
-
-
+        // this.showData.get('fechaInicio')?.disable();
+        // this.showData.get('fechaFin')?.disable();
         this.planingCompartido.setChanges(false);
 
     }
@@ -333,7 +335,11 @@ export class AperturPeriodoComponent {
 
         this.limpiarFormulario();
 
+        this.showData.get('fechaInicio')?.enable();
+        this.showData.get('fechaFin')?.enable();
     }
+
+
 
     async onGuardar() {
         const confirmado = await this.formsUtils.confirmarGuardado();
@@ -347,6 +353,9 @@ export class AperturPeriodoComponent {
 
             this.onVisualizar();        // 👈 aquí es PERFECTO
             this.formsUtils.mostrarExito();
+
+            this.showData.get('fechaInicio')?.enable();
+            this.showData.get('fechaFin')?.enable();
 
         } catch (error) {
             console.error(error);
@@ -367,5 +376,7 @@ export class AperturPeriodoComponent {
             }
         });
     }
+
+
 
 }

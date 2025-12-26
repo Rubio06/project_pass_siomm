@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, effect, inject, signal } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
-import { DATOS_METODO_MINADO, SelectExploracion, TH_METODOLO_MINADO, thTitulos } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/interface/aper-per-oper.interface';
+import { DATOS_METODO_MINADO, MaePerMetExplotacion, SelectExploracion, TH_METODOLO_MINADO, thTitulos } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/interface/aper-per-oper.interface';
 import { PlanningService } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/services/planning.service';
 import { PlaningCompartidoService } from '../../../services/planing-compartido.service';
 import { SemanasAvanceMainService } from '../../../services/semanas-avance-main/semanas-avance-main.service';
@@ -75,12 +75,10 @@ export class MetodoMinadoMainComponent {
             const semanas = data?.data?.metodo_minado || [];
 
             if (this.planingCompartido.modoVisualizar()) {
-
-                    this.resetForm(); // fuerza limpieza si estaba en modo visualizar
-                    this.blockForm();
-                    this.cd.detectChanges(); // fuerza actualización después del cambio
-
-                    return;
+                this.resetForm(); // fuerza limpieza si estaba en modo visualizar
+                this.blockForm();
+                this.cd.detectChanges(); // fuerza actualización después del cambio
+                return;
             }
 
             this.loadSemanas(semanas);
@@ -109,21 +107,23 @@ export class MetodoMinadoMainComponent {
         effect(() => {
             const resetSignal = this.planingCompartido.resetAllForms();
             if (resetSignal > 0) {
+                console.log("Entre dentro del metodo minado a modoVisualizar")
                 this.resetForm();
+                this.addEmptySemana();
             }
         });
 
         ///BOTON VISUALIZAR
 
-        // effect(() => {
-        //     const signal = this.planingCompartido.visualizarForms();
+        effect(() => {
+            const signal = this.planingCompartido.visualizarForms();
 
-        //     if (signal > 0) {
+            if (signal > 0) {
 
-        //         // this.resetForm();
-        //         this.blockForm();
-        //     }
-        // });
+                // this.resetForm();
+                this.blockForm();
+            }
+        });
     }
 
 
@@ -142,33 +142,44 @@ export class MetodoMinadoMainComponent {
     // =====================================================
     //   CARGAR DATOS DESDE BACKEND
     // =====================================================
-    loadSemanas(data: any[]) {
-        this.semanas.clear();
+    loadSemanas(data: MaePerMetExplotacion[]) {
+        this.semanas.clear(); // limpiar FormArray
 
-
-        data.forEach((item, index) => {
-            const cod = this.cod_metexp()[index];
+        data.forEach(item => {
+            const cod = this.cod_metexp().find(c => c.cod_metexp === item.cod_metexp);
             if (!cod) return;
-
 
             this.semanas.push(
                 this.fb.group({
-                    cod_metexp: [this.cod_metexp()[index].nom_metexp, [Validators.required]],
-                    nom_metexp: [item.nom_metexp, [Validators.required]],
-                    ind_calculo_dilucion: [this.ind_calculo_dilucion()[0].label],
-                    ind_calculo_leyes_min: [this.ind_calculo_leyes_min()[0].label],
-                    ind_act: [this.ind_act()[0].label],
-                    accion: ['',],
-
+                    cod_metexp: [cod.nom_metexp, Validators.required],
+                    nom_metexp: [item.nom_metexp || '', Validators.required],
+                    ind_calculo_dilucion: [this.ind_calculo_dilucion()?.[0]?.label || ''],
+                    ind_calculo_leyes_min: [this.ind_calculo_leyes_min()?.[0]?.label || ''],
+                    ind_act: [this.ind_act()?.[0]?.label || ''],
+                    accion: [''],
                 })
             );
         });
-        // this.myForm.disable({ emitEvent: false });
 
+        this.cd.detectChanges();
         this.planingCompartido.notifyFormChanged();
-
-
     }
+
+    addEmptySemana() {
+
+
+        this.semanas.push(
+            this.fb.group({
+                cod_metexp: ['', Validators.required], // vacío
+                nom_metexp: ['', Validators.required], // vacío
+                ind_calculo_dilucion: [this.ind_calculo_dilucion()?.[0]?.label || ''],
+                ind_calculo_leyes_min: [this.ind_calculo_leyes_min()?.[0]?.label || ''],
+                ind_act: [this.ind_act()?.[0]?.label || ''],
+                accion: [''],
+            })
+        );
+    }
+
 
     // =====================================================
     //   AGREGAR FILA NUEVA (EDITABLE)

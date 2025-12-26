@@ -55,12 +55,11 @@ export class SemanasAvanceMainComponent {
 
 
             if (this.planingCompartido.modoVisualizar()) {
+                this.resetForm(); // fuerza limpieza si estaba en modo visualizar
+                this.blockForm();
+                this.cd.detectChanges(); // fuerza actualización después del cambio
 
-                    this.resetForm(); // fuerza limpieza si estaba en modo visualizar
-                    this.blockForm();
-                    this.cd.detectChanges(); // fuerza actualización después del cambio
-
-                    return;
+                return;
             }
 
 
@@ -86,6 +85,8 @@ export class SemanasAvanceMainComponent {
         effect(() => {
             const resetSignal = this.planingCompartido.resetAllForms();
             if (resetSignal > 0) {
+                console.log("Entre a modovisualizacion desde semana-avance")
+
                 this.resetForm();
             }
         });
@@ -118,6 +119,7 @@ export class SemanasAvanceMainComponent {
     loadSemanas(data: MaeSemanaAvance[]) {
         this.semanas.clear();
 
+
         data.forEach((item) => {
             this.semanas.push(
                 this.fb.group({
@@ -131,7 +133,9 @@ export class SemanasAvanceMainComponent {
                 })
             );
         });
-        console.log("la data es " + data)
+
+        this.cd.detectChanges();
+
         this.planingCompartido.notifyFormChanged();
 
     }

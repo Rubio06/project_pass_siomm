@@ -63,9 +63,9 @@
                                             bg-white shadow-sm hover:shadow-md transition-shadow duration-300 ease-in-out focus:border-[#033351] focus:ring-1 focus:ring-[rgb(3,102,157)] focus:ring-opacity-40 w-full">
 
 
-                                                <option value="" disabled>
+                                                <!-- <option value="" disabled>
                                                     ===== Seleccione una opción =====
-                                                </option>
+                                                </option> -->
                                                 @for (opt of cod_metexp(); track $index) {
                                                 <option [value]="opt.nom_metexp">{{ opt.cod_metexp }} {{ opt.nom_metexp
                                                     }}

@@ -93,6 +93,8 @@ export class FactorOperativoTablaComponent {
 
 
         effect(() => {
+            
+
             const signal = this.planingCompartido.visualizarForms();
             if (signal > 0) {
                 this.blockForm();

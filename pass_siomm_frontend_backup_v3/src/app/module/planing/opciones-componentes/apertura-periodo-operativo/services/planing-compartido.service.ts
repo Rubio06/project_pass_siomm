@@ -86,16 +86,13 @@ export class PlaningCompartidoService {
         // 🟢 Opcional: limpia "modo cambios"
         this.setCambios(false);
 
-
-
-        console.log('➡️ Volviendo a modo VISUALIZACIÓN');
     }
 
-    estadoActual = signal('Visualización');
+    // estadoActual = signal('Visualización');
 
-    setEstado(valor: string) {
-        this.estadoActual.set(valor);
-    }
+    // setEstado(valor: string) {
+    //     this.estadoActual.set(valor);
+    // }
 
 
 
@@ -111,6 +108,7 @@ export class PlaningCompartidoService {
     }
 
     /////////GUARD PARA VISUALIAZAR DATOS
+
 
 
 
