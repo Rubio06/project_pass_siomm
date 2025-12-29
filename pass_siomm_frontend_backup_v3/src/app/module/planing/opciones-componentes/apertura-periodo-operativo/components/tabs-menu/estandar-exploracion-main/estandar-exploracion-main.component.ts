@@ -83,26 +83,26 @@ export class EstandarExploracionMainComponent {
             const data = this.planingCompartido.dataRoutes();
             const semanas = data?.data?.exploracion_extandar || [];
 
-            if (this.planingCompartido.modoVisualizar()) {
+            // if (this.planingCompartido.modoVisualizar()) {
 
-                this.resetForm(); // fuerza limpieza si estaba en modo visualizar
-                this.blockForm();
-                this.cd.detectChanges(); // fuerza actualización después del cambio
+            //     this.resetForm(); // fuerza limpieza si estaba en modo visualizar
+            //     this.blockForm();
+            //     this.cd.detectChanges(); // fuerza actualización después del cambio
 
-                return;
-            }
-
-
-            if (this.planingCompartido.modoVisualizar()) {
+            //     return;
+            // }
 
 
-                this.resetForm(); // fuerza limpieza si estaba en modo visualizar
-                this.blockForm();
-                this.cd.detectChanges(); // fuerza actualización después del cambio
+            // if (this.planingCompartido.modoVisualizar()) {
 
-                return;
 
-            }
+            //     this.resetForm(); // fuerza limpieza si estaba en modo visualizar
+            //     this.blockForm();
+            //     this.cd.detectChanges(); // fuerza actualización después del cambio
+
+            //     return;
+
+            // }
 
 
             this.loadSemanas(semanas);
@@ -129,21 +129,20 @@ export class EstandarExploracionMainComponent {
         effect(() => {
             const resetSignal = this.planingCompartido.resetAllForms();
             if (resetSignal > 0) {
-                this.resetForm();
+                this.semanas.clear();
             }
         });
 
         ///BOTON VISUALIZAR
 
-        // effect(() => {
-        //     const signal = this.planingCompartido.visualizarForms();
-        //     if (signal > 0) {
-        //         this.blockForm();
-        //         this.resetForm();
+        effect(() => {
+            const signal = this.planingCompartido.visualizarForms();
+            if (signal > 0) {
+                this.semanas.clear();
 
-        //         // this.resetSelects(); // limpia selects
-        //     }
-        // });
+                // this.resetSelects(); // limpia selects
+            }
+        });
         this.loadZonas();
 
 
@@ -173,13 +172,9 @@ export class EstandarExploracionMainComponent {
         this.semanas.clear();
 
         data.forEach((item, index) => {
-
-            const cod = this.cod_zona()[index];
-            if (!cod) return;
-
             this.semanas.push(
                 this.fb.group({
-                    cod_zona: [item.cod_zona(index).des_zona, Validators.required],
+                    cod_zona: [item.cod_zona, Validators.required],
                     lab_pieper: [item.lab_pieper || ''],
                     lab_broca: [item.lab_broca || ''],
                     lab_barcon: [item.lab_barcon || ''],

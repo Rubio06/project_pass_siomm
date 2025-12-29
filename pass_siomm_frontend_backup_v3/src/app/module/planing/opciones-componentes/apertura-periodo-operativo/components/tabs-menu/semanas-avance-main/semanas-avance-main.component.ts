@@ -54,13 +54,13 @@ export class SemanasAvanceMainComponent {
             const semanas = data?.data?.semana_avance || [];
 
 
-            if (this.planingCompartido.modoVisualizar()) {
-                this.resetForm(); // fuerza limpieza si estaba en modo visualizar
-                this.blockForm();
-                this.cd.detectChanges(); // fuerza actualización después del cambio
+            // if (this.planingCompartido.modoVisualizar()) {
+            //     this.resetForm(); // fuerza limpieza si estaba en modo visualizar
+            //     this.blockForm();
+            //     this.cd.detectChanges(); // fuerza actualización después del cambio
 
-                return;
-            }
+            //     return;
+            // }
 
 
             this.loadSemanas(semanas);
@@ -87,23 +87,22 @@ export class SemanasAvanceMainComponent {
             if (resetSignal > 0) {
                 console.log("Entre a modovisualizacion desde semana-avance")
 
-                this.resetForm();
+                this.semanas.clear();
             }
         });
 
 
         ////BOTON VISUALIZAR
 
-        // effect(() => {
-        //     const signal = this.planingCompartido.visualizarForms();
-        //     console.log("la señal es "+ signal)
-        //     if (signal > 0) {
-        //         this.blockForm();
-        //         // this.resetForm();
+        effect(() => {
+            const signal = this.planingCompartido.visualizarForms();
+            if (signal > 0) {
+                // this.resetForm();
+                                this.semanas.clear();
 
-        //         // this.resetSelects(); // limpia selects
-        //     }
-        // });
+                // this.resetSelects(); // limpia selects
+            }
+        });
     }
 
     blockForm() {
@@ -123,10 +122,10 @@ export class SemanasAvanceMainComponent {
         data.forEach((item) => {
             this.semanas.push(
                 this.fb.group({
-                    num_semana: [item.num_semana],
-                    fec_ini: [FormUtils.formatDate(item.fec_ini)],
-                    fec_fin: [FormUtils.formatDate(item.fec_fin)],
-                    desc_semana: [item.desc_semana],
+                    num_semana: [item.num_semana, [Validators.required, Validators.min(1), Validators.max(7), Validators.pattern(/^[1-7]$/)]],
+                    fec_ini: [item.fec_ini, [Validators.required, Validators.pattern(/^(0[1-9]|[12]\d|3[01])\/(0[1-9]|1[0-2])\/(19\d{2}|20\d{2}|2100)$/)]],
+                    fec_fin: [item.fec_fin, [Validators.required, Validators.pattern(/^(0[1-9]|[12]\d|3[01])\/(0[1-9]|1[0-2])\/(19\d{2}|20\d{2}|2100)$/)]],
+                    desc_semana: [item.desc_semana, [Validators.required]],
                     accion: [],
                     esNuevo: [false]
 

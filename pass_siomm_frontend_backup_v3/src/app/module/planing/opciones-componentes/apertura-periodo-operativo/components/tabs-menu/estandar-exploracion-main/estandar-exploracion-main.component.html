@@ -63,8 +63,7 @@
 
                                                 <option value="" disabled> Selecione una opción</option>
                                                 @for (opt of cod_zona(); track $index) {
-                                                <option [value]="opt.cod_zona">{{ opt.cod_zona }} {{ opt.des_zona }}
-                                                </option>
+                                                <option [value]="opt.cod_zona">{{ opt.cod_zona }} {{ opt.des_zona }} </option>
                                                 }
                                                 } @else {
                                                 <option value="">Seleccione</option>

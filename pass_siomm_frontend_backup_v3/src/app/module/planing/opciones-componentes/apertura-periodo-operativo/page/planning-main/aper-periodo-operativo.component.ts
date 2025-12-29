@@ -195,7 +195,7 @@ export class AperturPeriodoComponent {
     /* ============================
      * 🔹 CALLBACKS
      * ============================ */
-    private onPeriodoCargado(data: PlanningData[]): void {
+    private onPeriodoCargado(data: PlanningData[]) {
         this.hasError.set(null);
         this.planingCompartido.setData(data);
         this.planingCompartido.salirModoVisualizar();
@@ -246,7 +246,7 @@ export class AperturPeriodoComponent {
     }
 
     private resetEstadoGlobal(): void {
-        this.planingCompartido.setData(null);
+        // this.planingCompartido.setData(null);
         this.semanasAvanceService.setPeriodo('', '');
         // this.planingCompartido.setBloqueoForm(true);
     }
@@ -318,12 +318,7 @@ export class AperturPeriodoComponent {
 
     //FORMULARIO visualizar
     onVisualizar() {
-        // this.planingCompartido.setFormBloqueadoCentral(true);
-        // this.planingCompartido.setModoEditar(false);
-        // this.planingCompartido.notifyVisualizar();
-        // this.planingCompartido.setCambios(false); // 👈 IMPORTANTE
         this.planingCompartido.onVisualizarGlobal();
-
 
         this.setBotonesState({
             nuevo: true,          // 🔒 se bloquea

@@ -71,16 +71,12 @@ export class EstandarAvanceComponent {
             const data = this.planingCompartido.dataRoutes();
             const semanas = data?.data?.laboratorio_estandar || [];
 
-            if (this.planingCompartido.modoVisualizar()) {
-
-
-                this.resetForm(); // fuerza limpieza si estaba en modo visualizar
-                this.blockForm();
-                this.cd.detectChanges(); // fuerza actualización después del cambio
-
-                return;
-
-            }
+            // if (this.planingCompartido.modoVisualizar()) {
+            //     this.resetForm(); // fuerza limpieza si estaba en modo visualizar
+            //     this.blockForm();
+            //     this.cd.detectChanges(); // fuerza actualización después del cambio
+            //     return;
+            // }
 
 
             this.loadSemanas(semanas);
@@ -106,20 +102,21 @@ export class EstandarAvanceComponent {
         effect(() => {
             const resetSignal = this.planingCompartido.resetAllForms();
             if (resetSignal > 0) {
-                this.resetForm();
+                this.semanas.clear();
             }
         });
 
 
         // BOTON VISUALIZAR
 
-        // effect(() => {
-        //     const signal = this.planingCompartido.visualizarForms();
-        //     if (signal > 0) {
-        //         this.blockForm();
-        //         this.resetForm();
-        //     }
-        // });
+        effect(() => {
+            const signal = this.planingCompartido.visualizarForms();
+            if (signal > 0) {
+                this.semanas.clear();
+                this.cd.detectChanges();
+
+            }
+        });
 
         this.loadTiposLabor();
 
@@ -144,12 +141,9 @@ export class EstandarAvanceComponent {
 
         data.forEach((item, index) => {
 
-            const cod = this.cod_tiplab()[index];
-            if (!cod) return;
-
             this.semanas.push(
                 this.fb.group({
-                    cod_tiplab: [this.cod_tiplab(), Validators.required],
+                    cod_tiplab: [item.cod_tiplab, Validators.required],
                     nro_lab_ancho: [item.nro_lab_ancho || ''],
                     nro_lab_altura: [item.nro_lab_altura || ''],
                     nro_lab_pieper: [item.nro_lab_pieper || ''],

@@ -63,12 +63,11 @@
                                             bg-white shadow-sm hover:shadow-md transition-shadow duration-300 ease-in-out focus:border-[#033351] focus:ring-1 focus:ring-[rgb(3,102,157)] focus:ring-opacity-40 w-full">
 
 
-                                                <!-- <option value="" disabled>
+                                                <option value="" disabled>
                                                     ===== Seleccione una opción =====
-                                                </option> -->
+                                                </option>
                                                 @for (opt of cod_metexp(); track $index) {
-                                                <option [value]="opt.nom_metexp">{{ opt.cod_metexp }} {{ opt.nom_metexp
-                                                    }}
+                                                <option [value]="opt.cod_metexp">{{ opt.cod_metexp }} {{ opt.nom_metexp }}
                                                 </option>
                                                 }
                                             </select>
@@ -102,7 +101,7 @@
                                                     Seleccione una opción
                                                 </option>
                                                 @for (opt of ind_calculo_dilucion(); track $index) {
-                                                <option [value]="opt.label">{{ opt.label }}</option>
+                                                <option [value]="opt.value">{{ opt.label }}</option>
                                                 }
                                             </select>
                                         </td>
@@ -117,7 +116,7 @@
                                                     Seleccione una opción
                                                 </option>
                                                 @for (opt of ind_calculo_leyes_min(); track $index) {
-                                                <option [value]="opt.label">{{ opt.label }}</option>
+                                                <option [value]="opt.value">{{ opt.label }}</option>
                                                 }
                                             </select>
                                         </td>
@@ -131,7 +130,7 @@
                                                     Seleccione una opción
                                                 </option>
                                                 @for (opt of ind_act(); track $index) {
-                                                <option [value]="opt.label">{{ opt.label }}</option>
+                                                <option [value]="opt.value">{{ opt.label }}</option>
                                                 }
                                             </select>
                                         </td>

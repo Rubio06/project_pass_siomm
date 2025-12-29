@@ -57,11 +57,25 @@
                                         @for (col of datosColumna(); track $index) {
                                         <td class="border-x border-gray-300 p-1.5 w-40">
                                             <div
-                                                class="flex items-center border border-gray-300 rounded-md px-2 py-1 bg-white shadow-sm">
-                                                <input [type]="col.type" [formControlName]="col.name"
-                                                    [class.opacity-30]="planingCompartido.bloqueoFormGeneral()"
-                                                    [class.pointer-events-none]="planingCompartido.bloqueoFormGeneral()"
-                                                    class="w-full bg-transparent outline-none text-gray-800 placeholder-gray-400 text-sm font-medium " />
+                                                class="flex items-center border border-gray-300 rounded-md px-2 py-1 bg-white shadow-sm
+                                                            hover:shadow-md transition-shadow duration-300 ease-in-out
+                                                            focus-within:border-[#033351] focus-within:ring-1 focus-within:ring-[rgb(3,102,157)]
+                                                            focus-within:ring-opacity-40 focus-within:shadow-md">
+                                                <ng-container>
+                                                    @if (col.name === 'fec_ini' || col.name === 'fec_fin') {
+                                                    <input type="text"
+                                                        class="w-full bg-transparent outline-none text-gray-800 placeholder-gray-400 text-sm font-medium"
+                                                        [value]="item.get(col.name)?.value | date:'dd/MM/yyyy'"
+                                                        [class.opacity-30]="planingCompartido.bloqueoFormGeneral()"
+                                                        [class.pointer-events-none]="planingCompartido.bloqueoFormGeneral()" />
+
+                                                    } @else {
+                                                    <input [type]="col.type" [formControlName]="col.name"
+                                                        [class.opacity-30]="planingCompartido.bloqueoFormGeneral()"
+                                                        [class.pointer-events-none]="planingCompartido.bloqueoFormGeneral()"
+                                                        class="w-full bg-transparent outline-none text-gray-800 placeholder-gray-400 text-sm font-medium" />
+                                                    }
+                                                </ng-container>
                                             </div>
                                             @if ( formUtils.isValidFieldInArray(item, col.name) ) {
                                             <span class="text-[10px] text-error block">
@@ -77,8 +91,8 @@
                                                 [disabled]="planingCompartido.bloqueoFormGeneral()"
                                                 class="flex items-center justify-center gap-1 mx-auto bg-[#A3361D] hover:bg-red-700 text-white px-2 py-1.5 rounded-md shadow-sm transition-all duration-200 font-medium text-xs disabled:opacity-30 disabled:cursor-not-allowed">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                    stroke-linecap="round" stroke-linejoin="round">
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                                     <polyline points="3 6 5 6 21 6"></polyline>
                                                     <path
                                                         d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6m5 0V4a2 2 0 0 1 2-2h0a2 2 0 0 1 2 2v2">

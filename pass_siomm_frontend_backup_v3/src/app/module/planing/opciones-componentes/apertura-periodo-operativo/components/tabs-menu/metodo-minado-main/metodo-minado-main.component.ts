@@ -53,18 +53,18 @@ export class MetodoMinadoMainComponent {
     cod_metexp = signal<SelectExploracion[]>([]);
 
     ind_calculo_dilucion = signal<any[]>([
-        { value: 1, label: 'Contrato' },
-        { value: 2, label: 'O´hara' }
+        { value: 'C', label: 'Contrato' },
+        { value: null, label: 'O´hara' }
     ]);
 
     ind_calculo_leyes_min = signal<any[]>([
-        { value: 1, label: 'Contrato' },
-        { value: 2, label: 'O´hara' }
+        { value: 'C', label: 'Contrato' },
+        { value: null, label: 'O´hara' }
     ]);
 
     ind_act = signal<any[]>([
-        { value: 1, label: 'Sí' },
-        { value: 2, label: 'No' }
+        { value: 'S', label: 'Sí' },
+        { value: null, label: 'No' }
     ]);
 
     private cd = inject(ChangeDetectorRef);
@@ -74,12 +74,12 @@ export class MetodoMinadoMainComponent {
             const data = this.planingCompartido.dataRoutes();
             const semanas = data?.data?.metodo_minado || [];
 
-            if (this.planingCompartido.modoVisualizar()) {
-                this.resetForm(); // fuerza limpieza si estaba en modo visualizar
-                this.blockForm();
-                this.cd.detectChanges(); // fuerza actualización después del cambio
-                return;
-            }
+            // if (this.planingCompartido.modoVisualizar()) {
+            //     this.resetForm(); // fuerza limpieza si estaba en modo visualizar
+            //     this.blockForm();
+            //     this.cd.detectChanges(); // fuerza actualización después del cambio
+            //     return;
+            // }
 
             this.loadSemanas(semanas);
             this.myForm.patchValue(data || {}, { emitEvent: false });
@@ -107,9 +107,8 @@ export class MetodoMinadoMainComponent {
         effect(() => {
             const resetSignal = this.planingCompartido.resetAllForms();
             if (resetSignal > 0) {
-                console.log("Entre dentro del metodo minado a modoVisualizar")
-                this.resetForm();
-                this.addEmptySemana();
+                console.log("Dentro del metodo minado")
+                this.semanas.clear();
             }
         });
 
@@ -119,9 +118,8 @@ export class MetodoMinadoMainComponent {
             const signal = this.planingCompartido.visualizarForms();
 
             if (signal > 0) {
+                                this.semanas.clear();
 
-                // this.resetForm();
-                this.blockForm();
             }
         });
     }
@@ -146,16 +144,14 @@ export class MetodoMinadoMainComponent {
         this.semanas.clear(); // limpiar FormArray
 
         data.forEach(item => {
-            const cod = this.cod_metexp().find(c => c.cod_metexp === item.cod_metexp);
-            if (!cod) return;
 
             this.semanas.push(
                 this.fb.group({
-                    cod_metexp: [cod.nom_metexp, Validators.required],
+                    cod_metexp: [item.cod_metexp, Validators.required],
                     nom_metexp: [item.nom_metexp || '', Validators.required],
-                    ind_calculo_dilucion: [this.ind_calculo_dilucion()?.[0]?.label || ''],
-                    ind_calculo_leyes_min: [this.ind_calculo_leyes_min()?.[0]?.label || ''],
-                    ind_act: [this.ind_act()?.[0]?.label || ''],
+                    ind_calculo_dilucion: [item.ind_calculo_dilucion || ''],
+                    ind_calculo_leyes_min: [item.ind_calculo_leyes_min || ''],
+                    ind_act: [item.ind_act || ''],
                     accion: [''],
                 })
             );
@@ -163,21 +159,6 @@ export class MetodoMinadoMainComponent {
 
         this.cd.detectChanges();
         this.planingCompartido.notifyFormChanged();
-    }
-
-    addEmptySemana() {
-
-
-        this.semanas.push(
-            this.fb.group({
-                cod_metexp: ['', Validators.required], // vacío
-                nom_metexp: ['', Validators.required], // vacío
-                ind_calculo_dilucion: [this.ind_calculo_dilucion()?.[0]?.label || ''],
-                ind_calculo_leyes_min: [this.ind_calculo_leyes_min()?.[0]?.label || ''],
-                ind_act: [this.ind_act()?.[0]?.label || ''],
-                accion: [''],
-            })
-        );
     }
 
 

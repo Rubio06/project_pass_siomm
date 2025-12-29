@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, effect, inject, signal, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, effect, inject, signal, OnInit, ChangeDetectorRef, runInInjectionContext, Injector } from '@angular/core';
 import { FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { FormUtils } from 'src/app/utils/form-utils';
 
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
-import { DATOS_COLUMNA_SEMANA_CICLO_MINADO, EstructuraDatos, TH_SEMANA_CICLO_MINADO, thTitulos } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/interface/aper-per-oper.interface';
+import { DATOS_COLUMNA_SEMANA_CICLO_MINADO, EstructuraDatos, MaeSemanaCiclo, TH_SEMANA_CICLO_MINADO, thTitulos } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/interface/aper-per-oper.interface';
 import { PlanningService } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/services/planning.service';
 import { PlaningCompartidoService } from '../../../services/planing-compartido.service';
 import { SemanasAvanceMainService } from '../../../services/semanas-avance-main/semanas-avance-main.service';
@@ -29,6 +29,7 @@ export class SemanasCicloMainComponent {
     columnas = signal<thTitulos[]>(TH_SEMANA_CICLO_MINADO);
     titulo = this.columnas().map(titulo => titulo.titulo);
 
+    injector = inject(Injector);
     loading = signal(false);
 
     planingCompartido = inject(PlaningCompartidoService);
@@ -52,18 +53,9 @@ export class SemanasCicloMainComponent {
     constructor() {
 
         effect(() => {
-
             const data = this.planingCompartido.dataRoutes();
             const tabSemanaCiclo = data?.data?.semana_ciclo || [];
-
-            if (this.planingCompartido.modoVisualizar()) {
-                console.log('haciendo un clickkkk')
-                this.resetForm();
-                this.blockForm();
-                this.cd.detectChanges();
-                return;
-            }
-
+            // Modo Nuevo/Editar
             this.loadSemanas(tabSemanaCiclo);
             this.myForm.patchValue(data || {}, { emitEvent: false });
             this.cd.detectChanges();
@@ -84,30 +76,35 @@ export class SemanasCicloMainComponent {
             }
         });
 
+    }
 
-        ///BOTON NUEVO
-        effect(() => {
-            const resetSignal = this.planingCompartido.resetAllForms();
+    ngOnInit(): void {
+        //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
+        //Add 'implements OnInit' to the class.
 
+        runInInjectionContext(this.injector, () => {
+            // /BOTON NUEVO
+            effect(() => {
+                const resetSignal = this.planingCompartido.resetAllForms();
+                if (resetSignal > 0) {
+                    this.semanas.clear();
+                    this.cd.detectChanges();
+                    this.planingCompartido.clearResetSignal();
+                }
+            });
 
-            if (resetSignal > 0) {
-                this.myForm.enable({ emitEvent: false });
-                this.myForm.reset();
-                this.semanas.clear();  // vaciar tabla
-                this.cd.detectChanges();
-            }
+            effect(() => {
+                const visualizarSignal = this.planingCompartido.visualizarForms();
+                if (visualizarSignal > 0) {
+                    this.myForm.disable({ emitEvent: false });
+                    this.semanas.clear();
+                    this.cd.detectChanges();
+                    // this.planingCompartido.clearVisualizarSignal();
+                    this.planingCompartido.clearResetSignal();
+
+                }
+            });
         });
-
-        //BOTON VISUALIZAR
-        // effect(() => {
-        //     const signal = this.planingCompartido.visualizarForms();
-        //     if (signal > 0) {
-        //         this.blockForm();
-        //         // this.resetForm();
-
-        //         // this.resetSelects(); // limpia selects
-        //     }
-        // });
     }
 
     blockForm() {
@@ -122,20 +119,20 @@ export class SemanasCicloMainComponent {
 
         // // 2️⃣ limpiar todo
         // this.myForm.reset();
-        this.semanas.clear();
+        // this.semanas.clear();
         // 3️⃣ actualizar cambios
         this.cd.detectChanges();
     }
 
-    loadSemanas(data: any[]) {
-        this.semanas.clear();  // limpia todo
+    loadSemanas(data: MaeSemanaCiclo[]) {
+        // this.semanas.clear();  // limpia todo
 
         data.forEach((item) => {
             this.semanas.push(
                 this.fb.group({
                     num_semana: [item.num_semana],
-                    fec_ini: [FormUtils.formatDate(item.fec_ini)],
-                    fec_fin: [FormUtils.formatDate(item.fec_fin)],
+                    fec_ini: [item.fec_ini],
+                    fec_fin: [item.fec_fin],
                     desc_semana: [item.desc_semana],
                     accion: [''],
                     esNuevo: [false]
@@ -143,9 +140,10 @@ export class SemanasCicloMainComponent {
                 })
             );
         });
-        this.planingCompartido.notifyFormChanged();
+        // this.planingCompartido.notifyFormChanged();
 
         // this.planingCompartido.notifyFormChanged();
+        this.cd.detectChanges();
 
     }
 

@@ -14,7 +14,7 @@ export class CanchasComponent {
     private planingService = inject(PlanningService);
     planingCompartido = inject(PlaningCompartidoService);
     private fb = inject(FormBuilder);
-    rutas = this.planingCompartido.data;
+    // rutas = this.planingCompartido.data;
     formUtils = FormUtils;
 
     // bloqueo = inject(PlaningCompartido).bloqueo;
@@ -31,7 +31,7 @@ export class CanchasComponent {
     constructor() {
 
         effect(() => {
-            const response = this.rutas();
+            const response = this.planingCompartido.dataRoutes();
 
             if (response?.data?.canchas?.length) {
                 const canchas = response.data.canchas[0];

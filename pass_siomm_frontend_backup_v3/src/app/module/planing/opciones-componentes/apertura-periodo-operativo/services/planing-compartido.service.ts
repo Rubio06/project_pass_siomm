@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, Signal, signal, WritableSignal } from '@angular/core';
+import { PlanningData } from '../interface/aper-per-oper.interface';
 
 @Injectable({
     providedIn: 'root'
@@ -161,6 +162,14 @@ export class PlaningCompartidoService {
         this._resetAllForms.update(v => v + 1);
     }
 
+    // Método para limpiar la señal después de usarla
+    clearResetSignal() {
+        this._resetAllForms.set(0);
+    }
+
+
+
+
     ////////PERMANECE BLOQUEADO DOS INPUTS EN PERIODO
     private _modoEditar = signal(false);
     readonly modoEditar = this._modoEditar.asReadonly();
@@ -185,13 +194,19 @@ export class PlaningCompartidoService {
         this._modoVisualizar.set(false);
     }
 
-    data = signal<any>(null);
-    private _dataRoutes: WritableSignal<any> = signal([]);
+    // data = signal<any>(null);
+    private _dataRoutes: WritableSignal<PlanningData[]> = signal([]);
     public readonly dataRoutes: Signal<any> = this._dataRoutes.asReadonly();
 
-    setData(data: any): void {
+    setData(data: PlanningData[]): void {
         this._dataRoutes.set(data);
     }
 
+    // private _dataRoutes: WritableSignal<PlanningData[]> = signal([]);
+    // public readonly dataRoutes = this._dataRoutes.asReadonly();
+
+    // setData(data: PlanningData[]) {
+    //     this._dataRoutes.set(data);
+    // }
 
 }

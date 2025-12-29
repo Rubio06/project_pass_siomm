@@ -180,7 +180,7 @@ export interface TableField {
     type: string;
     name: string;
     readonly: boolean;
-}       
+}
 
 
 
@@ -291,7 +291,7 @@ export const TH_ESTANDAR_EXPLORACION: thTitulos[] = [
     { titulo: 'Fulminante' },
     { titulo: 'Conectores' },
     { titulo: 'Puntal Marchavante' },
-    { titulo: 'Tabla' }, 
+    { titulo: 'Tabla' },
     { titulo: 'Activ.' },
     { titulo: 'Aprobado' }
 ]
