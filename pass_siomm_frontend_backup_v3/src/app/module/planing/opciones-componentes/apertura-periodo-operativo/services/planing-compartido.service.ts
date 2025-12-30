@@ -68,7 +68,6 @@ export class PlaningCompartidoService {
             semana_ciclo: this._semana_ciclo(),
             semana_avance: this._semana_avance(),
         };
-        console.log("la data es " + payload.semana_avance)
 
         return this.http.post('/api/guardar-todo', payload);
     }
@@ -165,6 +164,19 @@ export class PlaningCompartidoService {
     // Método para limpiar la señal después de usarla
     clearResetSignal() {
         this._resetAllForms.set(0);
+    }
+
+    /////////Example effect
+
+    private _resetSemanas = signal(false);
+    readonly resetSemanas = this._resetSemanas.asReadonly();
+
+    notifyResetSemanas() {
+        this._resetSemanas.set(true);
+    }
+
+    resetSemanasDone() {
+        this._resetSemanas.set(false);
     }
 
 

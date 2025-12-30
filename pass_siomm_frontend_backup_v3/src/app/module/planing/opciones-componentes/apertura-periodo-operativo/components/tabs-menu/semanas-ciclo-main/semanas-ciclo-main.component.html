@@ -39,57 +39,49 @@
 
                                 <tbody formArrayName="semanas">
 
-                                    @if (loading()) {
-                                    <tr class="border">
+                                    <!-- 👉 Cuando NO hay registros -->
+                                    @if (semanas.controls.length === 0) {
+
+                                    <tr class="border-y border-gray-300">
                                         <td [attr.colspan]="datosColumna().length + 2"
-                                            class="text-center p-4 mx-auto border border-gray-300">
-                                            <app-spinner></app-spinner>
+                                            class="p-4 text-center font-semibold text-red-700 bg-red-50 border border-gray-300">
+                                            No existen datos para mostrar.
                                         </td>
                                     </tr>
-                                    }
 
-                                    @else if (semanas.controls.length > 0) {
+                                    } @else {
 
+                                    <!-- 👉 Cuando SÍ hay registros -->
                                     @for (item of semanas.controls; track $index; let i = $index) {
+
                                     <tr [formGroupName]="i"
                                         class="even:bg-gray-50 odd:bg-white hover:bg-blue-50/70 transition duration-150">
 
                                         @for (col of datosColumna(); track $index) {
+
                                         <td class="border-x border-gray-300 p-1.5 w-40">
                                             <div
-                                                class="flex items-center border border-gray-300 rounded-md px-2 py-1 bg-white shadow-sm
-                                                            hover:shadow-md transition-shadow duration-300 ease-in-out
-                                                            focus-within:border-[#033351] focus-within:ring-1 focus-within:ring-[rgb(3,102,157)]
-                                                            focus-within:ring-opacity-40 focus-within:shadow-md">
-                                                <ng-container>
-                                                    @if (col.name === 'fec_ini' || col.name === 'fec_fin') {
-                                                    <input type="text"
-                                                        class="w-full bg-transparent outline-none text-gray-800 placeholder-gray-400 text-sm font-medium"
-                                                        [value]="item.get(col.name)?.value | date:'dd/MM/yyyy'"
-                                                        [class.opacity-30]="planingCompartido.bloqueoFormGeneral()"
-                                                        [class.pointer-events-none]="planingCompartido.bloqueoFormGeneral()" />
-
-                                                    } @else {
-                                                    <input [type]="col.type" [formControlName]="col.name"
-                                                        [class.opacity-30]="planingCompartido.bloqueoFormGeneral()"
-                                                        [class.pointer-events-none]="planingCompartido.bloqueoFormGeneral()"
-                                                        class="w-full bg-transparent outline-none text-gray-800 placeholder-gray-400 text-sm font-medium" />
-                                                    }
-                                                </ng-container>
+                                                class="flex items-center border border-gray-300 rounded-md px-2 py-1 bg-white shadow-sm">
+                                                <input [type]="col.type" [formControlName]="col.name"
+                                                    [class.opacity-30]="planingCompartido.bloqueoFormGeneral()"
+                                                    [class.pointer-events-none]="planingCompartido.bloqueoFormGeneral()"
+                                                    class="w-full bg-transparent outline-none text-gray-800 placeholder-gray-400 text-sm font-medium" />
                                             </div>
+
                                             @if ( formUtils.isValidFieldInArray(item, col.name) ) {
                                             <span class="text-[10px] text-error block">
-                                                <b>{{formUtils.getFiledErrorArray(item, col.name)}}</b>
+                                                <b>{{ formUtils.getFiledErrorArray(item, col.name) }}</b>
                                             </span>
                                             }
                                         </td>
                                         }
-                                        <!-- [disabled]="planingCompartido.getBloqueoFormEditar()()" -->
 
                                         <td class="border-x border-gray-300 p-1.5 w-24 text-center">
                                             <button type="button" (click)="eliminarFila(item, i)"
                                                 [disabled]="planingCompartido.bloqueoFormGeneral()"
                                                 class="flex items-center justify-center gap-1 mx-auto bg-[#A3361D] hover:bg-red-700 text-white px-2 py-1.5 rounded-md shadow-sm transition-all duration-200 font-medium text-xs disabled:opacity-30 disabled:cursor-not-allowed">
+
+                                                <!-- icon -->
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -98,26 +90,19 @@
                                                         d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6m5 0V4a2 2 0 0 1 2-2h0a2 2 0 0 1 2 2v2">
                                                     </path>
                                                 </svg>
+
                                                 <b>Eliminar</b>
                                             </button>
                                         </td>
-                                    </tr>
-                                    }
-                                    }
 
-                                    @else {
-                                    <tr class="border-y border-gray-300">
-                                        <td [attr.colspan]="datosColumna().length + 2"
-                                            class="p-4 text-center font-semibold text-red-700 bg-red-50 border border-gray-300">
-                                            No existen datos para mostrar.
-                                        </td>
                                     </tr>
+                                    }
                                     }
 
                                 </tbody>
-
                             </table>
                         </div>
+
                     </div>
 
                     <button type="button" (click)="agregarFilas()" [disabled]="planingCompartido.bloqueoFormGeneral()"

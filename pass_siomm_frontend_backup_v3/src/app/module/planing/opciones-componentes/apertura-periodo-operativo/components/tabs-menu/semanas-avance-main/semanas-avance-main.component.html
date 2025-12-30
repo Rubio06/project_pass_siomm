@@ -38,22 +38,18 @@
                                 </thead>
 
                                 <tbody formArrayName="semanas">
-
-                                    @if (loading()) {
-                                    <tr class="border">
+                                    @if (semanas.controls.length === 0) {
+                                    <tr class="border-y border-gray-300">
                                         <td [attr.colspan]="datosColumna().length + 2"
-                                            class="text-center p-4 mx-auto border border-gray-300">
-                                            <app-spinner></app-spinner>
+                                            class="p-4 text-center font-semibold text-red-700 bg-red-50 border border-gray-300">
+                                            No existen datos para mostrar.
                                         </td>
                                     </tr>
                                     }
-
-                                    @else if (semanas.controls.length > 0) {
-
+                                    @else {
                                     @for (item of semanas.controls; track $index; let i = $index) {
                                     <tr [formGroupName]="i"
                                         class="even:bg-gray-50 odd:bg-white hover:bg-blue-50/70 transition duration-150">
-
                                         @for (col of datosColumna(); track $index) {
                                         <td class="border-x border-gray-300 p-1.5 w-40">
                                             <div
@@ -103,15 +99,6 @@
                                         </td>
                                     </tr>
                                     }
-                                    }
-
-                                    @else {
-                                    <tr class="border-y border-gray-300">
-                                        <td [attr.colspan]="datosColumna().length + 2"
-                                            class="p-4 text-center font-semibold text-red-700 bg-red-50 border border-gray-300">
-                                            No existen datos para mostrar.
-                                        </td>
-                                    </tr>
                                     }
 
                                 </tbody>

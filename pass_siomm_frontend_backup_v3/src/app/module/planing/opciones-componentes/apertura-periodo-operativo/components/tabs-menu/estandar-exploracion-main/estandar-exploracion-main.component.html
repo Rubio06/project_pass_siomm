@@ -38,15 +38,15 @@
                                 </thead>
 
                                 <tbody formArrayName="semanas">
-                                    @if (loading()) {
-                                    <tr class="border">
-                                        <td [attr.colspan]="datosColumna().length + 1"
-                                            class="text-center p-4 mx-auto border border-gray-300">
-                                            <app-spinner></app-spinner>
+                                    @if (semanas.controls.length === 0) {
+                                    <tr class="border-y border-gray-300">
+                                        <td [attr.colspan]="datosColumna().length + 2"
+                                            class="p-4 text-center font-semibold text-red-700 bg-red-50 border border-gray-300">
+                                            No existen datos para mostrar.
                                         </td>
                                     </tr>
 
-                                    }@else if(semanas.controls.length > 0){
+                                    }@else{
                                     @for (item of semanas.controls; track $index; let i = $index) {
                                     <tr [formGroupName]="i"
                                         class="even:bg-gray-50 odd:bg-white hover:bg-blue-50/70 transition duration-150">
@@ -63,7 +63,8 @@
 
                                                 <option value="" disabled> Selecione una opción</option>
                                                 @for (opt of cod_zona(); track $index) {
-                                                <option [value]="opt.cod_zona">{{ opt.cod_zona }} {{ opt.des_zona }} </option>
+                                                <option [value]="opt.cod_zona">{{ opt.cod_zona }} {{ opt.des_zona }}
+                                                </option>
                                                 }
                                                 } @else {
                                                 <option value="">Seleccione</option>
@@ -89,8 +90,8 @@
                                                 [disabled]="planingCompartido.bloqueoFormGeneral()"
                                                 class="flex disabled:opacity-50 items-center justify-center gap-1 mx-auto bg-[#A3361D] hover:bg-red-700 text-white px-2 py-1.5 rounded-md shadow-sm transition-all duration-200 font-medium text-xs disabled:cursor-not-allowed">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                    stroke-linecap="round" stroke-linejoin="round">
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                                     <polyline points="3 6 5 6 21 6"></polyline>
                                                     <path
                                                         d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6m5 0V4a2 2 0 0 1 2-2h0a2 2 0 0 1 2 2v2">
@@ -103,13 +104,6 @@
                                     </tr>
 
                                     }
-                                    }@else {
-                                    <tr class="border-y border-gray-300">
-                                        <td [attr.colspan]="datosColumna().length + 2"
-                                            class="p-4 text-center font-semibold text-red-700 bg-red-50 border border-gray-300">
-                                            No existen datos para mostrar.
-                                        </td>
-                                    </tr>
                                     }
                                 </tbody>
                             </table>

@@ -9,7 +9,7 @@ import { SemanasAvanceMainService } from '../../../services/semanas-avance-main/
 
 @Component({
     selector: 'app-estandar-exploracion-main',
-    imports: [ReactiveFormsModule, SpinnerComponent],
+    imports: [ReactiveFormsModule],
     templateUrl: './estandar-exploracion-main.component.html',
     styleUrl: './estandar-exploracion-main.component.css',
 })
@@ -127,10 +127,12 @@ export class EstandarExploracionMainComponent {
 
         ///BOTON NUEVO
         effect(() => {
-            const resetSignal = this.planingCompartido.resetAllForms();
-            if (resetSignal > 0) {
+
+            if (!this.planingCompartido.resetSemanas()) {
                 this.semanas.clear();
+                return;
             }
+                this.planingCompartido.resetSemanasDone();
         });
 
         ///BOTON VISUALIZAR

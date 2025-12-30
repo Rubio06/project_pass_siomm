@@ -13,7 +13,7 @@ import 'sweetalert2/src/sweetalert2.scss'
 
 @Component({
     selector: 'app-semanas-avance-main',
-    imports: [ReactiveFormsModule, CommonModule, FormsModule, SpinnerComponent],
+    imports: [ReactiveFormsModule, CommonModule, FormsModule],
     templateUrl: './semanas-avance-main.component.html',
     styleUrl: './semanas-avance-main.component.css',
 })
@@ -53,16 +53,6 @@ export class SemanasAvanceMainComponent {
             const data = this.planingCompartido.dataRoutes();
             const semanas = data?.data?.semana_avance || [];
 
-
-            // if (this.planingCompartido.modoVisualizar()) {
-            //     this.resetForm(); // fuerza limpieza si estaba en modo visualizar
-            //     this.blockForm();
-            //     this.cd.detectChanges(); // fuerza actualización después del cambio
-
-            //     return;
-            // }
-
-
             this.loadSemanas(semanas);
             this.myForm.patchValue(data || {}, { emitEvent: false });
 
@@ -83,25 +73,12 @@ export class SemanasAvanceMainComponent {
 
         ///BOTON NUEVO
         effect(() => {
-            const resetSignal = this.planingCompartido.resetAllForms();
-            if (resetSignal > 0) {
-                console.log("Entre a modovisualizacion desde semana-avance")
 
+            if (!this.planingCompartido.resetSemanas()) {
                 this.semanas.clear();
+                return;
             }
-        });
-
-
-        ////BOTON VISUALIZAR
-
-        effect(() => {
-            const signal = this.planingCompartido.visualizarForms();
-            if (signal > 0) {
-                // this.resetForm();
-                                this.semanas.clear();
-
-                // this.resetSelects(); // limpia selects
-            }
+            this.planingCompartido.resetSemanasDone();
         });
     }
 

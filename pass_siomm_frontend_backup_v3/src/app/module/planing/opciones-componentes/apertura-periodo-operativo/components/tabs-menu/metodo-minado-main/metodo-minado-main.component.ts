@@ -10,7 +10,7 @@ import { FormUtils } from 'src/app/utils/form-utils';
 
 @Component({
     selector: 'app-metodo-minado-main',
-    imports: [ReactiveFormsModule, CommonModule, FormsModule, SpinnerComponent],
+    imports: [ReactiveFormsModule, CommonModule, FormsModule],
     templateUrl: './metodo-minado-main.component.html',
     styleUrl: './metodo-minado-main.component.css',
 })
@@ -74,13 +74,6 @@ export class MetodoMinadoMainComponent {
             const data = this.planingCompartido.dataRoutes();
             const semanas = data?.data?.metodo_minado || [];
 
-            // if (this.planingCompartido.modoVisualizar()) {
-            //     this.resetForm(); // fuerza limpieza si estaba en modo visualizar
-            //     this.blockForm();
-            //     this.cd.detectChanges(); // fuerza actualización después del cambio
-            //     return;
-            // }
-
             this.loadSemanas(semanas);
             this.myForm.patchValue(data || {}, { emitEvent: false });
             this.cd.detectChanges();
@@ -105,23 +98,23 @@ export class MetodoMinadoMainComponent {
 
         ///BOTON NUEVO
         effect(() => {
-            const resetSignal = this.planingCompartido.resetAllForms();
-            if (resetSignal > 0) {
-                console.log("Dentro del metodo minado")
+
+            if (!this.planingCompartido.resetSemanas()) {
                 this.semanas.clear();
+                return;
             }
+            this.planingCompartido.resetSemanasDone();
         });
+        // ///BOTON VISUALIZAR
 
-        ///BOTON VISUALIZAR
+        // effect(() => {
+        //     const signal = this.planingCompartido.visualizarForms();
 
-        effect(() => {
-            const signal = this.planingCompartido.visualizarForms();
+        //     if (signal > 0) {
+        //                         this.semanas.clear();
 
-            if (signal > 0) {
-                                this.semanas.clear();
-
-            }
-        });
+        //     }
+        // });
     }
 
 

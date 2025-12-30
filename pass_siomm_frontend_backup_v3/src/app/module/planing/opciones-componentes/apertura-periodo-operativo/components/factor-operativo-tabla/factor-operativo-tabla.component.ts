@@ -86,14 +86,25 @@ export class FactorOperativoTablaComponent {
             }
         });
 
+        // effect(() => {
+        //     this.planingCompartido.resetSemanas();
+        //     this.resetearFormulario();
+        // });
         effect(() => {
-            this.planingCompartido.resetAllForms();
-            this.resetearFormulario();
+
+            if (!this.planingCompartido.resetSemanas()) {
+                // this.semanas.clear();
+                this.resetearFormulario();
+
+                return;
+            }
+            this.planingCompartido.resetSemanasDone();
+
+
         });
 
-
         effect(() => {
-            
+
 
             const signal = this.planingCompartido.visualizarForms();
             if (signal > 0) {

@@ -111,9 +111,22 @@ export class AperPerOperComponent {
 
         //BOTON NUEVO///
 
+        // effect(() => {
+        //     this.planingCompartido.resetAllForms();
+        //     this.resetearFormulario();
+        // });
+
         effect(() => {
-            this.planingCompartido.resetAllForms();
-            this.resetearFormulario();
+
+            if (!this.planingCompartido.resetSemanas()) {
+                // this.semanas.clear();
+                this.resetearFormulario();
+
+                return;
+            }
+            this.planingCompartido.resetSemanasDone();
+
+
         });
 
         //BOTON VISUALIZAR

@@ -293,12 +293,13 @@ export class AperturPeriodoComponent {
     onNuevo() {
         this.planingCompartido.setModoEditar(false);
         this.planingCompartido.setFormBloqueadoCentral(false);
-        // this.planingCompartido.enableTableButton();
+
+        // this.planingCompartido.onVisualizarGlobal();
+        this.planingCompartido.setCambios(false); // 👈 IMPORTANTE
 
         // 🔔 reset global
-        this.planingCompartido.notifyResetForms();
+        this.planingCompartido.notifyResetSemanas();
         this.limpiarFormulario();
-
 
 
         this.setBotonesState({
@@ -309,16 +310,26 @@ export class AperturPeriodoComponent {
             visualizar: false     // ✅
         });
 
-        this.planingCompartido.setCambios(true); // 👈 IMPORTANTE
-        // this.showData.get('fechaInicio')?.disable();
-        // this.showData.get('fechaFin')?.disable();
-        this.planingCompartido.setChanges(false);
+        const inicioControl = this.showData.get('fechaInicio');
+        const finControl = this.showData.get('fechaFin');
 
+        if (inicioControl) inicioControl.disable({ emitEvent: false });
+        if (finControl) finControl.disable({ emitEvent: false });
     }
 
     //FORMULARIO visualizar
     onVisualizar() {
+        // this.planingCompartido.setFormBloqueadoCentral(true);
+        // this.planingCompartido.setModoEditar(false);
+        // this.planingCompartido.notifyVisualizar();
+        // this.planingCompartido.setCambios(false); // 👈 IMPORTANTE
         this.planingCompartido.onVisualizarGlobal();
+
+        // this.planingCompartido.notifyResetForms();
+
+        this.planingCompartido.notifyResetForms();
+
+        this.limpiarFormulario();
 
         this.setBotonesState({
             nuevo: true,          // 🔒 se bloquea
@@ -328,7 +339,7 @@ export class AperturPeriodoComponent {
             visualizar: true     // ✅
         });
 
-        this.limpiarFormulario();
+        // this.limpiarFormulario();
 
         this.showData.get('fechaInicio')?.enable();
         this.showData.get('fechaFin')?.enable();

@@ -10,7 +10,7 @@ import { SemanasAvanceMainService } from '../../../services/semanas-avance-main/
 
 @Component({
     selector: 'app-estandar-avance',
-    imports: [ReactiveFormsModule, SpinnerComponent],
+    imports: [ReactiveFormsModule],
     templateUrl: './estandar-avance-main.component.html',
     styleUrl: './estandar-avance-main.component.css',
 })
@@ -100,10 +100,12 @@ export class EstandarAvanceComponent {
 
         ///BOTON NUEVO
         effect(() => {
-            const resetSignal = this.planingCompartido.resetAllForms();
-            if (resetSignal > 0) {
+
+            if (!this.planingCompartido.resetSemanas()) {
                 this.semanas.clear();
+                return;
             }
+            this.planingCompartido.resetSemanasDone();
         });
 
 
