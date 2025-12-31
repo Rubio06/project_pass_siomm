@@ -76,7 +76,7 @@ export class MetodoMinadoMainComponent {
 
             this.loadSemanas(semanas);
             this.myForm.patchValue(data || {}, { emitEvent: false });
-            this.cd.detectChanges();
+            // this.cd.detectChanges();
 
         });
 
@@ -86,7 +86,6 @@ export class MetodoMinadoMainComponent {
 
 
         effect(() => {
-            this.planingCompartido.formVersion(); // dependencia
             if (!this.myForm) return;
 
             if (this.planingCompartido.bloqueoFormGeneral()) {
@@ -97,14 +96,14 @@ export class MetodoMinadoMainComponent {
         });
 
         ///BOTON NUEVO
-        effect(() => {
+        // effect(() => {
 
-            if (!this.planingCompartido.resetSemanas()) {
-                this.semanas.clear();
-                return;
-            }
-            this.planingCompartido.resetSemanasDone();
-        });
+        //     if (!this.planingCompartido.resetSemanas()) {
+        //         this.semanas.clear();
+        //         return;
+        //     }
+        //     this.planingCompartido.resetSemanasDone();
+        // });
         // ///BOTON VISUALIZAR
 
         // effect(() => {
@@ -150,8 +149,6 @@ export class MetodoMinadoMainComponent {
             );
         });
 
-        this.cd.detectChanges();
-        this.planingCompartido.notifyFormChanged();
     }
 
 

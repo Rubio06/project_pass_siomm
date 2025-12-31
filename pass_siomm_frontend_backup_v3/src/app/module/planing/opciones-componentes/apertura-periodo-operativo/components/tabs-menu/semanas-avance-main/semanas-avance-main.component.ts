@@ -55,31 +55,32 @@ export class SemanasAvanceMainComponent {
 
             this.loadSemanas(semanas);
             this.myForm.patchValue(data || {}, { emitEvent: false });
-
-            this.cd.detectChanges();              // opcional
-
+            // this.cd.detectChanges();
 
         });
 
-        effect(() => {
-            if (!this.myForm) return;
 
-            if (this.planingCompartido.bloqueoFormGeneral()) {
-                this.myForm.disable({ emitEvent: false });
-            } else {
-                this.myForm.enable({ emitEvent: false });
-            }
-        });
 
-        ///BOTON NUEVO
-        effect(() => {
 
-            if (!this.planingCompartido.resetSemanas()) {
-                this.semanas.clear();
-                return;
-            }
-            this.planingCompartido.resetSemanasDone();
-        });
+        // effect(() => {
+        //     if (!this.myForm) return;
+
+        //     if (this.planingCompartido.bloqueoFormGeneral()) {
+        //         this.myForm.disable({ emitEvent: false });
+        //     } else {
+        //         this.myForm.enable({ emitEvent: false });
+        //     }
+        // });
+
+        // ///BOTON NUEVO
+        // effect(() => {
+
+        //     if (!this.planingCompartido.resetSemanas()) {
+        //         this.semanas.clear();
+        //         return;
+        //     }
+        //     this.planingCompartido.resetSemanasDone();
+        // });
     }
 
     blockForm() {
@@ -109,11 +110,6 @@ export class SemanasAvanceMainComponent {
                 })
             );
         });
-
-        this.cd.detectChanges();
-
-        this.planingCompartido.notifyFormChanged();
-
     }
 
 

@@ -121,13 +121,14 @@ export class FactorOperativoComonent {
         });
 
         //BOTON VISUALIZAR
-        effect(() => {
-            const signal = this.planingCompartido.visualizarForms();
-            if (signal > 0) {
-                this.blockForm();
-                this.resetearFormulario();
-            }
-        });
+        // effect(() => {
+
+        //     const signal = this.planingCompartido.visualizarForms();
+        //     if (signal > 0) {
+        //         this.blockForm();
+        //         this.resetearFormulario();
+        //     }
+        // });
     }
 
     blockForm() {

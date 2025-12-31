@@ -71,18 +71,10 @@ export class EstandarAvanceComponent {
             const data = this.planingCompartido.dataRoutes();
             const semanas = data?.data?.laboratorio_estandar || [];
 
-            // if (this.planingCompartido.modoVisualizar()) {
-            //     this.resetForm(); // fuerza limpieza si estaba en modo visualizar
-            //     this.blockForm();
-            //     this.cd.detectChanges(); // fuerza actualización después del cambio
-            //     return;
-            // }
-
-
             this.loadSemanas(semanas);
             this.myForm.patchValue(data || {}, { emitEvent: false });
 
-            this.cd.detectChanges();              // opcional
+            // this.cd.detectChanges();              // opcional
 
 
         });
@@ -98,27 +90,27 @@ export class EstandarAvanceComponent {
             }
         });
 
-        ///BOTON NUEVO
-        effect(() => {
+        // ///BOTON NUEVO
+        // effect(() => {
 
-            if (!this.planingCompartido.resetSemanas()) {
-                this.semanas.clear();
-                return;
-            }
-            this.planingCompartido.resetSemanasDone();
-        });
+        //     if (!this.planingCompartido.resetSemanas()) {
+        //         this.semanas.clear();
+        //         return;
+        //     }
+        //     this.planingCompartido.resetSemanasDone();
+        // });
 
 
-        // BOTON VISUALIZAR
+        // // BOTON VISUALIZAR
 
-        effect(() => {
-            const signal = this.planingCompartido.visualizarForms();
-            if (signal > 0) {
-                this.semanas.clear();
-                this.cd.detectChanges();
+        // effect(() => {
+        //     const signal = this.planingCompartido.visualizarForms();
+        //     if (signal > 0) {
+        //         this.semanas.clear();
+        //         this.cd.detectChanges();
 
-            }
-        });
+        //     }
+        // });
 
         this.loadTiposLabor();
 
@@ -163,8 +155,6 @@ export class EstandarAvanceComponent {
                 })
             );
         });
-        this.planingCompartido.notifyFormChanged();
-
     }
 
     /**

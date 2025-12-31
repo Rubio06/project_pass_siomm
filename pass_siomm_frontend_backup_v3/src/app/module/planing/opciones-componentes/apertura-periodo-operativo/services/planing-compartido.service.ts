@@ -81,18 +81,11 @@ export class PlaningCompartidoService {
         this.setModoEditar(false);
 
         // 👀 Activa modo visualizar
-        this.notifyVisualizar();
 
         // 🟢 Opcional: limpia "modo cambios"
         this.setCambios(false);
 
     }
-
-    // estadoActual = signal('Visualización');
-
-    // setEstado(valor: string) {
-    //     this.estadoActual.set(valor);
-    // }
 
 
 
@@ -108,14 +101,6 @@ export class PlaningCompartidoService {
     }
 
     /////////GUARD PARA VISUALIAZAR DATOS
-
-
-
-
-
-
-
-
 
 
 
@@ -142,31 +127,11 @@ export class PlaningCompartidoService {
         () => this.formBloqueadoCentral()
     );
 
-    // 🔁 Trigger de recreación del form
-    private _formVersion = signal(0);
-    readonly formVersion = this._formVersion.asReadonly();
-
-    notifyFormChanged() {
-        this._formVersion.update(v => v + 1);
-    }
-
 
     // ===============================
     //  EVENTO RESET DE FORMS PARA BOTON NUEVO
     // ===============================
-    private _resetAllForms = signal(0);
-    readonly resetAllForms = this._resetAllForms.asReadonly();
 
-    notifyResetForms() {
-        this._resetAllForms.update(v => v + 1);
-    }
-
-    // Método para limpiar la señal después de usarla
-    clearResetSignal() {
-        this._resetAllForms.set(0);
-    }
-
-    /////////Example effect
 
     private _resetSemanas = signal(false);
     readonly resetSemanas = this._resetSemanas.asReadonly();
@@ -192,33 +157,30 @@ export class PlaningCompartidoService {
 
     ////////////SE RESETEA TODO HASTA LOS SECTS CON EL BOTON VISUALIZAR
 
-    private _visualizarForms = signal(0);
-    readonly visualizarForms = this._visualizarForms.asReadonly();
-    public _modoVisualizar = signal(false);
-    readonly modoVisualizar = this._modoVisualizar.asReadonly();
 
-    notifyVisualizar() {
-        this._visualizarForms.update(v => v + 1); // modo visualizar es 2
-        this._modoVisualizar.set(true); // flag activo
-    }
-
-    salirModoVisualizar() {
-        this._modoVisualizar.set(false);
-    }
-
-    // data = signal<any>(null);
-    private _dataRoutes: WritableSignal<PlanningData[]> = signal([]);
+    private _dataRoutes: WritableSignal<object> = signal({});
     public readonly dataRoutes: Signal<any> = this._dataRoutes.asReadonly();
 
-    setData(data: PlanningData[]): void {
+    setData(data: object): void {
         this._dataRoutes.set(data);
     }
 
-    // private _dataRoutes: WritableSignal<PlanningData[]> = signal([]);
-    // public readonly dataRoutes = this._dataRoutes.asReadonly();
+    get getData() {
+        return this._dataRoutes;
+    }
 
-    // setData(data: PlanningData[]) {
-    //     this._dataRoutes.set(data);
-    // }
+
+    limpiezaBotonNuevo() {
+        const current = this._dataRoutes();
+        if (!current) return;
+
+        this._dataRoutes.set({
+            semana_ciclo: [],
+            metodo_minado: [],
+            semana_avance: [],
+            exploracion_extandar: [],
+            laboratorio_estandar: []
+        });
+    }
 
 }

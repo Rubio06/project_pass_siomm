@@ -129,7 +129,7 @@ export class AperturPeriodoComponent {
             .subscribe({
                 next: data => {
                     this.onPeriodoCargado(data)
-                    this.planingCompartido.notifyFormChanged(); // notifica a los tabs
+                    // this.planingCompartido.notifyFormChanged(); // notifica a los tabs
 
                 },
                 error: () => this.hasError.set('Ocurrió un error al cargar las rutas.'),
@@ -195,10 +195,9 @@ export class AperturPeriodoComponent {
     /* ============================
      * 🔹 CALLBACKS
      * ============================ */
-    private onPeriodoCargado(data: PlanningData[]) {
+    private onPeriodoCargado(data: any) {
         this.hasError.set(null);
         this.planingCompartido.setData(data);
-        this.planingCompartido.salirModoVisualizar();
 
         this.setBotonesState({
             nuevo: false,
@@ -293,14 +292,11 @@ export class AperturPeriodoComponent {
     onNuevo() {
         this.planingCompartido.setModoEditar(false);
         this.planingCompartido.setFormBloqueadoCentral(false);
+        this.planingCompartido.setCambios(true);
 
-        // this.planingCompartido.onVisualizarGlobal();
-        this.planingCompartido.setCambios(false); // 👈 IMPORTANTE
-
-        // 🔔 reset global
         this.planingCompartido.notifyResetSemanas();
+        this.planingCompartido.limpiezaBotonNuevo();
         this.limpiarFormulario();
-
 
         this.setBotonesState({
             nuevo: true,          // 🔒 se bloquea
@@ -317,29 +313,19 @@ export class AperturPeriodoComponent {
         if (finControl) finControl.disable({ emitEvent: false });
     }
 
-    //FORMULARIO visualizar
     onVisualizar() {
-        // this.planingCompartido.setFormBloqueadoCentral(true);
-        // this.planingCompartido.setModoEditar(false);
-        // this.planingCompartido.notifyVisualizar();
-        // this.planingCompartido.setCambios(false); // 👈 IMPORTANTE
+
         this.planingCompartido.onVisualizarGlobal();
-
-        // this.planingCompartido.notifyResetForms();
-
-        this.planingCompartido.notifyResetForms();
-
+        this.planingCompartido.notifyResetSemanas();
+        this.planingCompartido.limpiezaBotonNuevo();
         this.limpiarFormulario();
-
         this.setBotonesState({
-            nuevo: true,          // 🔒 se bloquea
-            editar: true,         // 🔒
-            copiarPeriodo: true,  // 🔒
-            guardar: true,       // ✅
-            visualizar: true     // ✅
+            nuevo: true,
+            editar: true,
+            copiarPeriodo: true,
+            guardar: true,
+            visualizar: true
         });
-
-        // this.limpiarFormulario();
 
         this.showData.get('fechaInicio')?.enable();
         this.showData.get('fechaFin')?.enable();
@@ -357,7 +343,7 @@ export class AperturPeriodoComponent {
             await this.guardarDatos();  // ⏳ ahora sí espera
             this.planingCompartido.setCambios(false);
 
-            this.onVisualizar();        // 👈 aquí es PERFECTO
+            this.onVisualizar();
             this.formsUtils.mostrarExito();
 
             this.showData.get('fechaInicio')?.enable();
@@ -382,7 +368,4 @@ export class AperturPeriodoComponent {
             }
         });
     }
-
-
-
 }

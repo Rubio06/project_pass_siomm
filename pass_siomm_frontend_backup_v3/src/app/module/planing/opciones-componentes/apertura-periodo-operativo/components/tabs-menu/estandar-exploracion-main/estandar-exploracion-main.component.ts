@@ -66,51 +66,14 @@ export class EstandarExploracionMainComponent {
     constructor() {
 
 
-        // effect(() => {
-        //     const data = this.planingService.dataRoutes();
-        //     const semanas = data?.data?.exploracion_extandar || [];
-
-        //     setTimeout(() => {
-        //         this.loadSemanas(semanas);           // refresca FormArray
-        //         this.myForm.patchValue(data || {});   // actualiza el formulario
-        //         this.cd.detectChanges();              // opcional
-        //     }, 0);
-        // });
-
-
-
         effect(() => {
             const data = this.planingCompartido.dataRoutes();
             const semanas = data?.data?.exploracion_extandar || [];
 
-            // if (this.planingCompartido.modoVisualizar()) {
-
-            //     this.resetForm(); // fuerza limpieza si estaba en modo visualizar
-            //     this.blockForm();
-            //     this.cd.detectChanges(); // fuerza actualización después del cambio
-
-            //     return;
-            // }
-
-
-            // if (this.planingCompartido.modoVisualizar()) {
-
-
-            //     this.resetForm(); // fuerza limpieza si estaba en modo visualizar
-            //     this.blockForm();
-            //     this.cd.detectChanges(); // fuerza actualización después del cambio
-
-            //     return;
-
-            // }
 
 
             this.loadSemanas(semanas);
             this.myForm.patchValue(data || {}, { emitEvent: false });
-
-
-            this.cd.detectChanges();              // opcional
-
 
         });
 
@@ -124,47 +87,9 @@ export class EstandarExploracionMainComponent {
                 this.myForm.enable({ emitEvent: false });
             }
         });
-
-        ///BOTON NUEVO
-        effect(() => {
-
-            if (!this.planingCompartido.resetSemanas()) {
-                this.semanas.clear();
-                return;
-            }
-                this.planingCompartido.resetSemanasDone();
-        });
-
-        ///BOTON VISUALIZAR
-
-        effect(() => {
-            const signal = this.planingCompartido.visualizarForms();
-            if (signal > 0) {
-                this.semanas.clear();
-
-                // this.resetSelects(); // limpia selects
-            }
-        });
         this.loadZonas();
 
 
-    }
-
-    blockForm() {
-        this.myForm.disable(); // bloquea todos los campos
-        // this.filas.forEach(f => f.disable()); // bloquea filas si tienes tabla
-    }
-
-    // ===============================
-    //   MÉTODOS
-    // ===============================
-
-    /**
-     * Limpia el formulario por completo
-     */
-    resetForm() {
-        this.myForm.reset();
-        this.semanas.clear();
     }
 
     /**
@@ -194,8 +119,6 @@ export class EstandarExploracionMainComponent {
                 })
             );
         });
-        this.planingCompartido.notifyFormChanged();
-
     }
 
     /**

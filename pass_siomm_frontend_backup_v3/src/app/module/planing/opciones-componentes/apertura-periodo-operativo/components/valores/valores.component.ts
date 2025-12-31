@@ -124,19 +124,18 @@ export class ValoresComponent {
 
                 return;
             }
-            this.planingCompartido.resetSemanasDone();
 
 
         });
 
-        //BOTON VISUALIZAR
-        effect(() => {
-            const signal = this.planingCompartido.visualizarForms();
-            if (signal > 0) {
-                this.blockForm();
-                this.resetearFormulario();
-            }
-        });
+        // //BOTON VISUALIZAR
+        // effect(() => {
+        //     const signal = this.planingCompartido.visualizarForms();
+        //     if (signal > 0) {
+        //         this.blockForm();
+        //         this.resetearFormulario();
+        //     }
+        // });
 
 
     }

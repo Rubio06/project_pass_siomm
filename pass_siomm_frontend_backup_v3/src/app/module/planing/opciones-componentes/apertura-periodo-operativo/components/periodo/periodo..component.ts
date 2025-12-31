@@ -68,6 +68,8 @@ export class AperPerOperComponent {
     constructor() {
         this.getYear();
 
+
+
         effect(() => {
             const response = this.rutas();
             if (response?.data?.cierre_periodo?.length) {
@@ -109,13 +111,8 @@ export class AperPerOperComponent {
             }
         });
 
-        //BOTON NUEVO///
 
-        // effect(() => {
-        //     this.planingCompartido.resetAllForms();
-        //     this.resetearFormulario();
-        // });
-
+        //EFECTO PARA RESETEAR LOS FORMULARIOS
         effect(() => {
 
             if (!this.planingCompartido.resetSemanas()) {
@@ -124,18 +121,7 @@ export class AperPerOperComponent {
 
                 return;
             }
-            this.planingCompartido.resetSemanasDone();
 
-
-        });
-
-        //BOTON VISUALIZAR
-        effect(() => {
-            const signal = this.planingCompartido.visualizarForms();
-            if (signal > 0) {
-                this.blockForm();
-                // this.bloqueoFormulario();
-            }
         });
     }
 

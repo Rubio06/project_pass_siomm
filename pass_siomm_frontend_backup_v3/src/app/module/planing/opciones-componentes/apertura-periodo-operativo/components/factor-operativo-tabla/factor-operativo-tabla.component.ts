@@ -86,10 +86,8 @@ export class FactorOperativoTablaComponent {
             }
         });
 
-        // effect(() => {
-        //     this.planingCompartido.resetSemanas();
-        //     this.resetearFormulario();
-        // });
+
+        //EFECTO PARA RESETEAR LOS FORMULARIOS
         effect(() => {
 
             if (!this.planingCompartido.resetSemanas()) {
@@ -98,18 +96,7 @@ export class FactorOperativoTablaComponent {
 
                 return;
             }
-            this.planingCompartido.resetSemanasDone();
 
-
-        });
-
-        effect(() => {
-
-
-            const signal = this.planingCompartido.visualizarForms();
-            if (signal > 0) {
-                this.blockForm();
-            }
         });
 
     }

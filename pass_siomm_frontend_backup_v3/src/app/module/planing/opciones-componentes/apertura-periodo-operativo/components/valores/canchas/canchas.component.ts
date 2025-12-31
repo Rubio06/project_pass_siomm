@@ -69,11 +69,7 @@ export class CanchasComponent {
             }
         });
 
-        // effect(() => {
-        //     this.planingCompartido.resetAllForms();
-        //     this.resetearFormulario();
-        // });
-
+        //EFECTO PARA RESETEAR LOS FORMULARIOS
         effect(() => {
 
             if (!this.planingCompartido.resetSemanas()) {
@@ -82,17 +78,7 @@ export class CanchasComponent {
 
                 return;
             }
-            this.planingCompartido.resetSemanasDone();
 
-
-        });
-
-        //BOTON VISUALIZAR
-        effect(() => {
-            const signal = this.planingCompartido.visualizarForms();
-            if (signal > 0) {
-                this.blockForm();
-            }
         });
     }
 
