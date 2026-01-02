@@ -26,8 +26,14 @@ export class FactorOperativoMainComponent {
 
     planingCompartido = inject(PlaningCompartidoService);
 
-    hasPendingChanges(): boolean {
-        return this.planingCompartido.getCambios(); // revisa los cambios pendientes
+
+
+    // hasPendingChanges(): boolean {
+    //     return this.planingCompartido.getCambios(); // revisa los cambios pendientes
+    // }
+
+    tieneCambios(): boolean {
+        return this.planingCompartido.getCambios();
     }
 
 }

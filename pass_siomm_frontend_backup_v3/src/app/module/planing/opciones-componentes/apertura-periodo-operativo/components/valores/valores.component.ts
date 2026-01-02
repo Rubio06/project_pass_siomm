@@ -110,12 +110,6 @@ export class ValoresComponent {
             }
         });
 
-        ///BOTON NUEVO
-        // effect(() => {
-        //     this.planingCompartido.resetAllForms();
-        //     this.resetearFormulario();
-        // });
-
         effect(() => {
 
             if (!this.planingCompartido.resetSemanas()) {
@@ -127,18 +121,10 @@ export class ValoresComponent {
 
 
         });
-
-        // //BOTON VISUALIZAR
-        // effect(() => {
-        //     const signal = this.planingCompartido.visualizarForms();
-        //     if (signal > 0) {
-        //         this.blockForm();
-        //         this.resetearFormulario();
-        //     }
-        // });
-
-
     }
+
+
+
 
     blockForm() {
         this.form.disable();

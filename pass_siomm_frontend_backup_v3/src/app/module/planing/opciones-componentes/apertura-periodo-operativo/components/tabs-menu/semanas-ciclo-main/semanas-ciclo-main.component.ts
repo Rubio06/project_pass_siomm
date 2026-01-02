@@ -4,7 +4,6 @@ import { FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angula
 
 import { FormUtils } from 'src/app/utils/form-utils';
 
-import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
 import { DATOS_COLUMNA_SEMANA_CICLO_MINADO, EstructuraDatos, MaeSemanaCiclo, TH_SEMANA_CICLO_MINADO, thTitulos } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/interface/aper-per-oper.interface';
 import { PlanningService } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/services/planning.service';
 import { PlaningCompartidoService } from '../../../services/planing-compartido.service';
@@ -93,10 +92,10 @@ export class SemanasCicloMainComponent {
         data.forEach((item) => {
             this.semanas.push(
                 this.fb.group({
-                    num_semana: [item.num_semana],
-                    fec_ini: [this.formUtils.formatDate(item.fec_ini)],
-                    fec_fin: [this.formUtils.formatDate(item.fec_fin)],
-                    desc_semana: [item.desc_semana],
+                    num_semana: [item.num_semana, [Validators.required, Validators.min(1), Validators.max(7), Validators.pattern(/^[1-7]$/)]],
+                    fec_ini: [this.formUtils.formatDate(item.fec_ini), [Validators.required, Validators.pattern(/^(0[1-9]|[12]\d|3[01])\/(0[1-9]|1[0-2])\/(19\d{2}|20\d{2}|2100)$/)]],
+                    fec_fin: [this.formUtils.formatDate(item.fec_fin), [Validators.required, Validators.pattern(/^(0[1-9]|[12]\d|3[01])\/(0[1-9]|1[0-2])\/(19\d{2}|20\d{2}|2100)$/)]],
+                    desc_semana: [item.desc_semana, [Validators.required]],
                     accion: [''],
                     esNuevo: [false]
 
@@ -161,15 +160,20 @@ export class SemanasCicloMainComponent {
         });
     }
 
+
     // ngOnInit() {
     //     this.myForm.valueChanges.subscribe(val => {
-    //         const filas = this.tabSemanaCiclo.getRawValue();
+    //         const filas = this.myForm.getRawValue();
 
     //         this.planingCompartido.setSemanaCiclo(filas);
     //     });
     // }
 
-    hasPendingChanges(): boolean {
-        return this.planingCompartido.getCambios();
-    }
+
+    // hasPendingChanges(): boolean {
+    //     return this.planingCompartido.getCambios();
+    // }
+
+
+
 }

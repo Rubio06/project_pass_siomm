@@ -1,6 +1,5 @@
 import { ChangeDetectorRef, Component, effect, inject, signal } from '@angular/core';
 import { FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
 import { DATOS_METODO_EXPLORACION, EstructuraDatosOtros, SelectZona, TH_ESTANDAR_EXPLORACION, thTitulos } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/interface/aper-per-oper.interface';
 import { PlanningService } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/services/planning.service';
 import { PlaningCompartidoService } from '../../../services/planing-compartido.service';
@@ -91,6 +90,12 @@ export class EstandarExploracionMainComponent {
 
 
     }
+
+    // hasPendingChanges(): boolean {
+    //     return this.planingCompartido.getCambios(); // revisa los cambios pendientes
+    // }
+
+
 
     /**
      * Carga data desde backend

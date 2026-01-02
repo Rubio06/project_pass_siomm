@@ -2,8 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, computed, inject, signal, WritableSignal } from '@angular/core';
 import { PlanningService } from '../../services/planning.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { LoadingService } from '../../services/loading.service';
+import { CanDeactivate, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { SemanasAvanceMainService } from '../../services/semanas-avance-main/semanas-avance-main.service';
 import { TransfornMonthPipe } from 'src/app/core/pipe/transforn-month-pipe';
 import { PlanningData } from '../../interface/aper-per-oper.interface';
@@ -11,6 +10,7 @@ import { PlaningCompartidoService } from '../../services/planing-compartido.serv
 import { FormUtils } from 'src/app/utils/form-utils';
 import Swal from 'sweetalert2';
 import { ModalPeriodo } from "./modal-periodo/modal-periodo";
+import { CanComponentDeactivate } from 'src/app/core/guards/cambios-guard/cambios-pendientes.guard';
 
 
 export enum ViewMode {
@@ -33,14 +33,13 @@ interface BotonesState {
     templateUrl: './aper-periodo-operativo.component.html',
     styleUrl: './aper-periodo-operativo.component.css',
 })
-export class AperturPeriodoComponent {
+export class AperturPeriodoComponent implements CanComponentDeactivate {
     /* ============================
      * 🔹 INYECCIONES
      * ============================ */
     private planingService = inject(PlanningService);
     private planingCompartido = inject(PlaningCompartidoService);
     private semanasAvanceService = inject(SemanasAvanceMainService);
-    private loadingService = inject(LoadingService);
     private fb = inject(FormBuilder);
 
 
@@ -84,6 +83,10 @@ export class AperturPeriodoComponent {
         this.sendMonth();
     }
 
+
+
+    /// GUARD CAMBIOS TABS
+
     /* ============================
      * 🔹 CICLO DE VIDA
      * ============================ */
@@ -123,7 +126,6 @@ export class AperturPeriodoComponent {
     }
 
     private cargarPeriodo(mes: string, anio: string): void {
-        // this.loadingService.loadingOn();
 
         this.planingService.getDate(mes, anio)
             .subscribe({
@@ -185,9 +187,6 @@ export class AperturPeriodoComponent {
                 this.showData.get('fechaInicio')?.setValue(this.prevYear, { emitEvent: false });
                 return;
             }
-
-            // this.prevYear = year;
-            // this.dataAnio.set(year);
             this.cargarMeses(year);
         });
     }
@@ -245,9 +244,7 @@ export class AperturPeriodoComponent {
     }
 
     private resetEstadoGlobal(): void {
-        // this.planingCompartido.setData(null);
         this.semanasAvanceService.setPeriodo('', '');
-        // this.planingCompartido.setBloqueoForm(true);
     }
 
 
@@ -264,9 +261,9 @@ export class AperturPeriodoComponent {
         this.botonesState.update(current => ({ ...current, ...state }));
     }
 
+
     ///FORMULARIOS EDITAR
     onEditar() {
-        this.planingCompartido.setCambios(true);
         this.planingCompartido.setFormBloqueadoCentral(false);
         this.planingCompartido.setModoEditar(true);
 
@@ -279,8 +276,10 @@ export class AperturPeriodoComponent {
         });
 
         this.planingCompartido.setCambios(true); // 👈 IMPORTANTE
-
         this.planingCompartido.setChanges(true);
+        //GUARD PARA PROTEGER TABS
+
+
         const inicioControl = this.showData.get('fechaInicio');
         const finControl = this.showData.get('fechaFin');
 
@@ -296,6 +295,7 @@ export class AperturPeriodoComponent {
 
         this.planingCompartido.notifyResetSemanas();
         this.planingCompartido.limpiezaBotonNuevo();
+
         this.limpiarFormulario();
 
         this.setBotonesState({
@@ -333,35 +333,50 @@ export class AperturPeriodoComponent {
 
 
 
-    async onGuardar() {
+    // ngOnInit() {
+    //     console.log('onGuardar dentro del componente:', this.onGuardar());
+    // }
+
+
+    public async onGuardar() {
         const confirmado = await this.formsUtils.confirmarGuardado();
         if (!confirmado) return;
 
-        this.loadingService.loadingOn();
-
         try {
             await this.guardarDatos();  // ⏳ ahora sí espera
-            this.planingCompartido.setCambios(false);
+
 
             this.onVisualizar();
             this.formsUtils.mostrarExito();
 
+
             this.showData.get('fechaInicio')?.enable();
             this.showData.get('fechaFin')?.enable();
+            this.planingCompartido.setCambios(false);
+
 
         } catch (error) {
             console.error(error);
 
-        } finally {
-            this.loadingService.loadingOff();
         }
     }
+
+
+    tieneCambios(): boolean {
+        return this.planingCompartido.getCambios();
+    }
+
+
+
+    ngOnInit() {
+        this.planingCompartido.registrarOnGuardar(() => this.onGuardar());
+    }
+
 
 
     private async guardarDatos() {
         this.planingCompartido.guardarTodo().subscribe({
             next: () => {
-
             },
             error: (err) => {
 

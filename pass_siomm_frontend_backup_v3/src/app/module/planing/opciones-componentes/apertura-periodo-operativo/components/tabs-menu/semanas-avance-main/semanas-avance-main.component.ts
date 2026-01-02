@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, effect, inject, signal } from '@angular/core';
 import { FormArray, FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
 import { FormUtils } from 'src/app/utils/form-utils';
 
 import { DATOS_SEMANA_AVANCE, EstructuraDatos, MaeSemanaAvance, TH_SEMANA_AVANCE, thTitulos } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/interface/aper-per-oper.interface';
@@ -58,34 +57,19 @@ export class SemanasAvanceMainComponent {
             // this.cd.detectChanges();
 
         });
-
-
-
-
-        // effect(() => {
-        //     if (!this.myForm) return;
-
-        //     if (this.planingCompartido.bloqueoFormGeneral()) {
-        //         this.myForm.disable({ emitEvent: false });
-        //     } else {
-        //         this.myForm.enable({ emitEvent: false });
-        //     }
-        // });
-
-        // ///BOTON NUEVO
-        // effect(() => {
-
-        //     if (!this.planingCompartido.resetSemanas()) {
-        //         this.semanas.clear();
-        //         return;
-        //     }
-        //     this.planingCompartido.resetSemanasDone();
-        // });
     }
 
+
+    // hasPendingChanges(): boolean {
+    //     return this.planingCompartido.getCambios(); // revisa los cambios pendientes
+    // }
+
+
+
+
+
     blockForm() {
-        this.myForm.disable(); // bloquea todos los campos
-        // this.filas.forEach(f => f.disable()); // bloquea filas si tienes tabla
+        this.myForm.disable();
     }
 
     resetForm() {
@@ -101,8 +85,8 @@ export class SemanasAvanceMainComponent {
             this.semanas.push(
                 this.fb.group({
                     num_semana: [item.num_semana, [Validators.required, Validators.min(1), Validators.max(7), Validators.pattern(/^[1-7]$/)]],
-                    fec_ini: [item.fec_ini, [Validators.required, Validators.pattern(/^(0[1-9]|[12]\d|3[01])\/(0[1-9]|1[0-2])\/(19\d{2}|20\d{2}|2100)$/)]],
-                    fec_fin: [item.fec_fin, [Validators.required, Validators.pattern(/^(0[1-9]|[12]\d|3[01])\/(0[1-9]|1[0-2])\/(19\d{2}|20\d{2}|2100)$/)]],
+                    fec_ini: [this.formUtils.formatDate(item.fec_ini), [Validators.required, Validators.pattern(/^(0[1-9]|[12]\d|3[01])\/(0[1-9]|1[0-2])\/(19\d{2}|20\d{2}|2100)$/)]],
+                    fec_fin: [this.formUtils.formatDate(item.fec_fin), [Validators.required, Validators.pattern(/^(0[1-9]|[12]\d|3[01])\/(0[1-9]|1[0-2])\/(19\d{2}|20\d{2}|2100)$/)]],
                     desc_semana: [item.desc_semana, [Validators.required]],
                     accion: [],
                     esNuevo: [false]
@@ -118,8 +102,6 @@ export class SemanasAvanceMainComponent {
         if (this.semanas.length >= 1) {
             return;
         }
-
-        // this.planingCompartido.setBloqueoFormEditar(false);
 
         this.semanas.push(
             this.fb.group({

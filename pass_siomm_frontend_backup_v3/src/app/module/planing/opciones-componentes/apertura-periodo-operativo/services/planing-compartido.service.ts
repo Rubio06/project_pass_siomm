@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, Signal, signal, WritableSignal } from '@angular/core';
 import { PlanningData } from '../interface/aper-per-oper.interface';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -89,8 +90,8 @@ export class PlaningCompartidoService {
 
 
 
-
-    private cambios = signal(false);
+    // GUARD MENU
+    cambios = signal(false);
 
     setCambios(valor: boolean): void {
         this.cambios.set(valor);
@@ -99,8 +100,6 @@ export class PlaningCompartidoService {
     getCambios(): boolean {
         return this.cambios();
     }
-
-    /////////GUARD PARA VISUALIAZAR DATOS
 
 
 
@@ -182,5 +181,21 @@ export class PlaningCompartidoService {
             laboratorio_estandar: []
         });
     }
+
+    /// GUARD PARA MI SERVICIO COMPARTIDO
+    private onGuardarFn: (() => Promise<void>) | null = null;
+
+    registrarOnGuardar(fn: () => Promise<void>) {
+        this.onGuardarFn = fn;
+    }
+
+    async ejecutarOnGuardar() {
+        if (this.onGuardarFn) {
+            await this.onGuardarFn();
+        }
+    }
+
+
+
 
 }

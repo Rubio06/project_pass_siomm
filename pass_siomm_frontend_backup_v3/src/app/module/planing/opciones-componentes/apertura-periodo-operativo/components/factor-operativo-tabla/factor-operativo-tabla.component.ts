@@ -101,6 +101,7 @@ export class FactorOperativoTablaComponent {
 
     }
 
+
     blockForm() {
         this.form.disable();
     }

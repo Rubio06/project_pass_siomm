@@ -100,13 +100,6 @@ export class FactorOperativoComonent {
             }
         });
 
-        //BOTON NUEVO//
-
-        // effect(() => {
-        //     this.planingCompartido.resetAllForms();
-        //     this.resetearFormulario();
-        // });
-
         effect(() => {
 
             if (!this.planingCompartido.resetSemanas()) {
@@ -119,16 +112,6 @@ export class FactorOperativoComonent {
 
 
         });
-
-        //BOTON VISUALIZAR
-        // effect(() => {
-
-        //     const signal = this.planingCompartido.visualizarForms();
-        //     if (signal > 0) {
-        //         this.blockForm();
-        //         this.resetearFormulario();
-        //     }
-        // });
     }
 
     blockForm() {

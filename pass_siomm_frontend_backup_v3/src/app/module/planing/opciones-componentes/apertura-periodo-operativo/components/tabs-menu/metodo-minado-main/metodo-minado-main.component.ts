@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, effect, inject, signal } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
 import { DATOS_METODO_MINADO, MaePerMetExplotacion, SelectExploracion, TH_METODOLO_MINADO, thTitulos } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/interface/aper-per-oper.interface';
 import { PlanningService } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/services/planning.service';
 import { PlaningCompartidoService } from '../../../services/planing-compartido.service';
@@ -94,27 +93,15 @@ export class MetodoMinadoMainComponent {
                 this.myForm.enable({ emitEvent: false });
             }
         });
-
-        ///BOTON NUEVO
-        // effect(() => {
-
-        //     if (!this.planingCompartido.resetSemanas()) {
-        //         this.semanas.clear();
-        //         return;
-        //     }
-        //     this.planingCompartido.resetSemanasDone();
-        // });
-        // ///BOTON VISUALIZAR
-
-        // effect(() => {
-        //     const signal = this.planingCompartido.visualizarForms();
-
-        //     if (signal > 0) {
-        //                         this.semanas.clear();
-
-        //     }
-        // });
     }
+
+
+    // hasPendingChanges(): boolean {
+    //     return this.planingCompartido.getCambios(); // revisa los cambios pendientes
+    // }
+
+
+
 
 
     blockForm() {

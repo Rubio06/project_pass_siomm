@@ -146,13 +146,13 @@ export class FormUtils {
     static confirmarDescartarCambios(): Promise<boolean> {
         return Swal.fire({
             title: 'Cambios sin guardar',
-            text: 'Tiene cambios pendientes. ¿Desea descartarlos?',
+            text: '¿Desea guardar cambios antes de cambiar de opción?',
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonText: 'Sí, descartar',
-            cancelButtonText: 'No',
-            confirmButtonColor: '#A3361D',
-            cancelButtonColor: '#033351'
+            confirmButtonText: 'Guardar Cambios',
+            cancelButtonText: 'No, descartar',
+            confirmButtonColor: '#033351',
+            cancelButtonColor: '#d33'
         }).then(result => result.isConfirmed);
     }
 

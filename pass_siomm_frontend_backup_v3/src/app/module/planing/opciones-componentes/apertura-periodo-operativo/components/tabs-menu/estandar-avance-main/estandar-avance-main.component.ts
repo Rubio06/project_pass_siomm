@@ -1,7 +1,6 @@
 import { Component, signal, input, effect, inject, WritableSignal, ChangeDetectorRef } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
-import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
 import { FormUtils } from 'src/app/utils/form-utils';
 import { DATOS_ESTANDER_AVANCE, SelectTipoLabor, TH_ESTANDAR_AVANCE, thTitulos } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/interface/aper-per-oper.interface';
 import { PlanningService } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/services/planning.service';
@@ -116,6 +115,12 @@ export class EstandarAvanceComponent {
 
 
     }
+
+    // hasPendingChanges(): boolean {
+    //     return this.planingCompartido.getCambios(); // revisa los cambios pendientes
+    // }
+
+
 
     blockForm() {
         this.myForm.disable(); // bloquea todos los campos
