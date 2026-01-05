@@ -1,5 +1,0 @@
-/* Mostrar submenú al hacer hover */
-.group:hover>details>ul,
-details[open]>ul {
-    display: block !important;
-}

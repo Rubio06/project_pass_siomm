@@ -4,7 +4,7 @@ using pass_siomm_backend.Services;
 
 namespace pass_siomm_backend.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("rutas")]
     [ApiController]
     public class RoutersController : ControllerBase
     {

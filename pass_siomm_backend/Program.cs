@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using pass_siomm.Data;
 using pass_siomm.Services;
 using pass_siomm_backend.Services;
+using pass_siomm_backend.Services.PlaneamientoService;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +17,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<DatabaseHelper>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<RoutesService>();
+builder.Services.AddScoped<AperPeriodoOperativoServices>();
+builder.Services.AddScoped<SemanaAvanceServices>();
 
 //CODIGO DEL TOKEN
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

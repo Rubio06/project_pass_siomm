@@ -1,30 +1,43 @@
 import { Component, inject, PLATFORM_ID } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
-import { AuthService } from '../../../auth/services/auth.service';
+import { AuthService } from 'src/app/module/auth/services/auth.service';
 
 @Component({
     selector: 'app-not-found',
-    template: `
-        <div class="flex items-center justify-center min-h-screen bg-black text-white">
-            <h1 class="text-3xl font-bold"><a href="http://localhost:4200/">redirigir</a></h1>
-        </div>
-    `,
+    imports: [],
+    standalone: true,
+
+
+    templateUrl: './not-found.component.html',
+    styleUrl: './not-found.component.css',
 })
-export class NotFound {
+export class NotFoundComponent {
     private router = inject(Router);
     private authService = inject(AuthService);
     private platformId = inject(PLATFORM_ID);
 
-    ngOnInit() {
-        if (isPlatformBrowser(this.platformId)) {
-            const token = localStorage.getItem('token');
 
-            if (token) {
-                this.router.navigate(['/main']);
-            } else {
-                this.router.navigate(['/auth/login']);
-            }
+
+    volver() {
+        const isLogged = this.authService.isAuthenticated(); // o como validas tu token
+
+        if (isLogged) {
+            this.router.navigate(['/menu-principal']);
+        } else {
+            this.router.navigate(['/auth/login']);
         }
+    }
+
+    ngOnInit() {
+        // const token = localStorage.getItem('token');
+        // const username = localStorage.getItem('username');
+
+        // if (username && token && this.authService.isAuthenticated()) {
+        //     this.router.navigate(['/menu-principal']);
+        // } else {
+        //     this.router.navigate(['/auth/login']);
+        // }
+
     }
 }

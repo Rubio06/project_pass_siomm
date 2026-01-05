@@ -1,6 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using pass_siomm.Data;
-using pass_siomm_backend.Models;
+using pass_siomm_backend.Models.RutasModels;
 using System.Configuration;
 
 namespace pass_siomm_backend.Services

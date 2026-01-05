@@ -1,5 +1,7 @@
 import { Routes } from '@angular/router';
-import { NotAuthenticatedGuard } from './auth/guards/not-autenticate.guard';
+import { LoginGuard } from './core/guards/auth-guards/LoginGuard.guard';
+import { AuthGuard } from './core/guards/auth-guards/auth-guard.guard';
+
 
 export const routes: Routes = [
     {
@@ -9,20 +11,21 @@ export const routes: Routes = [
     },
     {
         path: 'auth',
-        loadChildren: () => import('./auth/auth.routes'),
-        canMatch: [
-            NotAuthenticatedGuard
-        ]
+        loadChildren: () => import('./module/auth/auth.routes').then(m => m.default),
+        canActivate: [LoginGuard],
     },
     {
-        path: 'main',
-        loadChildren: () => import('./main/main.routes'),
+        path: 'menu-principal',
+        loadChildren: () => import('./module/main/main.routes').then(m => m.default),
+        canActivate: [AuthGuard],
     },
     {
         path: '**',
         loadComponent: () =>
-            import('./shared/components/not-found/not-found.component').then(c => c.NotFound),
+            import('./shared/components/not-found/not-found.component')
+                .then(c => c.NotFoundComponent),
     },
+
 ];
 
 

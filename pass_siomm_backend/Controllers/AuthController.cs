@@ -20,7 +20,7 @@ namespace pass_siomm.Controllers
 {
     //[Authorize]
     [ApiController]
-    [Route("[controller]")]
+    [Route("auth")]
     public class AuthController : ControllerBase
     {
         private readonly UserService _userService;

@@ -13,7 +13,7 @@ namespace pass_siomm.Data
             _connectionString = configuration.GetConnectionString("SqlConnection");
         }
 
-
+        
     }
 }
 

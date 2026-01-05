@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Obp44dfctY8=",
+  "dgSpecHash": "6GlBKXHW1KI=",
   "success": true,
-  "projectFilePath": "C:\\Users\\pract_ir.sist.cmc\\source\\repos\\pass_siomm\\pass_siomm\\pass_siomm_backend.csproj",
+  "projectFilePath": "C:\\Users\\pract_ir.sist.cmc\\Desktop\\proyecto_pass_siomm\\pass_siomm_backend\\pass_siomm_backend.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\azure.core\\1.47.1\\azure.core.1.47.1.nupkg.sha512",
     "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\azure.identity\\1.14.2\\azure.identity.1.14.2.nupkg.sha512",

@@ -1,0 +1,198 @@
+import { HttpClient } from '@angular/common/http';
+import { computed, inject, Injectable, Signal, signal, WritableSignal } from '@angular/core';
+import { AperPeriodo, MaeExploEstandar, MaeFactor, MaeFactorRecuperacion, MaeFactorSobredisolucion, MaePerMetExplotacion, MaeSemanaAvance, MaeSemanaCiclo, MaeTipLabEstandar, MaeValCanchas, MaeValOperativo, MaeValOperativoDetalle, PlanningData } from '../interface/aper-per-oper.interface';
+import { firstValueFrom } from 'rxjs';
+
+@Injectable({
+    providedIn: 'root'
+})
+export class PlaningCompartidoService {
+    private http = inject(HttpClient);
+
+    // Persistencia de cada tab/form
+    private _canchas: WritableSignal<MaeValCanchas[]> = signal([]);
+    private _cierre_periodo: WritableSignal<AperPeriodo[]> = signal([]);
+    private _exploracion_extandar: WritableSignal<MaeExploEstandar[]> = signal([]);
+    private _factor: WritableSignal<MaeFactor[]> = signal([]);
+    private _factorOperativo: WritableSignal<MaeValOperativo[]> = signal([]);
+    private _factorSobredisolucion: WritableSignal<MaeFactorSobredisolucion[]> = signal([]);
+    private _laboratorio_estandar: WritableSignal<MaeTipLabEstandar[]> = signal([]);
+    private _metodo_minado: WritableSignal<MaePerMetExplotacion[]> = signal([]);
+    private _operativo_detalle: WritableSignal<MaeValOperativoDetalle[]> = signal([]);
+    private _recuperacionBudget: WritableSignal<MaeFactorRecuperacion[]> = signal([]);
+    private _semana_avance: WritableSignal<MaeSemanaAvance[]> = signal([]);
+    private _semana_ciclo: WritableSignal<MaeSemanaCiclo[]> = signal([]);
+    private _valores: WritableSignal<any[]> = signal([]);
+
+    // Readonly para cada tab
+    readonly canchas = this._canchas.asReadonly();
+    readonly cierre_periodo = this._cierre_periodo.asReadonly();
+    readonly exploracion_extandar = this._exploracion_extandar.asReadonly();
+    readonly factor = this._factor.asReadonly();
+    readonly factorOperativo = this._factorOperativo.asReadonly();
+    readonly factorSobredisolucion = this._factorSobredisolucion.asReadonly();
+    readonly laboratorio_estandar = this._laboratorio_estandar.asReadonly();
+    readonly metodo_minado = this._metodo_minado.asReadonly();
+    readonly operativo_detalle = this._operativo_detalle.asReadonly();
+    readonly recuperacionBudget = this._recuperacionBudget.asReadonly();
+    readonly semana_avance = this._semana_avance.asReadonly();
+    readonly semana_ciclo = this._semana_ciclo.asReadonly();
+    readonly valores = this._valores.asReadonly();
+
+    // Métodos para setear datos
+    setCanchas(data: MaeValCanchas[]) { this._canchas.set(data); }
+    setCierrePeriodo(data: AperPeriodo[]) { this._cierre_periodo.set(data); }
+    setExploracionExtandar(data: MaeExploEstandar[]) { this._exploracion_extandar.set(data); }
+    setFactor(data: MaeFactor[]) { this._factor.set(data); }
+    setFactorOperativo(data: MaeValOperativo[]) { this._factorOperativo.set(data); }
+    setFactorSobredisolucion(data: MaeFactorSobredisolucion[]) { this._factorSobredisolucion.set(data); }
+    setLaboratorioEstandar(data: MaeTipLabEstandar[]) { this._laboratorio_estandar.set(data); }
+    setMetodoMinado(data: MaePerMetExplotacion[]) { this._metodo_minado.set(data); }
+    setOperativoDetalle(data: MaeValOperativoDetalle[]) { this._operativo_detalle.set(data); }
+    setRecuperacionBudget(data: MaeFactorRecuperacion[]) { this._recuperacionBudget.set(data); }
+    setSemanaAvance(data: MaeSemanaAvance[]) { this._semana_avance.set(data); }
+    setSemanaCiclo(data: MaeSemanaCiclo[]) { this._semana_ciclo.set(data); }
+    setValores(data: any[]) { this._valores.set(data); }
+
+
+    // Limpiar todo
+
+    guardarTodo() {
+        const payload = {
+            valores: this._valores(),
+            canchas: this._canchas(),
+            factor: this._factor(),
+            factorOperativo: this._factorOperativo(),
+            laboratorio_estandar: this._laboratorio_estandar(),
+            exploracion_extandar: this._exploracion_extandar(),
+            metodo_minado: this._metodo_minado(),
+            semana_ciclo: this._semana_ciclo(),
+            semana_avance: this._semana_avance(),
+        };
+
+        console.log("los datos recibidos son: " + JSON.stringify(payload, null, 2));
+        return this.http.post('/api/guardar-todo', payload);
+    }
+
+
+    ///COMPONENTE VISUALIZAR
+    onVisualizarGlobal() {
+
+        // 🔓 Bloquea formularios
+        this.setFormBloqueadoCentral(true);
+        this.setModoEditar(false);
+
+        // 👀 Activa modo visualizar
+
+        // 🟢 Opcional: limpia "modo cambios"
+        this.setCambios(false);
+
+    }
+
+
+
+    // GUARD MENU
+    cambios = signal(false);
+
+    setCambios(valor: boolean): void {
+        this.cambios.set(valor);
+    }
+
+    getCambios(): boolean {
+        return this.cambios();
+    }
+
+
+
+    private _hasChanges = signal(false);
+    readonly hasChanges = this._hasChanges.asReadonly();
+
+    setChanges(v: boolean) {
+        this._hasChanges.set(v);
+    }
+
+
+
+    // ===============================
+    //  ESTADO DE EDITAR
+    // ===============================
+    private _formBloqueadoCentral = signal<boolean>(true);
+    readonly formBloqueadoCentral = this._formBloqueadoCentral.asReadonly();
+
+    setFormBloqueadoCentral(valor: boolean) {
+        this._formBloqueadoCentral.set(valor);
+    }
+
+    readonly bloqueoFormGeneral = computed(
+        () => this.formBloqueadoCentral()
+    );
+
+
+    // ===============================
+    //  EVENTO RESET DE FORMS PARA BOTON NUEVO
+    // ===============================
+
+
+    private _resetSemanas = signal(false);
+    readonly resetSemanas = this._resetSemanas.asReadonly();
+
+    notifyResetSemanas() {
+        this._resetSemanas.set(true);
+    }
+
+    resetSemanasDone() {
+        this._resetSemanas.set(false);
+    }
+
+
+
+
+    ////////PERMANECE BLOQUEADO DOS INPUTS EN PERIODO
+    private _modoEditar = signal(false);
+    readonly modoEditar = this._modoEditar.asReadonly();
+
+    setModoEditar(valor: boolean) {
+        this._modoEditar.set(valor);
+    }
+
+    ////////////SE RESETEA TODO HASTA LOS SECTS CON EL BOTON VISUALIZAR
+
+
+    private _dataRoutes: WritableSignal<object> = signal({});
+    public readonly dataRoutes: Signal<any> = this._dataRoutes.asReadonly();
+
+    setData(data: object): void {
+        this._dataRoutes.set(data);
+    }
+
+    get getData() {
+        return this._dataRoutes;
+    }
+
+
+    limpiezaBotonNuevo() {
+        const current = this._dataRoutes();
+        if (!current) return;
+
+        this._dataRoutes.set({
+            semana_ciclo: [],
+            metodo_minado: [],
+            semana_avance: [],
+            exploracion_extandar: [],
+            laboratorio_estandar: []
+        });
+    }
+
+    /// GUARD PARA MI SERVICIO COMPARTIDO
+    private guardarHandler?: () => Promise<void> | void;
+
+    registrarGuardar(fn: () => Promise<void> | void) {
+        this.guardarHandler = fn;
+    }
+
+    async ejecutarGuardar() {
+        if (this.guardarHandler) {
+            await this.guardarHandler();
+        }
+    }
+}
