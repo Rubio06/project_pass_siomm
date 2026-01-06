@@ -4,7 +4,8 @@ import { environment } from '@environments/environments';
 import { catchError, Observable, of } from 'rxjs';
 import { FormUtils } from 'src/app/utils/form-utils';
 import Swal from 'sweetalert2'
-import 'sweetalert2/src/sweetalert2.scss'
+import 'sweetalert2/dist/sweetalert2.min.css';
+import { PeriodoDestino } from '../../interface/aper-per-oper.interface';
 
 
 @Injectable({
@@ -37,6 +38,17 @@ export class SemanasAvanceMainService {
 
     setNuevoMode(value: boolean) {
         this.nuevoMode.set(value);
+    }
+
+
+    public copiarPeriodo(payload: PeriodoDestino): Observable<any> {
+        return this.semanasAvanceHttp.post<any>(`${this.planingUrl}aper-periodo-operativo/semana/copiar-periodo`, payload)
+            .pipe(
+                catchError(error => {
+                    this.utils.mensajeError(error);
+                    return of(null);
+                })
+            );
     }
 
 

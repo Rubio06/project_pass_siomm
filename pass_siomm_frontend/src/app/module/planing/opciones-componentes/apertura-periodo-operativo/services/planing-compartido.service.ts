@@ -70,7 +70,7 @@ export class PlaningCompartidoService {
             semana_avance: this._semana_avance(),
         };
 
-        console.log("los datos recibidos son: " + JSON.stringify(payload, null, 2));
+        // console.log("los datos recibidos son: " + JSON.stringify(payload, null, 2));
         return this.http.post('/api/guardar-todo', payload);
     }
 

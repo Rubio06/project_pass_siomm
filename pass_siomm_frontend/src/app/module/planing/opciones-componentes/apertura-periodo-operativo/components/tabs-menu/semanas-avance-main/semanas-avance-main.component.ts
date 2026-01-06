@@ -8,7 +8,7 @@ import { PlanningService } from 'src/app/module/planing/opciones-componentes/ape
 import { PlaningCompartidoService } from '../../../services/planing-compartido.service';
 import { SemanasAvanceMainService } from '../../../services/semanas-avance-main/semanas-avance-main.service';
 import Swal from 'sweetalert2'
-import 'sweetalert2/src/sweetalert2.scss'
+import 'sweetalert2/dist/sweetalert2.min.css';
 
 @Component({
     selector: 'app-semanas-avance-main',

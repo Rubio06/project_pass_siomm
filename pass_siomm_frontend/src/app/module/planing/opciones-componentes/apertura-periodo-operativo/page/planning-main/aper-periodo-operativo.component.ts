@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { CanDeactivate, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { SemanasAvanceMainService } from '../../services/semanas-avance-main/semanas-avance-main.service';
 import { TransfornMonthPipe } from 'src/app/core/pipe/transforn-month-pipe';
-import { PlanningData } from '../../interface/aper-per-oper.interface';
+import { PeriodoDestino, PlanningData } from '../../interface/aper-per-oper.interface';
 import { PlaningCompartidoService } from '../../services/planing-compartido.service';
 import { FormUtils } from 'src/app/utils/form-utils';
 import Swal from 'sweetalert2';
@@ -63,8 +63,8 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
      * 🔹 FORMULARIO
      * ============================ */
     showData: FormGroup = this.fb.group({
-        fechaInicio: ['', Validators.required],
-        fechaFin: ['', Validators.required],
+        fechaInicio: [''],
+        fechaFin: [''],
     });
 
     /* ============================
@@ -229,9 +229,53 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
         modal?.showModal();
     }
 
-    recibirDatosPeriodo(data: any): void {
-        console.log('Datos recibidos:', data);
+
+    copiarPeriodo(destino: PeriodoDestino): void {
+        const username = localStorage.getItem('username');
+
+        const payload = {
+            anioOrigen: this.showData.get('fechaInicio')?.value,
+            mesOrigen: this.showData.get('fechaFin')?.value,
+            username,
+            ...destino
+        };
+
+        this.semanasAvanceService.copiarPeriodo(payload).subscribe({
+            next: (resp) => {
+
+            },
+            error: () => console.log("Error al compilar ")
+        })
+
+        console.log("el destino es " + JSON.stringify(payload, null, 2))
     }
+
+
+    //     onSubmit() {
+    //     if (this.loginForm.invalid) {
+    //         this.hasError.set(true);
+    //         setTimeout(() => this.hasError.set(false), 2000);
+    //         return;
+    //     }
+
+    //     const { username, password } = this.loginForm.value;
+
+    //     this.authServices.login(username!, password!).subscribe({
+    //         next: (res: boolean) => {
+    //             if (res) {
+    //                 this.router.navigate(['/menu-principal']);
+    //             } else {
+    //                 this.hasError.set(true);
+    //                 setTimeout(() => {
+    //                     this.hasError.set(false);
+    //                 }, 3000);
+    //             }
+    //         },
+    //         error: (err) => {
+    //             console.error('Error al autenticar', err);
+    //         }
+    //     });
+    // }
 
     /* ============================
     * 🔹 UTILIDADES

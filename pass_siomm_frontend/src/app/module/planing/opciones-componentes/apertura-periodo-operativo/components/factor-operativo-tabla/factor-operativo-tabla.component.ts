@@ -46,7 +46,7 @@ export class FactorOperativoTablaComponent {
 
             if (response?.data?.factorOperativo?.length) {
                 const factorOperativo = response.data.factorOperativo[0];
-                const factorOperativoDetalle = response.data.operativo_detalle[0];
+                const factorOperativoDetalle = response.data.operativo_detalle?.[0]; // <- proteccion
 
                 this.form.patchValue({
                     val_fac_ag: factorOperativo.val_fac_ag,
@@ -55,23 +55,22 @@ export class FactorOperativoTablaComponent {
                     val_fac_zn: factorOperativo.val_fac_zn,
                     val_fac_au: factorOperativo.val_fac_au,
 
-                    val_fac_rec_ag: factorOperativoDetalle.val_fac_rec_ag != null
+                    val_fac_rec_ag: factorOperativoDetalle?.val_fac_rec_ag != null
                         ? (factorOperativoDetalle.val_fac_rec_ag * 100).toFixed(2) + '%'
                         : '.00%',
-                    val_fac_rec_cu: factorOperativoDetalle.val_fac_rec_cu != null
+                    val_fac_rec_cu: factorOperativoDetalle?.val_fac_rec_cu != null
                         ? (factorOperativoDetalle.val_fac_rec_cu * 100).toFixed(2) + '%'
                         : '.00%',
-                    val_fac_rec_pb: factorOperativoDetalle.val_fac_rec_pb != null
+                    val_fac_rec_pb: factorOperativoDetalle?.val_fac_rec_pb != null
                         ? (factorOperativoDetalle.val_fac_rec_pb * 100).toFixed(2) + '%'
                         : '.00%',
-                    val_fac_rec_zn: factorOperativoDetalle.val_fac_rec_zn != null
+                    val_fac_rec_zn: factorOperativoDetalle?.val_fac_rec_zn != null
                         ? (factorOperativoDetalle.val_fac_rec_zn * 100).toFixed(2) + '%'
                         : '.00%',
-                    val_fac_rec_au: factorOperativoDetalle.val_fac_rec_au != null
+                    val_fac_rec_au: factorOperativoDetalle?.val_fac_rec_au != null
                         ? (factorOperativoDetalle.val_fac_rec_au * 100).toFixed(2) + '%'
                         : '.00%',
-                    val_des_tipo_fac: factorOperativoDetalle.val_des_tipo_fac,
-
+                    val_des_tipo_fac: factorOperativoDetalle?.val_des_tipo_fac ?? '',
                 });
             }
         });

@@ -2,7 +2,7 @@ import { PlaningCompartidoService } from './../module/planing/opciones-component
 import { effect, inject } from '@angular/core';
 import { AbstractControl, FormGroup, ValidationErrors } from '@angular/forms';
 import Swal from 'sweetalert2'
-import 'sweetalert2/src/sweetalert2.scss'
+import 'sweetalert2/dist/sweetalert2.min.css';
 
 export class FormUtils {
     static formatDate(dateStr: string | Date | null | undefined): string {

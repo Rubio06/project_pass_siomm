@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using pass_siomm_backend.Services;
 
 namespace pass_siomm_backend.Controllers
 {
+
+    //[Authorize]
     [Route("rutas")]
     [ApiController]
     public class RoutersController : ControllerBase

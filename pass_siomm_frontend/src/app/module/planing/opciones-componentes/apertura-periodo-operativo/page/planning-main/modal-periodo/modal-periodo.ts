@@ -1,6 +1,7 @@
 import { Component, EventEmitter, inject, Output, output, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormUtils } from 'src/app/utils/form-utils';
+import { PeriodoDestino } from '../../../interface/aper-per-oper.interface';
 
 @Component({
     selector: 'app-modal-periodo',
@@ -10,7 +11,7 @@ import { FormUtils } from 'src/app/utils/form-utils';
 })
 export class ModalPeriodo {
 
-    aceptar = output<any[]>();
+    aceptar = output<PeriodoDestino>();
 
     formsUtils = FormUtils;
 
@@ -20,10 +21,10 @@ export class ModalPeriodo {
 
 
     myFrom: FormGroup = this.fb.group({
-        anio: [ this.hoy.getFullYear().toString(), [Validators.required, Validators.pattern(/^(19\d{2}|20\d{2}|2100)$/)]],
-        mes: [this.hoy.toLocaleString('es-PE', { month: 'long' }).replace(/^./, m => m.toUpperCase()), Validators.required],
-        fechaInicio: ['', Validators.required],
-        fechaFin: ['', Validators.required],
+        anioDestino: [ this.hoy.getFullYear().toString(), [Validators.required, Validators.pattern(/^(19\d{2}|20\d{2}|2100)$/)]],
+        mesDestino: [this.hoy.toLocaleString('es-PE', { month: 'long' }).replace(/^./, m => m.toUpperCase()), Validators.required],
+        fechaInicioDestino: ['', Validators.required],
+        fechaFinDestino: ['', Validators.required],
     });
 
     onSubmit() {
@@ -32,7 +33,7 @@ export class ModalPeriodo {
             return;
         }
 
-        this.aceptar.emit(this.myFrom.value);
+        this.aceptar.emit(this.myFrom.value as PeriodoDestino);
 
         this.onReset();
 
@@ -45,13 +46,12 @@ export class ModalPeriodo {
 
     onReset() {
         this.myFrom.reset({
-            anio: this.hoy.getFullYear().toString(),
-            mes: this.hoy.toLocaleString('es-PE', { month: 'long' }).replace(/^./, m => m.toUpperCase()),
-            fechaInicio: '',
-            fechaFin: '',
+            anioDestino: this.hoy.getFullYear().toString(),
+            mesDestino: this.hoy.toLocaleString('es-PE', { month: 'long' }).replace(/^./, m => m.toUpperCase()),
+            fechaInicioDestino: '',
+            fechaFinDestino: '',
         });
     }
-
 
     onCancelar() {
         const modal = document.getElementById('my_modal_3') as HTMLDialogElement;

@@ -344,6 +344,15 @@ export const DATOS_ESTANDER_AVANCE: EstructuraDatosOtros[] = [
 ]
 
 
+// MODAL COPIAR PERIODO
+export interface PeriodoDestino {
+    anioDestino: string;
+    mesDestino: string;
+    fechaInicioDestino: string;
+    fechaFinDestino: string;
+}
+
+
 
 
 

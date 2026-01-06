@@ -59,9 +59,15 @@ export class FactorOperativoComonent {
         effect(() => {
             const response = this.rutas();
 
-            if (response?.data?.factor?.length) {
-                const periodo = response.data.factor?.[0];
+            let periodo = response?.data?.factor?.[0];
 
+            // Si no hay data en el período actual, copiamos del período anterior
+            if (!periodo && response?.data?.factor?.length === 0) {
+                console.log("No hay data, copiando del período anterior...");
+                periodo = response?.data?.factor_anterior?.[0]; // <-- aquí debes traer la data del período anterior desde backend
+            }
+
+            if (periodo) {
                 this.form.patchValue({
                     fac_denmin: periodo.fac_denmin,
                     fac_dendes: periodo.fac_dendes,
@@ -73,7 +79,8 @@ export class FactorOperativoComonent {
                     fac_tms_dif: periodo.fac_tms_dif,
                 });
             }
-        })
+        });
+
 
         effect(() => {
             const data = this.planingCompartido.dataRoutes();

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using pass_siomm_backend.Data.Dto.PlaneamientoDto;
 using pass_siomm_backend.Services;
@@ -6,6 +7,7 @@ using pass_siomm_backend.Services.PlaneamientoService;
 
 namespace pass_siomm_backend.Controllers.aper_per_oper
 {
+    //[Authorize]
     [Route("planeamiento/aper-periodo-operativo")]
     [ApiController]
     public class AperPerodioOperativoController : ControllerBase
@@ -119,5 +121,7 @@ namespace pass_siomm_backend.Controllers.aper_per_oper
                 return StatusCode(500, $"Error al obtener los meses: {ex.Message}");
             }
         }
+
+
     }
 }

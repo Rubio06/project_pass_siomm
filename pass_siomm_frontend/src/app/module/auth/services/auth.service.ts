@@ -37,6 +37,7 @@ export class AuthService {
                     }
 
                     this.loggedIn.set(false);
+
                     return false;
                 }),
                 catchError((error) => {

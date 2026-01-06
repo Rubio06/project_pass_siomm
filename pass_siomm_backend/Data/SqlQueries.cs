@@ -27,12 +27,12 @@
 
         public const string SP_ELIMINAR_MET_EXPLORACION = "sp_IR_delete_per_met_exploracion";
 
-
         public const string SP_ELIMINAR_EXP_ESTANDAR = "sp_IR_delete_exp_estandar";
 
         public const string SP_ELIMINAR_TIP_LAB_ESTANDAR = "sp_IR_delete_tip_lab_estandar";
 
-
+        //INSERTAR PERIODO
+        public const string SP_INSERTAR_COPIAR_PERIODO = "sp_IR_insertar_copiar_periodo";
 
 
 
@@ -42,3 +42,4 @@
 
     }
 }
+    

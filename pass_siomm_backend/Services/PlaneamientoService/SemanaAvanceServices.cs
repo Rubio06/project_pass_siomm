@@ -86,6 +86,39 @@ namespace pass_siomm_backend.Services.PlaneamientoService
 
 
 
+        public async Task<bool> InsertarCopiarPeriodoAsync(CopiarPeriodoDto semana)
+        {
+            try
+            {
+                using (var connection = new SqlConnection(_connectionString))
+                {
+                    await connection.OpenAsync();
+
+                    using (var cmd = new SqlCommand(SqlQueries.SP_INSERTAR_COPIAR_PERIODO, connection))
+                    {
+
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@cie_ano", SqlDbType.VarChar).Value = semana.anioDestino;
+                        cmd.Parameters.Add("@cie_per", SqlDbType.VarChar).Value = semana.mesDestino;
+                        cmd.Parameters.Add("@fec_ini", SqlDbType.DateTime).Value = semana.fechaInicioDestino;
+                        cmd.Parameters.Add("@fec_fin", SqlDbType.DateTime).Value = semana.fechaFinDestino;
+                        cmd.Parameters.Add("@usu_creo", SqlDbType.VarChar).Value = semana.username;
+
+                        await cmd.ExecuteNonQueryAsync();
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error al guardar la semana: " + ex.Message);
+                return false;
+            }
+        }
+
+
+
         public async Task<bool> EliminarSemanaAvance(MaeSemanaAvanceEliminarDto semana)
         {
 
@@ -244,6 +277,9 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                 return false;
             }
         }
+
+
+
     }
 
 

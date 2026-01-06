@@ -299,10 +299,75 @@
           }
         }
       }
+    },
+    "/aper-periodo-operativo/semana/copiar-periodo": {
+      "post": {
+        "tags": [
+          "Semana"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CopiarPeriodoDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CopiarPeriodoDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CopiarPeriodoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
+      "CopiarPeriodoDto": {
+        "type": "object",
+        "properties": {
+          "anioOrigen": {
+            "type": "string",
+            "nullable": true
+          },
+          "mesOrigen": {
+            "type": "string",
+            "nullable": true
+          },
+          "anioDestino": {
+            "type": "string",
+            "nullable": true
+          },
+          "mesDestino": {
+            "type": "string",
+            "nullable": true
+          },
+          "fechaInicioDestino": {
+            "type": "string",
+            "nullable": true
+          },
+          "fechaFinDestino": {
+            "type": "string",
+            "nullable": true
+          },
+          "username": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "LoginRequestDto": {
         "required": [
           "password",

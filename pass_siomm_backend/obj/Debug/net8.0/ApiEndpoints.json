@@ -1,6 +1,22 @@
 [
   {
     "ContainingType": "pass_siomm_backend.Controllers.PlaneamientoConroller.SemanaController",
+    "Method": "CopiarPeriodoOperativo",
+    "RelativePath": "aper-periodo-operativo/semana/copiar-periodo",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "periodo",
+        "Type": "pass_siomm_backend.Data.Dto.PlaneamientoDto.CopiarPeriodoDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Controllers.PlaneamientoConroller.SemanaController",
     "Method": "EliminarEstandarAvance",
     "RelativePath": "aper-periodo-operativo/semana/estandar-avance-eliminar",
     "HttpMethod": "POST",

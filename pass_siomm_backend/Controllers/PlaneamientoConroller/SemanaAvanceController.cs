@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using pass_siomm_backend.Data.Dto.PlaneamientoDto;
 using pass_siomm_backend.Services.PlaneamientoService;
@@ -6,6 +7,8 @@ using static pass_siomm_backend.Services.PlaneamientoService.SemanaAvanceService
 
 namespace pass_siomm_backend.Controllers.PlaneamientoConroller
 {
+
+    //[Authorize]
     [Route("aper-periodo-operativo")]
     [ApiController]
     public class SemanaController : ControllerBase
@@ -13,9 +16,13 @@ namespace pass_siomm_backend.Controllers.PlaneamientoConroller
 
         private readonly SemanaAvanceServices _service;
 
-        public SemanaController(SemanaAvanceServices service)
+        private readonly AperPeriodoOperativoServices _AperPeriodoOperativoService;
+
+        public SemanaController(SemanaAvanceServices service, AperPeriodoOperativoServices AperPeriodoOperativoService)
         {
             _service = service;
+            _AperPeriodoOperativoService = AperPeriodoOperativoService;
+
         }
 
         [HttpPost("semana/semana-avance-eliminar")]
@@ -154,6 +161,29 @@ namespace pass_siomm_backend.Controllers.PlaneamientoConroller
 
                 throw;
             }
+        }
+
+
+        [HttpPost("semana/copiar-periodo")]
+        public async Task<IActionResult> CopiarPeriodoOperativo([FromBody] CopiarPeriodoDto periodo)
+        {
+            try
+            {
+                //// 1️⃣ Leer datos del periodo ORIGEN
+                var datosOrigen = await _AperPeriodoOperativoService.ObtenerDatosCompletos(
+                    periodo.mesOrigen,
+                    periodo.anioOrigen
+                );
+
+                var cierre_periodo = await _service.InsertarCopiarPeriodoAsync(periodo);
+
+                return Ok(periodo);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error al leer origen: {ex.Message}");
+            }
+
         }
 
 
