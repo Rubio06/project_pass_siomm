@@ -177,6 +177,8 @@ namespace pass_siomm_backend.Controllers.PlaneamientoConroller
 
                 var cierre_periodo = await _service.InsertarCopiarPeriodoAsync(periodo);
 
+
+
                 return Ok(periodo);
             }
             catch (Exception ex)

@@ -1,0 +1,121 @@
+<dialog id="my_modal_3" class="modal">
+    <div class="modal-box max-w-lg p-0 bg-gray-50 rounded-xl shadow-xl relative w-96">
+
+        <!-- Botón cerrar -->
+        <!-- class="bg-[#002B48] p-2 text-[white] p-" -->
+        <div class=" p-2">
+            <button class="btn btn-sm btn-circle btn-ghost absolute right-3 top-3" (click)="onCancelar()">
+                ✕
+            </button>
+
+            <!-- Título -->
+            <h2 class="text-lg font-semibold text-center text-[#013B5C]">
+                Copiar Período Operativo
+            </h2>
+            <p class="text-sm text-gray-500 text-center text-[#013B5C]">
+                Seleccione el período destino
+            </p>
+        </div>
+        <hr class="border-gray-200 border-t-2" />
+
+        <!-- Formulario -->
+        <form [formGroup]="myFrom" (ngSubmit)="onSubmit()" class="space-y-3 p-4">
+
+            <!-- Año y Mes -->
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-1">Año</label>
+                    <input type="text" formControlName="anioDestino"
+                        class="input input-xs font-medium w-full border border-gray-300 rounded-md px-3 py-0.5 text-sm shadow-sm
+                   focus:border-[#033351] focus:ring-2 focus:ring-[rgb(3,102,157)] focus:ring-opacity-40 outline-none" />
+                    @if ( formsUtils.isValidField(myFrom , 'anioDestino') ) {
+                    <span class="text-xs text-red-600 mt-1 block">
+                        <!-- Debe de ser de 3 letras -->
+                        {{ formsUtils.getFiledError(myFrom, 'anioDestino') }}
+                    </span>
+                    }
+                </div>
+
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-1">Mes</label>
+                    <select formControlName="mesDestino"
+                        class="select-xs mx-auto select text-sm font-medium outline-none flex items-center
+                    border border-gray-300 rounded-lg px-2 py-1 bg-gray-50 shadow-sm hover:shadow-md
+                    transition-shadow duration-300 ease-in-out focus-within:border-[#033351] focus-within:ring-2 focus-within:ring-[rgb(3,102,157)] focus-within:ring-opacity-40">
+                        <!-- <option value="">Selecciona un año</option> -->
+                        <option value="01">Enero</option>
+                        <option value="02">Febrero</option>
+                        <option value="03">Marzo</option>
+                        <option value="04">Abril</option>
+                        <option value="05">Mayo</option>
+                        <option value="06">Junio</option>
+                        <option value="07">Julio</option>
+                        <option value="08">Agosto</option>
+                        <option value="09">Septiembre</option>
+                        <option value="10">Octubre</option>
+                        <option value="11">Noviembre</option>
+                        <option value="12">Diciembre</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <!-- Separador -->
+            <hr class="border-gray-200" />
+
+            <!-- Fechas -->
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-1">Fecha Inicio</label>
+                    <input type="date" formControlName="fechaInicioDestino"
+                        class="input input-xs font-medium w-full border border-gray-300 rounded-md px-3 py-0.5 text-sm shadow-sm
+                   focus:border-[#033351] focus:ring-2 focus:ring-[rgb(3,102,157)] focus:ring-opacity-40 outline-none" />
+                    @if ( formsUtils.isValidField(myFrom ,'fechaInicioDestino') ) {
+                    <span class="text-xs text-red-600 mt-1 block">
+                        <!-- Debe de ser de 3 letras -->
+                        {{ formsUtils.getFiledError(myFrom, 'fechaInicioDestino') }}
+                    </span>
+                    }
+                </div>
+
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-1">Fecha Fin</label>
+                    <input type="date" formControlName="fechaFinDestino"
+                        class="input input-xs font-medium w-full border border-gray-300 rounded-md px-3 py-0.5 text-sm shadow-sm
+                   focus:border-[#033351] focus:ring-2 focus:ring-[rgb(3,102,157)] focus:ring-opacity-40 outline-none" />
+
+                    @if ( formsUtils.isValidField(myFrom ,'fechaFinDestino') ) {
+                    <span class="text-xs text-red-600 mt-1 block">
+                        <!-- Debe de ser de 3 letras -->
+                        {{ formsUtils.getFiledError(myFrom, 'fechaFinDestino') }}
+                    </span>
+                    }
+                </div>
+
+            </div>
+
+            <!-- Info -->
+            <div class=" text-xs rounded-md p-2 text-[#013B5C] font-bold">
+                Los factores serán copiados según el año y mes seleccionados.
+            </div>
+
+            <!-- Botones -->
+            <div class="flex justify-end gap-3 pt-3">
+                <button type="button"
+                    class="px-4 py-1.5 text-sm font-medium rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100"
+                    (click)="onCancelar()">
+                    Cancelar
+                </button>
+
+                <button type="submit"
+                    class="px-5 py-1.5 text-sm font-semibold rounded-md bg-[#002B48] text-white hover:bg-[#00426F] disabled:opacity-50"
+                    [disabled]="myFrom.invalid">
+                    Copiar
+                </button>
+            </div>
+
+        </form>
+    </div>
+</dialog>

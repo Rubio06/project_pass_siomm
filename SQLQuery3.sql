@@ -586,3 +586,164 @@ WHERE tp.name = 'mae_met_explotacion';  -- reemplaza con tu tabla
 select * from mae_met_explotacion
 
 where 
+
+
+SELECT 
+    mpe.cie_ano,
+    mpe.cie_per,
+    mpe.cod_metexp,
+    mpe.nom_metexp,
+    mpe.fac_metexp,
+    mpe.ind_act,
+    mpe.usu_creo,
+    mpe.fec_creo,
+    mpe.usu_modi,
+    mpe.fec_modi,
+    mpe.cod_empresa,
+    mpe.cod_empresa_unidad,
+    mpe.ind_calculo_dilucion,
+    mpe.ind_calculo_leyes_min
+FROM mae_per_met_explotacion AS mpe
+WHERE 
+    mpe.cod_empresa = 03
+    AND mpe.cod_empresa_unidad = 01
+    AND mpe.cie_ano = 2025
+    AND mpe.cie_per = 12;
+    
+    
+select * from mae_semana_avance 
+WHERE cod_empresa = 03 AND 
+cod_empresa_unidad = 01 AND 
+cie_ano = 2019 and 
+cie_per = 12
+
+select * FROM INFORMATION_SCHEMA.COLUMNS
+where TABLE_NAME = 'mae_semana_avance'
+
+INSERT INTO mae_semana_avance (cod_empresa, cod_empresa_unidad, cie_ano, cie_per, num_semana, fec_ini, fec_fin, desc_semana)
+VALUES 
+(
+'03',
+'01',
+2019,
+12,
+6,
+'2019-12-25 00:00:00.000',
+'2019-12-30 00:00:00.000',
+'Semana 6'
+)
+
+/*
+{
+{
+  "num_semana": 6,
+  "fec_ini": "2019-12-25T00:00:00",
+  "fec_fin": "2019-12-30T00:00:00",
+  "desc_semana": "Semana 6"
+}
+}
+*/
+DELETE FROM mae_semana_avance WHERE 
+num_semana = 6 AND cie_ano = '2019'
+
+sp_IR_delete_semana_avance 6, '2019-12-25 00:00:00.000', '2019-12-30 00:00:00.000', 'Semana 6'
+
+DROP PROC sp_IR_delete_semana_avance
+
+CREATE PROCEDURE sp_IR_delete_semana_avance
+    @num_semana INT,
+    @fec_ini DATETIME,
+    @fec_fin DATETIME,
+    @desc_semana VARCHAR(50)
+AS
+BEGIN
+
+    DELETE FROM mae_semana_avance
+    WHERE num_semana = @num_semana
+      AND CAST(fec_ini AS DATE) = CAST(@fec_ini AS DATE)
+      AND CAST(fec_fin  AS DATE) = CAST(@fec_fin  AS DATE)
+      AND desc_semana = @desc_semana;
+END
+
+
+DROP PROC sp_IR_delete_semana_periodo
+CREATE PROCEDURE sp_IR_delete_semana_periodo
+    @num_semana INT,
+    @fec_ini DATETIME,
+    @fec_fin DATETIME,
+    @desc_semana VARCHAR(50)
+AS
+BEGIN
+    DELETE FROM mae_semana_periodo
+    WHERE num_semana = @num_semana
+      AND CAST(fec_ini AS DATE) = @fec_ini
+      AND CAST(fec_fin AS DATE) = @fec_fin
+      AND desc_semana = @desc_semana;
+END
+
+
+DROP PROC sp_IR_delete_per_met_exploracion
+create procedure sp_IR_delete_per_met_exploracion
+@cie_ano varchar(10),
+@cie_per varchar(2),
+@cod_metexp varchar (20)
+AS
+BEGIN
+	DELETE FROM mae_per_met_explotacion
+    WHERE cie_ano = @cie_ano
+    AND cie_per = @cie_per
+    AND cod_metexp = @cod_metexp
+END
+
+/*
+@"
+                DELETE FROM mae_exp_estandar
+                WHERE cie_ano = @anio
+                  AND cie_per = @mes
+                  AND cod_zona = @cod_zona
+  */       
+
+
+
+DROP PROC sp_IR_delete_exp_estandar
+
+create procedure sp_IR_delete_exp_estandar
+@cie_ano varchar(10),
+@cie_per varchar(2),
+@cod_zona varchar (20)
+AS
+BEGIN
+
+	DELETE FROM mae_exp_estandar
+    WHERE cie_ano = @cie_ano
+    AND cie_per = @cie_per
+    AND cod_zona = @cod_zona
+END
+
+
+DROP PROC sp_IR_delete_tip_lab_estandar
+create procedure sp_IR_delete_tip_lab_estandar
+@cie_ano varchar(10),
+@cie_per varchar(2),
+@cod_tiplab varchar (20)
+AS
+BEGIN
+ 
+	DELETE FROM mae_tip_lab_estandar
+    WHERE cie_ano = @cie_ano
+    AND cie_per = @cie_per
+    AND cod_tiplab = @cod_tiplab
+END
+
+
+select * from mae_semana_avance
+
+select * from mae_periodo
+
+
+
+
+
+
+ 
+    

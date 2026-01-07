@@ -1,0 +1,29 @@
+<div class="flex h-screen">
+    <div
+        class="relative md:w-1/1 hidden md:flex w-full bg-gray-200 items-center justify-center rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-black"
+    >
+        <div class="absolute inset-0 bg-black opacity-30 rounded-md"></div>
+
+        <img
+            src="SIOMM_2.png"
+            alt="Imagen de fondo"
+            class="object-cover w-full h-full relative z-10 rounded-md"
+        />
+    </div>
+
+    <!-- Sección derecha (formulario) -->
+    <div class="flex w-full md:w-1/2 items-center justify-center p-6 bg-[#CCCCCC]">
+        <div class="w-full max-w-md rounded-lg p-6">
+            <div class="flex justify-center items-center h-full">
+                <img src="logo-empresa.png" class="object-contain w-50 h-auto" alt="Logo empresa" />
+            </div>
+            <div class="text-center mb-3">
+                <h1 class="text-2xl md:text-1xl font-extrabold text-[#033351] tracking-wide">
+                    Acceso a
+                </h1>
+                <p class="text-2xl font-bold text-gray-600 mt-1">Sistema Integrado de Operaciones Minero Metalúrgico</p>
+            </div>
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,112 @@
+<div class="container mx-auto px-4 gap-10 justify-center">
+    <div class="w-full">
+        <h2 class="text-[20px] font-bold text-[#013B5C] border-b-2 border-gray-300 pb-2">
+            Registro de Labores y Semana Avance
+        </h2>
+        <form [formGroup]="myForm">
+
+            <div class="mt-5">
+
+                <div
+                    class="p-3 flex justify-between items-center mb-4 border-l-4 border-[#013B5C] bg-[] shadow-sm rounded-md">
+                    <h3 class="text-xl font-bold text-[#013B5C]">
+                        Detalle de Labores
+                    </h3>
+                    <div class="bg-gray-200 text-gray-700 font-medium py-0.5 px-3 rounded-full text-sm">
+                        <span class="mr-1">
+                            Total de Registros:
+                        </span>
+                        <span class="font-bold text-[#013B5C]">
+                            {{ semanas.length }}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="relative flex">
+                    <div class="flex-11">
+                        <div class="w-full mx-auto rounded-lg overflow-x-auto shadow-md border-gray-300 border">
+                            <table class="min-w-full border-collapse text-sm text-gray-800">
+
+                                <thead>
+                                    <tr class="text-center text-gray-700 font-bold bg-gray-200 uppercase text-xs">
+                                        @for (col of titulo; track $index) {
+                                        <th class="border border-gray-300 px-4 py-2">{{ col }}</th>
+                                        }
+                                        <th class="border border-gray-300 px-4 py-2">ACCIÓN</th>
+
+                                    </tr>
+                                </thead>
+
+                                <tbody formArrayName="semanas">
+                                    @if (semanas.controls.length === 0) {
+                                    <tr class="border-y border-gray-300">
+                                        <td [attr.colspan]="datosColumna().length + 2"
+                                            class="p-4 text-center font-semibold text-red-700 bg-red-50 border border-gray-300">
+                                            No existen datos para mostrar.
+                                        </td>
+                                    </tr>
+                                    }
+                                    @else {
+                                    @for (item of semanas.controls; track $index; let i = $index) {
+                                    <tr [formGroupName]="i"
+                                        class="even:bg-gray-50 odd:bg-white hover:bg-blue-50/70 transition duration-150">
+                                        @for (col of datosColumna(); track $index) {
+                                        <td class="border-x border-gray-300 p-1.5 w-40">
+                                            <div
+                                                class="flex items-center border border-gray-300 rounded-md px-2 py-1 bg-white shadow-sm">
+                                                <input [type]="col.type" [formControlName]="col.name"
+                                                    [class.opacity-30]="planingCompartido.bloqueoFormGeneral()"
+                                                    [class.pointer-events-none]="planingCompartido.bloqueoFormGeneral()"
+                                                    class="w-full bg-transparent outline-none text-gray-800 placeholder-gray-400 text-sm font-medium" />
+                                            </div>
+                                            
+                                            @if ( formUtils.isValidFieldInArray(item, col.name) ) {
+                                            <span class="text-[10px] text-error block">
+                                                <b>{{formUtils.getFiledErrorArray(item, col.name)}}</b>
+                                            </span>
+                                            }
+
+                                        </td>
+                                        }
+
+                                        <td class="border-x border-gray-300 p-1.5 w-24 text-center">
+                                            <button type="button" (click)="eliminarFila(item, i)"
+                                                [disabled]="planingCompartido.bloqueoFormGeneral()"
+                                                class="flex items-center justify-center gap-1 mx-auto bg-[#A3361D] hover:bg-red-700 text-white px-2 py-1.5 rounded-md shadow-sm transition-all duration-200 font-medium text-xs disabled:opacity-30 disabled:cursor-not-allowed">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <polyline points="3 6 5 6 21 6"></polyline>
+                                                    <path
+                                                        d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6m5 0V4a2 2 0 0 1 2-2h0a2 2 0 0 1 2 2v2">
+                                                    </path>
+                                                </svg>
+                                                <b>Eliminar</b>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    }
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <button type="button" (click)="agregarFilas()" [disabled]="planingCompartido.bloqueoFormGeneral()"
+                        title="Agregar registro" class="
+                            self-start flex-1
+                            sticky top-24
+                            flex items-center justify-center
+                            rounded-full
+                            transition-all duration-300
+                            disabled:opacity-40 disabled:cursor-not-allowed
+                        ">
+                        <img src="icono-agregar.png" class="w-20 h-20 object-contain" alt="Agregar" />
+                    </button>
+                </div>
+
+            </div>
+        </form>
+
+    </div>
+</div>

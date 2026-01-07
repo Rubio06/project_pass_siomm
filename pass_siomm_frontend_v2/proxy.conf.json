@@ -1,0 +1,6 @@
+{
+  "/rutas": {
+    "target": "https://localhost:44334",
+    "secure": false
+  }
+}

@@ -250,3 +250,42 @@ select * From trb_cierre_periodo
 
 delete from trb_cierre_periodo 
 where cod_empresa = '03' AND cod_empresa_unidad = '01' AND cie_per = '04' and usu_creo = 'pracl_ir.sist.cmc'
+
+
+    SELECT CP.cie_per, CP.fec_ini, CP.fec_fin, CP.cie_ano
+    FROM trb_cierre_periodo AS CP
+    WHERE CP.cie_ano = 2019 AND CP.cie_per = 12
+    ORDER BY CAST(CP.cie_per AS INT);
+    
+sp_IR_obtener_anio 
+
+sp_helptext sp_IR_obtener_anio
+
+  select distinct cie_ano from trb_cierre_periodo order by cie_ano desc    
+  
+  
+  select * from trb_cierre_periodo
+  
+
+
+    -- 9 Método Minado
+    SELECT mpe.cod_metexp AS cod_metexp, mpe.nom_metexp AS nom_metexp,
+           mpe.ind_calculo_dilucion AS ind_calculo_dilucion,
+           mpe.ind_calculo_leyes_min AS ind_calculo_leyes_min,
+           mpe.ind_act AS ind_act
+    FROM mae_per_met_explotacion AS mpe
+    WHERE mpe.cod_empresa = 3 AND mpe.cod_empresa_unidad = 1
+      AND mpe.cie_ano = 2026 AND mpe.cie_per = 01;
+      
+      
+    SELECT VALOP.val_fac_ag, VALOP.val_pre_ag, VALOP.val_fac_cu, VALOP.val_pre_cu, 
+           VALOP.val_fac_pb, VALOP.val_pre_pb, VALOP.val_fac_zn, VALOP.val_pre_zn, 
+           VALOP.val_fac_au, VALOP.val_pre_au
+    FROM mae_val_operativo VALOP
+    WHERE VALOP.cod_empresa = 3 AND VALOP.cod_empresa_unidad = 1 
+      AND VALOP.val_ano = 2026 AND VALOP.val_per = 01;
+  
+
+
+
+u

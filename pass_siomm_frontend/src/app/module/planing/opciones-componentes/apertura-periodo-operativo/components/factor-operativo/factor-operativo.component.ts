@@ -65,6 +65,8 @@ export class FactorOperativoComonent {
             if (!periodo && response?.data?.factor?.length === 0) {
                 console.log("No hay data, copiando del período anterior...");
                 periodo = response?.data?.factor_anterior?.[0]; // <-- aquí debes traer la data del período anterior desde backend
+
+                console.log(periodo)
             }
 
             if (periodo) {

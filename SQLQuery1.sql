@@ -44,3 +44,5 @@ BEGIN
     LEFT JOIN mae_ruta_opc RPC4 ON RPC4.Pk_cod_ruta_cuar = RC.cod_ruta_cuar
 END
 
+
+

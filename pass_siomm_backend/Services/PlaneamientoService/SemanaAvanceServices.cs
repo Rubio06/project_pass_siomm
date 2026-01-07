@@ -96,7 +96,6 @@ namespace pass_siomm_backend.Services.PlaneamientoService
 
                     using (var cmd = new SqlCommand(SqlQueries.SP_INSERTAR_COPIAR_PERIODO, connection))
                     {
-
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.Add("@cie_ano", SqlDbType.VarChar).Value = semana.anioDestino;
                         cmd.Parameters.Add("@cie_per", SqlDbType.VarChar).Value = semana.mesDestino;
