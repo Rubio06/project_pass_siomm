@@ -32,7 +32,7 @@
         public const string SP_ELIMINAR_TIP_LAB_ESTANDAR = "sp_IR_delete_tip_lab_estandar";
 
         //INSERTAR PERIODO
-        public const string SP_INSERTAR_COPIAR_PERIODO = "sp_IR_insertar_copiar_periodo";
+        public const string SP_INSERTAR_COPIAR_PERIODO = "sp_IR_copiar_datos_periodo";
 
 
 

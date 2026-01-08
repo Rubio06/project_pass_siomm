@@ -353,14 +353,6 @@
             "type": "string",
             "nullable": true
           },
-          "fechaInicioDestino": {
-            "type": "string",
-            "nullable": true
-          },
-          "fechaFinDestino": {
-            "type": "string",
-            "nullable": true
-          },
           "username": {
             "type": "string",
             "nullable": true

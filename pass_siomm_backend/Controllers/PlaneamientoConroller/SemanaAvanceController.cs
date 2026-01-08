@@ -33,7 +33,7 @@ namespace pass_siomm_backend.Controllers.PlaneamientoConroller
             {
                 if (semana == null)
                     return BadRequest("Datos inválidos");
-                
+
                 bool result = await _service.EliminarSemanaAvance(semana);
 
                 if (result)
@@ -45,9 +45,9 @@ namespace pass_siomm_backend.Controllers.PlaneamientoConroller
             catch (Exception ex)
             {
                 Console.WriteLine("ERROR REAL SQL:");
-                Console.WriteLine(ex.ToString()); 
+                Console.WriteLine(ex.ToString());
 
-                throw; 
+                throw;
             }
         }
 
@@ -75,7 +75,7 @@ namespace pass_siomm_backend.Controllers.PlaneamientoConroller
                 Console.WriteLine("ERROR REAL SQL:");
                 Console.WriteLine(ex.ToString());
 
-                throw; 
+                throw;
             }
         }
 
@@ -167,27 +167,29 @@ namespace pass_siomm_backend.Controllers.PlaneamientoConroller
         [HttpPost("semana/copiar-periodo")]
         public async Task<IActionResult> CopiarPeriodoOperativo([FromBody] CopiarPeriodoDto periodo)
         {
+            if (periodo == null) return BadRequest("Datos insuficientes");
+
             try
             {
-                //// 1️⃣ Leer datos del periodo ORIGEN
-                var datosOrigen = await _AperPeriodoOperativoService.ObtenerDatosCompletos(
-                    periodo.mesOrigen,
-                    periodo.anioOrigen
-                );
+                // Solo llamamos al servicio una vez. 
+                // El SP interno se encarga de validar si existe el origen y si ya existe el destino.
+                bool resultado = await _service.InsertarCopiarPeriodoAsync(periodo);
 
-                var cierre_periodo = await _service.InsertarCopiarPeriodoAsync(periodo);
+                Console.WriteLine(resultado);
 
+                if (resultado)
+                {
+                    return Ok(new { message = "Periodo copiado exitosamente", datos = periodo });
+                }
 
-
-                return Ok(periodo);
+                return BadRequest("No se pudo completar el copiado.");
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Error al leer origen: {ex.Message}");
+                // Aquí capturamos el RAISERROR que lanzamos desde SQL
+                return StatusCode(500, $"Error en el proceso de copiado: {ex.Message}");
             }
 
         }
-
-
     }
 }

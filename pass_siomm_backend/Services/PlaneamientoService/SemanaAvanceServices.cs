@@ -97,15 +97,17 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                     using (var cmd = new SqlCommand(SqlQueries.SP_INSERTAR_COPIAR_PERIODO, connection))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.Add("@cie_ano", SqlDbType.VarChar).Value = semana.anioDestino;
-                        cmd.Parameters.Add("@cie_per", SqlDbType.VarChar).Value = semana.mesDestino;
-                        cmd.Parameters.Add("@fec_ini", SqlDbType.DateTime).Value = semana.fechaInicioDestino;
-                        cmd.Parameters.Add("@fec_fin", SqlDbType.DateTime).Value = semana.fechaFinDestino;
-                        cmd.Parameters.Add("@usu_creo", SqlDbType.VarChar).Value = semana.username;
+                        cmd.Parameters.Add("@anioOrigen", SqlDbType.VarChar).Value = semana.anioOrigen;
+                        cmd.Parameters.Add("@mesOrigen", SqlDbType.VarChar).Value = semana.mesOrigen;
+                        cmd.Parameters.Add("@anioDestino", SqlDbType.VarChar).Value = semana.anioDestino;
+                        cmd.Parameters.Add("@mesDestino", SqlDbType.VarChar).Value = semana.mesDestino;
+                        cmd.Parameters.Add("@username", SqlDbType.VarChar).Value = semana.username;
 
                         await cmd.ExecuteNonQueryAsync();
                     }
                 }
+
+
 
                 return true;
             }
