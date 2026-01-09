@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using pass_siomm_backend.Data.Dto.PlaneamientoDto;
 using pass_siomm_backend.Services.PlaneamientoService;
+using System.Data;
+using System.Text.Json;
 using static pass_siomm_backend.Services.PlaneamientoService.SemanaAvanceServices;
 
 namespace pass_siomm_backend.Controllers.PlaneamientoConroller
@@ -164,32 +167,69 @@ namespace pass_siomm_backend.Controllers.PlaneamientoConroller
         }
 
 
+        /* CONTROLADOR PARA COPIAR DATOS */
         [HttpPost("semana/copiar-periodo")]
         public async Task<IActionResult> CopiarPeriodoOperativo([FromBody] CopiarPeriodoDto periodo)
         {
-            if (periodo == null) return BadRequest("Datos insuficientes");
+
+            if (periodo == null)
+            {
+                return BadRequest(new ApiResponse<object>
+                {
+                    success = false,
+                    message = "Datos insuficientes"
+                });
+            }
 
             try
             {
-                // Solo llamamos al servicio una vez. 
-                // El SP interno se encarga de validar si existe el origen y si ya existe el destino.
-                bool resultado = await _service.InsertarCopiarPeriodoAsync(periodo);
+                await _service.InsertarCopiarPeriodoAsync(periodo);
+                Console.WriteLine(JsonSerializer.Serialize(periodo));
 
-                Console.WriteLine(resultado);
-
-                if (resultado)
+                return Ok(new ApiResponse<CopiarPeriodoDto>
                 {
-                    return Ok(new { message = "Periodo copiado exitosamente", datos = periodo });
+                    success = true,
+                    message = "Periodo copiado exitosamente",
+                    data = periodo
+                });
+            }
+            catch (SqlException ex)
+            {
+                if (ex.Number == 50000 || ex.Number == 2601 || ex.Number == 2627)
+                {
+                    return BadRequest(new ApiResponse<object>
+                    {
+                        success = false,
+                        message = ex.Message
+                    });
                 }
 
-                return BadRequest("No se pudo completar el copiado.");
+                return StatusCode(500, new ApiResponse<object>
+                {
+                    success = false,
+                    message = "Error interno del servidor"
+                });
+            }
+        }
+
+
+
+
+        [HttpPost("semana/guardar-datos")]
+        public async Task<IActionResult> GuardarDatos([FromBody] DatosCompletosDto datos)
+        {
+            if (datos == null) return BadRequest("Los datos no pueden ser nulos");
+
+            try
+            {
+                // El DTO ya trae el año, mes, usuario y los valores de la tabla
+                await _service.GuardarDatosAsync(datos);
+                return Ok(new { mensaje = "Guardado exitosamente" });
             }
             catch (Exception ex)
             {
-                // Aquí capturamos el RAISERROR que lanzamos desde SQL
-                return StatusCode(500, $"Error en el proceso de copiado: {ex.Message}");
+                return BadRequest(new { error = ex.Message });
             }
-
         }
     }
 }

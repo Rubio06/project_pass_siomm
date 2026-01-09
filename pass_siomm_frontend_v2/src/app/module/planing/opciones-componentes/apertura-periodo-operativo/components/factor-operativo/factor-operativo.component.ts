@@ -143,7 +143,7 @@ export class FactorOperativoComonent {
         this.form.valueChanges.subscribe(val => {
             const filas = this.form.getRawValue();
 
-            this.planingCompartido.setFactorOperativo(filas);
+            this.planingCompartido.setFactor(filas);
             // console.log("📤 TAB semana actualizó servicio:", filas);
         });
 

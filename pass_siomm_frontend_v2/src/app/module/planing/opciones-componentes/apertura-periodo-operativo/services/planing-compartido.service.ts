@@ -2,12 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, Signal, signal, WritableSignal } from '@angular/core';
 import { AperPeriodo, MaeExploEstandar, MaeFactor, MaeFactorRecuperacion, MaeFactorSobredisolucion, MaePerMetExplotacion, MaeSemanaAvance, MaeSemanaCiclo, MaeTipLabEstandar, MaeValCanchas, MaeValOperativo, MaeValOperativoDetalle, PlanningData } from '../interface/aper-per-oper.interface';
 import { firstValueFrom } from 'rxjs';
+import { environment } from '@environments/environments';
 
 @Injectable({
     providedIn: 'root'
 })
 export class PlaningCompartidoService {
     private http = inject(HttpClient);
+    private planingUrl = environment.baseUrl;
 
     // Persistencia de cada tab/form
     private _canchas: WritableSignal<MaeValCanchas[]> = signal([]);
@@ -40,40 +42,80 @@ export class PlaningCompartidoService {
     readonly valores = this._valores.asReadonly();
 
     // Métodos para setear datos
-    setCanchas(data: MaeValCanchas[]) { this._canchas.set(data); }
-    setCierrePeriodo(data: AperPeriodo[]) { this._cierre_periodo.set(data); }
-    setExploracionExtandar(data: MaeExploEstandar[]) { this._exploracion_extandar.set(data); }
-    setFactor(data: MaeFactor[]) { this._factor.set(data); }
-    setFactorOperativo(data: MaeValOperativo[]) { this._factorOperativo.set(data); }
-    setFactorSobredisolucion(data: MaeFactorSobredisolucion[]) { this._factorSobredisolucion.set(data); }
-    setLaboratorioEstandar(data: MaeTipLabEstandar[]) { this._laboratorio_estandar.set(data); }
-    setMetodoMinado(data: MaePerMetExplotacion[]) { this._metodo_minado.set(data); }
-    setOperativoDetalle(data: MaeValOperativoDetalle[]) { this._operativo_detalle.set(data); }
-    setRecuperacionBudget(data: MaeFactorRecuperacion[]) { this._recuperacionBudget.set(data); }
-    setSemanaAvance(data: MaeSemanaAvance[]) { this._semana_avance.set(data); }
-    setSemanaCiclo(data: MaeSemanaCiclo[]) { this._semana_ciclo.set(data); }
-    setValores(data: any[]) { this._valores.set(data); }
+    setCanchas(data: MaeValCanchas | MaeValCanchas[]) {
+        this._canchas.set(Array.isArray(data) ? data : [data]);
+    }
 
+    setCierrePeriodo(data: AperPeriodo | AperPeriodo[]) {
+        this._cierre_periodo.set(Array.isArray(data) ? data : [data]);
+    }
+
+    setExploracionExtandar(data: MaeExploEstandar | MaeExploEstandar[]) {
+        this._exploracion_extandar.set(Array.isArray(data) ? data : [data]);
+    }
+
+    setFactor(data: MaeFactor | MaeFactor[]) {
+        this._factor.set(Array.isArray(data) ? data : [data]);
+    }
+
+    setFactorOperativo(data: MaeValOperativo | MaeValOperativo[]) {
+        this._factorOperativo.set(Array.isArray(data) ? data : [data]);
+    }
+
+    setFactorSobredisolucion(data: MaeFactorSobredisolucion | MaeFactorSobredisolucion[]) {
+        this._factorSobredisolucion.set(Array.isArray(data) ? data : [data]);
+    }
+
+    setLaboratorioEstandar(data: MaeTipLabEstandar | MaeTipLabEstandar[]) {
+        this._laboratorio_estandar.set(Array.isArray(data) ? data : [data]);
+    }
+
+    setMetodoMinado(data: MaePerMetExplotacion | MaePerMetExplotacion[]) {
+        this._metodo_minado.set(Array.isArray(data) ? data : [data]);
+    }
+
+    setOperativoDetalle(data: MaeValOperativoDetalle | MaeValOperativoDetalle[]) {
+        this._operativo_detalle.set(Array.isArray(data) ? data : [data]);
+    }
+
+    setRecuperacionBudget(data: MaeFactorRecuperacion | MaeFactorRecuperacion[]) {
+        this._recuperacionBudget.set(Array.isArray(data) ? data : [data]);
+    }
+
+    setSemanaAvance(data: MaeSemanaAvance | MaeSemanaAvance[]) {
+        this._semana_avance.set(Array.isArray(data) ? data : [data]);
+    }
+
+    setSemanaCiclo(data: MaeSemanaCiclo | MaeSemanaCiclo[]) {
+        this._semana_ciclo.set(Array.isArray(data) ? data : [data]);
+    }
+
+    setValores(data: any | any[]) {
+        this._valores.set(Array.isArray(data) ? data : [data]);
+    }
 
     // Limpiar todo
 
-    guardarTodo() {
+    public guardarTodo() {
         const payload = {
-            valores: this._valores(),
-            canchas: this._canchas(),
+            // valores: this._valores(),
+            // canchas: this._canchas(),
             factor: this._factor(),
-            factorOperativo: this._factorOperativo(),
-            laboratorio_estandar: this._laboratorio_estandar(),
-            exploracion_extandar: this._exploracion_extandar(),
-            metodo_minado: this._metodo_minado(),
-            semana_ciclo: this._semana_ciclo(),
-            semana_avance: this._semana_avance(),
+            // factorOperativo: this._factorOperativo(),
+            // laboratorio_estandar: this._laboratorio_estandar(),
+            // exploracion_extandar: this._exploracion_extandar(),
+            // metodo_minado: this._metodo_minado(),
+            // semana_ciclo: this._semana_ciclo(),
+            // semana_avance: this._semana_avance(),
+            username: localStorage.getItem('username')
         };
 
-        // console.log("los datos recibidos son: " + JSON.stringify(payload, null, 2));
-        return this.http.post('/api/guardar-todo', payload);
+        console.log("los datos recibidos son: " + JSON.stringify(payload, null, 2));
+        return this.http.post(
+            `${this.planingUrl}aper-periodo-operativo/semana/guardar-datos`,
+            payload
+        );
     }
-
 
     ///COMPONENTE VISUALIZAR
     onVisualizarGlobal() {

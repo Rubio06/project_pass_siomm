@@ -85,39 +85,118 @@ namespace pass_siomm_backend.Services.PlaneamientoService
         }
 
 
-
-        public async Task<bool> InsertarCopiarPeriodoAsync(CopiarPeriodoDto semana)
+        /* LOGICA PARA COPIAR DATOS */
+        public async Task InsertarCopiarPeriodoAsync(CopiarPeriodoDto semana)
         {
-            try
+            using (var connection = new SqlConnection(_connectionString))
             {
-                using (var connection = new SqlConnection(_connectionString))
+                await connection.OpenAsync();
+
+                using (var cmd = new SqlCommand(SqlQueries.SP_INSERTAR_COPIAR_PERIODO, connection))
                 {
-                    await connection.OpenAsync();
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add("@anioOrigen", SqlDbType.VarChar).Value = semana.anioOrigen;
+                    cmd.Parameters.Add("@mesOrigen", SqlDbType.VarChar).Value = semana.mesOrigen;
+                    cmd.Parameters.Add("@anioDestino", SqlDbType.VarChar).Value = semana.anioDestino;
+                    cmd.Parameters.Add("@mesDestino", SqlDbType.VarChar).Value = semana.mesDestino;
+                    cmd.Parameters.Add("@fechaInicioDestino", SqlDbType.DateTime)
+                       .Value = DateTime.Parse(semana.fechaInicioDestino);
 
-                    using (var cmd = new SqlCommand(SqlQueries.SP_INSERTAR_COPIAR_PERIODO, connection))
-                    {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.Add("@anioOrigen", SqlDbType.VarChar).Value = semana.anioOrigen;
-                        cmd.Parameters.Add("@mesOrigen", SqlDbType.VarChar).Value = semana.mesOrigen;
-                        cmd.Parameters.Add("@anioDestino", SqlDbType.VarChar).Value = semana.anioDestino;
-                        cmd.Parameters.Add("@mesDestino", SqlDbType.VarChar).Value = semana.mesDestino;
-                        cmd.Parameters.Add("@username", SqlDbType.VarChar).Value = semana.username;
+                    cmd.Parameters.Add("@fechaFinDestino", SqlDbType.DateTime)
+                       .Value = DateTime.Parse(semana.fechaFinDestino);
+                    cmd.Parameters.Add("@username", SqlDbType.VarChar).Value = semana.username;
 
-                        await cmd.ExecuteNonQueryAsync();
-                    }
+                    await cmd.ExecuteNonQueryAsync();
                 }
-
-
-
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error al guardar la semana: " + ex.Message);
-                return false;
             }
         }
 
+        /*  */
+        public async Task GuardarDatosAsync(DatosCompletosDto datos)
+        {
+            using var connection = new SqlConnection(_connectionString);
+            string anioActual = DateTime.Now.Year.ToString();
+            string mesActual = DateTime.Now.Month.ToString("D2");
+
+            await connection.OpenAsync();
+
+            using var transaction = connection.BeginTransaction();
+
+            try
+            {
+
+                // 3️⃣ Guardar factor → mae_factor
+                foreach (var fac in datos.factor)
+                {
+                    var cmd = new SqlCommand(@"
+                         INSERT INTO mae_factor (
+                            cod_empresa,
+                            cod_empresa_unidad,
+                            cie_ano,
+                            cie_per,
+                            fac_denmin,
+                            fac_denminyac,
+                            fac_dendes,
+                            fac_dialab,
+                            fac_vptmin,
+                            fac_tarhor,
+                            usu_creo,
+                            fec_creo,
+                            usu_modi,
+                            fec_modi,
+                            fac_porcum,
+                            fac_porhum,
+                            fac_tms_dif
+                        )
+                        VALUES (
+                            @cod_empresa,
+                            @cod_empresa_unidad,
+                            @cie_ano,
+                            @cie_per,
+                            @fac_denmin,
+                            @fac_denminyac,
+                            @fac_dendes,
+                            @fac_dialab,
+                            @fac_vptmin,
+                            @fac_tarhor,
+                            @usu_creo,
+                            @fec_creo,
+                            @usu_modi,
+                            @fec_modi,
+                            @fac_porcum,
+                            @fac_porhum,
+                            @fac_tms_dif
+                        );", connection, transaction);
+
+                    cmd.Parameters.Add("@cod_empresa", SqlDbType.VarChar).Value = "03";
+                    cmd.Parameters.Add("@cod_empresa_unidad", SqlDbType.VarChar).Value = "01";
+                    cmd.Parameters.Add("@cie_ano", SqlDbType.VarChar).Value = anioActual;
+                    cmd.Parameters.Add("@cie_per", SqlDbType.VarChar).Value = mesActual;
+                    cmd.Parameters.Add("@fac_denmin", SqlDbType.VarChar).Value = fac.fac_denmin ?? (object)DBNull.Value;
+                    cmd.Parameters.Add("@fac_denminyac", SqlDbType.VarChar).Value = fac.fac_denminyac ?? (object)DBNull.Value;
+                    cmd.Parameters.Add("@fac_dendes", SqlDbType.VarChar).Value = fac.fac_dendes ?? (object)DBNull.Value;
+                    cmd.Parameters.Add("@fac_dialab", SqlDbType.VarChar).Value = fac.fac_dialab ?? (object)DBNull.Value;
+                    cmd.Parameters.Add("@fac_vptmin", SqlDbType.VarChar).Value = fac.fac_vptmin ?? (object)DBNull.Value;
+                    cmd.Parameters.Add("@fac_tarhor", SqlDbType.VarChar).Value = fac.fac_tarhor ?? (object)DBNull.Value;
+                    cmd.Parameters.Add("@usu_creo", SqlDbType.VarChar).Value = datos.username ?? (object)DBNull.Value; 
+                    cmd.Parameters.Add("@fec_creo", SqlDbType.DateTime).Value = fac.fec_creo ?? (object)DBNull.Value;
+                    cmd.Parameters.Add("@usu_modi", SqlDbType.VarChar).Value = fac.usu_modi ?? (object)DBNull.Value;
+                    cmd.Parameters.Add("@fec_modi", SqlDbType.DateTime).Value = DateTime.Now; // O fac.fec_modi
+                    cmd.Parameters.Add("@fac_porcum", SqlDbType.VarChar).Value = fac.fac_porcum ?? (object)DBNull.Value;
+                    cmd.Parameters.Add("@fac_porhum", SqlDbType.VarChar).Value = fac.fac_porhum ?? (object)DBNull.Value;
+                    cmd.Parameters.Add("@fac_tms_dif", SqlDbType.VarChar).Value = fac.fac_tms_dif ?? (object)DBNull.Value;
+
+                    await cmd.ExecuteNonQueryAsync();
+                }
+
+                await transaction.CommitAsync();
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
+        }
 
 
         public async Task<bool> EliminarSemanaAvance(MaeSemanaAvanceEliminarDto semana)
@@ -147,12 +226,9 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                 return false;
 
             }
-
-
-
         }
 
-
+        
         public async Task<bool> EliminarSemanaCiclo(MaeSemanaAvanceEliminarDto semana)
         {
 
@@ -181,9 +257,6 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                 return false;
 
             }
-
-
-
         }
 
 

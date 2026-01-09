@@ -49,6 +49,22 @@
   },
   {
     "ContainingType": "pass_siomm_backend.Controllers.PlaneamientoConroller.SemanaController",
+    "Method": "GuardarDatos",
+    "RelativePath": "aper-periodo-operativo/semana/guardar-datos",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "datos",
+        "Type": "pass_siomm_backend.Data.Dto.PlaneamientoDto.DatosCompletosDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Controllers.PlaneamientoConroller.SemanaController",
     "Method": "EliminarMetodoMinado",
     "RelativePath": "aper-periodo-operativo/semana/metodo-minado-eliminar",
     "HttpMethod": "POST",

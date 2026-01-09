@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '@environments/environments';
-import { catchError, Observable, of } from 'rxjs';
+import { catchError, Observable, of, throwError } from 'rxjs';
 import { FormUtils } from 'src/app/utils/form-utils';
 import Swal from 'sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css';
-import { PeriodoDestino } from '../../interface/aper-per-oper.interface';
+import { ApiResponse, PeriodoDestino } from '../../interface/aper-per-oper.interface';
 
 
 @Injectable({
@@ -41,14 +41,11 @@ export class SemanasAvanceMainService {
     }
 
 
-    public copiarPeriodo(payload: PeriodoDestino): Observable<any> {
-        return this.semanasAvanceHttp.post<any>(`${this.planingUrl}aper-periodo-operativo/semana/copiar-periodo`, payload)
-            .pipe(
-                catchError(error => {
-                    this.utils.mensajeError(error);
-                    return of(null);
-                })
-            );
+    public copiarPeriodo(payload: PeriodoDestino): Observable<ApiResponse> {
+        return this.semanasAvanceHttp.post<ApiResponse>(
+            `${this.planingUrl}aper-periodo-operativo/semana/copiar-periodo`,
+            payload
+        );
     }
 
 
@@ -63,6 +60,8 @@ export class SemanasAvanceMainService {
                 })
             );
     }
+
+
 
     public saveDataSemanaCiclo(payload: any): Observable<any> {
         return this.semanasAvanceHttp.post<any>(`${this.planingUrl}aper-periodo-operativo/semana/semana-avance-guardar`, payload)

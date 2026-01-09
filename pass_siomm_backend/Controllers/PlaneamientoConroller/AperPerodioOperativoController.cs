@@ -121,7 +121,5 @@ namespace pass_siomm_backend.Controllers.aper_per_oper
                 return StatusCode(500, $"Error al obtener los meses: {ex.Message}");
             }
         }
-
-
     }
 }

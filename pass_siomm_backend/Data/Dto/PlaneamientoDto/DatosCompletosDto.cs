@@ -16,6 +16,8 @@
 
         public List<MaeExploEstandar> exploracion_extandar { get; set; } = new();
 
+        public string? username { get; set; }
+
 
 
     }

@@ -19,10 +19,10 @@ export class ModalPeriodo {
 
     private hoy = new Date();
 
-
+    // this.hoy.toLocaleString('es-PE', { month: 'long' }).replace(/^./, m => m.toUpperCase())
     myFrom: FormGroup = this.fb.group({
         anioDestino: [ this.hoy.getFullYear().toString(), [Validators.required, Validators.pattern(/^(19\d{2}|20\d{2}|2100)$/)]],
-        mesDestino: [this.hoy.toLocaleString('es-PE', { month: 'long' }).replace(/^./, m => m.toUpperCase()), Validators.required],
+        mesDestino: [[''], Validators.required],
         fechaInicioDestino: ['', Validators.required],
         fechaFinDestino: ['', Validators.required],
     });
@@ -37,8 +37,8 @@ export class ModalPeriodo {
 
         this.onReset();
 
-        const modal = document.getElementById('my_modal_3') as HTMLDialogElement;
-        modal.close();
+        // const modal = document.getElementById('my_modal_3') as HTMLDialogElement;
+        // modal.close();
     }
 
 
@@ -47,7 +47,7 @@ export class ModalPeriodo {
     onReset() {
         this.myFrom.reset({
             anioDestino: this.hoy.getFullYear().toString(),
-            mesDestino: this.hoy.toLocaleString('es-PE', { month: 'long' }).replace(/^./, m => m.toUpperCase()),
+            mesDestino: '',
             fechaInicioDestino: '',
             fechaFinDestino: '',
         });

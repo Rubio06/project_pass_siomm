@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject, signal, WritableSignal } from '@angular/core';
+import { Component, computed, inject, signal, ViewChild, WritableSignal } from '@angular/core';
 import { PlanningService } from '../../services/planning.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CanDeactivate, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
@@ -41,7 +41,8 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
     private planingCompartido = inject(PlaningCompartidoService);
     private semanasAvanceService = inject(SemanasAvanceMainService);
     private fb = inject(FormBuilder);
-
+    @ViewChild(ModalPeriodo)
+    child!: ModalPeriodo;
 
     formsUtils = FormUtils;
 
@@ -234,48 +235,37 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
         const username = localStorage.getItem('username');
 
         const payload = {
+            ...destino,
+            fechaInicioDestino: this.convertToISO(destino.fechaInicioDestino),
+            fechaFinDestino: this.convertToISO(destino.fechaFinDestino),
             anioOrigen: this.showData.get('fechaInicio')?.value,
             mesOrigen: this.showData.get('fechaFin')?.value,
-            username,
-            ...destino
+            username: username ?? ''
         };
 
         this.semanasAvanceService.copiarPeriodo(payload).subscribe({
             next: (resp) => {
-
+                if (resp.success) {
+                    this.formsUtils.exitoPeriodo(resp.message);
+                    const modal = document.getElementById('my_modal_3') as HTMLDialogElement;
+                    this.sendYear();
+                    this.sendMonth();
+                    this.child.onReset();
+                    modal.close();
+                } else {
+                    this.formsUtils.errorCopiado(resp.message);
+                }
             },
-            error: () => console.log("Error al compilar ")
+            error: error => {
+                this.formsUtils.errorCopiado(error.error.message);
+            }
         })
-
-        console.log("el destino es " + JSON.stringify(payload, null, 2))
     }
 
+    convertToISO(value: string): string {
+        return `${value} 00:00:00.000`;
+    }
 
-    //     onSubmit() {
-    //     if (this.loginForm.invalid) {
-    //         this.hasError.set(true);
-    //         setTimeout(() => this.hasError.set(false), 2000);
-    //         return;
-    //     }
-
-    //     const { username, password } = this.loginForm.value;
-
-    //     this.authServices.login(username!, password!).subscribe({
-    //         next: (res: boolean) => {
-    //             if (res) {
-    //                 this.router.navigate(['/menu-principal']);
-    //             } else {
-    //                 this.hasError.set(true);
-    //                 setTimeout(() => {
-    //                     this.hasError.set(false);
-    //                 }, 3000);
-    //             }
-    //         },
-    //         error: (err) => {
-    //             console.error('Error al autenticar', err);
-    //         }
-    //     });
-    // }
 
     /* ============================
     * 🔹 UTILIDADES

@@ -108,6 +108,25 @@ export class FormUtils {
         });
     }
 
+    static errorCopiado(message: string) {
+        const modal = document.getElementById('my_modal_3');
+
+        return Swal.fire({
+            target: modal!,   // 👈 CLAVE
+            title: "Error al copiar periodo",
+            html: `
+      <p style="font-size:14px;">
+        ${message}<br>
+        <span style="color:red;font-weight:600;">
+          No se pudo copiar el periodo.
+        </span>
+      </p>
+    `,
+            icon: "error",
+            confirmButtonColor: "#00426F",
+            confirmButtonText: "Aceptar"
+        });
+    }
 
     // static alertaEliminado(message: string) {
     //     return Swal.fire({
@@ -163,6 +182,20 @@ export class FormUtils {
             confirmButtonColor: '#013B5C'
         });
     }
+
+
+    static exitoPeriodo(message: string) {
+        Swal.fire({
+            icon: 'success',
+            title: '¡Período copiado!',
+            text: message,
+            confirmButtonText: 'Aceptar',
+            confirmButtonColor: '#013B5C'
+
+        });
+    }
+
+
 
     static mostrarError() {
         Swal.fire({

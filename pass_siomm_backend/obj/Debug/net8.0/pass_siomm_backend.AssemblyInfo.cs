@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("pass_siomm_backend")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+34f953d7db2ace4f07add12a0f98d6be3359de8c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8bee0967f8c264356c1b3867920cd235b878b1eb")]
 [assembly: System.Reflection.AssemblyProductAttribute("pass_siomm_backend")]
 [assembly: System.Reflection.AssemblyTitleAttribute("pass_siomm_backend")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

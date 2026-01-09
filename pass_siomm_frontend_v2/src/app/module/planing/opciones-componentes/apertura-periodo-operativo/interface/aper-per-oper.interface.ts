@@ -350,7 +350,16 @@ export interface PeriodoDestino {
     mesDestino: string;
     fechaInicioDestino: string;
     fechaFinDestino: string;
+    username: string;
 }
+
+
+export interface ApiResponse {
+    success: boolean;
+    message: string;
+    data?: PeriodoDestino;
+}
+
 
 
 
