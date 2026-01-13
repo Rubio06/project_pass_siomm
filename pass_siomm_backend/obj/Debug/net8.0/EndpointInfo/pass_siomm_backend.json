@@ -385,6 +385,15 @@
           "cie_ano": {
             "type": "string",
             "nullable": true
+          },
+          "num_semana": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "desc_semana": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -543,39 +552,48 @@
             "nullable": true
           },
           "lab_pieper": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "lab_broca": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "lab_barcon": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "lab_barren": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "lab_facpot": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "lab_fulmin": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "lab_conect": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "lab_punmar": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "lab_tabla": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "lab_apr": {
@@ -623,27 +641,33 @@
             "nullable": true
           },
           "fac_denmin": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "fac_denminyac": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "fac_dendes": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "fac_dialab": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "fac_vptmin": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "fac_tarhor": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "usu_creo": {
@@ -665,15 +689,18 @@
             "nullable": true
           },
           "fac_porcum": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "fac_porhum": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "fac_tms_dif": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           }
         },
@@ -683,43 +710,78 @@
         "type": "object",
         "properties": {
           "val_fac_bud_ag": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "val_fac_bud_cu": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "val_fac_bud_pb": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "val_fac_bud_zn": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "val_fac_bud_au": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "val_con_ag": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "val_con_cu": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "val_con_pb": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "val_con_zn": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "val_con_au": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "val_fac_ag": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "val_fac_cu": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "val_fac_pb": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "val_fac_zn": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "val_fac_au": {
+            "type": "number",
+            "format": "double",
             "nullable": true
           }
         },
@@ -729,23 +791,28 @@
         "type": "object",
         "properties": {
           "val_fac_ag": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "val_fac_cu": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "val_fac_pb": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "val_fac_zn": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "val_fac_au": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           }
         },
@@ -759,47 +826,63 @@
             "nullable": true
           },
           "nro_lab_ancho": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "nro_lab_altura": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "nro_lab_pieper": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "nro_lab_broca": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "nro_lab_barcon": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "nro_lab_barren": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "nro_lab_facpot": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "nro_lab_fulmin": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "nro_lab_conect": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "nro_lab_punmar": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "nro_lab_tabla": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "ind_lab_apr": {
+            "type": "number",
+            "format": "double",
             "nullable": true
           }
         },
@@ -844,6 +927,11 @@
           },
           "ind_act": {
             "type": "string",
+            "nullable": true
+          },
+          "fac_metexp": {
+            "type": "number",
+            "format": "double",
             "nullable": true
           }
         },
@@ -956,15 +1044,18 @@
         "properties": {
           "num_semana": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "fec_ini": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "nullable": true
           },
           "fec_fin": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "nullable": true
           },
           "desc_semana": {
             "type": "string",
@@ -977,27 +1068,33 @@
         "type": "object",
         "properties": {
           "val_tms": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "val_ag": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "val_cu": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "val_pb": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "val_zn": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "val_vpt": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           }
         },
@@ -1006,6 +1103,141 @@
       "MaeValOperativoDetalleDto": {
         "type": "object",
         "properties": {
+          "val_tipo_fac": {
+            "type": "string",
+            "nullable": true
+          },
+          "val_des_tipo_fac": {
+            "type": "string",
+            "nullable": true
+          },
+          "val_ind_principal": {
+            "type": "string",
+            "nullable": true
+          },
+          "val_fac_ag": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "val_fac_cu": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "val_fac_pb": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "val_fac_zn": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "val_fac_au": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "val_fac_rec_ag": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "val_fac_rec_cu": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "val_fac_rec_pb": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "val_fac_rec_zn": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "val_fac_rec_au": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "MaeValOperativoDto": {
+        "type": "object",
+        "properties": {
+          "cod_empresa_unidad": {
+            "type": "string",
+            "nullable": true
+          },
+          "val_ano": {
+            "type": "string",
+            "nullable": true
+          },
+          "val_per": {
+            "type": "string",
+            "nullable": true
+          },
+          "val_tipo_fac": {
+            "type": "string",
+            "nullable": true
+          },
+          "val_des_tipo_fac": {
+            "type": "string",
+            "nullable": true
+          },
+          "val_ind_principal": {
+            "type": "string",
+            "nullable": true
+          },
+          "val_fac_ag": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "val_fac_cu": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "val_fac_pb": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "val_fac_zn": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "val_fac_au": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "usu_creo": {
+            "type": "string",
+            "nullable": true
+          },
+          "fec_creo": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "usu_modi": {
+            "type": "string",
+            "nullable": true
+          },
+          "fec_modi": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
           "val_fac_rec_ag": {
             "type": "number",
             "format": "double",
@@ -1031,92 +1263,29 @@
             "format": "double",
             "nullable": true
           },
-          "val_des_tipo_fac": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "MaeValOperativoDto": {
-        "type": "object",
-        "properties": {
-          "val_fac_ag": {
-            "type": "string",
-            "nullable": true
-          },
           "val_pre_ag": {
-            "type": "string",
-            "nullable": true
-          },
-          "val_fac_cu": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "val_pre_cu": {
-            "type": "string",
-            "nullable": true
-          },
-          "val_fac_pb": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "val_pre_pb": {
-            "type": "string",
-            "nullable": true
-          },
-          "val_fac_zn": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "val_pre_zn": {
-            "type": "string",
-            "nullable": true
-          },
-          "val_fac_au": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "val_pre_au": {
-            "type": "string",
-            "nullable": true
-          },
-          "codEmpresa": {
-            "type": "string",
-            "nullable": true
-          },
-          "valAno": {
-            "type": "string",
-            "nullable": true
-          },
-          "valPer": {
-            "type": "string",
-            "nullable": true
-          },
-          "valVig": {
-            "type": "string",
-            "nullable": true
-          },
-          "usuCreo": {
-            "type": "string",
-            "nullable": true
-          },
-          "fecCreo": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "usuModi": {
-            "type": "string",
-            "nullable": true
-          },
-          "fecModi": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "codEmpresaUnidad": {
-            "type": "string",
+            "type": "number",
+            "format": "double",
             "nullable": true
           }
         },

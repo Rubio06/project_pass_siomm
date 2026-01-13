@@ -32,11 +32,11 @@ export class FactorOperativoTablaComponent {
         val_fac_pb: ['0.0000', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
         val_fac_zn: ['0.0000', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
         val_fac_au: ['0.0000', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-        val_fac_rec_ag: ['.00%', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-        val_fac_rec_cu: ['.00%', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-        val_fac_rec_pb: ['.00%', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-        val_fac_rec_zn: ['.00%', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-        val_fac_rec_au: ['.00%', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+        val_fac_rec_ag: ['0.0000', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+        val_fac_rec_cu: ['0.0000', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+        val_fac_rec_pb: ['0.0000', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+        val_fac_rec_zn: ['0.0000', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+        val_fac_rec_au: ['0.0000', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
     });
 
     constructor() {
@@ -55,22 +55,34 @@ export class FactorOperativoTablaComponent {
                     val_fac_zn: factorOperativo.val_fac_zn,
                     val_fac_au: factorOperativo.val_fac_au,
 
-                    val_fac_rec_ag: factorOperativoDetalle?.val_fac_rec_ag != null
-                        ? (factorOperativoDetalle.val_fac_rec_ag * 100).toFixed(2) + '%'
-                        : '.00%',
-                    val_fac_rec_cu: factorOperativoDetalle?.val_fac_rec_cu != null
-                        ? (factorOperativoDetalle.val_fac_rec_cu * 100).toFixed(2) + '%'
-                        : '.00%',
-                    val_fac_rec_pb: factorOperativoDetalle?.val_fac_rec_pb != null
-                        ? (factorOperativoDetalle.val_fac_rec_pb * 100).toFixed(2) + '%'
-                        : '.00%',
-                    val_fac_rec_zn: factorOperativoDetalle?.val_fac_rec_zn != null
-                        ? (factorOperativoDetalle.val_fac_rec_zn * 100).toFixed(2) + '%'
-                        : '.00%',
-                    val_fac_rec_au: factorOperativoDetalle?.val_fac_rec_au != null
-                        ? (factorOperativoDetalle.val_fac_rec_au * 100).toFixed(2) + '%'
-                        : '.00%',
-                    val_des_tipo_fac: factorOperativoDetalle?.val_des_tipo_fac ?? '',
+                    // val_fac_rec_ag: factorOperativoDetalle?.val_fac_rec_ag != null
+                    //     ? (factorOperativoDetalle.val_fac_rec_ag * 100).toFixed(2) + '%'
+                    //     : '0.0000',
+                    // val_fac_rec_cu: factorOperativoDetalle?.val_fac_rec_cu != null
+                    //     ? (factorOperativoDetalle.val_fac_rec_cu * 100).toFixed(2) + '%'
+                    //     : '0.0000',
+                    // val_fac_rec_pb: factorOperativoDetalle?.val_fac_rec_pb != null
+                    //     ? (factorOperativoDetalle.val_fac_rec_pb * 100).toFixed(2) + '%'
+                    //     : '0.0000',
+                    // val_fac_rec_zn: factorOperativoDetalle?.val_fac_rec_zn != null
+                    //     ? (factorOperativoDetalle.val_fac_rec_zn * 100).toFixed(2) + '%'
+                    //     : '0.0000',
+                    // val_fac_rec_au: factorOperativoDetalle?.val_fac_rec_au != null
+                    //     ? (factorOperativoDetalle.val_fac_rec_au * 100).toFixed(2) + '%'
+                    //     : '0.0000',
+                    // val_des_tipo_fac: factorOperativoDetalle?.val_des_tipo_fac ?? '',
+
+
+                    val_fac_rec_ag: factorOperativoDetalle?.val_fac_rec_ag,
+                    val_fac_rec_cu: factorOperativoDetalle?.val_fac_rec_cu,
+
+                    val_fac_rec_pb: factorOperativoDetalle?.val_fac_rec_pb,
+
+                    val_fac_rec_zn: factorOperativoDetalle?.val_fac_rec_zn,
+
+                    val_fac_rec_au: factorOperativoDetalle?.val_fac_rec_au,
+
+                    val_des_tipo_fac: factorOperativoDetalle?.val_des_tipo_fac,
                 });
             }
         });
@@ -135,7 +147,8 @@ export class FactorOperativoTablaComponent {
         this.form.valueChanges.subscribe(val => {
             const filas = this.form.getRawValue();
 
-            this.planingCompartido.setFactor(filas);
+            this.planingCompartido.setOperativoDetalle(filas);
+
         });
     }
 }

@@ -24,6 +24,7 @@ export class AuthService {
     }
 
     login(username: string, password: string): Observable<boolean> {
+        console.log("la url es " + this.authUrl)
         return this.http
             .post<LogResponse>(`${this.authUrl}auth/authenticate`, { username, password })
             .pipe(

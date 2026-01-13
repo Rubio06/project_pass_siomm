@@ -24,7 +24,7 @@ export class PlaningCompartidoService {
     private _recuperacionBudget: WritableSignal<MaeFactorRecuperacion[]> = signal([]);
     private _semana_avance: WritableSignal<MaeSemanaAvance[]> = signal([]);
     private _semana_ciclo: WritableSignal<MaeSemanaCiclo[]> = signal([]);
-    private _valores: WritableSignal<any[]> = signal([]);
+    // private _valores: WritableSignal<any[]> = signal([]);
 
     // Readonly para cada tab
     readonly canchas = this._canchas.asReadonly();
@@ -39,7 +39,7 @@ export class PlaningCompartidoService {
     readonly recuperacionBudget = this._recuperacionBudget.asReadonly();
     readonly semana_avance = this._semana_avance.asReadonly();
     readonly semana_ciclo = this._semana_ciclo.asReadonly();
-    readonly valores = this._valores.asReadonly();
+    // readonly valores = this._valores.asReadonly();
 
     // Métodos para setear datos
     setCanchas(data: MaeValCanchas | MaeValCanchas[]) {
@@ -62,6 +62,13 @@ export class PlaningCompartidoService {
         this._factorOperativo.set(Array.isArray(data) ? data : [data]);
     }
 
+
+
+    setOperativoDetalle(data: MaeValOperativoDetalle | MaeValOperativoDetalle[]) {
+        this._operativo_detalle.set(Array.isArray(data) ? data : [data]);
+    }
+// factorSobredisolucion
+
     setFactorSobredisolucion(data: MaeFactorSobredisolucion | MaeFactorSobredisolucion[]) {
         this._factorSobredisolucion.set(Array.isArray(data) ? data : [data]);
     }
@@ -74,9 +81,6 @@ export class PlaningCompartidoService {
         this._metodo_minado.set(Array.isArray(data) ? data : [data]);
     }
 
-    setOperativoDetalle(data: MaeValOperativoDetalle | MaeValOperativoDetalle[]) {
-        this._operativo_detalle.set(Array.isArray(data) ? data : [data]);
-    }
 
     setRecuperacionBudget(data: MaeFactorRecuperacion | MaeFactorRecuperacion[]) {
         this._recuperacionBudget.set(Array.isArray(data) ? data : [data]);
@@ -90,24 +94,32 @@ export class PlaningCompartidoService {
         this._semana_ciclo.set(Array.isArray(data) ? data : [data]);
     }
 
-    setValores(data: any | any[]) {
-        this._valores.set(Array.isArray(data) ? data : [data]);
-    }
+    // setValores(data: any | any[]) {
+    //     this._valores.set(Array.isArray(data) ? data : [data]);
+    // }
 
     // Limpiar todo
 
+
     public guardarTodo() {
         const payload = {
-            // valores: this._valores(),
-            // canchas: this._canchas(),
+
+            cierre_periodo: this._cierre_periodo(),
             factor: this._factor(),
-            // factorOperativo: this._factorOperativo(),
+            operativo_detalle: this._operativo_detalle(),
+            factorOperativo: this._factorOperativo(),
+            canchas: this._canchas(),
+
+
+            factorSobredisolucion: this._factorSobredisolucion(),
+
+            // valores: this._valores(),
             // laboratorio_estandar: this._laboratorio_estandar(),
             // exploracion_extandar: this._exploracion_extandar(),
             // metodo_minado: this._metodo_minado(),
             // semana_ciclo: this._semana_ciclo(),
             // semana_avance: this._semana_avance(),
-            username: localStorage.getItem('username')
+            username: localStorage.getItem('username'),
         };
 
         console.log("los datos recibidos son: " + JSON.stringify(payload, null, 2));

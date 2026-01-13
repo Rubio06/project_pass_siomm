@@ -1,0 +1,249 @@
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
+using pass_siomm_backend.Data.Dto.PlaneamientoDto;
+using pass_siomm_backend.Services.PlaneamientoService;
+using System.Data;
+using System.Text.Json;
+using static pass_siomm_backend.Services.PlaneamientoService.SemanaAvanceServices;
+
+namespace pass_siomm_backend.Controllers.PlaneamientoConroller
+{
+
+    //[Authorize]
+    [Route("aper-periodo-operativo")]
+    [ApiController]
+    public class SemanaController : ControllerBase
+    {
+
+        private readonly SemanaAvanceServices _service;
+
+        private readonly AperPeriodoOperativoServices _AperPeriodoOperativoService;
+
+        public SemanaController(SemanaAvanceServices service, AperPeriodoOperativoServices AperPeriodoOperativoService)
+        {
+            _service = service;
+            _AperPeriodoOperativoService = AperPeriodoOperativoService;
+
+        }
+
+        [HttpPost("semana/semana-avance-eliminar")]
+        public async Task<IActionResult> EliminarSemanaAvance([FromBody] MaeSemanaAvanceEliminarDto semana)
+        {
+
+            try
+            {
+                if (semana == null)
+                    return BadRequest("Datos inválidos");
+
+                bool result = await _service.EliminarSemanaAvance(semana);
+
+                if (result)
+                    return Ok(new { success = true, message = "Fila eliminada" });
+                else
+                    return StatusCode(500, new { success = false, message = "Error al eliminar fila" });
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ERROR REAL SQL:");
+                Console.WriteLine(ex.ToString());
+
+                throw;
+            }
+        }
+
+
+        [HttpPost("semana/semana-ciclo-eliminar")]
+        public async Task<IActionResult> EliminarSemanaCiclo([FromBody] MaeSemanaAvanceEliminarDto semana)
+        {
+
+            try
+            {
+
+                if (semana == null)
+                    return BadRequest("Datos inválidos");
+
+                bool result = await _service.EliminarSemanaCiclo(semana);
+
+                if (result)
+                    return Ok(new { success = true, message = "Fila eliminada" });
+                else
+                    return StatusCode(500, new { success = false, message = "Error al eliminar fila" });
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ERROR REAL SQL:");
+                Console.WriteLine(ex.ToString());
+
+                throw;
+            }
+        }
+
+        [HttpPost("semana/metodo-minado-eliminar")]
+        public async Task<IActionResult> EliminarMetodoMinado([FromBody] MaePerMetExplotacionEliminarDto semana)
+        {
+
+            try
+            {
+
+                if (semana == null)
+                    return BadRequest("Datos inválidos");
+
+                bool result = await _service.EliminarMetodoMinado(semana);
+
+                if (result)
+                    return Ok(new { success = true, message = "Fila eliminada" });
+                else
+                    return StatusCode(500, new { success = false, message = "Error al eliminar fila" });
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ERROR REAL SQL:");
+                Console.WriteLine(ex.ToString());
+
+                throw;
+            }
+        }
+
+
+
+        [HttpPost("semana/estandar-exploracion-eliminar")]
+        public async Task<IActionResult> EliminarEstandarExploracion([FromBody] MaeExploEstandarEliminar semana)
+        {
+
+            try
+            {
+
+                if (semana == null)
+                    return BadRequest("Datos inválidos");
+
+                bool result = await _service.EliminarEstandarExploracion(semana);
+
+                if (result)
+                    return Ok(new { success = true, message = "Fila eliminada" });
+                else
+                    return StatusCode(500, new { success = false, message = "Error al eliminar fila" });
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ERROR REAL SQL:");
+                Console.WriteLine(ex.ToString());
+
+                throw;
+            }
+        }
+
+
+        [HttpPost("semana/estandar-avance-eliminar")]
+        public async Task<IActionResult> EliminarEstandarAvance([FromBody] MaeLaboratorioEstandarEliminarDto semana)
+        {
+
+            try
+            {
+
+                if (semana == null)
+                    return BadRequest("Datos inválidos");
+
+                bool result = await _service.EliminarEstandarAvance(semana);
+
+                if (result)
+                    return Ok(new { success = true, message = "Fila eliminada" });
+                else
+                    return StatusCode(500, new { success = false, message = "Error al eliminar fila" });
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ERROR REAL SQL:");
+                Console.WriteLine(ex.ToString());
+
+                throw;
+            }
+        }
+
+
+        /* CONTROLADOR PARA COPIAR DATOS */
+        [HttpPost("semana/copiar-periodo")]
+        public async Task<IActionResult> CopiarPeriodoOperativo([FromBody] CopiarPeriodoDto periodo)
+        {
+
+            if (periodo == null)
+            {
+                return BadRequest(new ApiResponse<object>
+                {
+                    success = false,
+                    message = "Datos insuficientes"
+                });
+            }
+
+            try
+            {
+                await _service.InsertarCopiarPeriodoAsync(periodo);
+                Console.WriteLine(JsonSerializer.Serialize(periodo));
+
+                return Ok(new ApiResponse<CopiarPeriodoDto>
+                {
+                    success = true,
+                    message = "Periodo copiado exitosamente",
+                    data = periodo
+                });
+            }
+            catch (SqlException ex)
+            {
+                if (ex.Number == 50000 || ex.Number == 2601 || ex.Number == 2627)
+                {
+                    return BadRequest(new ApiResponse<object>
+                    {
+                        success = false,
+                        message = ex.Message
+                    });
+                }
+
+                return StatusCode(500, new ApiResponse<object>
+                {
+                    success = false,
+                    message = "Error interno del servidor"
+                });
+            }
+        }
+
+
+
+
+        [HttpPost("semana/guardar-datos")]
+        public async Task<IActionResult> GuardarDatos([FromBody] DatosCompletosGuardarDto datos)
+        {
+
+            var json = JsonSerializer.Serialize(datos, new JsonSerializerOptions
+            {
+                WriteIndented = true // para que sea "bonito"
+            });
+
+            Console.WriteLine(json); 
+
+            if (datos == null)
+                return BadRequest("Los datos no pueden ser nulos");
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            try
+            {
+                await _service.GuardarDatosAsync(datos);
+                return Ok(new { mensaje = "Guardado exitosamente" });
+            }
+            catch (Exception ex)
+            {
+                // Log en consola
+                Console.WriteLine("Error al guardar datos: " + ex);
+
+                return StatusCode(500, new { mensaje = "Error interno al guardar los datos" });
+            }
+        }
+    }
+}

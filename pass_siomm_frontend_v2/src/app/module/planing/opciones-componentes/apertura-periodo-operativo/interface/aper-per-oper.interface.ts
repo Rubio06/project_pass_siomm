@@ -14,18 +14,7 @@ export interface MaeValCanchas {
     val_vpt: string;
 }
 
-export interface MaeValOperativo {
-    val_fac_ag: string;
-    val_pre_ag: string;
-    val_fac_cu: string;
-    val_pre_cu: string;
-    val_fac_pb: string;
-    val_pre_pb: string;
-    val_fac_zn: string;
-    val_pre_zn: string;
-    val_fac_au: string;
-    val_pre_au: string;
-}
+
 export interface MaeFactorSobredisolucion {
     val_fac_ag: string;
     val_fac_cu: string;
@@ -60,6 +49,20 @@ export interface MaeFactor {
 }
 
 export interface MaeValOperativoDetalle {
+    // val_des_tipo_fac: string;
+    val_fac_ag: string;
+    val_pre_ag: string;
+    val_fac_cu: string;
+    val_pre_cu: string;
+    val_fac_pb: string;
+    val_pre_pb: string;
+    val_fac_zn: string;
+    val_pre_zn: string;
+    val_fac_au: string;
+    val_pre_au: string;
+}
+
+export interface MaeValOperativo {
     val_fac_rec_ag: number;
     val_fac_rec_cu: number;
     val_fac_rec_pb: number;
@@ -70,12 +73,15 @@ export interface MaeValOperativoDetalle {
 
 export interface PlanningData {
     cierre_periodo: AperPeriodo[];
-    factorOperativo: MaeValOperativo[];
+
+    operativo_detalle: MaeValOperativoDetalle[];
     canchas: MaeValCanchas[];
     sobredisolucion: MaeFactorSobredisolucion[];
     recuperacionBudget: MaeFactorRecuperacion[];
     factor: MaeFactor[];
-    operativo_detalle: MaeValOperativoDetalle[];
+
+
+    factorOperativo: MaeValOperativo[];
     laboratorio_estandar: MaeTipLabEstandar[];
     metodo_minado: MaePerMetExplotacion[];
     semana_ciclo: MaeSemanaCiclo[];

@@ -178,6 +178,14 @@ export class AperPerOperComponent {
         });
     }
 
+    ngOnInit() {
+        this.form.valueChanges.subscribe(val => {
+            const filas = this.form.getRawValue();
+
+            this.planingCompartido.setCierrePeriodo(filas);
+        });
+    }
+
     private formatDate(dateStr: string): string {
         if (!dateStr) return '';
         const date = new Date(dateStr);

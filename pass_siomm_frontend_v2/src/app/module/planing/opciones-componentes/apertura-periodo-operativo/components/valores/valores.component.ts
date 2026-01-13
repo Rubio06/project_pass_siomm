@@ -165,7 +165,9 @@ export class ValoresComponent {
         this.form.valueChanges.subscribe(val => {
             const filas = this.form.getRawValue();
 
-            this.planingCompartido.setValores(filas);
+            this.planingCompartido.setFactorSobredisolucion(filas);
+
+            // this.planingCompartido.setValores(filas);
             // console.log("📤 TAB semana actualizó servicio:", filas);
         });
     }

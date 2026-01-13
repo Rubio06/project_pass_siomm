@@ -1,2 +1,0 @@
-import './polyfills.server.mjs';
-import{Ka as n,fb as p,gb as m,rb as l}from"./chunk-PFWZTSLH.mjs";import"./chunk-T55IDOPT.mjs";var o=class t{static \u0275fac=function(e){return new(e||t)};static \u0275cmp=n({type:t,selectors:[["app-geology"]],decls:2,vars:0,template:function(e,a){e&1&&(p(0,"p"),l(1,"geology works!"),m())},encapsulation:2})};var r=[{path:"",component:o,children:[]}],d=r;export{d as default,r as geologyMainRouter};

@@ -7,6 +7,8 @@
         public DateTime? fec_fin { get; set; }
         public string? cie_ano { get; set; }
 
+        public int? num_semana { get; set; }
+        public string? desc_semana { get; set; }
     }
 
 }

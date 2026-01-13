@@ -3,12 +3,12 @@
     public class MaeValCanchasDto
     {
 
-        public string val_tms { get; set; }
-        public string val_ag { get; set; }
-        public string val_cu { get; set; }
-        public string val_pb { get; set; }
-        public string val_zn { get; set; }
-        public string val_vpt { get; set; }
+        public decimal? val_tms { get; set; }
+        public decimal? val_ag { get; set; }
+        public decimal? val_cu { get; set; }
+        public decimal? val_pb { get; set; }
+        public decimal? val_zn { get; set; }
+        public decimal? val_vpt { get; set; }
 
     }
 }

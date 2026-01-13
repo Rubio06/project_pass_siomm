@@ -218,6 +218,7 @@ namespace pass_siomm_backend.Controllers.PlaneamientoConroller
         [HttpPost("semana/guardar-datos")]
         public async Task<IActionResult> GuardarDatos([FromBody] DatosCompletosDto datos)
         {
+            //return Ok("Estaok");
             if (datos == null) return BadRequest("Los datos no pueden ser nulos");
 
             try
@@ -226,9 +227,18 @@ namespace pass_siomm_backend.Controllers.PlaneamientoConroller
                 await _service.GuardarDatosAsync(datos);
                 return Ok(new { mensaje = "Guardado exitosamente" });
             }
-            catch (Exception ex)
+            catch (SqlException ex) // Cambia Exception por SqlException
             {
-                return BadRequest(new { error = ex.Message });
+                // Esto te dirá el nombre del procedimiento, la línea exacta y el mensaje detallado
+                var errorDetallado = ex.Errors[0];
+                string mensajeLog = $"Error SQL: {ex.Message} | Procedimiento: {errorDetallado.Procedure} | Línea: {errorDetallado.LineNumber}";
+
+                return BadRequest(new
+                {
+                    error = ex.Message,
+                    detalle = errorDetallado.Procedure,
+                    linea = errorDetallado.LineNumber
+                });
             }
         }
     }

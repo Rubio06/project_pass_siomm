@@ -149,16 +149,45 @@ namespace pass_siomm_backend.Services.PlaneamientoService
             {
                 lista.Add(new MaeValOperativoDto
                 {
-                    val_fac_ag = reader["val_fac_ag"].ToString(),
-                    val_pre_ag = reader["val_pre_ag"].ToString(),
-                    val_fac_cu = reader["val_fac_cu"].ToString(),
-                    val_pre_cu = reader["val_pre_cu"].ToString(),
-                    val_fac_pb = reader["val_fac_pb"].ToString(),
-                    val_pre_pb = reader["val_pre_pb"].ToString(),
-                    val_fac_zn = reader["val_fac_zn"].ToString(),
-                    val_pre_zn = reader["val_pre_zn"].ToString(),
-                    val_fac_au = reader["val_fac_au"].ToString(),
-                    val_pre_au = reader["val_pre_au"].ToString()
+                    val_fac_ag = reader.IsDBNull(reader.GetOrdinal("val_fac_ag"))
+                ? (decimal?)null
+                : reader.GetDecimal(reader.GetOrdinal("val_fac_ag")),
+
+                    val_pre_ag = reader.IsDBNull(reader.GetOrdinal("val_pre_ag"))
+                ? (decimal?)null
+                : reader.GetDecimal(reader.GetOrdinal("val_pre_ag")),
+
+                    val_fac_cu = reader.IsDBNull(reader.GetOrdinal("val_fac_cu"))
+                ? (decimal?)null
+                : reader.GetDecimal(reader.GetOrdinal("val_fac_cu")),
+
+                    val_pre_cu = reader.IsDBNull(reader.GetOrdinal("val_pre_cu"))
+                ? (decimal?)null
+                : reader.GetDecimal(reader.GetOrdinal("val_pre_cu")),
+
+                    val_fac_pb = reader.IsDBNull(reader.GetOrdinal("val_fac_pb"))
+                ? (decimal?)null
+                : reader.GetDecimal(reader.GetOrdinal("val_fac_pb")),
+
+                    val_pre_pb = reader.IsDBNull(reader.GetOrdinal("val_pre_pb"))
+                ? (decimal?)null
+                : reader.GetDecimal(reader.GetOrdinal("val_pre_pb")),
+
+                    val_fac_zn = reader.IsDBNull(reader.GetOrdinal("val_fac_zn"))
+                ? (decimal?)null
+                : reader.GetDecimal(reader.GetOrdinal("val_fac_zn")),
+
+                    val_pre_zn = reader.IsDBNull(reader.GetOrdinal("val_pre_zn"))
+                ? (decimal?)null
+                : reader.GetDecimal(reader.GetOrdinal("val_pre_zn")),
+
+                    val_fac_au = reader.IsDBNull(reader.GetOrdinal("val_fac_au"))
+                ? (decimal?)null
+                : reader.GetDecimal(reader.GetOrdinal("val_fac_au")),
+
+                    val_pre_au = reader.IsDBNull(reader.GetOrdinal("val_pre_au"))
+                ? (decimal?)null
+                : reader.GetDecimal(reader.GetOrdinal("val_pre_au"))
                 });
             }
             return lista;
@@ -228,14 +257,44 @@ namespace pass_siomm_backend.Services.PlaneamientoService
             {
                 lista.Add(new MaeFactorDto
                 {
-                    fac_denmin = reader["fac_denmin"].ToString(),
-                    fac_dendes = reader["fac_dendes"].ToString(),
-                    fac_vptmin = reader["fac_vptmin"].ToString(),
-                    fac_dialab = reader["fac_dialab"].ToString(),
-                    fac_tarhor = reader["fac_tarhor"].ToString(),
-                    fac_porcum = reader["fac_porcum"].ToString(),
-                    fac_porhum = reader["fac_porhum"].ToString(),
-                    fac_tms_dif = reader["fac_tms_dif"].ToString()
+                    fac_denmin = reader["fac_denmin"] == DBNull.Value
+    ? (decimal?)null
+    : Convert.ToDecimal(reader["fac_denmin"]),
+
+                    fac_dendes = reader["fac_dendes"] == DBNull.Value
+    ? (decimal?)null
+    : Convert.ToDecimal(reader["fac_dendes"]),
+
+                    fac_vptmin = reader["fac_vptmin"] == DBNull.Value
+    ? (decimal?)null
+    : Convert.ToDecimal(reader["fac_vptmin"]),
+
+                    fac_dialab = reader["fac_dialab"] == DBNull.Value
+    ? (decimal?)null
+    : Convert.ToDecimal(reader["fac_dialab"]),
+
+                    fac_tarhor = reader["fac_tarhor"] == DBNull.Value
+    ? (decimal?)null
+    : Convert.ToDecimal(reader["fac_tarhor"]),
+
+
+
+                    fac_porcum = reader["fac_porcum"] == DBNull.Value
+    ? (decimal?)null
+    : Convert.ToDecimal(reader["fac_porcum"]),
+
+
+                    fac_porhum = reader["fac_porhum"] == DBNull.Value
+    ? (decimal?)null
+    : Convert.ToDecimal(reader["fac_porhum"]),
+
+                    fac_tms_dif = reader["fac_tms_dif"] == DBNull.Value
+    ? (decimal?)null
+    : Convert.ToDecimal(reader["fac_tms_dif"])
+
+
+
+
                 });
             }
             return lista;
@@ -349,15 +408,41 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                 lista.Add(new MaeExploEstandar
                 {
                     cod_zona = reader["cod_zona"].ToString(),
-                    lab_pieper = reader["lab_pieper"].ToString(),
-                    lab_broca = reader["lab_broca"].ToString(),
-                    lab_barcon = reader["lab_barcon"].ToString(),
-                    lab_barren = reader["lab_barren"].ToString(),
-                    lab_facpot = reader["lab_facpot"].ToString(),
-                    lab_fulmin = reader["lab_fulmin"].ToString(),
-                    lab_conect = reader["lab_conect"].ToString(),
-                    lab_punmar = reader["lab_punmar"].ToString(),
-                    lab_tabla = reader["lab_tabla"].ToString(),
+                    lab_pieper = reader.IsDBNull(reader.GetOrdinal("lab_pieper"))
+    ? (decimal?)null
+    : reader.GetDecimal(reader.GetOrdinal("lab_pieper")),
+
+                    lab_broca = reader.IsDBNull(reader.GetOrdinal("lab_broca"))
+    ? (decimal?)null
+    : reader.GetDecimal(reader.GetOrdinal("lab_broca")),
+
+                    lab_barcon = reader.IsDBNull(reader.GetOrdinal("lab_barcon"))
+    ? (decimal?)null
+    : reader.GetDecimal(reader.GetOrdinal("lab_barcon")),
+
+                    lab_barren = reader.IsDBNull(reader.GetOrdinal("lab_barren"))
+    ? (decimal?)null
+    : reader.GetDecimal(reader.GetOrdinal("lab_barren")),
+
+                    lab_facpot = reader.IsDBNull(reader.GetOrdinal("lab_facpot"))
+    ? (decimal?)null
+    : reader.GetDecimal(reader.GetOrdinal("lab_facpot")),
+
+                    lab_fulmin = reader.IsDBNull(reader.GetOrdinal("lab_fulmin"))
+    ? (decimal?)null
+    : reader.GetDecimal(reader.GetOrdinal("lab_fulmin")),
+
+                    lab_conect = reader.IsDBNull(reader.GetOrdinal("lab_conect"))
+    ? (decimal?)null
+    : reader.GetDecimal(reader.GetOrdinal("lab_conect")),
+
+                    lab_punmar = reader.IsDBNull(reader.GetOrdinal("lab_punmar"))
+    ? (decimal?)null
+    : reader.GetDecimal(reader.GetOrdinal("lab_punmar")),
+
+                    lab_tabla = reader.IsDBNull(reader.GetOrdinal("lab_tabla"))
+    ? (decimal?)null
+    : reader.GetDecimal(reader.GetOrdinal("lab_tabla")),
                     lab_apr = reader["lab_apr"].ToString(),
 
                 });
