@@ -37,16 +37,6 @@ export interface MaeFactorRecuperacion {
     val_con_au: string;
 }
 
-export interface MaeFactor {
-    fac_denmin: string;
-    fac_dendes: string;
-    fac_vptmin: string;
-    fac_dialab: string;
-    fac_tarhor: string;
-    fac_porcum: string;
-    fac_porhum: string;
-    fac_tms_dif: string;
-}
 
 export interface MaeValOperativoDetalle {
     // val_des_tipo_fac: string;
@@ -61,6 +51,19 @@ export interface MaeValOperativoDetalle {
     val_fac_au: string;
     val_pre_au: string;
 }
+
+export interface MaeFactor {
+    fac_denmin: string;
+    fac_dendes: string;
+    fac_vptmin: string;
+    fac_dialab: string;
+    fac_tarhor: string;
+    fac_porcum: string;
+    fac_porhum: string;
+    fac_tms_dif: string;
+}
+
+
 
 export interface MaeValOperativo {
     val_fac_rec_ag: number;
@@ -88,6 +91,7 @@ export interface PlanningData {
     semana_avance: MaeSemanaAvance[];
     exploracion_extandar: MaeExploEstandar[];
 }
+
 
 export interface MaeExploEstandar {
     cod_zona: string;

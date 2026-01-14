@@ -28,3 +28,6 @@ select * from mae_met_explotacion
 select * from mae_per_met_explotacion where cod_metexp = 'LM'
 
 delete from mae_per_met_explotacion where cod_metexp = 'LM'
+
+
+select * from mae_factor

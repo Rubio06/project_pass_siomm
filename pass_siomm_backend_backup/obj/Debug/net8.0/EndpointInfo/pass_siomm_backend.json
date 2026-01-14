@@ -531,11 +531,7 @@
             "type": "string",
             "nullable": true
           },
-          "anioActual": {
-            "type": "string",
-            "nullable": true
-          },
-          "mesActual": {
+          "modo": {
             "type": "string",
             "nullable": true
           }

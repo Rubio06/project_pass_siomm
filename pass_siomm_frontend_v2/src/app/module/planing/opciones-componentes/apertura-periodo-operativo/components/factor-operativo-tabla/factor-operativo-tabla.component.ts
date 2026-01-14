@@ -44,9 +44,13 @@ export class FactorOperativoTablaComponent {
         effect(() => {
             const response = this.rutas();
 
+
             if (response?.data?.factorOperativo?.length) {
                 const factorOperativo = response.data.factorOperativo[0];
                 const factorOperativoDetalle = response.data.operativo_detalle?.[0]; // <- proteccion
+                console.log("factor operativo:", JSON.stringify(factorOperativo, null, 2));
+                console.log("factor detalle:", JSON.stringify(factorOperativoDetalle, null, 2));
+
 
                 this.form.patchValue({
                     val_fac_ag: factorOperativo.val_fac_ag,
@@ -55,34 +59,17 @@ export class FactorOperativoTablaComponent {
                     val_fac_zn: factorOperativo.val_fac_zn,
                     val_fac_au: factorOperativo.val_fac_au,
 
-                    // val_fac_rec_ag: factorOperativoDetalle?.val_fac_rec_ag != null
-                    //     ? (factorOperativoDetalle.val_fac_rec_ag * 100).toFixed(2) + '%'
-                    //     : '0.0000',
-                    // val_fac_rec_cu: factorOperativoDetalle?.val_fac_rec_cu != null
-                    //     ? (factorOperativoDetalle.val_fac_rec_cu * 100).toFixed(2) + '%'
-                    //     : '0.0000',
-                    // val_fac_rec_pb: factorOperativoDetalle?.val_fac_rec_pb != null
-                    //     ? (factorOperativoDetalle.val_fac_rec_pb * 100).toFixed(2) + '%'
-                    //     : '0.0000',
-                    // val_fac_rec_zn: factorOperativoDetalle?.val_fac_rec_zn != null
-                    //     ? (factorOperativoDetalle.val_fac_rec_zn * 100).toFixed(2) + '%'
-                    //     : '0.0000',
-                    // val_fac_rec_au: factorOperativoDetalle?.val_fac_rec_au != null
-                    //     ? (factorOperativoDetalle.val_fac_rec_au * 100).toFixed(2) + '%'
-                    //     : '0.0000',
-                    // val_des_tipo_fac: factorOperativoDetalle?.val_des_tipo_fac ?? '',
 
+                    val_fac_rec_ag: factorOperativoDetalle?.val_fac_rec_ag || '0.0000',
+                    val_fac_rec_cu: factorOperativoDetalle?.val_fac_rec_cu || '0.0000',
 
-                    val_fac_rec_ag: factorOperativoDetalle?.val_fac_rec_ag,
-                    val_fac_rec_cu: factorOperativoDetalle?.val_fac_rec_cu,
+                    val_fac_rec_pb: factorOperativoDetalle?.val_fac_rec_pb || '0.0000',
 
-                    val_fac_rec_pb: factorOperativoDetalle?.val_fac_rec_pb,
+                    val_fac_rec_zn: factorOperativoDetalle?.val_fac_rec_zn || '0.0000',
 
-                    val_fac_rec_zn: factorOperativoDetalle?.val_fac_rec_zn,
+                    val_fac_rec_au: factorOperativoDetalle?.val_fac_rec_au || '0.0000',
 
-                    val_fac_rec_au: factorOperativoDetalle?.val_fac_rec_au,
-
-                    val_des_tipo_fac: factorOperativoDetalle?.val_des_tipo_fac,
+                    val_des_tipo_fac: factorOperativoDetalle?.val_des_tipo_fac || '0.0000',
                 });
             }
         });
@@ -104,7 +91,6 @@ export class FactorOperativoTablaComponent {
             if (!this.planingCompartido.resetSemanas()) {
                 // this.semanas.clear();
                 this.resetearFormulario();
-
                 return;
             }
 
@@ -126,11 +112,13 @@ export class FactorOperativoTablaComponent {
             val_fac_pb: '0.0000',
             val_fac_zn: '0.0000',
             val_fac_au: '0.0000',
-            val_fac_rec_ag: '.00%',
-            val_fac_rec_cu: '.00%',
-            val_fac_rec_pb: '.00%',
-            val_fac_rec_zn: '.00%',
-            val_fac_rec_au: '.00%',
+
+
+            val_fac_rec_ag: '0.0000',
+            val_fac_rec_cu: '0.0000',
+            val_fac_rec_pb: '0.0000',
+            val_fac_rec_zn: '0.0000',
+            val_fac_rec_au: '0.0000',
         });
     }
 
@@ -148,6 +136,9 @@ export class FactorOperativoTablaComponent {
             const filas = this.form.getRawValue();
 
             this.planingCompartido.setOperativoDetalle(filas);
+
+            this.planingCompartido.setFactorOperativo(filas);
+
 
         });
     }

@@ -1,3 +1,4 @@
+import { catchError } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, signal, ViewChild, WritableSignal } from '@angular/core';
 import { PlanningService } from '../../services/planning.service';
@@ -43,6 +44,10 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
     private fb = inject(FormBuilder);
     @ViewChild(ModalPeriodo)
     child!: ModalPeriodo;
+
+    //DECIDE SI QUIERO EDITAR O SOLO GUARDAR
+    modoBoton: 'N' | 'E' = 'N';
+
 
     formsUtils = FormUtils;
 
@@ -298,6 +303,9 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
 
     ///FORMULARIOS EDITAR
     onEditar() {
+
+        this.modoBoton = 'E';
+
         this.planingCompartido.setFormBloqueadoCentral(false);
         this.planingCompartido.setModoEditar(true);
 
@@ -323,6 +331,11 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
 
 
     onNuevo() {
+
+        this.modoBoton = 'N';
+
+
+
         this.planingCompartido.setModoEditar(false);
         this.planingCompartido.setFormBloqueadoCentral(false);
         this.planingCompartido.setCambios(true);
@@ -372,28 +385,6 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
     // }
 
 
-    public async onGuardar() {
-        const confirmado = await this.formsUtils.confirmarGuardado();
-        if (!confirmado) return;
-
-        try {
-            await this.guardarDatos();  // ⏳ ahora sí espera
-
-
-            this.onVisualizar();
-            this.formsUtils.mostrarExito();
-
-
-            this.showData.get('fechaInicio')?.enable();
-            this.showData.get('fechaFin')?.enable();
-            this.planingCompartido.setCambios(false);
-
-
-        } catch (error) {
-            console.error(error);
-
-        }
-    }
 
     public async onGuardarGuard() {
         try {
@@ -425,13 +416,54 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
     }
 
 
-    private async guardarDatos() {
-        this.planingCompartido.guardarTodo().subscribe({
-            next: () => {
+    //GUARDAR DATOS COMPONENTE
+    private mapModo(): 'N' | 'E' {
+        return this.modoBoton === 'N' ? 'N' : 'E';
+    }
 
+    public async onGuardar() {
+
+        if (!this.planingCompartido.isPeriodoValido()) {
+            this.formsUtils.errorGuardar(
+                'Debe completar los datos del periodo antes de guardar.'
+            );
+            return;
+        }
+
+        const confirmado = await this.formsUtils.confirmarGuardado();
+        if (!confirmado) return;
+
+        this.guardarDatos();
+    }
+
+    private guardarDatos() {
+
+        // if (this.form.invalid) {
+        //     this.form.markAllAsTouched(); // 🔥 obliga al usuario
+        //     return; // ⛔ NO backend
+        // }
+
+
+        this.planingCompartido.guardarTodo(this.mapModo()).subscribe({
+            next: () => {
+                this.onVisualizar();
+                this.formsUtils.mostrarExito();
+
+                this.showData.get('fechaInicio')?.enable();
+                this.showData.get('fechaFin')?.enable();
+                this.planingCompartido.setCambios(false);
+
+                this.sendYear();
+                this.sendMonth();
             },
             error: (err) => {
+                // mensaje que viene del backend
+                const mensaje =
+                    err?.error?.mensaje ||
+                    err?.error ||
+                    'Error al guardar los datos';
 
+                this.formsUtils.errorGuardar(mensaje);
             }
         });
     }

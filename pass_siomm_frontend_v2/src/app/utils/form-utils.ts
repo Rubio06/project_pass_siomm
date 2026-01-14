@@ -206,6 +206,24 @@ export class FormUtils {
         });
     }
 
+
+    static errorGuardar(message: string) {
+        return Swal.fire({
+            title: "Error al guardar",
+            html: `
+            <p style="font-size:15px; line-height:1.5; margin:0;">
+                ${message}
+            </p>
+        `,
+            icon: "error",
+            confirmButtonColor: "#C62828",
+            confirmButtonText: "Aceptar"
+        });
+    }
+
+
+
+
     static confirmarDescartarCambios(): Promise<boolean> {
         return Swal.fire({
             title: 'Cambios sin guardar',

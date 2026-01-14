@@ -1,5 +1,5 @@
 import { Component, effect, inject, signal } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { PlanningService } from '../../services/planning.service';
 import { FormUtils } from 'src/app/utils/form-utils';
 import { SemanasAvanceMainService } from '../../services/semanas-avance-main/semanas-avance-main.service';
@@ -59,11 +59,30 @@ export class AperPerOperComponent {
     ]);
 
     form: FormGroup = this.fb.group({
-        cie_ano: [this.anio],
-        cie_per: [this.mesNombre],
-        fec_ini: [''],
-        fec_fin: ['']
-    });
+        cie_ano: ['', [Validators.required]],
+        cie_per: [this.mesNombre, [Validators.required]],
+        fec_ini: ['', [Validators.required]],
+        fec_fin: ['', [Validators.required]]
+    },
+        {
+            validators: this.validarRangoFechas
+        });
+
+
+    validarRangoFechas(form: AbstractControl): ValidationErrors | null {
+
+        const fecIni = form.get('fec_ini')?.value;
+        const fecFin = form.get('fec_fin')?.value;
+
+        if (!fecIni || !fecFin) {
+            return null; // required ya se encarga
+        }
+
+        const ini = new Date(fecIni);
+        const fin = new Date(fecFin);
+
+        return fin >= ini ? null : { fechaFinMenor: true };
+    }
 
     constructor() {
         this.getYear();
@@ -146,16 +165,32 @@ export class AperPerOperComponent {
     public getYear() {
         this.planingService.getYear().subscribe({
             next: (data: string[]) => {
-                const nextYear = (new Date().getFullYear() + 1).toString();
 
-                if (!data.includes(nextYear)) data.unshift(nextYear);
-                this.anios.set(data);
+                // convertir a número
+                const years = data.map(Number);
 
+                // último año REAL en BD
+                const lastYear = Math.max(...years);
+
+                // siguiente año lógico
+                const nextYear = (lastYear + 1).toString();
+
+                // lista final (sin duplicados)
+                const result = Array.from(
+                    new Set([...years.map(String), nextYear])
+                ).sort((a, b) => Number(b) - Number(a));
+
+                // actualizar select
                 this.fieldInputs.update(fields =>
                     fields.map(f =>
-                        f.name === 'cie_ano' ? { ...f, array: data } : f
+                        f.name === 'cie_ano'
+                            ? { ...f, array: result }
+                            : f
                     )
                 );
+
+                // seleccionar por defecto el siguiente año
+                this.form.get('cie_ano')?.setValue(nextYear);
             },
             error: (err) => console.error(err)
         });
@@ -179,7 +214,13 @@ export class AperPerOperComponent {
     }
 
     ngOnInit() {
+
+        this.form.statusChanges.subscribe(status => {
+            this.planingCompartido.setPeriodoValido(status === 'VALID');
+        });
+
         this.form.valueChanges.subscribe(val => {
+
             const filas = this.form.getRawValue();
 
             this.planingCompartido.setCierrePeriodo(filas);

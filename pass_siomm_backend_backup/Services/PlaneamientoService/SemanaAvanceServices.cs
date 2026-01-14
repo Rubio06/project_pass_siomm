@@ -3,6 +3,7 @@ using pass_siomm.Data;
 using pass_siomm_backend.Data.Dto.PlaneamientoDto;
 using System.Data;
 using System.Globalization;
+using System.Text.Json;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace pass_siomm_backend.Services.PlaneamientoService
@@ -90,6 +91,15 @@ namespace pass_siomm_backend.Services.PlaneamientoService
         /* LOGICA PARA COPIAR DATOS */
         public async Task InsertarCopiarPeriodoAsync(CopiarPeriodoDto semana)
         {
+
+            var jsonError = JsonSerializer.Serialize(semana, new JsonSerializerOptions
+            {
+                WriteIndented = true
+            });
+
+            Console.WriteLine(jsonError);
+
+
             using (var connection = new SqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
@@ -130,20 +140,29 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                 string mes = ConvertirPeriodo(periodo.cie_per);
 
                 // 1️⃣ Orden lógico de guardado
-                await GuardarCierrePeriodoAsync(connection, transaction, datos.cierre_periodo, datos.username);
-                await GuardarFactorAsync(connection, transaction, datos.factor, datos.username, anio, mes);
-                await GuardarFactorOperativoAsync(connection, transaction, datos.factorOperativo, datos.username, anio, mes);
-                await GuardarOperativoDetalleAsync(connection, transaction, datos.operativo_detalle, datos.username, anio, mes);
-                await GuardarCanchasAsync(connection, transaction, datos.canchas, datos.username, anio, mes);
+                await GuardarCierrePeriodoAsync(connection, transaction, datos.cierre_periodo, datos.username, datos.modo);
+                await GuardarFactorAsync(connection, transaction, datos.factor, datos.username, anio, mes, datos.modo);
+                await GuardarFactorOperativoAsync(connection, transaction, datos.factorOperativo, datos.username, anio, mes, datos.modo);
+                await GuardarOperativoDetalleAsync(connection, transaction, datos.operativo_detalle, datos.username, anio, mes, datos.modo);
+                await GuardarCanchasAsync(connection, transaction, datos.canchas, datos.username, anio, mes, datos.modo);
 
 
 
-                await GuardarFactorSobredisolucionAsync(connection, transaction, datos.factorSobredisolucion, datos.username, mes, anio);
+                await GuardarFactorSobredisolucionAsync(connection, transaction, datos.factorSobredisolucion, datos.username, mes, anio, datos.modo);
 
 
-                //await GuardarRecuperacionAsync(connection, transaction, datos.recuperacionBudget, datos.username, datos.anioActual, datos.mesActual);
+                await GuardarRecuperacionAsync(connection, transaction, datos.recuperacionBudget, datos.username, mes, anio, datos.modo);
+
+
                 //await GuardarLaboratorioAsync(connection, transaction, datos.laboratorio_estandar, datos.username, datos.anioActual, datos.mesActual);
+
+
                 //await GuardarMetodoMinadoAsync(connection, transaction, datos.metodo_minado, datos.username, datos.anioActual, datos.mesActual);
+
+
+
+
+
                 //await GuardarSemanaAvanceAsync(connection, transaction, datos.semana_avance, datos.username, datos.anioActual, datos.mesActual);
                 //await GuardarExploracionAsync(connection, transaction, datos.exploracion_extandar, datos.username, datos.anioActual, datos.mesActual);
                 //await GuardarSemanaCicloAsync(connection, transaction, datos.semana_ciclo, datos.username, datos.anioActual, datos.mesActual);
@@ -185,7 +204,7 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                 SqlConnection conn,
                 SqlTransaction trx,
                 List<AperPeriodoCierreGuardarDto> periodos,
-                string? username)
+                string? username, string modo)
         {
 
             if (periodos == null || periodos.Count == 0)
@@ -223,6 +242,9 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                 cmd.Parameters.Add("@fec_creo", SqlDbType.DateTime)
                     .Value = DateTime.Now;
 
+                cmd.Parameters.Add("@modo", SqlDbType.Char, 1)
+                    .Value = modo;
+
                 await cmd.ExecuteNonQueryAsync();
             }
         }
@@ -234,7 +256,7 @@ namespace pass_siomm_backend.Services.PlaneamientoService
             SqlConnection conn,
             SqlTransaction trx,
             List<MaeFactorGuardarDto> factores,
-            string? username, string anio, string mes)
+            string? username, string anio, string mes, string modo)
         {
             if (factores == null || factores.Count == 0) return;
 
@@ -290,6 +312,9 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                 cmd.Parameters.Add("@usu_creo", SqlDbType.VarChar, 20)
                     .Value = username ?? (object)DBNull.Value;
 
+                cmd.Parameters.Add("@modo", SqlDbType.Char, 1)
+                    .Value = modo;
+
                 await cmd.ExecuteNonQueryAsync();
             }
         }
@@ -300,7 +325,7 @@ namespace pass_siomm_backend.Services.PlaneamientoService
         private async Task GuardarFactorOperativoAsync(
                 SqlConnection conn,
                 SqlTransaction trx,
-                List<MaeFactorOperativoGuardarDto> factoresOperativos, string? username, string anio, string mes)
+                List<MaeFactorOperativoGuardarDto> factoresOperativos, string? username, string anio, string mes, string modo)
         {
             if (factoresOperativos == null || factoresOperativos.Count == 0)
                 return;
@@ -346,6 +371,9 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                 // 🔹 Auditoría
                 cmd.Parameters.Add("@usu_creo", SqlDbType.VarChar, 20).Value = username ?? (object)DBNull.Value;
 
+                cmd.Parameters.Add("@modo", SqlDbType.Char, 1)
+                    .Value = modo;
+
                 await cmd.ExecuteNonQueryAsync();
 
             }
@@ -356,7 +384,7 @@ namespace pass_siomm_backend.Services.PlaneamientoService
         private async Task GuardarOperativoDetalleAsync(
                     SqlConnection conn,
                     SqlTransaction trx,
-                    List<MaeValOperativoDetalleGuardarDto> detalles, string? username, string anio, string mes)
+                    List<MaeValOperativoDetalleGuardarDto> detalles, string? username, string anio, string mes, string modo)
         {
             // 1️⃣ Validación básica
             if (detalles == null || detalles.Count == 0)
@@ -440,6 +468,9 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                 cmd.Parameters.Add("@fec_modi", SqlDbType.DateTime)
                     .Value = d.fec_modi ?? (object)DBNull.Value;
 
+                cmd.Parameters.Add("@modo", SqlDbType.Char, 1)
+                    .Value = modo;
+
                 // 🔹 Ejecutar SP
                 await cmd.ExecuteNonQueryAsync();
             }
@@ -449,7 +480,7 @@ namespace pass_siomm_backend.Services.PlaneamientoService
         private async Task GuardarCanchasAsync(
                 SqlConnection conn,
                 SqlTransaction trx,
-                List<MaeValCanchasGuardarDto> canchas, string? username, string mes, string anio)
+                List<MaeValCanchasGuardarDto> canchas, string? username, string mes, string anio, string modo)
         {
             // 1️⃣ Validación
             if (canchas == null || canchas.Count == 0)
@@ -506,6 +537,9 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                 cmd.Parameters.Add("@fec_modi", SqlDbType.DateTime)
                     .Value = v.fec_modi ?? (object)DBNull.Value;
 
+                cmd.Parameters.Add("@modo", SqlDbType.Char, 1)
+                    .Value = modo;
+
                 // 🔹 Ejecutar SP
                 await cmd.ExecuteNonQueryAsync();
             }
@@ -513,11 +547,16 @@ namespace pass_siomm_backend.Services.PlaneamientoService
 
 
 
+        /*
+         *   this.planingCompartido.setFactorSobredisolucion(filas);
+            this.planingCompartido.setRecuperacionBudget(filas);
+            this.planingCompartido.setOperativoDetalle(filas);
 
+         * **/
         private async Task GuardarFactorSobredisolucionAsync(
                 SqlConnection conn,
                 SqlTransaction trx,
-                List<MaeFactorSobredisolucionGuardarDto> factores, string? username, string mes, string anio)
+                List<MaeFactorSobredisolucionGuardarDto> factores, string? username, string mes, string anio, string modo)
         {
             // 1️⃣ Validación
             if (factores == null || factores.Count == 0)
@@ -577,6 +616,9 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                 cmd.Parameters.Add("@fec_modi", SqlDbType.DateTime)
                     .Value = f.fec_modi ?? (object)DBNull.Value;
 
+                cmd.Parameters.Add("@modo", SqlDbType.Char, 1)
+                    .Value = modo;
+
                 // 4️⃣ Ejecutar
                 await cmd.ExecuteNonQueryAsync();
             }
@@ -588,7 +630,7 @@ namespace pass_siomm_backend.Services.PlaneamientoService
         private async Task GuardarRecuperacionAsync(
                 SqlConnection conn,
                 SqlTransaction trx,
-                List<MaeFactorRecuperacionGuardarDto> recuperaciones, string? username, string anioActual, string mesActual)
+                List<MaeFactorRecuperacionGuardarDto> recuperaciones, string? username, string mes, string anio, string modo)
         {
             // 1️⃣ Validación
 
@@ -609,10 +651,10 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                     .Value = "01";
 
                 cmd.Parameters.Add("@cie_ano", SqlDbType.VarChar, 4)
-                    .Value = anioActual ?? (object)DBNull.Value;
+                    .Value = anio ?? (object)DBNull.Value;
 
                 cmd.Parameters.Add("@cie_per", SqlDbType.VarChar, 2)
-                    .Value = mesActual ?? (object)DBNull.Value;
+                    .Value = mes ?? (object)DBNull.Value;
 
                 // 🔹 Factores decimales
                 cmd.Parameters.Add("@val_fac_ag", SqlDbType.Decimal)
@@ -664,7 +706,7 @@ namespace pass_siomm_backend.Services.PlaneamientoService
 
                 // 🔹 Auditoría
                 cmd.Parameters.Add("@usu_creo", SqlDbType.VarChar, 20)
-                    .Value = f.usu_creo ?? (object)DBNull.Value;
+                    .Value = username ?? (object)DBNull.Value;
 
                 cmd.Parameters.Add("@fec_creo", SqlDbType.DateTime)
                     .Value = f.fec_creo ?? (object)DBNull.Value;
@@ -675,15 +717,20 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                 cmd.Parameters.Add("@fec_modi", SqlDbType.DateTime)
                     .Value = f.fec_modi ?? (object)DBNull.Value;
 
+                cmd.Parameters.Add("@modo", SqlDbType.Char, 1)
+                    .Value = modo;
+
                 await cmd.ExecuteNonQueryAsync();
             }
         }
 
 
+
+
         private async Task GuardarLaboratorioAsync(
             SqlConnection conn,
             SqlTransaction trx,
-            List<MaeLaboratorioEstandarGuardarDto> laboratorios, string? username, string anioActual, string mesActual)
+            List<MaeLaboratorioEstandarGuardarDto> laboratorios, string? username, string mes, string anio, string modo)
         {
             // 1️⃣ Validación
             if (laboratorios == null || laboratorios.Count == 0)
@@ -709,10 +756,10 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                     .Value = "01";
 
                 cmd.Parameters.Add("@cie_ano", SqlDbType.VarChar, 4)
-                    .Value = anioActual ?? (object)DBNull.Value;
+                    .Value = anio ?? (object)DBNull.Value;
 
                 cmd.Parameters.Add("@cie_per", SqlDbType.VarChar, 2)
-                    .Value = mesActual ?? (object)DBNull.Value;
+                    .Value = mes ?? (object)DBNull.Value;
 
                 cmd.Parameters.Add("@cod_tiplab", SqlDbType.VarChar, 10)
                     .Value = l.cod_tiplab ?? (object)DBNull.Value;
@@ -775,6 +822,9 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                 cmd.Parameters.Add("@fec_apr", SqlDbType.DateTime)
                     .Value = l.fec_apr ?? (object)DBNull.Value;
 
+                cmd.Parameters.Add("@modo", SqlDbType.Char, 1)
+                    .Value = modo;
+
                 // 🔹 Ejecutar SP
                 await cmd.ExecuteNonQueryAsync();
 
@@ -785,7 +835,7 @@ namespace pass_siomm_backend.Services.PlaneamientoService
         private async Task GuardarMetodoMinadoAsync(
             SqlConnection conn,
             SqlTransaction trx,
-            List<MaePerMetExplotacionGuardarDto> metodos, string? username, string anioActual, string mesActual)
+            List<MaePerMetExplotacionGuardarDto> metodos, string? username, string mes, string anio, string modo)
         {
             if (metodos == null || metodos.Count == 0)
                 return;
@@ -804,10 +854,10 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                     .Value = "01";
 
                 cmd.Parameters.Add("@cie_ano", SqlDbType.VarChar, 4)
-                    .Value = anioActual ?? (object)DBNull.Value;
+                    .Value = anio ?? (object)DBNull.Value;
 
                 cmd.Parameters.Add("@cie_per", SqlDbType.VarChar, 2)
-                    .Value = mesActual ?? (object)DBNull.Value;
+                    .Value = mes ?? (object)DBNull.Value;
 
                 cmd.Parameters.Add("@cod_metexp", SqlDbType.VarChar, 3)
                     .Value = m.cod_metexp ?? (object)DBNull.Value;
@@ -843,6 +893,12 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                 cmd.Parameters.Add("@fec_modi", SqlDbType.DateTime)
                     .Value = m.fec_modi ?? (object)DBNull.Value;
 
+                cmd.Parameters.Add("@modo", SqlDbType.Char, 1)
+                    .Value = modo;
+
+
+
+
                 // 🔹 Ejecutar SP
                 await cmd.ExecuteNonQueryAsync();
             }
@@ -853,7 +909,7 @@ namespace pass_siomm_backend.Services.PlaneamientoService
         private async Task GuardarSemanaCicloAsync(
             SqlConnection conn,
             SqlTransaction trx,
-            List<MaeSemanaCicloGuardarDto> semanas, string? username, string anioActual, string mesActual)
+            List<MaeSemanaCicloGuardarDto> semanas, string? username, string mes, string anio, string modo)
         {
             // 1️⃣ Validación
             if (semanas == null || semanas.Count == 0)
@@ -880,10 +936,10 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                     .Value = "01";
 
                 cmd.Parameters.Add("@cie_ano", SqlDbType.VarChar, 4)
-                    .Value = anioActual ?? (object)DBNull.Value;
+                    .Value = anio ?? (object)DBNull.Value;
 
                 cmd.Parameters.Add("@cie_per", SqlDbType.VarChar, 2)
-                    .Value = mesActual ?? (object)DBNull.Value;
+                    .Value = mes ?? (object)DBNull.Value;
 
                 cmd.Parameters.Add("@num_semana", SqlDbType.Int)
                     .Value = s.num_semana;
@@ -912,6 +968,10 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                 cmd.Parameters.Add("@fec_modi", SqlDbType.DateTime)
                     .Value = s.fec_modi ?? (object)DBNull.Value;
 
+                cmd.Parameters.Add("@modo", SqlDbType.Char, 1)
+                    .Value = modo;
+
+
                 // 🔹 Ejecutar SP
                 await cmd.ExecuteNonQueryAsync();
             }
@@ -921,7 +981,7 @@ namespace pass_siomm_backend.Services.PlaneamientoService
         private async Task GuardarSemanaAvanceAsync(
             SqlConnection conn,
             SqlTransaction trx,
-            List<MaeSemanaAvanceGuardarDto> semanas, string? username, string anioActual, string mesActual)
+            List<MaeSemanaAvanceGuardarDto> semanas, string? username, string anio, string mes, string modo)
         {
             // 1️⃣ Validación
             if (semanas == null || semanas.Count == 0)
@@ -946,10 +1006,10 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                     .Value = "01";
 
                 cmd.Parameters.Add("@cie_ano", SqlDbType.VarChar, 4)
-                    .Value = anioActual ?? (object)DBNull.Value;
+                    .Value = anio ?? (object)DBNull.Value;
 
                 cmd.Parameters.Add("@cie_per", SqlDbType.VarChar, 2)
-                    .Value = mesActual ?? (object)DBNull.Value;
+                    .Value = mes ?? (object)DBNull.Value;
 
                 cmd.Parameters.Add("@num_semana", SqlDbType.Int)
                     .Value = p.num_semana;
@@ -978,9 +1038,11 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                 cmd.Parameters.Add("@fec_modi", SqlDbType.DateTime)
                     .Value = p.fec_modi ?? (object)DBNull.Value;
 
-                // 🔹 Ejecutar SP
-                await cmd.ExecuteNonQueryAsync();
+                cmd.Parameters.Add("@modo", SqlDbType.Char, 1)
+                    .Value = modo;
 
+
+                // 🔹 Ejecutar SP
                 // 4️⃣ Ejecutar
                 await cmd.ExecuteNonQueryAsync();
             }
@@ -989,7 +1051,7 @@ namespace pass_siomm_backend.Services.PlaneamientoService
         private async Task GuardarExploracionAsync(
                 SqlConnection conn,
                 SqlTransaction trx,
-                List<MaeExploEstandarGuardarDto> exploraciones, string? username, string anioActual, string mesActual)
+                List<MaeExploEstandarGuardarDto> exploraciones, string? username, string anio, string mes, string modo)
         {
             // 1️⃣ Validación
             if (exploraciones == null || exploraciones.Count == 0)
@@ -1012,10 +1074,10 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                     .Value = "01";
 
                 cmd.Parameters.Add("@cie_ano", SqlDbType.VarChar, 4)
-                    .Value = anioActual ?? (object)DBNull.Value;
+                    .Value = anio ?? (object)DBNull.Value;
 
                 cmd.Parameters.Add("@cie_per", SqlDbType.VarChar, 2)
-                    .Value = mesActual ?? (object)DBNull.Value;
+                    .Value = mes ?? (object)DBNull.Value;
 
                 cmd.Parameters.Add("@cod_zona", SqlDbType.VarChar, 10)
                     .Value = lab.cod_zona ?? (object)DBNull.Value;
@@ -1070,6 +1132,10 @@ namespace pass_siomm_backend.Services.PlaneamientoService
 
                 cmd.Parameters.Add("@fec_apr", SqlDbType.DateTime)
                     .Value = lab.fec_apr ?? (object)DBNull.Value;
+
+                cmd.Parameters.Add("@modo", SqlDbType.Char, 1)
+                    .Value = modo;
+
 
                 // 🔹 Ejecutar SP
                 await cmd.ExecuteNonQueryAsync();

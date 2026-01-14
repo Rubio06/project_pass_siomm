@@ -67,11 +67,6 @@ export class PlaningCompartidoService {
     setOperativoDetalle(data: MaeValOperativoDetalle | MaeValOperativoDetalle[]) {
         this._operativo_detalle.set(Array.isArray(data) ? data : [data]);
     }
-// factorSobredisolucion
-
-    setFactorSobredisolucion(data: MaeFactorSobredisolucion | MaeFactorSobredisolucion[]) {
-        this._factorSobredisolucion.set(Array.isArray(data) ? data : [data]);
-    }
 
     setLaboratorioEstandar(data: MaeTipLabEstandar | MaeTipLabEstandar[]) {
         this._laboratorio_estandar.set(Array.isArray(data) ? data : [data]);
@@ -82,9 +77,22 @@ export class PlaningCompartidoService {
     }
 
 
+
+
+    // factorSobredisolucion
+
+    setFactorSobredisolucion(data: MaeFactorSobredisolucion | MaeFactorSobredisolucion[]) {
+        this._factorSobredisolucion.set(Array.isArray(data) ? data : [data]);
+    }
+
     setRecuperacionBudget(data: MaeFactorRecuperacion | MaeFactorRecuperacion[]) {
         this._recuperacionBudget.set(Array.isArray(data) ? data : [data]);
     }
+
+
+
+
+
 
     setSemanaAvance(data: MaeSemanaAvance | MaeSemanaAvance[]) {
         this._semana_avance.set(Array.isArray(data) ? data : [data]);
@@ -101,15 +109,14 @@ export class PlaningCompartidoService {
     // Limpiar todo
 
 
-    public guardarTodo() {
+    public guardarTodo(modoBoton: 'N' | 'E') {
         const payload = {
-
             cierre_periodo: this._cierre_periodo(),
             factor: this._factor(),
             operativo_detalle: this._operativo_detalle(),
             factorOperativo: this._factorOperativo(),
             canchas: this._canchas(),
-
+            recuperacionBudget: this._recuperacionBudget(),
 
             factorSobredisolucion: this._factorSobredisolucion(),
 
@@ -119,10 +126,11 @@ export class PlaningCompartidoService {
             // metodo_minado: this._metodo_minado(),
             // semana_ciclo: this._semana_ciclo(),
             // semana_avance: this._semana_avance(),
+            modo: modoBoton,
             username: localStorage.getItem('username'),
         };
 
-        console.log("los datos recibidos son: " + JSON.stringify(payload, null, 2));
+        // console.log("los datos recibidos son: " + JSON.stringify(payload, null, 2));
         return this.http.post(
             `${this.planingUrl}aper-periodo-operativo/semana/guardar-datos`,
             payload
@@ -248,5 +256,22 @@ export class PlaningCompartidoService {
         if (this.guardarHandler) {
             await this.guardarHandler();
         }
+    }
+
+    ///VALIDAR FORMULARIO DE PERIODO
+
+    private _periodoValido = signal<boolean>(false);
+    private _cierre_periodo_DOS = signal<AperPeriodo | null>(null);
+
+    setPeriodoValido(valido: boolean) {
+        this._periodoValido.set(valido);
+    }
+
+    isPeriodoValido(): boolean {
+        return this._periodoValido();
+    }
+
+    setCierrePeriodo_Dos(data: AperPeriodo) {
+        this._cierre_periodo_DOS.set(data);
     }
 }

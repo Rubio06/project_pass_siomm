@@ -30,8 +30,8 @@
 
         public string? username { get; set; }
 
-        public string? anioActual { get; set; }
-        public string? mesActual { get; set; }
+        public string? modo { get; set; } // "N" o "E"
+
 
 
     }

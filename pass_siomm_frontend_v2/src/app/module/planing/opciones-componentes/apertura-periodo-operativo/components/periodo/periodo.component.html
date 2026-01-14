@@ -20,16 +20,39 @@
                         }
                     </select>
                 </div>
+                @if ( formUtils.isValidField(form ,item.name) ) {
+                    <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                       <b> {{ formUtils.getFiledError(form, item.name) }}.</b>
+                    </div>
+                }
                 }@else{
-                <label class="text-sm font-medium text-gray-700">{{ item.label }}</label>
-                <input [type]="item.type" [formControlName]="item.name"
-                    [class.opacity-30]="planingCompartido.bloqueoFormGeneral()"
-                    [class.pointer-events-none]="planingCompartido.bloqueoFormGeneral()" class="text-xs font-medium border border-gray-300 rounded-lg px-4 py-1 text-right bg-white
-                          shadow-sm hover:shadow-md transition-shadow duration-200
-                          focus:border-[#033351] focus:ring-2 focus:ring-[rgb(3,102,157)]
-                          focus:ring-opacity-40 outline-none w-full" />
+                <div>
+                    <label class="text-sm font-medium text-gray-700">{{ item.label }}</label>
+                    <input [type]="item.type" [formControlName]="item.name"
+                        [class.opacity-30]="planingCompartido.bloqueoFormGeneral()"
+                        [class.pointer-events-none]="planingCompartido.bloqueoFormGeneral()" class="text-xs font-medium border border-gray-300 rounded-lg px-4 py-1 text-right bg-white
+                              shadow-sm hover:shadow-md transition-shadow duration-200
+                              focus:border-[#033351] focus:ring-2 focus:ring-[rgb(3,102,157)]
+                              focus:ring-opacity-40 outline-none w-full" />
+
+                </div>
+                    @if ( formUtils.isValidField(form ,item.name) ) {
+                        <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                            <b>{{ formUtils.getFiledError(form, item.name) }}.</b>
+                        </div>
+                    }
+
+                    @if (form.hasError('fechaFinMenor') &&
+                         form.get('fec_fin')?.touched) {
+
+                        <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px; text-align: center;">
+                           <b>La fecha fin no puede ser menor que la fecha inicio.</b>
+                        </div>
+                    }
+
                 }
             </div>
+
             }
         </div>
     </div>

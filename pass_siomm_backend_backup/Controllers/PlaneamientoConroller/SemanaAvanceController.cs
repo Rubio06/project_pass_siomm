@@ -218,14 +218,6 @@ namespace pass_siomm_backend.Controllers.PlaneamientoConroller
         [HttpPost("semana/guardar-datos")]
         public async Task<IActionResult> GuardarDatos([FromBody] DatosCompletosGuardarDto datos)
         {
-
-            var json = JsonSerializer.Serialize(datos, new JsonSerializerOptions
-            {
-                WriteIndented = true // para que sea "bonito"
-            });
-
-            Console.WriteLine(json); 
-
             if (datos == null)
                 return BadRequest("Los datos no pueden ser nulos");
 
@@ -237,12 +229,23 @@ namespace pass_siomm_backend.Controllers.PlaneamientoConroller
                 await _service.GuardarDatosAsync(datos);
                 return Ok(new { mensaje = "Guardado exitosamente" });
             }
-            catch (Exception ex)
+            catch (SqlException ex) // 👈 errores de BD
             {
-                // Log en consola
-                Console.WriteLine("Error al guardar datos: " + ex);
+                Console.WriteLine("Error SQL: " + ex.Message);
 
-                return StatusCode(500, new { mensaje = "Error interno al guardar los datos" });
+                return BadRequest(new
+                {
+                    mensaje = ex.Message
+                });
+            }
+            catch (Exception ex) // 👈 otros errores
+            {
+                Console.WriteLine("Error general: " + ex);
+
+                return StatusCode(500, new
+                {
+                    mensaje = "Error interno del servidor"
+                });
             }
         }
     }
