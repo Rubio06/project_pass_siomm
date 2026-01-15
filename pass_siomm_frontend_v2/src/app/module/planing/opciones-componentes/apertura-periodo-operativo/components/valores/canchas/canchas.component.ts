@@ -103,7 +103,7 @@ export class CanchasComponent {
         this.form.valueChanges.subscribe(val => {
             const filas = this.form.getRawValue();
 
-            this.planingCompartido.setCanchas(filas);
+            this.planingCompartido.setCanchas(filas, 'factor_operativo');
             // console.log("📤 TAB semana actualizó servicio:", filas);
         });
     }

@@ -215,15 +215,15 @@ export class AperPerOperComponent {
 
     ngOnInit() {
 
-        this.form.statusChanges.subscribe(status => {
-            this.planingCompartido.setPeriodoValido(status === 'VALID');
-        });
+        // this.form.statusChanges.subscribe(status => {
+        //     this.planingCompartido.setPeriodoValido(status === 'VALID');
+        // });
 
         this.form.valueChanges.subscribe(val => {
 
             const filas = this.form.getRawValue();
 
-            this.planingCompartido.setCierrePeriodo(filas);
+            this.planingCompartido.setCierrePeriodo(filas, 'factor_operativo');
         });
     }
 

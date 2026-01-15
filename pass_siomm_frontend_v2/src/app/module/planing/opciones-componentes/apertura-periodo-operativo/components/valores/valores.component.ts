@@ -51,7 +51,7 @@ export class ValoresComponent {
 
             if (!response) return;
 
-            const factor = response.data?.factorOperativo?.[0];
+            const factor = response.data?.operativo_detalle?.[0];
 
             const factor_3 = response.data?.recuperacionBudget?.[0];
 
@@ -59,22 +59,24 @@ export class ValoresComponent {
             // if (!factor || !factor_2 || !factor_3) return;
 
             this.form.patchValue({
-                val_pre_ag: factor?.val_pre_ag || '0.0000',
+                val_pre_ag: factor?.val_pre_ag,
                 val_fac_ag: factor?.val_fac_ag || '0.0000',
                 val_fac_bud_ag: factor_3?.val_fac_bud_ag || '0.0000',
                 val_con_ag: factor_3?.val_con_ag || '0.0000',
 
-                val_pre_cu: factor?.val_pre_cu || '',
+                val_pre_cu: factor?.val_pre_cu || '0.0000',
                 val_fac_cu: factor?.val_fac_cu || '0.0000',
                 val_fac_bud_cu: factor_3?.val_fac_bud_cu || '0.0000',
                 val_con_cu: factor_3?.val_con_cu || '0.0000',
 
                 val_pre_pb: factor?.val_pre_pb || '0.0000',
                 val_fac_pb: factor?.val_fac_pb || '0.0000',
+
+
                 val_fac_bud_pb: factor_3?.val_fac_bud_pb || '0.0000',
                 val_con_pb: factor_3?.val_con_pb || '0.0000',
 
-                val_pre_zn: factor?.val_pre_zn || '',
+                val_pre_zn: factor?.val_pre_zn || '0.0000',
                 val_fac_zn: factor?.val_fac_zn || '0.0000',
                 val_fac_bud_zn: factor_3?.val_fac_bud_zn || '0.0000',
                 val_con_zn: factor_3?.val_con_zn || '0.0000',
@@ -173,8 +175,8 @@ export class ValoresComponent {
         this.form.valueChanges.subscribe(val => {
             const filas = this.form.getRawValue();
 
-            this.planingCompartido.setRecuperacionBudget(filas);
-            this.planingCompartido.setFactorOperativo(filas);
+            this.planingCompartido.setRecuperacionBudget(filas, 'factor_operativo');
+            // this.planingCompartido.setFactorOperativo(filas, 'factor_operativo');
 
         });
     }

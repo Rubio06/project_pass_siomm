@@ -66,11 +66,21 @@ export interface MaeFactor {
 
 
 export interface MaeValOperativo {
-    val_fac_rec_ag: number;
-    val_fac_rec_cu: number;
-    val_fac_rec_pb: number;
-    val_fac_rec_zn: number;
-    val_fac_rec_au: number;
+    val_fac_ag: string;
+    // val_pre_ag: string;
+    val_fac_cu: string;
+    // val_pre_cu: string;
+    val_fac_pb: string;
+    // val_pre_pb: string;
+    val_fac_zn: string;
+    // val_pre_zn: string;
+    val_fac_au: string;
+
+    val_fac_rec_ag: string;
+    val_fac_rec_cu: string;
+    val_fac_rec_pb: string;
+    val_fac_rec_zn: string;
+    val_fac_rec_au: string;
     val_des_tipo_fac: string;
 }
 
@@ -126,11 +136,12 @@ export interface MaeSemanaCiclo {
 
 
 export interface MaeSemanaAvance {
-
     num_semana: number;
-    fec_ini: Date;
-    fec_fin: Date;
     desc_semana: string;
+    cie_ano: string;
+    cie_per: string;
+    fec_ini: string;
+    fec_fin: string;
 }
 
 export interface PlanningResponse {

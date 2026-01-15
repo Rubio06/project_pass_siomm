@@ -423,19 +423,18 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
 
     public async onGuardar() {
 
-        if (!this.planingCompartido.isPeriodoValido()) {
-            this.formsUtils.errorGuardar(
-                'Debe completar los datos del periodo antes de guardar.'
-            );
-            return;
-        }
+        // if (!this.planingCompartido.isPeriodoValido()) {
+        //     this.formsUtils.errorGuardar(
+        //         'Debe completar los datos del periodo antes de guardar.'
+        //     );
+        //     return;
+        // }
 
         const confirmado = await this.formsUtils.confirmarGuardado();
         if (!confirmado) return;
 
         this.guardarDatos();
     }
-
     private guardarDatos() {
 
         // if (this.form.invalid) {
@@ -443,8 +442,10 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
         //     return; // ⛔ NO backend
         // }
 
+        const anioOrigen =  this.showData.get('fechaInicio')?.value;
+        const mesOrigen = this.showData.get('fechaFin')?.value;
 
-        this.planingCompartido.guardarTodo(this.mapModo()).subscribe({
+        this.planingCompartido.guardarTodo(this.mapModo(), anioOrigen, mesOrigen).subscribe({
             next: () => {
                 this.onVisualizar();
                 this.formsUtils.mostrarExito();

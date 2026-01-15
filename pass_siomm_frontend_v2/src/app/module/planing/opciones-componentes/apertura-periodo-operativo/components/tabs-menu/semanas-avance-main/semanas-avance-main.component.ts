@@ -84,10 +84,10 @@ export class SemanasAvanceMainComponent {
         data.forEach((item) => {
             this.semanas.push(
                 this.fb.group({
-                    num_semana: [item.num_semana, [Validators.required, Validators.min(1), Validators.max(7), Validators.pattern(/^[1-7]$/)]],
-                    fec_ini: [this.formUtils.formatDate(item.fec_ini), [Validators.required, Validators.pattern(/^(0[1-9]|[12]\d|3[01])\/(0[1-9]|1[0-2])\/(19\d{2}|20\d{2}|2100)$/)]],
-                    fec_fin: [this.formUtils.formatDate(item.fec_fin), [Validators.required, Validators.pattern(/^(0[1-9]|[12]\d|3[01])\/(0[1-9]|1[0-2])\/(19\d{2}|20\d{2}|2100)$/)]],
-                    desc_semana: [item.desc_semana, [Validators.required]],
+                    num_semana: [item.num_semana],
+                    fec_ini: [this.formUtils.formatDate(item.fec_ini)],
+                    fec_fin: [this.formUtils.formatDate(item.fec_fin)],
+                    desc_semana: [item.desc_semana],
                     accion: [],
                     esNuevo: [false]
 
@@ -114,7 +114,6 @@ export class SemanasAvanceMainComponent {
             })
         );
     }
-
 
     async eliminarFila(data: any, index: number) {
         const semana = data.getRawValue ? data.getRawValue() : data.value;
@@ -144,7 +143,7 @@ export class SemanasAvanceMainComponent {
         // 👉 Confirmación usando tu utilitario
 
 
-        console.log("datos eliminados correctamente " +payload)
+        console.log("datos eliminados correctamente " + payload)
 
         this.semanasAvanceMainService.eliminarSemanaAvance(payload).subscribe({
             next: (res: any) => {
@@ -176,7 +175,7 @@ export class SemanasAvanceMainComponent {
         this.myForm.valueChanges.subscribe(val => {
             const filas = this.semanas.getRawValue();
 
-            this.planingCompartido.setSemanaAvance(filas);
+            this.planingCompartido.setSemanaAvance(filas, 'semana_avance');
             // console.log("📤 TAB semana actualizó servicio:", filas);
         });
 

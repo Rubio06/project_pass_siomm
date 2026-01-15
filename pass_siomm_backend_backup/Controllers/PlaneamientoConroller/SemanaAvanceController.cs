@@ -218,6 +218,9 @@ namespace pass_siomm_backend.Controllers.PlaneamientoConroller
         [HttpPost("semana/guardar-datos")]
         public async Task<IActionResult> GuardarDatos([FromBody] DatosCompletosGuardarDto datos)
         {
+            Console.WriteLine("mis datos de llegada son: " + JsonSerializer.Serialize(datos, new JsonSerializerOptions { WriteIndented = true }));
+
+
             if (datos == null)
                 return BadRequest("Los datos no pueden ser nulos");
 

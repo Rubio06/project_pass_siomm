@@ -10,7 +10,7 @@ import { environment } from '@environments/environments';
 export class PlaningCompartidoService {
     private http = inject(HttpClient);
     private planingUrl = environment.baseUrl;
-
+    private _lastTab = '';
     // Persistencia de cada tab/form
     private _canchas: WritableSignal<MaeValCanchas[]> = signal([]);
     private _cierre_periodo: WritableSignal<AperPeriodo[]> = signal([]);
@@ -41,32 +41,64 @@ export class PlaningCompartidoService {
     readonly semana_ciclo = this._semana_ciclo.asReadonly();
     // readonly valores = this._valores.asReadonly();
 
-    // Métodos para setear datos
-    setCanchas(data: MaeValCanchas | MaeValCanchas[]) {
-        this._canchas.set(Array.isArray(data) ? data : [data]);
-    }
-
-    setCierrePeriodo(data: AperPeriodo | AperPeriodo[]) {
+    /// FACTOR OPERATIVO
+    setCierrePeriodo(data: AperPeriodo | AperPeriodo[], tab?: string) {
         this._cierre_periodo.set(Array.isArray(data) ? data : [data]);
+        this._lastTab = tab || ''; // opcional: guardas cuál se actualizó
     }
 
+    setFactor(data: MaeFactor | MaeFactor[], tab?: string) {
+        this._factor.set(Array.isArray(data) ? data : [data]);
+        this._lastTab = tab || ''; // opcional: guardas cuál se actualizó
+
+    }
+    setOperativoDetalle(data: MaeValOperativoDetalle | MaeValOperativoDetalle[], tab?: string) {
+        this._operativo_detalle.set(Array.isArray(data) ? data : [data]);
+        this._lastTab = tab || ''; // opcional: guardas cuál se actualizó
+
+    }
+
+    setFactorOperativo(data: MaeValOperativo | MaeValOperativo[], tab?: string) {
+        this._factorOperativo.set(Array.isArray(data) ? data : [data]);
+        this._lastTab = tab || ''; // opcional: guardas cuál se actualizó
+
+    }
+
+    setCanchas(data: MaeValCanchas | MaeValCanchas[], tab?: string) {
+        this._canchas.set(Array.isArray(data) ? data : [data]);
+        this._lastTab = tab || ''; // opcional: guardas cuál se actualizó
+
+    }
+
+    setRecuperacionBudget(data: MaeFactorRecuperacion | MaeFactorRecuperacion[], tab?: string) {
+        this._recuperacionBudget.set(Array.isArray(data) ? data : [data]);
+        this._lastTab = tab || ''; // opcional: guardas cuál se actualizó
+
+    }
+
+    setFactorSobredisolucion(data: MaeFactorSobredisolucion | MaeFactorSobredisolucion[], tab?: string) {
+        this._factorSobredisolucion.set(Array.isArray(data) ? data : [data]);
+        this._lastTab = tab || ''; // opcional: guardas cuál se actualizó
+
+    }
+
+
+    ///tablas
     setExploracionExtandar(data: MaeExploEstandar | MaeExploEstandar[]) {
         this._exploracion_extandar.set(Array.isArray(data) ? data : [data]);
     }
 
-    setFactor(data: MaeFactor | MaeFactor[]) {
-        this._factor.set(Array.isArray(data) ? data : [data]);
+
+    setSemanaAvance(data: MaeSemanaAvance | MaeSemanaAvance[], tab?: string) {
+        this._semana_avance.set(Array.isArray(data) ? data : [data]);
+        this._lastTab = tab || '';
     }
 
-    setFactorOperativo(data: MaeValOperativo | MaeValOperativo[]) {
-        this._factorOperativo.set(Array.isArray(data) ? data : [data]);
+    setSemanaCiclo(data: MaeSemanaCiclo | MaeSemanaCiclo[]) {
+        this._semana_ciclo.set(Array.isArray(data) ? data : [data]);
     }
 
 
-
-    setOperativoDetalle(data: MaeValOperativoDetalle | MaeValOperativoDetalle[]) {
-        this._operativo_detalle.set(Array.isArray(data) ? data : [data]);
-    }
 
     setLaboratorioEstandar(data: MaeTipLabEstandar | MaeTipLabEstandar[]) {
         this._laboratorio_estandar.set(Array.isArray(data) ? data : [data]);
@@ -77,30 +109,20 @@ export class PlaningCompartidoService {
     }
 
 
+    //     cierre_periodo: this._cierre_periodo(),
+    // factor: this._factor(),
+    // operativo_detalle: this._operativo_detalle(),
+    // factorOperativo: this._factorOperativo(),
+    // canchas: this._canchas(),
+    // recuperacionBudget: this._recuperacionBudget(),
+    // factorSobredisolucion: this._factorSobredisolucion(),
+
 
 
     // factorSobredisolucion
 
-    setFactorSobredisolucion(data: MaeFactorSobredisolucion | MaeFactorSobredisolucion[]) {
-        this._factorSobredisolucion.set(Array.isArray(data) ? data : [data]);
-    }
-
-    setRecuperacionBudget(data: MaeFactorRecuperacion | MaeFactorRecuperacion[]) {
-        this._recuperacionBudget.set(Array.isArray(data) ? data : [data]);
-    }
 
 
-
-
-
-
-    setSemanaAvance(data: MaeSemanaAvance | MaeSemanaAvance[]) {
-        this._semana_avance.set(Array.isArray(data) ? data : [data]);
-    }
-
-    setSemanaCiclo(data: MaeSemanaCiclo | MaeSemanaCiclo[]) {
-        this._semana_ciclo.set(Array.isArray(data) ? data : [data]);
-    }
 
     // setValores(data: any | any[]) {
     //     this._valores.set(Array.isArray(data) ? data : [data]);
@@ -109,28 +131,70 @@ export class PlaningCompartidoService {
     // Limpiar todo
 
 
-    public guardarTodo(modoBoton: 'N' | 'E') {
-        const payload = {
-            cierre_periodo: this._cierre_periodo(),
-            factor: this._factor(),
-            operativo_detalle: this._operativo_detalle(),
-            factorOperativo: this._factorOperativo(),
-            canchas: this._canchas(),
-            recuperacionBudget: this._recuperacionBudget(),
+    private toDateTime(fecha: string): string {
+        const [d, m, y] = fecha.split('/');
+        return `${y}-${m}-${d}T00:00:00`;
+    }
 
-            factorSobredisolucion: this._factorSobredisolucion(),
+    public guardarTodo(modoBoton: 'N' | 'E', anio: string, mes: string) {
 
-            // valores: this._valores(),
-            // laboratorio_estandar: this._laboratorio_estandar(),
-            // exploracion_extandar: this._exploracion_extandar(),
-            // metodo_minado: this._metodo_minado(),
-            // semana_ciclo: this._semana_ciclo(),
-            // semana_avance: this._semana_avance(),
-            modo: modoBoton,
-            username: localStorage.getItem('username'),
-        };
+        let payload: any = {};
 
-        // console.log("los datos recibidos son: " + JSON.stringify(payload, null, 2));
+        switch (this._lastTab) {
+            case 'factor_operativo':
+                payload = {
+                    cierre_periodo: this._cierre_periodo(),
+                    factor: this._factor(),
+                    operativo_detalle: this._operativo_detalle(),
+                    factorOperativo: this._factorOperativo(),
+                    canchas: this._canchas(),
+                    recuperacionBudget: this._recuperacionBudget(),
+                    factorSobredisolucion: this._factorSobredisolucion(),
+                    modo: modoBoton,
+                    username: localStorage.getItem('username'),
+                }
+                break;
+
+            case 'semana_avance':
+                const semanasFormateadas = this._semana_avance().map(s => ({
+                    ...s,
+                    cie_ano: anio,
+                    cie_per: mes,
+                    fec_ini: this.toDateTime(s.fec_ini),
+                    fec_fin: this.toDateTime(s.fec_fin),
+                }));
+
+                payload = {
+                    semana_avance: semanasFormateadas,
+                    modo: modoBoton,
+                    username: localStorage.getItem('username')
+                }
+                break;
+        }
+
+        // const payload = {
+        //     cierre_periodo: this._cierre_periodo(),
+        //     factor: this._factor(),
+        //     operativo_detalle: this._operativo_detalle(),
+        //     factorOperativo: this._factorOperativo(),
+        //     canchas: this._canchas(),
+        //     recuperacionBudget: this._recuperacionBudget(),
+        //     factorSobredisolucion: this._factorSobredisolucion(),
+
+
+
+
+        //     semana_avance: semanasFormateadas,
+        //     // valores: this._valores(),
+        //     // laboratorio_estandar: this._laboratorio_estandar(),
+        //     // exploracion_extandar: this._exploracion_extandar(),
+        //     // metodo_minado: this._metodo_minado(),
+        //     // semana_ciclo: this._semana_ciclo(),
+        //     modo: modoBoton,
+        //     username: localStorage.getItem('username'),
+        // };
+
+        console.log("los datos recibidos son: " + JSON.stringify(payload, null, 2));
         return this.http.post(
             `${this.planingUrl}aper-periodo-operativo/semana/guardar-datos`,
             payload

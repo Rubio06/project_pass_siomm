@@ -139,31 +139,32 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                 string anio = periodo.cie_ano;
                 string mes = ConvertirPeriodo(periodo.cie_per);
 
-                // 1️⃣ Orden lógico de guardado
+                // DATOS DEL FORMULARIO
                 await GuardarCierrePeriodoAsync(connection, transaction, datos.cierre_periodo, datos.username, datos.modo);
                 await GuardarFactorAsync(connection, transaction, datos.factor, datos.username, anio, mes, datos.modo);
                 await GuardarFactorOperativoAsync(connection, transaction, datos.factorOperativo, datos.username, anio, mes, datos.modo);
                 await GuardarOperativoDetalleAsync(connection, transaction, datos.operativo_detalle, datos.username, anio, mes, datos.modo);
                 await GuardarCanchasAsync(connection, transaction, datos.canchas, datos.username, anio, mes, datos.modo);
-
-
-
                 await GuardarFactorSobredisolucionAsync(connection, transaction, datos.factorSobredisolucion, datos.username, mes, anio, datos.modo);
-
-
                 await GuardarRecuperacionAsync(connection, transaction, datos.recuperacionBudget, datos.username, mes, anio, datos.modo);
 
 
+
+
+
+                ///DATOS DE LAS TABLAS
+
+
+
+                await GuardarSemanaAvanceAsync(connection, transaction, datos.semana_avance, datos.username, mes, anio, datos.modo);
+
+
                 //await GuardarLaboratorioAsync(connection, transaction, datos.laboratorio_estandar, datos.username, datos.anioActual, datos.mesActual);
-
-
                 //await GuardarMetodoMinadoAsync(connection, transaction, datos.metodo_minado, datos.username, datos.anioActual, datos.mesActual);
 
 
 
 
-
-                //await GuardarSemanaAvanceAsync(connection, transaction, datos.semana_avance, datos.username, datos.anioActual, datos.mesActual);
                 //await GuardarExploracionAsync(connection, transaction, datos.exploracion_extandar, datos.username, datos.anioActual, datos.mesActual);
                 //await GuardarSemanaCicloAsync(connection, transaction, datos.semana_ciclo, datos.username, datos.anioActual, datos.mesActual);
 
@@ -346,7 +347,7 @@ namespace pass_siomm_backend.Services.PlaneamientoService
 
                 cmd.Parameters.Add("@val_ano", SqlDbType.VarChar, 4).Value = anio;
                 cmd.Parameters.Add("@val_per", SqlDbType.VarChar, 2).Value = mes;
-                cmd.Parameters.Add("@val_vig", SqlDbType.VarChar, 1).Value = fac.val_vig;
+                cmd.Parameters.Add("@val_vig", SqlDbType.VarChar).Value = fac.val_vig ?? (object)DBNull.Value;
 
                 // 🔹 Valores AG
                 cmd.Parameters.Add("@val_fac_ag", SqlDbType.Decimal).Value = fac.val_fac_ag ?? (object)DBNull.Value;
@@ -545,14 +546,6 @@ namespace pass_siomm_backend.Services.PlaneamientoService
             }
         }
 
-
-
-        /*
-         *   this.planingCompartido.setFactorSobredisolucion(filas);
-            this.planingCompartido.setRecuperacionBudget(filas);
-            this.planingCompartido.setOperativoDetalle(filas);
-
-         * **/
         private async Task GuardarFactorSobredisolucionAsync(
                 SqlConnection conn,
                 SqlTransaction trx,
@@ -983,6 +976,9 @@ namespace pass_siomm_backend.Services.PlaneamientoService
             SqlTransaction trx,
             List<MaeSemanaAvanceGuardarDto> semanas, string? username, string anio, string mes, string modo)
         {
+            Console.WriteLine(JsonSerializer.Serialize(semanas, new JsonSerializerOptions { WriteIndented = true }));
+
+
             // 1️⃣ Validación
             if (semanas == null || semanas.Count == 0)
                 return;
@@ -1006,10 +1002,10 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                     .Value = "01";
 
                 cmd.Parameters.Add("@cie_ano", SqlDbType.VarChar, 4)
-                    .Value = anio ?? (object)DBNull.Value;
+                    .Value = p.cie_ano ?? (object)DBNull.Value;
 
                 cmd.Parameters.Add("@cie_per", SqlDbType.VarChar, 2)
-                    .Value = mes ?? (object)DBNull.Value;
+                    .Value = p.cie_per ?? (object)DBNull.Value;
 
                 cmd.Parameters.Add("@num_semana", SqlDbType.Int)
                     .Value = p.num_semana;
@@ -1033,7 +1029,7 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                     .Value = p.fec_creo ?? (object)DBNull.Value;
 
                 cmd.Parameters.Add("@usu_modi", SqlDbType.VarChar, 20)
-                    .Value = p.usu_modi ?? (object)DBNull.Value;
+                    .Value = username ?? (object)DBNull.Value;
 
                 cmd.Parameters.Add("@fec_modi", SqlDbType.DateTime)
                     .Value = p.fec_modi ?? (object)DBNull.Value;

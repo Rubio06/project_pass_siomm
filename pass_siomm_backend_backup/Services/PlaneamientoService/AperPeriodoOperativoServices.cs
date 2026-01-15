@@ -91,11 +91,10 @@ namespace pass_siomm_backend.Services.PlaneamientoService
             result.factor = await LeerFactor(reader);
             await reader.NextResultAsync();
 
-            result.operativo_detalle = await LeerOperativoDetalle(reader);
-            await reader.NextResultAsync();
 
             result.laboratorio_estandar = await LeerLaboratorioEstandar(reader);
             await reader.NextResultAsync();
+
 
 
             result.metodo_minado = await MetodoMinado(reader);
@@ -107,10 +106,11 @@ namespace pass_siomm_backend.Services.PlaneamientoService
             result.semana_avance = await LeerSeamanAvance(reader);
             await reader.NextResultAsync();
 
-
             result.exploracion_extandar = await LeerExploracionEstandar(reader);
             await reader.NextResultAsync();
 
+            result.operativo_detalle = await LeerOperativoDetalle(reader);
+            await reader.NextResultAsync();
 
             await conn.CloseAsync();
 
@@ -150,15 +150,24 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                 lista.Add(new MaeValOperativoDto
                 {
                     val_fac_ag = reader["val_fac_ag"].ToString(),
-                    val_pre_ag = reader["val_pre_ag"].ToString(),
+                    //val_pre_ag = reader["val_pre_ag"].ToString(),
                     val_fac_cu = reader["val_fac_cu"].ToString(),
-                    val_pre_cu = reader["val_pre_cu"].ToString(),
+                    //val_pre_cu = reader["val_pre_cu"].ToString(),
                     val_fac_pb = reader["val_fac_pb"].ToString(),
-                    val_pre_pb = reader["val_pre_pb"].ToString(),
+                    //val_pre_pb = reader["val_pre_pb"].ToString(),
                     val_fac_zn = reader["val_fac_zn"].ToString(),
-                    val_pre_zn = reader["val_pre_zn"].ToString(),
+                    //val_pre_zn = reader["val_pre_zn"].ToString(),
                     val_fac_au = reader["val_fac_au"].ToString(),
-                    val_pre_au = reader["val_pre_au"].ToString()
+                    //val_pre_au = reader["val_pre_au"].ToString(),
+
+
+                    val_fac_rec_ag = reader["val_fac_rec_ag"].ToString(),
+                    val_fac_rec_cu = reader["val_fac_rec_cu"].ToString(),
+
+                    val_fac_rec_pb = reader["val_fac_rec_pb"].ToString(),
+                    val_fac_rec_zn = reader["val_fac_rec_zn"].ToString(),
+                    val_fac_rec_au = reader["val_fac_rec_au"].ToString(),
+                    val_des_tipo_fac = reader["val_des_tipo_fac"].ToString(),
                 });
             }
             return lista;
@@ -241,47 +250,7 @@ namespace pass_siomm_backend.Services.PlaneamientoService
             return lista;
         }
 
-        private async Task<List<MaeValOperativoDetalleDto>> LeerOperativoDetalle(SqlDataReader reader)
-        {
-            var lista = new List<MaeValOperativoDetalleDto>();
-            while (await reader.ReadAsync())
-            {
-                lista.Add(new MaeValOperativoDetalleDto
-                {
-                    val_fac_rec_ag = reader["val_fac_rec_ag"] != DBNull.Value ? Convert.ToDecimal(reader["val_fac_rec_ag"]) : (decimal?)null,
-                    val_fac_rec_cu = reader["val_fac_rec_cu"] != DBNull.Value ? Convert.ToDecimal(reader["val_fac_rec_cu"]) : (decimal?)null,
-                    val_fac_rec_pb = reader["val_fac_rec_pb"] != DBNull.Value ? Convert.ToDecimal(reader["val_fac_rec_pb"]) : (decimal?)null,
-                    val_fac_rec_zn = reader["val_fac_rec_zn"] != DBNull.Value ? Convert.ToDecimal(reader["val_fac_rec_zn"]) : (decimal?)null,
-                    val_fac_rec_au = reader["val_fac_rec_au"] != DBNull.Value ? Convert.ToDecimal(reader["val_fac_rec_au"]) : (decimal?)null,
-                    val_des_tipo_fac = reader["val_des_tipo_fac"].ToString()
-                });
-            }
-            return lista;
-        }
 
-        private async Task<List<MaeLaboratorioEstandarDto>> LeerLaboratorioEstandar(SqlDataReader reader)
-        {
-            var lista = new List<MaeLaboratorioEstandarDto>();
-            while (await reader.ReadAsync())
-            {
-                lista.Add(new MaeLaboratorioEstandarDto
-                {
-                    cod_tiplab = reader["cod_tiplab"].ToString(),
-                    nro_lab_ancho = reader["nro_lab_ancho"].ToString(),
-                    nro_lab_altura = reader["nro_lab_altura"].ToString(),
-                    nro_lab_pieper = reader["nro_lab_pieper"].ToString(),
-                    nro_lab_broca = reader["nro_lab_broca"].ToString(),
-                    nro_lab_barcon = reader["nro_lab_barcon"].ToString(),
-                    nro_lab_barren = reader["nro_lab_barren"].ToString(),
-                    nro_lab_facpot = reader["nro_lab_facpot"].ToString(),
-                    nro_lab_fulmin = reader["nro_lab_fulmin"].ToString(),
-                    nro_lab_conect = reader["nro_lab_conect"].ToString(),
-                    nro_lab_punmar = reader["nro_lab_punmar"].ToString(),
-                    nro_lab_tabla = reader["nro_lab_tabla"].ToString()
-                });
-            }
-            return lista;
-        }
 
         private async Task<List<MaePerMetExplotacionDto>> MetodoMinado(SqlDataReader reader)
         {
@@ -340,6 +309,31 @@ namespace pass_siomm_backend.Services.PlaneamientoService
 
         }
 
+        private async Task<List<MaeLaboratorioEstandarDto>> LeerLaboratorioEstandar(SqlDataReader reader)
+        {
+            var lista = new List<MaeLaboratorioEstandarDto>();
+            while (await reader.ReadAsync())
+            {
+                lista.Add(new MaeLaboratorioEstandarDto
+                {
+                    cod_tiplab = reader["cod_tiplab"].ToString(),
+                    nro_lab_ancho = reader["nro_lab_ancho"].ToString(),
+                    nro_lab_altura = reader["nro_lab_altura"].ToString(),
+                    nro_lab_pieper = reader["nro_lab_pieper"].ToString(),
+                    nro_lab_broca = reader["nro_lab_broca"].ToString(),
+                    nro_lab_barcon = reader["nro_lab_barcon"].ToString(),
+                    nro_lab_barren = reader["nro_lab_barren"].ToString(),
+                    nro_lab_facpot = reader["nro_lab_facpot"].ToString(),
+                    nro_lab_fulmin = reader["nro_lab_fulmin"].ToString(),
+                    nro_lab_conect = reader["nro_lab_conect"].ToString(),
+                    nro_lab_punmar = reader["nro_lab_punmar"].ToString(),
+                    nro_lab_tabla = reader["nro_lab_tabla"].ToString()
+                });
+            }
+            return lista;
+        }
+
+
         public async Task<List<MaeExploEstandar>> LeerExploracionEstandar(SqlDataReader reader)
         {
             var lista = new List<MaeExploEstandar>();
@@ -365,6 +359,77 @@ namespace pass_siomm_backend.Services.PlaneamientoService
             return lista;
 
         }
+        private async Task<List<MaeValOperativoDetalleDto>> LeerOperativoDetalle(SqlDataReader reader)
+        {
+            var lista = new List<MaeValOperativoDetalleDto>();
+            while (await reader.ReadAsync())
+            {
+                lista.Add(new MaeValOperativoDetalleDto
+                {
+                    val_fac_ag = reader["val_fac_ag"] != DBNull.Value
+            ? reader["val_fac_ag"].ToString()
+            : "0.0000",
+
+                    val_pre_ag = reader["val_pre_ag"] != DBNull.Value
+            ? reader["val_pre_ag"].ToString()
+            : "0.0000",
+
+                    val_fac_cu = reader["val_fac_cu"] != DBNull.Value
+            ? reader["val_fac_cu"].ToString()
+            : "0.0000",
+
+                    val_pre_cu = reader["val_pre_cu"] != DBNull.Value
+            ? reader["val_pre_cu"].ToString()
+            : "0.0000",
+
+                    val_fac_pb = reader["val_fac_pb"] != DBNull.Value
+            ? reader["val_fac_pb"].ToString()
+            : "0.0000",
+
+                    val_pre_pb = reader["val_pre_pb"] != DBNull.Value
+            ? reader["val_pre_pb"].ToString()
+            : "0.0000",
+
+                    val_fac_zn = reader["val_fac_zn"] != DBNull.Value
+            ? reader["val_fac_zn"].ToString()
+            : "0.0000",
+
+                    val_pre_zn = reader["val_pre_zn"] != DBNull.Value
+            ? reader["val_pre_zn"].ToString()
+            : "0.0000",
+
+                    val_fac_au = reader["val_fac_au"] != DBNull.Value
+            ? reader["val_fac_au"].ToString()
+            : "0.0000",
+
+                    val_pre_au = reader["val_pre_au"] != DBNull.Value
+            ? reader["val_pre_au"].ToString()
+            : "0.0000",
+
+
+                });
+            }
+            return lista;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         public async Task<List<SelectTipoLaborDto>> SelectMetTipoLabor()
         {

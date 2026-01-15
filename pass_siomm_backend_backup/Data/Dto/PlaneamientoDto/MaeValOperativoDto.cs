@@ -3,15 +3,25 @@
     public class MaeValOperativoDto
     {
         public string val_fac_ag { get; set; }
-        public string val_pre_ag { get; set; }
+        //public string val_pre_ag { get; set; }
         public string val_fac_cu { get; set; }
-        public string val_pre_cu { get; set; }
+        //public string val_pre_cu { get; set; }
         public string val_fac_pb { get; set; }
-        public string val_pre_pb { get; set; }
+        //public string val_pre_pb { get; set; }
         public string val_fac_zn { get; set; }
-        public string val_pre_zn { get; set; }
+        //public string val_pre_zn { get; set; }
         public string val_fac_au { get; set; }
-        public string val_pre_au { get; set; }
+        //public string val_pre_au { get; set; }
+
+
+        public string val_fac_rec_ag { get; set; }
+        public string val_fac_rec_cu { get; set; }
+        public string val_fac_rec_pb { get; set; }
+        public string val_fac_rec_zn { get; set; }
+        public string val_fac_rec_au { get; set; }       
+        public string val_des_tipo_fac { get; set; }
+
+
         public string CodEmpresa { get; set; }
         public string ValAno { get; set; }
         public string ValPer { get; set; }
