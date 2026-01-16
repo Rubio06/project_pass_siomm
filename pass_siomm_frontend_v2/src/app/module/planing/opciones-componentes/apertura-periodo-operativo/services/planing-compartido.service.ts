@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, Signal, signal, WritableSignal } from '@angular/core';
-import { AperPeriodo, MaeExploEstandar, MaeFactor, MaeFactorRecuperacion, MaeFactorSobredisolucion, MaePerMetExplotacion, MaeSemanaAvance, MaeSemanaCiclo, MaeTipLabEstandar, MaeValCanchas, MaeValOperativo, MaeValOperativoDetalle, PlanningData } from '../interface/aper-per-oper.interface';
+import { AperPeriodo, MaeExploEstandar, MaeFactor, MaeFactorRecuperacion, MaeFactorSobredisolucion, MaePerMetExplotacion, MaeSemanaAvance, MaeSemanaCiclo, MaeTipLabEstandar, MaeValCanchas, MaeValOperativoDetalle, PlanningData } from '../interface/aper-per-oper.interface';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '@environments/environments';
 
@@ -16,7 +16,7 @@ export class PlaningCompartidoService {
     private _cierre_periodo: WritableSignal<AperPeriodo[]> = signal([]);
     private _exploracion_extandar: WritableSignal<MaeExploEstandar[]> = signal([]);
     private _factor: WritableSignal<MaeFactor[]> = signal([]);
-    private _factorOperativo: WritableSignal<MaeValOperativo[]> = signal([]);
+    // private _factorOperativo: WritableSignal<MaeValOperativo[]> = signal([]);
     private _factorSobredisolucion: WritableSignal<MaeFactorSobredisolucion[]> = signal([]);
     private _laboratorio_estandar: WritableSignal<MaeTipLabEstandar[]> = signal([]);
     private _metodo_minado: WritableSignal<MaePerMetExplotacion[]> = signal([]);
@@ -31,7 +31,7 @@ export class PlaningCompartidoService {
     readonly cierre_periodo = this._cierre_periodo.asReadonly();
     readonly exploracion_extandar = this._exploracion_extandar.asReadonly();
     readonly factor = this._factor.asReadonly();
-    readonly factorOperativo = this._factorOperativo.asReadonly();
+    // readonly factorOperativo = this._factorOperativo.asReadonly();
     readonly factorSobredisolucion = this._factorSobredisolucion.asReadonly();
     readonly laboratorio_estandar = this._laboratorio_estandar.asReadonly();
     readonly metodo_minado = this._metodo_minado.asReadonly();
@@ -52,22 +52,20 @@ export class PlaningCompartidoService {
         this._lastTab = tab || ''; // opcional: guardas cuál se actualizó
 
     }
-    setOperativoDetalle(data: MaeValOperativoDetalle | MaeValOperativoDetalle[], tab?: string) {
-        this._operativo_detalle.set(Array.isArray(data) ? data : [data]);
-        this._lastTab = tab || ''; // opcional: guardas cuál se actualizó
+    // setOperativoDetalle(data: MaeValOperativoDetalle | MaeValOperativoDetalle[], tab?: string) {
+    //     this._operativo_detalle.set(Array.isArray(data) ? data : [data]);
+    //     this._lastTab = tab || ''; // opcional: guardas cuál se actualizó
 
+    // }
+
+    setFactorOperativo(data: MaeValOperativoDetalle[], tab?: string) {
+        this._operativo_detalle.set(data);
+        this._lastTab = tab ?? '';
     }
 
-    setFactorOperativo(data: MaeValOperativo | MaeValOperativo[], tab?: string) {
-        this._factorOperativo.set(Array.isArray(data) ? data : [data]);
-        this._lastTab = tab || ''; // opcional: guardas cuál se actualizó
-
-    }
-
-    setCanchas(data: MaeValCanchas | MaeValCanchas[], tab?: string) {
+    setCanchas(data: MaeValCanchas | MaeValCanchas, tab?: string) {
         this._canchas.set(Array.isArray(data) ? data : [data]);
         this._lastTab = tab || ''; // opcional: guardas cuál se actualizó
-
     }
 
     setRecuperacionBudget(data: MaeFactorRecuperacion | MaeFactorRecuperacion[], tab?: string) {
@@ -146,7 +144,7 @@ export class PlaningCompartidoService {
                     cierre_periodo: this._cierre_periodo(),
                     factor: this._factor(),
                     operativo_detalle: this._operativo_detalle(),
-                    factorOperativo: this._factorOperativo(),
+                    // factorOperativo: this._factorOperativo(),
                     canchas: this._canchas(),
                     recuperacionBudget: this._recuperacionBudget(),
                     factorSobredisolucion: this._factorSobredisolucion(),

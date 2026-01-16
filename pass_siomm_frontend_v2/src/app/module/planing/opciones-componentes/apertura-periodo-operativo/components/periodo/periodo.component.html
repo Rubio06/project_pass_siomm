@@ -3,8 +3,7 @@
 
         <h1 class="text-[15px] font-bold text-gray-800 w-full" style="color: #013B5C;">Periodo</h1>
 
-        <div
-        class="grid grid-cols-2 gap-4 border-2 border-gray-400 rounded-xl p-4 bg-gray-100 mb-4 w-full max-w-[1100px]
+        <div class="grid grid-cols-2 gap-4 border-2 border-gray-400 rounded-xl p-4 bg-gray-100 mb-4 w-full max-w-[1100px]
                sm:grid-cols-2 md:grid-cols-4">
 
             @for (item of fieldInputs(); track item.name) {
@@ -15,15 +14,15 @@
                     <select [formControlName]="item.name"
                         class="select-xs disabled:opacity-50 disabled:cursor-not-allowed mx-auto select text-xs font-medium outline-none flex items-center border border-gray-300 rounded-lg px-5 py-1 bg-white shadow-sm hover:shadow-md transition-shadow duration-300 ease-in-out focus:border-[#033351] focus:ring-1 focus:ring-[rgb(3,102,157)] focus:ring-opacity-40 w-full disabled:bg-gray-100 disabled:text-gray-500">
                         @for (opt of item.array; track $index) {
-                            <option [value]="opt">{{ opt }}</option>
-
-                        }
+                        <option [value]="opt" [disabled]="item.name === 'cie_per' && mesesBloqueados.includes(mapMeses[opt])">
+                            {{ opt }}
+                        </option> }
                     </select>
                 </div>
                 @if ( formUtils.isValidField(form ,item.name) ) {
-                    <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
-                       <b> {{ formUtils.getFiledError(form, item.name) }}.</b>
-                    </div>
+                <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                    <b> {{ formUtils.getFiledError(form, item.name) }}.</b>
+                </div>
                 }
                 }@else{
                 <div>
@@ -36,19 +35,19 @@
                               focus:ring-opacity-40 outline-none w-full" />
 
                 </div>
-                    @if ( formUtils.isValidField(form ,item.name) ) {
-                        <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
-                            <b>{{ formUtils.getFiledError(form, item.name) }}.</b>
-                        </div>
-                    }
+                @if ( formUtils.isValidField(form ,item.name) ) {
+                <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                    <b>{{ formUtils.getFiledError(form, item.name) }}.</b>
+                </div>
+                }
 
-                    @if (form.hasError('fechaFinMenor') &&
-                         form.get('fec_fin')?.touched) {
+                @if (form.hasError('fechaFinMenor') &&
+                form.get('fec_fin')?.touched) {
 
-                        <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px; text-align: center;">
-                           <b>La fecha fin no puede ser menor que la fecha inicio.</b>
-                        </div>
-                    }
+                <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px; text-align: center;">
+                    <b>La fecha fin no puede ser menor que la fecha inicio.</b>
+                </div>
+                }
 
                 }
             </div>

@@ -1,10 +1,150 @@
-        BEGIN
-            RAISERROR('No se pudo actualizr correctamente', 16, 1);
-            RETURN;
-        END
+
+	/*
+        public const string SP_OBTENER_MESES = "sp_IR_obtener_meses";
+
+        public const string SP_OBTENER_ANIO = "sp_IR_obtener_anio";
+
+      */
+      
+      
+      sp_IR_obtener_meses '2019'
+  
+
+sp_helptext sp_IR_obtener_meses
+
+ select * from trb_cierre_periodo where cie_ano = '2019' order by cie_per ASC 
+ 
+            SELECT *
+    FROM mae_val_operativo AS O  
+  
+  
+  sp_helptext sp_IR_obtener_anio
+  
+  
+
+    WHERE O.cod_empresa = 3 AND O.cod_empresa_unidad = 1   
+      AND O.val_ano = @anio AND O.val_per = @month   
+  
+
+CREATE PROCEDURE sp_IR_cargar_datos  
+    @month VARCHAR(2),  
+    @anio VARCHAR(4)  
+AS  
+BEGIN  
+    SET NOCOUNT ON;  
+  
+    -- 1 Cierre de periodo  
+    SELECT CP.cie_per, CP.fec_ini, CP.fec_fin, CP.cie_ano  
+    FROM trb_cierre_periodo AS CP  
+    WHERE CP.cie_ano = @anio AND CP.cie_per = @month  
+    ORDER BY CAST(CP.cie_per AS INT);  
+  
+    -- 2 Factor operativo  
+    SELECT 
+    *
+    FROM mae_val_operativo_detalle VALOP  
+    WHERE VALOP.cod_empresa = 3 AND VALOP.cod_empresa_unidad = 1   
+      AND VALOP.val_ano = @anio AND VALOP.val_per = @month;  
+  
+    -- 3 Canchas  
+    SELECT VLCAN.val_tms, VLCAN.val_ag, VLCAN.val_cu, VLCAN.val_pb, VLCAN.val_zn, VLCAN.val_vpt  
+    FROM mae_val_canchas AS VLCAN  
+    WHERE VLCAN.cod_empresa = 3 AND VLCAN.cod_empresa_unidad = 1   
+      AND VLCAN.cie_ano = @anio AND VLCAN.cie_per = @month;  
+  
+    -- 4 Factor sobredilución  
+    SELECT FS.val_fac_ag, FS.val_fac_cu, FS.val_fac_pb, FS.val_fac_zn, FS.val_fac_au  
+    FROM mae_factor_sobredilucion AS FS  
+    WHERE FS.cod_empresa = 3 AND FS.cod_empresa_unidad = 1   
+      AND FS.cie_ano = @anio AND FS.cie_per = @month;  
+  
+    -- 5 Recuperación budget  
+    SELECT R.val_fac_bud_ag, R.val_fac_bud_cu, R.val_fac_bud_pb, R.val_fac_bud_zn, R.val_fac_bud_au,  
+           R.val_con_ag, R.val_con_cu, R.val_con_pb, R.val_con_zn, R.val_con_au  
+    FROM mae_factor_recuperacion AS R  
+    WHERE R.cod_empresa = 3 AND R.cod_empresa_unidad = 1   
+      AND R.cie_ano = @anio AND R.cie_per = @month;  
+  
+    -- 6 Factor general  
+    SELECT F.fac_denmin, F.fac_dendes, F.fac_vptmin, F.fac_dialab, F.fac_tarhor,  
+           F.fac_porcum, F.fac_porhum, F.fac_tms_dif  
+    FROM mae_factor AS F  
+    WHERE F.cod_empresa = 3 AND F.cod_empresa_unidad = 1   
+      AND F.cie_ano = @anio AND F.cie_per = @month;  
+      
+     -- 7 Detalle operativo  detalle
+    
+
+      
+  
+  
+    -- 8 Tabs Labor Estándar  
+    SELECT L.cod_tiplab, L.nro_lab_ancho, L.nro_lab_altura, L.nro_lab_pieper, L.nro_lab_broca,  
+           L.nro_lab_barcon, L.nro_lab_barren, L.nro_lab_facpot, L.nro_lab_fulmin, L.nro_lab_conect,  
+           L.nro_lab_punmar, L.nro_lab_tabla  
+    FROM mae_tip_lab_estandar AS L  
+    WHERE L.cod_empresa = 3 AND L.cod_empresa_unidad = 1   
+      AND L.cie_ano = @anio AND L.cie_per = @month;  
+  
+    -- 9 Método Minado  
+    SELECT mpe.cod_metexp AS cod_metexp, mpe.nom_metexp AS nom_metexp,  
+           mpe.ind_calculo_dilucion AS ind_calculo_dilucion,  
+           mpe.ind_calculo_leyes_min AS ind_calculo_leyes_min,  
+           mpe.ind_act AS ind_act  
+    FROM mae_per_met_explotacion AS mpe  
+    WHERE mpe.cod_empresa = 3 AND mpe.cod_empresa_unidad = 1  
+      AND mpe.cie_ano = @anio AND mpe.cie_per = @month;  
+        
+    -- 10 SEMANAS CICLO  
+ SELECT   
+  msp.num_semana AS num_semana,  
+  msp.fec_ini AS fec_ini,  
+  msp.fec_fin AS fec_fin,  
+  msp.desc_semana AS desc_semana  
+ FROM mae_semana_periodo as msp  
+ WHERE msp.cod_empresa = 03  
+   AND msp.cod_empresa_unidad = 01  
+   AND msp.cie_ano = @anio  
+   AND msp.cie_per = @month;  
+     
+     
+ --11 SEMANAS AVANCE   
+ SELECT msp.num_semana AS num_semana,  
+  msp.fec_ini AS fec_ini,  
+  msp.fec_fin AS fec_fin,  
+  msp.desc_semana AS desc_semana from mae_semana_avance msp WHERE   
+  msp.cod_empresa = 03  
+    AND msp.cod_empresa_unidad = 01  
+    AND msp.cie_ano = @anio  
+    AND msp.cie_per = @month;  
+      
+SELECT  
+expl.cod_zona as cod_zona,  
+expl.lab_pieper as lab_pieper,  
+expl.lab_broca as lab_broca,  
+expl.lab_barcon as lab_barcon,  
+expl.lab_barren as lab_barren,  
+expl.lab_facpot as  lab_facpot,  expl.lab_fulmin as lab_fulmin,  
+expl.lab_conect as lab_conect,  
+expl.lab_punmar as  lab_punmar,  
+expl.lab_tabla as  lab_tabla,  
+expl.lab_apr as lab_apr  
+FROM  
+    mae_exp_estandar as expl  
+WHERE  
+    (expl.cod_empresa = 03)  
+    AND (expl.cod_empresa_unidad = 01)  
+    AND (expl.cie_ano = @anio)  
+    AND (expl.cie_per = @month);  
+    
+    
+    /*opetrativo_detalle*/
+        SELECT *
+    FROM mae_val_operativo AS O  
+    WHERE O.cod_empresa = 3 AND O.cod_empresa_unidad = 1   
+      AND O.val_ano = @anio AND O.val_per = @month   
+  
+END;  
 
 
-    BEGIN
-        RAISERROR('El periodo ya existe', 16, 1);
-        RETURN;
-    END
+select * from mae_val_operativo

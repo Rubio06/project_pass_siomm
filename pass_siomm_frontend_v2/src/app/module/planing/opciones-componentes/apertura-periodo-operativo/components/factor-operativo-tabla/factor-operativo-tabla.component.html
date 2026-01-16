@@ -18,32 +18,32 @@
                 </tr>
             </thead>
             <tbody formArrayName="factorOperativo">
-
+                @if (factorOperativoFA.length !== 0) {
                 @for (fila of factorOperativoFA.controls; let i = $index; track i) {
-                <tr class="text-center bg-white" [formGroupName]="i">
+                    <tr class="text-center bg-white" [formGroupName]="i">
+                            @for (td of tdCampos(); track $index) {
+                                <td class="border-2 border-gray-400 px-2 py-1">
 
-                    @for (td of tdCampos(); track $index) {
-                    <td class="border-2 border-gray-400 px-2 py-1">
+                                    <div class="w-full">
+                                        <input [type]="td.type" [formControlName]="td.name" [readonly]="td.readonly"
+                                        [class.opacity-30]="planingCompartido.bloqueoFormGeneral()"
+                                        [class.pointer-events-none]="planingCompartido.bloqueoFormGeneral()"
+                                        class="w-full bg-transparent outline-none text-gray-800 placeholder-gray-400 text-xs font-medium" />
+                                    </div>
 
-                        <div class="w-full">
-                            <input [type]="td.type" [formControlName]="td.name"
-                                [class.opacity-30]="planingCompartido.bloqueoFormGeneral()"
-                                [class.pointer-events-none]="planingCompartido.bloqueoFormGeneral()"
-                                class="w-full bg-transparent outline-none text-gray-800 placeholder-gray-400 text-xs font-medium" />
-                        </div>
+                                    <!-- @if (formUtils.isValidField(fila, td.name)) {
+                                        <div class="form-text text-danger text-[red] text-xs">
+                                            {{ formUtils.getFiledError(fila, td.name) }}
+                                        </div>
+                                        } -->
 
-                        <!-- @if (formUtils.isValidField(fila, td.name)) {
-                        <div class="form-text text-danger text-[red] text-xs">
-                            {{ formUtils.getFiledError(fila, td.name) }}
-                        </div>
-                        } -->
-
-                    </td>
+                                </td>
+                            }
+                        </tr>
                     }
-
-                </tr>
+                }@else {
+                    <td colspan="11" class="border-2 border-gray-400 px-2 py-1" style="background-color: rgb(255, 238, 238); text-align: center;"><b>No existen datos para mostrar.</b></td>
                 }
-
             </tbody>
         </table>
     </div>

@@ -54,8 +54,10 @@ SELECT
 FROM sys.columns c
 INNER JOIN sys.tables t ON c.object_id = t.object_id
 INNER JOIN sys.schemas s ON t.schema_id = s.schema_id
-WHERE c.name = 'val_des_tipo_fac';
+WHERE c.name = 'val_pre_ag';
 
 select * from mae_val_operativo_detalle
+
+select * From mae_val_operativo
 
 select * from mae_factor_recuperacion

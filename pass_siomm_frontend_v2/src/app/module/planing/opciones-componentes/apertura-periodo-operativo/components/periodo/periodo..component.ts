@@ -35,7 +35,7 @@ export class AperPerOperComponent {
     private hoy = new Date();
 
     fechaFutura = new Date(
-        this.hoy.getFullYear(),
+        this.hoy.getFullYear() + 1,
         this.hoy.getMonth() + 1
     );
 
@@ -46,10 +46,28 @@ export class AperPerOperComponent {
         'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
     ]);
 
-    private anio = this.fechaFutura.getFullYear();
+    private anio = this.fechaFutura.getFullYear().toString();
     private mesNombre = this.meses()[this.fechaFutura.getMonth()];
 
-    anios = signal<string[]>([]);
+
+    mesesBloqueados: string[] = []; // estos vienen de tu BD
+
+    mapMeses: Record<string, string> = {
+        "Enero": "01",
+        "Febrero": "02",
+        "Marzo": "03",
+        "Abril": "04",
+        "Mayo": "05",
+        "Junio": "06",
+        "Julio": "07",
+        "Agosto": "08",
+        "Septiembre": "09",
+        "Octubre": "10",
+        "Noviembre": "11",
+        "Diciembre": "12"
+    };
+
+    // anios = signal<string[]>([]);
 
     fieldInputs = signal<fieldName[]>([
         { name: "cie_ano", type: "", label: "Año:", typeControl: 'select', array: [] },
@@ -58,8 +76,11 @@ export class AperPerOperComponent {
         { name: "fec_fin", type: "date", label: "Fecha Fin:", typeControl: 'input', array: [] },
     ]);
 
+
+
+
     form: FormGroup = this.fb.group({
-        cie_ano: ['', [Validators.required]],
+        cie_ano: [this.anio, [Validators.required]],
         cie_per: [this.mesNombre, [Validators.required]],
         fec_ini: ['', [Validators.required]],
         fec_fin: ['', [Validators.required]]
@@ -88,7 +109,6 @@ export class AperPerOperComponent {
         this.getYear();
 
 
-
         effect(() => {
             const response = this.rutas();
             if (response?.data?.cierre_periodo?.length) {
@@ -107,7 +127,7 @@ export class AperPerOperComponent {
             const data = this.planingCompartido.dataRoutes();
 
             if (!data || data?.length === 0) {
-                this.resetearFormulario();
+                // this.resetearFormulario();
                 return;
             }
 
@@ -166,35 +186,45 @@ export class AperPerOperComponent {
         this.planingService.getYear().subscribe({
             next: (data: string[]) => {
 
-                // convertir a número
-                const years = data.map(Number);
-
-                // último año REAL en BD
-                const lastYear = Math.max(...years);
-
-                // siguiente año lógico
-                const nextYear = (lastYear + 1).toString();
-
-                // lista final (sin duplicados)
-                const result = Array.from(
-                    new Set([...years.map(String), nextYear])
-                ).sort((a, b) => Number(b) - Number(a));
-
-                // actualizar select
                 this.fieldInputs.update(fields =>
                     fields.map(f =>
                         f.name === 'cie_ano'
-                            ? { ...f, array: result }
+                            ? { ...f, array: data }
                             : f
                     )
                 );
+                const controlAnio = this.form.get('cie_ano')?.value;
 
-                // seleccionar por defecto el siguiente año
-                this.form.get('cie_ano')?.setValue(nextYear);
+                this.cargarMeses(controlAnio);
+
+                // this.initAndListenYear();
+                // this.form.statusChanges.subscribe(status => {
+                //     this.planingCompartido.setPeriodoValido(status === 'VALID');
+                // });
+
             },
             error: (err) => console.error(err)
         });
     }
+
+    private initAndListenYear(): void {
+        const controlAnio = this.form.get('cie_ano');
+        if (!controlAnio) return;
+
+        // 1️⃣ inicialización (obligatoria)
+        if (controlAnio.value) {
+            this.cargarMeses(String(controlAnio.value));
+        }
+
+        // 2️⃣ reacción al cambio (obligatoria)
+        controlAnio.valueChanges.subscribe(year => {
+            if (!year) return;
+
+            this.mesesBloqueados = [];
+            this.cargarMeses(String(year));
+        });
+    }
+
 
 
     // bloqueoFormulario() {
@@ -205,23 +235,53 @@ export class AperPerOperComponent {
     // }
 
     resetearFormulario() {
+
         this.form.reset({
             cie_ano: this.anio,
             cie_per: this.mesNombre,
             fec_ini: '',
             fec_fin: ''
         });
+
     }
 
+    private cargarMeses(year: string): void {
+        this.planingService.getMonths(year).subscribe({
+            next: (months) => {
+                // this.listenYearValueChanges();
+
+                this.mesesBloqueados = months ?? [];
+            },
+            error: () => {
+                this.mesesBloqueados = [];
+            }
+        });
+    }
+
+    private initPeriodo(): void {
+        const anio = this.form.get('cie_ano')?.value;
+
+        if (anio) {
+            this.mesesBloqueados = [];
+            this.cargarMeses(String(anio));
+        }
+    }
+
+
     ngOnInit() {
+        // cuando el form ya existe
+        this.initPeriodo();
+        this.initAndListenYear();        // const year = this.form.get('cie_ano')?.value;
+        // if (year) {
+        //     this.cargarMeses(year);
+        // }
 
-        // this.form.statusChanges.subscribe(status => {
-        //     this.planingCompartido.setPeriodoValido(status === 'VALID');
-        // });
-
+        // cargar por defecto (2027)
         this.form.valueChanges.subscribe(val => {
 
             const filas = this.form.getRawValue();
+
+            console.log("los datos que estoy enviando son " + JSON.stringify(filas));
 
             this.planingCompartido.setCierrePeriodo(filas, 'factor_operativo');
         });

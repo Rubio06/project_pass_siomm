@@ -59,7 +59,7 @@ export class ValoresComponent {
             // if (!factor || !factor_2 || !factor_3) return;
 
             this.form.patchValue({
-                val_pre_ag: factor?.val_pre_ag,
+                val_pre_ag: factor?.val_pre_ag || '0.0000',
                 val_fac_ag: factor?.val_fac_ag || '0.0000',
                 val_fac_bud_ag: factor_3?.val_fac_bud_ag || '0.0000',
                 val_con_ag: factor_3?.val_con_ag || '0.0000',

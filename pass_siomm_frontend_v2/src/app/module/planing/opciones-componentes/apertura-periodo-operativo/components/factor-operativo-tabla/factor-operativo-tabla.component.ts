@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, effect, inject, signal } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PlanningService } from '../../services/planning.service';
-import { MaeValOperativo, TableField, TableHeader, TD_CAMPOS_TABLE, TH_CAMPOS_TABLE } from '../../interface/aper-per-oper.interface';
+import { MaeValOperativoDetalle, TableField, TableHeader, TD_CAMPOS_TABLE, TH_CAMPOS_TABLE } from '../../interface/aper-per-oper.interface';
 import { PlaningCompartidoService } from '../../services/planing-compartido.service';
 import { FormUtils } from 'src/app/utils/form-utils';
 
@@ -37,11 +37,14 @@ export class FactorOperativoTablaComponent {
     }
 
 
-    private crearFactorOperativo(item: MaeValOperativo): FormGroup {
+    private crearFactorOperativo(item: MaeValOperativoDetalle): FormGroup {
+        // this.factorOperativoFA.clear();
 
         return this.fb.group({
 
-            val_des_tipo_fac: [item.val_des_tipo_fac],
+            val_des_tipo_fac: [{ value: item.val_des_tipo_fac, disabled: true }], // bloqueado
+            val_tipo_fac: [item.val_des_tipo_fac === 'GENERAL' ? 'FAC1' : 'FAC2'],
+            val_ind_principal: [item.val_des_tipo_fac === 'GENERAL' ? 'S' : 'N'],
             val_fac_ag: [item.val_fac_ag || '0.0000'],
             val_fac_cu: [item.val_fac_cu || '0.0000'],
             val_fac_pb: [item.val_fac_pb || '0.0000'],
@@ -55,29 +58,21 @@ export class FactorOperativoTablaComponent {
             val_fac_rec_au: [item.val_fac_rec_au || '0.0000'],
         });
     }
+
     constructor() {
 
         effect(() => {
             const response = this.rutas();
 
-            console.log('response =>', response);
+            if (!response?.data?.factorOperativo) return;
 
-            if (response?.data?.factorOperativo?.length) {
+            const filas = response.data.factorOperativo.map((item: any) =>
+                this.crearFactorOperativo(item)
+            );
 
-                // 🔥 limpiar antes de cargar
-                this.factorOperativoFA.clear();
+            this.form.setControl('factorOperativo', this.fb.array(filas));
+        }, { allowSignalWrites: true });
 
-                this.cd.detectChanges();
-
-                response.data.factorOperativo.forEach((item: any, index: number) => {
-
-                    this.factorOperativoFA.push(
-                        this.crearFactorOperativo(item)
-                    );
-                });
-                // this.factorOperativoFA.clear();
-            }
-        });
 
         effect(() => {
             if (!this.form) return;
@@ -97,9 +92,11 @@ export class FactorOperativoTablaComponent {
 
             if (!this.planingCompartido.resetSemanas()) {
                 // this.factorOperativoFA.clear();
-                // this.resetearFormulario();
+                this.resetearFormulario();
+                // Agregamos 2 filas vacía
                 return;
             }
+            // Agregar 2 filas vacías
 
         });
 
@@ -110,24 +107,47 @@ export class FactorOperativoTablaComponent {
         this.form.disable();
     }
 
-
     resetearFormulario() {
-        this.form.reset({
-            val_des_tipo_fac: 'GENERAL',
-            val_fac_ag: '0.0000',
-            val_fac_cu: '0.0000',
-            val_fac_pb: '0.0000',
-            val_fac_zn: '0.0000',
-            val_fac_au: '0.0000',
+        const fa = this.factorOperativoFA; // tu FormArray
 
+        fa.controls.forEach((fg: AbstractControl, index: number) => {
+            const desTipo = index === 0 ? 'GENERAL' : 'EZPERANZA'; // fila 0 → GENERAL, fila 1 → EZPERANZA
 
-            val_fac_rec_ag: '0.0000',
-            val_fac_rec_cu: '0.0000',
-            val_fac_rec_pb: '0.0000',
-            val_fac_rec_zn: '0.0000',
-            val_fac_rec_au: '0.0000',
+            fg.reset({
+                val_des_tipo_fac: desTipo,  // asignamos GENERAL o EZPERANZA
+                val_tipo_fac: desTipo === 'GENERAL' ? 'FAC1' : 'FAC2',
+                val_ind_principal: desTipo === 'GENERAL' ? 'S' : 'N',
+                val_fac_ag: '0.0000',
+                val_fac_cu: '0.0000',
+                val_fac_pb: '0.0000',
+                val_fac_zn: '0.0000',
+                val_fac_au: '0.0000',
+                val_fac_rec_ag: '0.0000',
+                val_fac_rec_cu: '0.0000',
+                val_fac_rec_pb: '0.0000',
+                val_fac_rec_zn: '0.0000',
+                val_fac_rec_au: '0.0000',
+            });
         });
     }
+
+
+    // resetearFormulario() {
+    //     this.form.reset({
+    //         val_fac_ag: '0.0000',
+    //         val_fac_cu: '0.0000',
+    //         val_fac_pb: '0.0000',
+    //         val_fac_zn: '0.0000',
+    //         val_fac_au: '0.0000',
+
+
+    //         val_fac_rec_ag: '0.0000',
+    //         val_fac_rec_cu: '0.0000',
+    //         val_fac_rec_pb: '0.0000',
+    //         val_fac_rec_zn: '0.0000',
+    //         val_fac_rec_au: '0.0000',
+    //     });
+    // }
 
     // bloqueoFormulario() {
     //     const bloqueado = this.planingCompartido.bloqueoForm();
@@ -138,15 +158,31 @@ export class FactorOperativoTablaComponent {
     //     }
     // }
 
+    // ngOnInit() {
+    //     this.form.valueChanges.subscribe(val => {
+    //         const filas = this.form.getRawValue();
+
+    //         // this.planingCompartido.setOperativoDetalle(filas, 'factor_operativo');
+
+    //         console.log(filas);
+
+    //         this.planingCompartido.setFactorOperativo(filas, 'factor_operativo');
+
+
+    //     });
+    // }
+
     ngOnInit() {
-        this.form.valueChanges.subscribe(val => {
-            const filas = this.form.getRawValue();
+        this.form.valueChanges.subscribe(() => {
 
-            // this.planingCompartido.setOperativoDetalle(filas, 'factor_operativo');
+            const filas = this.factorOperativoFA.getRawValue();
 
-            this.planingCompartido.setFactorOperativo(filas, 'factor_operativo');
-
+            this.planingCompartido.setFactorOperativo(
+                filas,
+                'factor_operativo'
+            );
 
         });
+        this.resetearFormulario();
     }
 }

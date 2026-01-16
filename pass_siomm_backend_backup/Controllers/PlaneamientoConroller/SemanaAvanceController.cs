@@ -220,6 +220,8 @@ namespace pass_siomm_backend.Controllers.PlaneamientoConroller
         {
             Console.WriteLine("mis datos de llegada son: " + JsonSerializer.Serialize(datos, new JsonSerializerOptions { WriteIndented = true }));
 
+            //return Ok("Esa bien");
+
 
             if (datos == null)
                 return BadRequest("Los datos no pueden ser nulos");

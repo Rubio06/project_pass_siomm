@@ -65,7 +65,7 @@ export interface MaeFactor {
 
 
 
-export interface MaeValOperativo {
+export interface MaeValOperativoDetalle {
     val_fac_ag: string;
     // val_pre_ag: string;
     val_fac_cu: string;
@@ -75,6 +75,9 @@ export interface MaeValOperativo {
     val_fac_zn: string;
     // val_pre_zn: string;
     val_fac_au: string;
+
+    val_tipo_fac: string;
+    val_ind_principal: string;
 
     val_fac_rec_ag: string;
     val_fac_rec_cu: string;
@@ -87,14 +90,14 @@ export interface MaeValOperativo {
 export interface PlanningData {
     cierre_periodo: AperPeriodo[];
 
-    operativo_detalle: MaeValOperativoDetalle[];
+    // operativo_detalle: MaeValOperativoDetalle[];
     canchas: MaeValCanchas[];
     sobredisolucion: MaeFactorSobredisolucion[];
     recuperacionBudget: MaeFactorRecuperacion[];
     factor: MaeFactor[];
 
 
-    factorOperativo: MaeValOperativo[];
+    operativo_detalle: MaeValOperativoDetalle[];
     laboratorio_estandar: MaeTipLabEstandar[];
     metodo_minado: MaePerMetExplotacion[];
     semana_ciclo: MaeSemanaCiclo[];
@@ -220,16 +223,16 @@ export const TH_CAMPOS_TABLE: TableHeader[] = [
 
 export const TD_CAMPOS_TABLE: TableField[] = [
     { type: "text", name: "val_des_tipo_fac", readonly: true },
-    { type: "number", name: "val_fac_ag", readonly: true },
-    { type: "number", name: "val_fac_cu", readonly: true },
-    { type: "number", name: "val_fac_pb", readonly: true },
-    { type: "number", name: "val_fac_zn", readonly: true },
-    { type: "number", name: "val_fac_au", readonly: true },
-    { type: "text", name: "val_fac_rec_ag", readonly: true },
-    { type: "text", name: "val_fac_rec_cu", readonly: true },
-    { type: "text", name: "val_fac_rec_pb", readonly: true },
-    { type: "text", name: "val_fac_rec_zn", readonly: true },
-    { type: "text", name: "val_fac_rec_au", readonly: true },
+    { type: "number", name: "val_fac_ag", readonly: false },
+    { type: "number", name: "val_fac_cu", readonly: false },
+    { type: "number", name: "val_fac_pb", readonly: false},
+    { type: "number", name: "val_fac_zn", readonly: false },
+    { type: "number", name: "val_fac_au", readonly: false },
+    { type: "text", name: "val_fac_rec_ag", readonly: false },
+    { type: "text", name: "val_fac_rec_cu", readonly: false },
+    { type: "text", name: "val_fac_rec_pb", readonly: false },
+    { type: "text", name: "val_fac_rec_zn", readonly: false },
+    { type: "text", name: "val_fac_rec_au", readonly: false },
 ]
 
 

@@ -142,7 +142,7 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                 // DATOS DEL FORMULARIO
                 await GuardarCierrePeriodoAsync(connection, transaction, datos.cierre_periodo, datos.username, datos.modo);
                 await GuardarFactorAsync(connection, transaction, datos.factor, datos.username, anio, mes, datos.modo);
-                await GuardarFactorOperativoAsync(connection, transaction, datos.factorOperativo, datos.username, anio, mes, datos.modo);
+                //await GuardarFactorOperativoAsync(connection, transaction, datos.factorOperativo, datos.username, anio, mes, datos.modo);
                 await GuardarOperativoDetalleAsync(connection, transaction, datos.operativo_detalle, datos.username, anio, mes, datos.modo);
                 await GuardarCanchasAsync(connection, transaction, datos.canchas, datos.username, anio, mes, datos.modo);
                 await GuardarFactorSobredisolucionAsync(connection, transaction, datos.factorSobredisolucion, datos.username, mes, anio, datos.modo);
@@ -207,6 +207,9 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                 List<AperPeriodoCierreGuardarDto> periodos,
                 string? username, string modo)
         {
+            Console.WriteLine("mis datos de llegada son: " + JsonSerializer.Serialize(periodos, new JsonSerializerOptions { WriteIndented = true }));
+
+            //return Ok("Esa bien");
 
             if (periodos == null || periodos.Count == 0)
                 return;
@@ -246,8 +249,11 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                 cmd.Parameters.Add("@modo", SqlDbType.Char, 1)
                     .Value = modo;
 
-                await cmd.ExecuteNonQueryAsync();
+                //await cmd.ExecuteNonQueryAsync();
             }
+
+            Console.WriteLine("mis datos de llegada son: " + JsonSerializer.Serialize(periodos, new JsonSerializerOptions { WriteIndented = true }));
+
         }
 
 
@@ -323,62 +329,62 @@ namespace pass_siomm_backend.Services.PlaneamientoService
 
 
         ///DESCONOSCO POR QUE SE GUARDA
-        private async Task GuardarFactorOperativoAsync(
-                SqlConnection conn,
-                SqlTransaction trx,
-                List<MaeFactorOperativoGuardarDto> factoresOperativos, string? username, string anio, string mes, string modo)
-        {
-            if (factoresOperativos == null || factoresOperativos.Count == 0)
-                return;
+        //private async Task GuardarFactorOperativoAsync(
+        //        SqlConnection conn,
+        //        SqlTransaction trx,
+        //        List<MaeFactorOperativoGuardarDto> factoresOperativos, string? username, string anio, string mes, string modo)
+        //{
+        //    if (factoresOperativos == null || factoresOperativos.Count == 0)
+        //        return;
 
-            foreach (var fac in factoresOperativos)
-            {
-                using var cmd = new SqlCommand("SP_GUARDAR_MAE_VAL_OPERATIVO", conn, trx);
-                cmd.CommandType = CommandType.StoredProcedure;
+        //    foreach (var fac in factoresOperativos)
+        //    {
+        //        using var cmd = new SqlCommand("SP_GUARDAR_MAE_VAL_OPERATIVO", conn, trx);
+        //        cmd.CommandType = CommandType.StoredProcedure;
 
-                // 🔹 Claves
+        //        // 🔹 Claves
 
-                cmd.Parameters.Add("@cod_empresa", SqlDbType.VarChar, 2)
-                    .Value = "03";
+        //        cmd.Parameters.Add("@cod_empresa", SqlDbType.VarChar, 2)
+        //            .Value = "03";
 
-                cmd.Parameters.Add("@cod_empresa_unidad", SqlDbType.VarChar, 2)
-                    .Value = "01";
+        //        cmd.Parameters.Add("@cod_empresa_unidad", SqlDbType.VarChar, 2)
+        //            .Value = "01";
 
 
-                cmd.Parameters.Add("@val_ano", SqlDbType.VarChar, 4).Value = anio;
-                cmd.Parameters.Add("@val_per", SqlDbType.VarChar, 2).Value = mes;
-                cmd.Parameters.Add("@val_vig", SqlDbType.VarChar).Value = fac.val_vig ?? (object)DBNull.Value;
+        //        cmd.Parameters.Add("@val_ano", SqlDbType.VarChar, 4).Value = anio;
+        //        cmd.Parameters.Add("@val_per", SqlDbType.VarChar, 2).Value = mes;
+        //        cmd.Parameters.Add("@val_vig", SqlDbType.VarChar).Value = fac.val_vig ?? (object)DBNull.Value;
 
-                // 🔹 Valores AG
-                cmd.Parameters.Add("@val_fac_ag", SqlDbType.Decimal).Value = fac.val_fac_ag ?? (object)DBNull.Value;
-                cmd.Parameters.Add("@val_pre_ag", SqlDbType.Decimal).Value = fac.val_pre_ag ?? (object)DBNull.Value;
+        //        // 🔹 Valores AG
+        //        cmd.Parameters.Add("@val_fac_ag", SqlDbType.Decimal).Value = fac.val_fac_ag ?? (object)DBNull.Value;
+        //        cmd.Parameters.Add("@val_pre_ag", SqlDbType.Decimal).Value = fac.val_pre_ag ?? (object)DBNull.Value;
 
-                // 🔹 Valores CU
-                cmd.Parameters.Add("@val_fac_cu", SqlDbType.Decimal).Value = fac.val_fac_cu ?? (object)DBNull.Value;
-                cmd.Parameters.Add("@val_pre_cu", SqlDbType.Decimal).Value = fac.val_pre_cu ?? (object)DBNull.Value;
+        //        // 🔹 Valores CU
+        //        cmd.Parameters.Add("@val_fac_cu", SqlDbType.Decimal).Value = fac.val_fac_cu ?? (object)DBNull.Value;
+        //        cmd.Parameters.Add("@val_pre_cu", SqlDbType.Decimal).Value = fac.val_pre_cu ?? (object)DBNull.Value;
 
-                // 🔹 Valores PB
-                cmd.Parameters.Add("@val_fac_pb", SqlDbType.Decimal).Value = fac.val_fac_pb ?? (object)DBNull.Value;
-                cmd.Parameters.Add("@val_pre_pb", SqlDbType.Decimal).Value = fac.val_pre_pb ?? (object)DBNull.Value;
+        //        // 🔹 Valores PB
+        //        cmd.Parameters.Add("@val_fac_pb", SqlDbType.Decimal).Value = fac.val_fac_pb ?? (object)DBNull.Value;
+        //        cmd.Parameters.Add("@val_pre_pb", SqlDbType.Decimal).Value = fac.val_pre_pb ?? (object)DBNull.Value;
 
-                // 🔹 Valores ZN
-                cmd.Parameters.Add("@val_fac_zn", SqlDbType.Decimal).Value = fac.val_fac_zn ?? (object)DBNull.Value;
-                cmd.Parameters.Add("@val_pre_zn", SqlDbType.Decimal).Value = fac.val_pre_zn ?? (object)DBNull.Value;
+        //        // 🔹 Valores ZN
+        //        cmd.Parameters.Add("@val_fac_zn", SqlDbType.Decimal).Value = fac.val_fac_zn ?? (object)DBNull.Value;
+        //        cmd.Parameters.Add("@val_pre_zn", SqlDbType.Decimal).Value = fac.val_pre_zn ?? (object)DBNull.Value;
 
-                // 🔹 Valores AU
-                cmd.Parameters.Add("@val_fac_au", SqlDbType.Decimal).Value = fac.val_fac_au ?? (object)DBNull.Value;
-                cmd.Parameters.Add("@val_pre_au", SqlDbType.Decimal).Value = fac.val_pre_au ?? (object)DBNull.Value;
+        //        // 🔹 Valores AU
+        //        cmd.Parameters.Add("@val_fac_au", SqlDbType.Decimal).Value = fac.val_fac_au ?? (object)DBNull.Value;
+        //        cmd.Parameters.Add("@val_pre_au", SqlDbType.Decimal).Value = fac.val_pre_au ?? (object)DBNull.Value;
 
-                // 🔹 Auditoría
-                cmd.Parameters.Add("@usu_creo", SqlDbType.VarChar, 20).Value = username ?? (object)DBNull.Value;
+        //        // 🔹 Auditoría
+        //        cmd.Parameters.Add("@usu_creo", SqlDbType.VarChar, 20).Value = username ?? (object)DBNull.Value;
 
-                cmd.Parameters.Add("@modo", SqlDbType.Char, 1)
-                    .Value = modo;
+        //        cmd.Parameters.Add("@modo", SqlDbType.Char, 1)
+        //            .Value = modo;
 
-                await cmd.ExecuteNonQueryAsync();
+        //        await cmd.ExecuteNonQueryAsync();
 
-            }
-        }
+        //    }
+        //}
 
 
 

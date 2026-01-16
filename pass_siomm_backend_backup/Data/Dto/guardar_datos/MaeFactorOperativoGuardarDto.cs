@@ -29,6 +29,7 @@
         public decimal? val_fac_au { get; set; }
         public decimal? val_pre_au { get; set; }
 
+
         // 🔹 Auditoría
         public string? usu_creo { get; set; }
         public DateTime? fec_creo { get; set; }
