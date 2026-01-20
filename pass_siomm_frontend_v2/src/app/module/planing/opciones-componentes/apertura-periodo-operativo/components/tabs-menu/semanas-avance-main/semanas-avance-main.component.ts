@@ -45,14 +45,19 @@ export class SemanasAvanceMainComponent {
 
     bloqueoBotonNuevo = signal<boolean>(true);
 
+    // anioOrigen = this.planingCompartido.fechas()?.cie_ano;
+    // mesOrigen = this.planingCompartido.fechas()?.cie_per;
 
     constructor() {
 
         effect(() => {
             const data = this.planingCompartido.dataRoutes();
+
             const semanas = data?.data?.semana_avance || [];
 
             this.loadSemanas(semanas);
+
+
             this.myForm.patchValue(data || {}, { emitEvent: false });
             // this.cd.detectChanges();
 
@@ -84,36 +89,60 @@ export class SemanasAvanceMainComponent {
         data.forEach((item) => {
             this.semanas.push(
                 this.fb.group({
+                    cie_ano: [item.cie_ano],
+                    cie_per: [item.cie_per],
+
                     num_semana: [item.num_semana],
                     fec_ini: [this.formUtils.formatDate(item.fec_ini)],
                     fec_fin: [this.formUtils.formatDate(item.fec_fin)],
                     desc_semana: [item.desc_semana],
                     accion: [],
                     esNuevo: [false]
-
                 })
             );
         });
+
+        // console.log(data)
+
     }
 
+    hoy = new Date();
+    // mesOrigen = (this.hoy.getMonth() + 1).toString().padStart(2, '0');
 
     agregarFilas() {
+        // Tomamos la última fila cargada para usar sus datos
+        const ultima = this.semanas.length
+            ? this.semanas.at(this.semanas.length - 1)?.value
+            : null;
 
-        if (this.semanas.length >= 1) {
-            return;
-        }
+        const origen = ultima || {
+            cie_ano: new Date().getFullYear().toString(),
+            cie_per: (new Date().getMonth() + 1).toString().padStart(2, '0'),
+            num_semana: 1
+        };
+
+        // Si quieres, incrementa num_semana automáticamente
+        const numSemanaNueva = ultima ? (ultima.num_semana + 1) : origen.num_semana;
 
         this.semanas.push(
             this.fb.group({
-                num_semana: ['', [Validators.required, Validators.min(1), Validators.max(7), Validators.pattern(/^[1-7]$/)]],
+                cie_ano: [origen.cie_ano, Validators.required],
+                cie_per: [origen.cie_per, Validators.required],
+                num_semana: [numSemanaNueva, [
+                    Validators.required,
+                    Validators.min(1),
+                    Validators.max(7),
+                    Validators.pattern(/^[1-7]$/)
+                ]],
                 fec_ini: ['', [Validators.required, Validators.pattern(/^(0[1-9]|[12]\d|3[01])\/(0[1-9]|1[0-2])\/(19\d{2}|20\d{2}|2100)$/)]],
                 fec_fin: ['', [Validators.required, Validators.pattern(/^(0[1-9]|[12]\d|3[01])\/(0[1-9]|1[0-2])\/(19\d{2}|20\d{2}|2100)$/)]],
-                desc_semana: ['', [Validators.required]],
+                desc_semana: ['', Validators.required],
                 esNuevo: [true]
-
             })
         );
     }
+
+
 
     async eliminarFila(data: any, index: number) {
         const semana = data.getRawValue ? data.getRawValue() : data.value;
@@ -134,6 +163,8 @@ export class SemanasAvanceMainComponent {
         }
 
         const payload = {
+            cie_ano: semana.cie_ano,
+            cie_per: semana.cie_per,
             num_semana: semana.num_semana,
             fec_ini: this.formUtils.convertToISO(semana.fec_ini),
             fec_fin: this.formUtils.convertToISO(semana.fec_fin),
@@ -143,7 +174,7 @@ export class SemanasAvanceMainComponent {
         // 👉 Confirmación usando tu utilitario
 
 
-        console.log("datos eliminados correctamente " + payload)
+        // console.log("datos eliminados correctamente " + payload)
 
         this.semanasAvanceMainService.eliminarSemanaAvance(payload).subscribe({
             next: (res: any) => {
@@ -174,6 +205,8 @@ export class SemanasAvanceMainComponent {
     ngOnInit() {
         this.myForm.valueChanges.subscribe(val => {
             const filas = this.semanas.getRawValue();
+
+            console.log(filas)
 
             this.planingCompartido.setSemanaAvance(filas, 'semana_avance');
             // console.log("📤 TAB semana actualizó servicio:", filas);

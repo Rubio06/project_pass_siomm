@@ -33,6 +33,7 @@ namespace pass_siomm_backend.Services.PlaneamientoService
             while (await reader.ReadAsync())
             {
                 meses.Add(reader["cie_per"].ToString());
+
             }
 
             return meses;
@@ -299,6 +300,9 @@ namespace pass_siomm_backend.Services.PlaneamientoService
             {
                 lista.Add(new MaeSemanaAvanceDto
                 {
+                    cie_ano = reader["cie_ano"].ToString(),
+                    cie_per = reader["cie_per"].ToString(),
+
                     num_semana = reader["num_semana"] == DBNull.Value ? 0 : Convert.ToInt32(reader["num_semana"]),
                     fec_ini = reader["fec_ini"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["fec_ini"]),
                     fec_fin = reader["fec_fin"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["fec_fin"]),

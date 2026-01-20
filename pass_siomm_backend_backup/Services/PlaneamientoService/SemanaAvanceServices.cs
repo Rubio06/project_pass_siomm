@@ -111,11 +111,11 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                     cmd.Parameters.Add("@mesOrigen", SqlDbType.VarChar).Value = semana.mesOrigen;
                     cmd.Parameters.Add("@anioDestino", SqlDbType.VarChar).Value = semana.anioDestino;
                     cmd.Parameters.Add("@mesDestino", SqlDbType.VarChar).Value = semana.mesDestino;
-                    cmd.Parameters.Add("@fechaInicioDestino", SqlDbType.DateTime)
-                       .Value = DateTime.Parse(semana.fechaInicioDestino);
+                    cmd.Parameters.Add("@fechaInicioOrigen", SqlDbType.DateTime)
+                       .Value = DateTime.Parse(semana.fechaInicioOrigen);
 
-                    cmd.Parameters.Add("@fechaFinDestino", SqlDbType.DateTime)
-                       .Value = DateTime.Parse(semana.fechaFinDestino);
+                    cmd.Parameters.Add("@fechaFinOrigen", SqlDbType.DateTime)
+                       .Value = DateTime.Parse(semana.fechaFinOrigen);
                     cmd.Parameters.Add("@username", SqlDbType.VarChar).Value = semana.username;
 
                     await cmd.ExecuteNonQueryAsync();
@@ -134,41 +134,47 @@ namespace pass_siomm_backend.Services.PlaneamientoService
 
             try
             {
-                var periodo = datos.cierre_periodo.First();
-
-                string anio = periodo.cie_ano;
-                string mes = ConvertirPeriodo(periodo.cie_per);
-
-                // DATOS DEL FORMULARIO
-                await GuardarCierrePeriodoAsync(connection, transaction, datos.cierre_periodo, datos.username, datos.modo);
-                await GuardarFactorAsync(connection, transaction, datos.factor, datos.username, anio, mes, datos.modo);
-                //await GuardarFactorOperativoAsync(connection, transaction, datos.factorOperativo, datos.username, anio, mes, datos.modo);
-                await GuardarOperativoDetalleAsync(connection, transaction, datos.operativo_detalle, datos.username, anio, mes, datos.modo);
-                await GuardarCanchasAsync(connection, transaction, datos.canchas, datos.username, anio, mes, datos.modo);
-                await GuardarFactorSobredisolucionAsync(connection, transaction, datos.factorSobredisolucion, datos.username, mes, anio, datos.modo);
-                await GuardarRecuperacionAsync(connection, transaction, datos.recuperacionBudget, datos.username, mes, anio, datos.modo);
+                // 🟢 CASO 1: FACTOR OPERATIVO
+                if (datos.validacion == "FORMULARIO")
+                {
+                    var periodo = datos.cierre_periodo.First();
+                    if (datos.cierre_periodo == null || !datos.cierre_periodo.Any())
+                    {
+                        throw new InvalidOperationException(
+                            "Debe completar el cierre de período."
+                        );
+                    }
 
 
+                    string anio = periodo.cie_ano;
+                    string mes = ConvertirPeriodo(periodo.cie_per);
 
+                    await GuardarCierrePeriodoAsync(connection, transaction, datos.cierre_periodo, datos.username, datos.modo);
+                    await GuardarFactorAsync(connection, transaction, datos.factor, datos.username, anio, mes, datos.modo);
+                    await GuardarOperativoDetalleAsync(connection, transaction, datos.operativo_detalle, datos.username, anio, mes, datos.modo);
+                    await GuardarCanchasAsync(connection, transaction, datos.canchas, datos.username, anio, mes, datos.modo);
+                    await GuardarFactorSobredisolucionAsync(connection, transaction, datos.factorSobredisolucion, datos.username, mes, anio, datos.modo);
+                    await GuardarRecuperacionAsync(connection, transaction, datos.recuperacionBudget, datos.username, mes, anio, datos.modo);
+                }
 
+                // 🟢 CASO 2: SEMANA AVANCE
+                if (datos.validacion == "TABLA")
+                {
+                    if (datos.semana_avance == null || !datos.semana_avance.Any())
+                    {
+                        throw new InvalidOperationException(
+                            "Debe ingresar semanas de avance."
+                        );
+                    }
 
-                ///DATOS DE LAS TABLAS
-
-
-
-                await GuardarSemanaAvanceAsync(connection, transaction, datos.semana_avance, datos.username, mes, anio, datos.modo);
-
-
-                //await GuardarLaboratorioAsync(connection, transaction, datos.laboratorio_estandar, datos.username, datos.anioActual, datos.mesActual);
-                //await GuardarMetodoMinadoAsync(connection, transaction, datos.metodo_minado, datos.username, datos.anioActual, datos.mesActual);
-
-
-
-
-                //await GuardarExploracionAsync(connection, transaction, datos.exploracion_extandar, datos.username, datos.anioActual, datos.mesActual);
-                //await GuardarSemanaCicloAsync(connection, transaction, datos.semana_ciclo, datos.username, datos.anioActual, datos.mesActual);
-
-
+                    await GuardarSemanaAvanceAsync(
+                        connection,
+                        transaction,
+                        datos.semana_avance,
+                        datos.username,
+                        datos.modo
+                    );
+                }
 
                 transaction.Commit();
             }
@@ -178,6 +184,7 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                 throw;
             }
         }
+
 
         private string ConvertirPeriodo(string valor)
         {
@@ -249,7 +256,7 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                 cmd.Parameters.Add("@modo", SqlDbType.Char, 1)
                     .Value = modo;
 
-                //await cmd.ExecuteNonQueryAsync();
+                await cmd.ExecuteNonQueryAsync();
             }
 
             Console.WriteLine("mis datos de llegada son: " + JsonSerializer.Serialize(periodos, new JsonSerializerOptions { WriteIndented = true }));
@@ -980,10 +987,11 @@ namespace pass_siomm_backend.Services.PlaneamientoService
         private async Task GuardarSemanaAvanceAsync(
             SqlConnection conn,
             SqlTransaction trx,
-            List<MaeSemanaAvanceGuardarDto> semanas, string? username, string anio, string mes, string modo)
+            List<MaeSemanaAvanceGuardarDto> semanas, string? username, string modo)
         {
-            Console.WriteLine(JsonSerializer.Serialize(semanas, new JsonSerializerOptions { WriteIndented = true }));
+            //Console.WriteLine(JsonSerializer.Serialize(semanas, new JsonSerializerOptions { WriteIndented = true }));
 
+            //return Ok("los datos obtenidos son " + datos);
 
             // 1️⃣ Validación
             if (semanas == null || semanas.Count == 0)
@@ -1029,13 +1037,13 @@ namespace pass_siomm_backend.Services.PlaneamientoService
 
                 // 🔹 Auditoría
                 cmd.Parameters.Add("@usu_creo", SqlDbType.VarChar, 20)
-                    .Value = p.usu_creo ?? (object)DBNull.Value;
+                    .Value = username ?? (object)DBNull.Value;
 
                 cmd.Parameters.Add("@fec_creo", SqlDbType.DateTime)
                     .Value = p.fec_creo ?? (object)DBNull.Value;
 
                 cmd.Parameters.Add("@usu_modi", SqlDbType.VarChar, 20)
-                    .Value = username ?? (object)DBNull.Value;
+                    .Value = p.usu_modi ?? (object)DBNull.Value;
 
                 cmd.Parameters.Add("@fec_modi", SqlDbType.DateTime)
                     .Value = p.fec_modi ?? (object)DBNull.Value;
@@ -1047,6 +1055,8 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                 // 🔹 Ejecutar SP
                 // 4️⃣ Ejecutar
                 await cmd.ExecuteNonQueryAsync();
+
+                Console.WriteLine("mis datos de llegada son: " + JsonSerializer.Serialize(semanas, new JsonSerializerOptions { WriteIndented = true }));
             }
         }
 

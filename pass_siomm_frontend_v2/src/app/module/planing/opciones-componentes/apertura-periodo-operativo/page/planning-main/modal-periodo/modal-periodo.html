@@ -19,26 +19,26 @@
         <hr class="border-gray-200 border-t-2" />
 
         <!-- Formulario -->
-        <form [formGroup]="myFrom" (ngSubmit)="onSubmit()" class="space-y-3 p-4">
+        <form [formGroup]="myForm" (ngSubmit)="onSubmit()" class="space-y-3 p-4">
 
             <!-- Año y Mes -->
             <div class="grid grid-cols-2 gap-3">
                 <div>
-                    <label class="block text-sm font-medium text-gray-600 mb-1">Año</label>
+                    <label class="block text-sm font-medium text-gray-600 mb-1">Año Destino</label>
                     <input type="text" formControlName="anioDestino"
                         class="input input-xs font-medium w-full border border-gray-300 rounded-md px-3 py-0.5 text-sm shadow-sm
                    focus:border-[#033351] focus:ring-2 focus:ring-[rgb(3,102,157)] focus:ring-opacity-40 outline-none" />
-                    @if ( formsUtils.isValidField(myFrom , 'anioDestino') ) {
+                    @if ( formsUtils.isValidField(myForm , 'anioDestino') ) {
                     <span class="text-xs text-red-600 mt-1 block">
                         <!-- Debe de ser de 3 letras -->
-                        {{ formsUtils.getFiledError(myFrom, 'anioDestino') }}
+                        {{ formsUtils.getFiledError(myForm, 'anioDestino') }}
                     </span>
                     }
                 </div>
 
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-600 mb-1">Mes</label>
+                    <label class="block text-sm font-medium text-gray-600 mb-1">Mes Destino</label>
                     <select formControlName="mesDestino"
                         class="select-xs mx-auto select text-sm font-medium outline-none flex items-center
                     border border-gray-300 rounded-lg px-2 py-1 bg-gray-50 shadow-sm hover:shadow-md
@@ -66,34 +66,62 @@
 
             <!-- Fechas -->
             <div class="grid grid-cols-2 gap-3">
+
+
                 <div>
-                    <label class="block text-sm font-medium text-gray-600 mb-1">Fecha Inicio</label>
-                    <input type="date" formControlName="fechaInicioDestino"
+                    <label class="block text-sm font-medium text-gray-600 mb-1">Año Origen</label>
+                    <input type="text" formControlName="anioOrigen"
                         class="input input-xs font-medium w-full border border-gray-300 rounded-md px-3 py-0.5 text-sm shadow-sm
                    focus:border-[#033351] focus:ring-2 focus:ring-[rgb(3,102,157)] focus:ring-opacity-40 outline-none" />
-                    @if ( formsUtils.isValidField(myFrom ,'fechaInicioDestino') ) {
+                    @if ( formsUtils.isValidField(myForm ,'anioOrigen') ) {
                     <span class="text-xs text-red-600 mt-1 block">
                         <!-- Debe de ser de 3 letras -->
-                        {{ formsUtils.getFiledError(myFrom, 'fechaInicioDestino') }}
+                        {{ formsUtils.getFiledError(myForm, 'anioOrigen') }}
                     </span>
                     }
                 </div>
 
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-600 mb-1">Fecha Fin</label>
-                    <input type="date" formControlName="fechaFinDestino"
+                    <label class="block text-sm font-medium text-gray-600 mb-1">Mes Origen</label>
+                    <input type="text" formControlName="mesOrigen"
                         class="input input-xs font-medium w-full border border-gray-300 rounded-md px-3 py-0.5 text-sm shadow-sm
                    focus:border-[#033351] focus:ring-2 focus:ring-[rgb(3,102,157)] focus:ring-opacity-40 outline-none" />
 
-                    @if ( formsUtils.isValidField(myFrom ,'fechaFinDestino') ) {
+                    @if ( formsUtils.isValidField(myForm ,'mesOrigen') ) {
                     <span class="text-xs text-red-600 mt-1 block">
                         <!-- Debe de ser de 3 letras -->
-                        {{ formsUtils.getFiledError(myFrom, 'fechaFinDestino') }}
+                        {{ formsUtils.getFiledError(myForm, 'mesOrigen') }}
                     </span>
                     }
                 </div>
 
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-1">Fecha Origen</label>
+                    <input type="text" formControlName="fechaInicioOrigen"
+                        class="input input-xs font-medium w-full border border-gray-300 rounded-md px-3 py-0.5 text-sm shadow-sm
+                   focus:border-[#033351] focus:ring-2 focus:ring-[rgb(3,102,157)] focus:ring-opacity-40 outline-none" />
+
+                    @if ( formsUtils.isValidField(myForm ,'fechaInicioOrigen') ) {
+                    <span class="text-xs text-red-600 mt-1 block">
+                        <!-- Debe de ser de 3 letras -->
+                        {{ formsUtils.getFiledError(myForm, 'fechaInicioOrigen') }}
+                    </span>
+                    }
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-1">Fecha Destino</label>
+                    <input type="text" formControlName="fechaFinOrigen"
+                        class="input input-xs font-medium w-full border border-gray-300 rounded-md px-3 py-0.5 text-sm shadow-sm
+                   focus:border-[#033351] focus:ring-2 focus:ring-[rgb(3,102,157)] focus:ring-opacity-40 outline-none" />
+
+                    @if ( formsUtils.isValidField(myForm ,'fechaFinOrigen') ) {
+                    <span class="text-xs text-red-600 mt-1 block">
+                        <!-- Debe de ser de 3 letras -->
+                        {{ formsUtils.getFiledError(myForm, 'fechaFinOrigen') }}
+                    </span>
+                    }
+                </div>
             </div>
 
             <!-- Info -->
@@ -111,7 +139,7 @@
 
                 <button type="submit"
                     class="px-5 py-1.5 text-sm font-semibold rounded-md bg-[#002B48] text-white hover:bg-[#00426F] disabled:opacity-50"
-                    [disabled]="myFrom.invalid">
+                    [disabled]="myForm.invalid">
                     Copiar
                 </button>
             </div>

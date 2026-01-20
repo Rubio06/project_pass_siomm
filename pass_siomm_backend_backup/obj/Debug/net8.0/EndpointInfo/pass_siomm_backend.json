@@ -402,6 +402,10 @@
             "type": "string",
             "format": "date-time",
             "nullable": true
+          },
+          "validacion": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -425,11 +429,11 @@
             "type": "string",
             "nullable": true
           },
-          "fechaInicioDestino": {
+          "fechaInicioOrigen": {
             "type": "string",
             "nullable": true
           },
-          "fechaFinDestino": {
+          "fechaFinOrigen": {
             "type": "string",
             "nullable": true
           },
@@ -532,6 +536,10 @@
             "nullable": true
           },
           "modo": {
+            "type": "string",
+            "nullable": true
+          },
+          "validacion": {
             "type": "string",
             "nullable": true
           }

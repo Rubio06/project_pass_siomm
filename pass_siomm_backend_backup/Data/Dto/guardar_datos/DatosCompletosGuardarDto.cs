@@ -31,6 +31,7 @@
         public string? username { get; set; }
 
         public string? modo { get; set; } // "N" o "E"
+        public string? validacion { get; set; }
 
 
 

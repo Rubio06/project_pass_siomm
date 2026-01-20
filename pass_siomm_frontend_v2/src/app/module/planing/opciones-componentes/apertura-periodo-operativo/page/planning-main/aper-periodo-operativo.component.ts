@@ -1,6 +1,6 @@
 import { catchError } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject, signal, ViewChild, WritableSignal } from '@angular/core';
+import { Component, computed, inject, Input, signal, ViewChild, WritableSignal } from '@angular/core';
 import { PlanningService } from '../../services/planning.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CanDeactivate, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
@@ -12,6 +12,7 @@ import { FormUtils } from 'src/app/utils/form-utils';
 import Swal from 'sweetalert2';
 import { ModalPeriodo } from "./modal-periodo/modal-periodo";
 import { CanComponentDeactivate } from 'src/app/core/guards/cambios-guard/cambios-pendientes.guard';
+import { AperPerOperComponent } from '../../components/periodo/periodo..component';
 
 
 export enum ViewMode {
@@ -50,6 +51,8 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
 
 
     formsUtils = FormUtils;
+
+
 
     /* ============================
      * 🔹 SIGNALS
@@ -90,6 +93,13 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
     }
 
 
+    anio!: string;
+    mes!: string;
+    fechaInicio!: string;
+    fechaFin!: string;
+
+
+
 
     /// GUARD CAMBIOS TABS
 
@@ -108,6 +118,8 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
             next: years => {
                 if (!years.length) {
                     this.hasError.set('No se encontraron rutas disponibles.');
+                    // console.log(years)
+
                     return;
                 }
                 this._years.set(years);
@@ -120,6 +132,8 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
         this.planingService.getMonths(year).subscribe({
             next: months => {
                 if (!months.length) {
+
+                    console.log(months)
                     this.hasError.set('No hay meses disponibles.');
                     return;
                 }
@@ -169,17 +183,20 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
                 return;
             }
 
+
             const anio = this.showData.get('fechaInicio')?.value || '';
             this.cargarPeriodo(month, anio);
 
+            this.anio = anio;   // AÑO
+            this.mes = month;    // MES
         });
     }
 
     sendMonth(): void {
+        this.showData.get('fechaInicio')?.valueChanges.subscribe((anioSeleccionado) => {
+            if (!anioSeleccionado) return;
 
-        this.showData.get('fechaInicio')?.valueChanges.subscribe((year) => {
-            if (!year) return;
-
+            // Bloquear si hay cambios pendientes
             if (this.planingCompartido.getCambios()) {
                 Swal.fire({
                     icon: 'warning',
@@ -193,7 +210,19 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
                 this.showData.get('fechaInicio')?.setValue(this.prevYear, { emitEvent: false });
                 return;
             }
-            this.cargarMeses(year);
+
+            // Cargar meses disponibles para el año seleccionado
+            this.cargarMeses(anioSeleccionado);
+
+            // Obtener el mes seleccionado
+            const mesSeleccionado = this.showData.get('fechaFin')?.value;
+
+
+            // Guardar año y mes correctamente
+
+            if (mesSeleccionado) {
+                this.cargarPeriodo(mesSeleccionado, anioSeleccionado); // Carga datos del periodo
+            }
         });
     }
 
@@ -241,12 +270,13 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
 
         const payload = {
             ...destino,
-            fechaInicioDestino: this.convertToISO(destino.fechaInicioDestino),
-            fechaFinDestino: this.convertToISO(destino.fechaFinDestino),
-            anioOrigen: this.showData.get('fechaInicio')?.value,
-            mesOrigen: this.showData.get('fechaFin')?.value,
             username: username ?? ''
         };
+
+
+        console.log(payload);
+
+
 
         this.semanasAvanceService.copiarPeriodo(payload).subscribe({
             next: (resp) => {
@@ -257,6 +287,12 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
                     this.sendMonth();
                     this.child.onReset();
                     modal.close();
+
+                    this.setBotonesState({
+                        copiarPeriodo: true,
+                    });
+
+                    this.limpiarFormulario();
                 } else {
                     this.formsUtils.errorCopiado(resp.message);
                 }
@@ -329,7 +365,6 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
         if (finControl) finControl.disable({ emitEvent: false });
     }
 
-
     onNuevo() {
 
         this.modoBoton = 'N';
@@ -344,6 +379,7 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
         this.planingCompartido.limpiezaBotonNuevo();
 
         this.limpiarFormulario();
+
 
         this.setBotonesState({
             nuevo: true,          // 🔒 se bloquea
@@ -366,6 +402,8 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
         this.planingCompartido.notifyResetSemanas();
         this.planingCompartido.limpiezaBotonNuevo();
         this.limpiarFormulario();
+
+
         this.setBotonesState({
             nuevo: true,
             editar: true,
@@ -399,6 +437,7 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
             this.planingCompartido.setCambios(false);
 
 
+
         } catch (error) {
             console.error(error);
 
@@ -414,6 +453,7 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
     ngOnInit() {
         this.planingCompartido.registrarGuardar(() => this.onGuardarGuard());
     }
+    mostrarErrorGeneral = false;
 
 
     //GUARDAR DATOS COMPONENTE
@@ -423,18 +463,19 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
 
     public async onGuardar() {
 
-        // if (!this.planingCompartido.isPeriodoValido()) {
-        //     this.formsUtils.errorGuardar(
-        //         'Debe completar los datos del periodo antes de guardar.'
-        //     );
+        // if (!this.validarFactorOperativo()) {
+        //     this.mostrarErrorGeneral = true;
         //     return;
         // }
-
         const confirmado = await this.formsUtils.confirmarGuardado();
         if (!confirmado) return;
 
         this.guardarDatos();
     }
+
+    
+
+
     private guardarDatos() {
 
         // if (this.form.invalid) {
@@ -442,7 +483,7 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
         //     return; // ⛔ NO backend
         // }
 
-        const anioOrigen =  this.showData.get('fechaInicio')?.value;
+        const anioOrigen = this.showData.get('fechaInicio')?.value;
         const mesOrigen = this.showData.get('fechaFin')?.value;
 
         this.planingCompartido.guardarTodo(this.mapModo(), anioOrigen, mesOrigen).subscribe({
@@ -453,9 +494,6 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
                 this.showData.get('fechaInicio')?.enable();
                 this.showData.get('fechaFin')?.enable();
                 this.planingCompartido.setCambios(false);
-
-                this.sendYear();
-                this.sendMonth();
             },
             error: (err) => {
                 // mensaje que viene del backend

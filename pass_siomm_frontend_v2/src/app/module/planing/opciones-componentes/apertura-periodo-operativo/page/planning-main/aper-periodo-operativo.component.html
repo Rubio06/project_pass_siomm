@@ -21,7 +21,7 @@
                             class="w-65 select-sm mx-auto select text-sm font-medium outline-none flex items-center border border-gray-300 rounded-lg px-2 py-1 bg-gray-50 shadow-sm hover:shadow-md transition-shadow duration-300 ease-in-out focus-within:border-[#033351] focus-within:ring-1 focus-within:ring-[rgb(3,102,157)] focus-within:ring-opacity-40 w-75">
                             <option disabled value="">Selecciona un año</option>
                             @for (item of years(); track $index) {
-                            <option [value]="item">{{ item }}</option>
+                                <option [value]="item">{{ item }}</option>
                             }
                         </select>
                     </div>
@@ -33,7 +33,7 @@
                             class="w-65 select-sm mx-auto select text-sm font-medium outline-none flex items-center border border-gray-300 rounded-lg px-2 py-1 bg-gray-50 shadow-sm hover:shadow-md transition-shadow duration-300 ease-in-out focus-within:border-[#033351] focus-within:ring-1 focus-within:ring-[rgb(3,102,157)] focus-within:ring-opacity-40 w-75">
                             <option disabled value="">Selecciona un mes</option>
                             @for (item of months(); track $index) {
-                            <option [value]="item">{{ item | transfornMonth }}</option>
+                                <option [value]="item">{{ item | transfornMonth }}</option>
                             }
                         </select>
                     </div>
@@ -90,6 +90,8 @@
                                     d="M8 16h8M8 12h8M8 8h8M4 4h16v16H4V4z" />
                             </svg>
                             <span>Copiar Periodo</span>
+
+                             <!-- [anioOrigen]="anio" [mesOrigen]="mes" -->
                         </button>
                         <app-modal-periodo (aceptar)="copiarPeriodo($event)"></app-modal-periodo>
                     </div>

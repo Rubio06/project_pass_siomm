@@ -7,6 +7,7 @@ using pass_siomm_backend.Services.PlaneamientoService;
 using System.Data;
 using System.Text.Json;
 using static pass_siomm_backend.Services.PlaneamientoService.SemanaAvanceServices;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace pass_siomm_backend.Controllers.PlaneamientoConroller
 {
@@ -172,6 +173,9 @@ namespace pass_siomm_backend.Controllers.PlaneamientoConroller
         public async Task<IActionResult> CopiarPeriodoOperativo([FromBody] CopiarPeriodoDto periodo)
         {
 
+            //Console.WriteLine("mis datos de llegada son: " + JsonSerializer.Serialize(periodo, new JsonSerializerOptions { WriteIndented = true }));
+
+            //return Ok(periodo);
             if (periodo == null)
             {
                 return BadRequest(new ApiResponse<object>
@@ -218,9 +222,9 @@ namespace pass_siomm_backend.Controllers.PlaneamientoConroller
         [HttpPost("semana/guardar-datos")]
         public async Task<IActionResult> GuardarDatos([FromBody] DatosCompletosGuardarDto datos)
         {
-            Console.WriteLine("mis datos de llegada son: " + JsonSerializer.Serialize(datos, new JsonSerializerOptions { WriteIndented = true }));
+            //Console.WriteLine("mis datos de llegada son: " + JsonSerializer.Serialize(datos, new JsonSerializerOptions { WriteIndented = true }));
 
-            //return Ok("Esa bien");
+            //return Ok("los datos obtenidos son " + datos);
 
 
             if (datos == null)

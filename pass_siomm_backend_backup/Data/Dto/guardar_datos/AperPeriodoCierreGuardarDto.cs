@@ -13,5 +13,7 @@
         public string? usu_creo { get; set; }
         public DateTime? fec_creo { get; set; }
 
+        public string? validacion { get; set; }
+
     }
 }

@@ -3,7 +3,14 @@ import { computed, inject, Injectable, Signal, signal, WritableSignal } from '@a
 import { AperPeriodo, MaeExploEstandar, MaeFactor, MaeFactorRecuperacion, MaeFactorSobredisolucion, MaePerMetExplotacion, MaeSemanaAvance, MaeSemanaCiclo, MaeTipLabEstandar, MaeValCanchas, MaeValOperativoDetalle, PlanningData } from '../interface/aper-per-oper.interface';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '@environments/environments';
+import { ValidationErrors } from '@angular/forms';
 
+export interface Fechas {
+    fec_ini: string;
+    fec_fin: string;
+    cie_ano: string;  // <- ⭐ Debe ser string
+    cie_per: string;
+}
 @Injectable({
     providedIn: 'root'
 })
@@ -41,10 +48,17 @@ export class PlaningCompartidoService {
     readonly semana_ciclo = this._semana_ciclo.asReadonly();
     // readonly valores = this._valores.asReadonly();
 
+
+    private _cierrePeriodoValid = signal<boolean>(false);
+    private _cierrePeriodoErrors = signal<ValidationErrors | null>(null);
+
+    cierrePeriodoValid = this._cierrePeriodoValid.asReadonly();
+    cierrePeriodoErrors = this._cierrePeriodoErrors.asReadonly();
     /// FACTOR OPERATIVO
     setCierrePeriodo(data: AperPeriodo | AperPeriodo[], tab?: string) {
         this._cierre_periodo.set(Array.isArray(data) ? data : [data]);
         this._lastTab = tab || ''; // opcional: guardas cuál se actualizó
+
     }
 
     setFactor(data: MaeFactor | MaeFactor[], tab?: string) {
@@ -106,29 +120,6 @@ export class PlaningCompartidoService {
         this._metodo_minado.set(Array.isArray(data) ? data : [data]);
     }
 
-
-    //     cierre_periodo: this._cierre_periodo(),
-    // factor: this._factor(),
-    // operativo_detalle: this._operativo_detalle(),
-    // factorOperativo: this._factorOperativo(),
-    // canchas: this._canchas(),
-    // recuperacionBudget: this._recuperacionBudget(),
-    // factorSobredisolucion: this._factorSobredisolucion(),
-
-
-
-    // factorSobredisolucion
-
-
-
-
-    // setValores(data: any | any[]) {
-    //     this._valores.set(Array.isArray(data) ? data : [data]);
-    // }
-
-    // Limpiar todo
-
-
     private toDateTime(fecha: string): string {
         const [d, m, y] = fecha.split('/');
         return `${y}-${m}-${d}T00:00:00`;
@@ -144,53 +135,33 @@ export class PlaningCompartidoService {
                     cierre_periodo: this._cierre_periodo(),
                     factor: this._factor(),
                     operativo_detalle: this._operativo_detalle(),
-                    // factorOperativo: this._factorOperativo(),
                     canchas: this._canchas(),
                     recuperacionBudget: this._recuperacionBudget(),
                     factorSobredisolucion: this._factorSobredisolucion(),
                     modo: modoBoton,
+                    validacion: 'FORMULARIO',
                     username: localStorage.getItem('username'),
-                }
+                };
                 break;
 
             case 'semana_avance':
                 const semanasFormateadas = this._semana_avance().map(s => ({
                     ...s,
-                    cie_ano: anio,
-                    cie_per: mes,
+                    // cie_ano: anio,
+                    // cie_per: mes,
                     fec_ini: this.toDateTime(s.fec_ini),
                     fec_fin: this.toDateTime(s.fec_fin),
                 }));
 
+
                 payload = {
                     semana_avance: semanasFormateadas,
                     modo: modoBoton,
+                    validacion: 'TABLA',
                     username: localStorage.getItem('username')
                 }
                 break;
         }
-
-        // const payload = {
-        //     cierre_periodo: this._cierre_periodo(),
-        //     factor: this._factor(),
-        //     operativo_detalle: this._operativo_detalle(),
-        //     factorOperativo: this._factorOperativo(),
-        //     canchas: this._canchas(),
-        //     recuperacionBudget: this._recuperacionBudget(),
-        //     factorSobredisolucion: this._factorSobredisolucion(),
-
-
-
-
-        //     semana_avance: semanasFormateadas,
-        //     // valores: this._valores(),
-        //     // laboratorio_estandar: this._laboratorio_estandar(),
-        //     // exploracion_extandar: this._exploracion_extandar(),
-        //     // metodo_minado: this._metodo_minado(),
-        //     // semana_ciclo: this._semana_ciclo(),
-        //     modo: modoBoton,
-        //     username: localStorage.getItem('username'),
-        // };
 
         console.log("los datos recibidos son: " + JSON.stringify(payload, null, 2));
         return this.http.post(
@@ -336,4 +307,45 @@ export class PlaningCompartidoService {
     setCierrePeriodo_Dos(data: AperPeriodo) {
         this._cierre_periodo_DOS.set(data);
     }
+
+
+    //ESTADO PERIODO
+    anio = signal<string[]>([]);
+    meses = signal<string[]>([]);
+
+    anioSeleccionado = signal<string | null>(null);
+    mesSeleccionado = signal<string | null>(null);
+
+    setYears(data: string[]) {
+        this.anio.set(data);
+
+
+        if (!this.anioSeleccionado() && data.length) {
+            this.anioSeleccionado.set(data[0]);
+        }
+    }
+
+    setMonths(data: string[]) {
+        this.meses.set(data);
+
+        if (!this.mesSeleccionado() && data.length) {
+            this.mesSeleccionado.set(data[0]);
+        }
+    }
+
+
+    private _fechas = signal<Fechas | null>(null);
+
+    // Getter para que otros componentes lean la señal
+    get fechas() {
+        return this._fechas;
+    }
+
+    // Método para actualizar las fechas
+    setFechas(fechas: Fechas) {
+        this._fechas.set(fechas);
+    }
+
+
+
 }

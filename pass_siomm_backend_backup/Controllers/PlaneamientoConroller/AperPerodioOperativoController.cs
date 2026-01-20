@@ -48,21 +48,6 @@ namespace pass_siomm_backend.Controllers.aper_per_oper
             }
         }
 
-        //[HttpGet("fechas")]
-        //public async Task<IActionResult> ObtenerFechas([FromQuery] string month, string anio)
-        //{
-        //    try
-        //    {
-        //        var fechas = await _AperPeriodoOperativoService.ObtenerFecha(month, anio);
-
-
-        //        return Ok(fechas);
-        //    }
-        //    catch (System.Exception ex)
-        //    {
-        //        return StatusCode(500, $"Error al obtener los meses: {ex.Message}");
-        //    }
-        //}
 
         [HttpGet("obtener-datos")]
         public async Task<IActionResult> FactorOperativo([FromQuery] string month, string anio)
