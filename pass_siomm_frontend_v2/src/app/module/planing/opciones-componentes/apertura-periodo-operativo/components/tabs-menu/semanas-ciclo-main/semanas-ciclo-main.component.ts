@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, effect, inject, signal, OnInit, ChangeDetectorRef } from '@angular/core';
-import { FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { FormUtils } from 'src/app/utils/form-utils';
 
@@ -59,6 +59,7 @@ export class SemanasCicloMainComponent {
             const tabSemanaCiclo = data?.data?.semana_ciclo || [];
 
             this.loadSemanas(tabSemanaCiclo);
+            console.log(tabSemanaCiclo)
 
             this.myForm.patchValue(data || {}, { emitEvent: false });
 
@@ -92,6 +93,9 @@ export class SemanasCicloMainComponent {
         data.forEach((item) => {
             this.semanas.push(
                 this.fb.group({
+
+                    cie_ano: [item.cie_ano, Validators.required],
+                    cie_per: [item.cie_per, Validators.required],
                     num_semana: [item.num_semana, [Validators.required, Validators.min(1), Validators.max(7), Validators.pattern(/^[1-7]$/)]],
                     fec_ini: [this.formUtils.formatDate(item.fec_ini), [Validators.required, Validators.pattern(/^(0[1-9]|[12]\d|3[01])\/(0[1-9]|1[0-2])\/(19\d{2}|20\d{2}|2100)$/)]],
                     fec_fin: [this.formUtils.formatDate(item.fec_fin), [Validators.required, Validators.pattern(/^(0[1-9]|[12]\d|3[01])\/(0[1-9]|1[0-2])\/(19\d{2}|20\d{2}|2100)$/)]],
@@ -106,23 +110,47 @@ export class SemanasCicloMainComponent {
     }
 
     agregarFilas() {
-        if (this.semanas.length >= 1) {
-            return;
-        }
+        const ultima = this.semanas.length
+            ? this.semanas.at(this.semanas.length - 1)?.getRawValue()
+            : null;
 
-        // this.planingCompartido.setBloqueoFormEditar(false);
+        const origen = ultima || {
+            cie_ano: new Date().getFullYear().toString(),
+            cie_per: (new Date().getMonth() + 1).toString().padStart(2, '0'),
+            num_semana: 1
+        };
 
-        this.semanas.push(
-            this.fb.group({
-                num_semana: ['', [Validators.required, Validators.min(1), Validators.max(7), Validators.pattern(/^[1-7]$/)]],
-                fec_ini: ['', [Validators.required, Validators.pattern(/^(0[1-9]|[12]\d|3[01])\/(0[1-9]|1[0-2])\/(19\d{2}|20\d{2}|2100)$/)]],
-                fec_fin: ['', [Validators.required, Validators.pattern(/^(0[1-9]|[12]\d|3[01])\/(0[1-9]|1[0-2])\/(19\d{2}|20\d{2}|2100)$/)]],
-                desc_semana: ['', [Validators.required]],
-                esNuevo: [true]
+        const numSemanaNueva = ultima ? ultima.num_semana + 1 : origen.num_semana;
 
-            })
-        );
+        const nuevoGrupo = this.fb.group({
+            cie_ano: [origen.cie_ano, Validators.required],
+            cie_per: [origen.cie_per, Validators.required],
+            num_semana: [numSemanaNueva, [
+                Validators.required,
+                Validators.min(1),
+                Validators.max(7),
+                Validators.pattern(/^[1-7]$/)
+            ]],
+            fec_ini: ['', Validators.required],
+            fec_fin: ['', Validators.required],
+            desc_semana: ['', Validators.required],
+            esNuevo: [true]
+        });
+
+        this.semanas.push(nuevoGrupo);
+
+        const filaNueva = this.semanas.at(this.semanas.length - 1);
+        this.enviarFilaNueva(filaNueva!);
+
     }
+
+
+    bloquearCampo(row: AbstractControl): boolean {
+        return this.planingCompartido.bloqueoFormGeneral()
+            && !row.get('esNuevo')?.value;
+    }
+
+
 
     async eliminarFila(data: any, index: number) {
         const semana = data.getRawValue ? data.getRawValue() : data.value;
@@ -168,6 +196,28 @@ export class SemanasCicloMainComponent {
     //         this.planingCompartido.setSemanaCiclo(filas);
     //     });
     // }
+
+    enviarFilaNueva(row: AbstractControl) {
+        this.myForm.valueChanges.subscribe(val => {
+            const payload = row.getRawValue(); // objeto plano
+
+            console.log(payload)
+
+            this.planingCompartido.setSemanaCiclo(payload, 'semana_ciclo');
+        });
+    }
+
+
+
+    ngOnInit() {
+        this.myForm.valueChanges.subscribe(val => {
+            const filas = this.semanas.getRawValue();
+            console.log(filas)
+
+            this.planingCompartido.setSemanaCiclo(filas, 'semana_ciclo');
+            // console.log("📤 TAB semana actualizó servicio:", filas);
+        });
+    }
 
 
     // hasPendingChanges(): boolean {

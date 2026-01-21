@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, effect, inject, signal } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DATOS_METODO_MINADO, MaePerMetExplotacion, SelectExploracion, TH_METODOLO_MINADO, thTitulos } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/interface/aper-per-oper.interface';
 import { PlanningService } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/services/planning.service';
 import { PlaningCompartidoService } from '../../../services/planing-compartido.service';
@@ -126,40 +126,56 @@ export class MetodoMinadoMainComponent {
 
             this.semanas.push(
                 this.fb.group({
+                    cie_ano: [{ value: item.cie_ano, disabled: true }],
+                    cie_per: [{ value: item.cie_per, disabled: true }],
                     cod_metexp: [item.cod_metexp, Validators.required],
                     nom_metexp: [item.nom_metexp || '', Validators.required],
                     ind_calculo_dilucion: [item.ind_calculo_dilucion || ''],
                     ind_calculo_leyes_min: [item.ind_calculo_leyes_min || ''],
                     ind_act: [item.ind_act || ''],
                     accion: [''],
+                    esNuevo: [false]
                 })
             );
         });
 
     }
 
-
     // =====================================================
     //   AGREGAR FILA NUEVA (EDITABLE)
     // =====================================================
+
+
     agregarFilas() {
-        if (this.semanas.length >= 1) {
-            return;
-        }
 
-        // this.planingCompartido.setBloqueoFormEditar(false);
+        const ultima = this.semanas.length
+            ? this.semanas.at(this.semanas.length - 1)?.getRawValue()
+            : null;
 
-        this.semanas.push(
-            this.fb.group({
-                cod_metexp: ['', Validators.required], // 👈 CLAVE
-                nom_metexp: ['', Validators.required],
-                ind_calculo_dilucion: ['', Validators.required],
-                ind_calculo_leyes_min: ['', Validators.required],
-                ind_act: ['', Validators.required],
-                esNuevo: [true]
-            })
-        );
+        const origen = ultima || {
+            cie_ano: new Date().getFullYear().toString(),
+            cie_per: (new Date().getMonth() + 1).toString().padStart(2, '0'),
+        };
+
+        const nuevoGrupo = this.fb.group({
+            cie_ano: [origen.cie_ano, Validators.required],
+            cie_per: [origen.cie_per, Validators.required],
+            cod_metexp: ['', Validators.required], // 👈 CLAVE
+            nom_metexp: ['', Validators.required],
+            ind_calculo_dilucion: ['', Validators.required],
+            ind_calculo_leyes_min: ['', Validators.required],
+            ind_act: ['', Validators.required],
+            esNuevo: [true],
+        });
+
+        this.semanas.push(nuevoGrupo);
+
+        const filaNueva = this.semanas.at(this.semanas.length - 1);
+        this.enviarFilaNueva(filaNueva!);
+
     }
+
+
 
     // =====================================================
     //   ELIMINAR FILA
@@ -201,16 +217,36 @@ export class MetodoMinadoMainComponent {
             error: (err) => this.utils.mensajeError(err.message)
         });
     }
+
+
+    bloquearCampo(row: AbstractControl): boolean {
+        return this.planingCompartido.bloqueoFormGeneral()
+            && !row.get('esNuevo')?.value;
+    }
+
+
+
+    enviarFilaNueva(row: AbstractControl) {
+        this.myForm.valueChanges.subscribe(val => {
+            const payload = row.getRawValue(); // objeto plano
+
+            console.log(payload);
+            this.planingCompartido.setMetodoMinado(payload, 'metodo_minado');
+        });
+    }
+
+
     // =====================================================
     //   SUBMIT SOLO DE LA ÚLTIMA FILA
     // =====================================================
-    // ngOnInit() {
-    //     this.myForm.valueChanges.subscribe(val => {
-    //         const filas = this.semanas.getRawValue();
+    ngOnInit() {
+        this.myForm.valueChanges.subscribe(val => {
+            const filas = this.semanas.getRawValue();
 
-    //         this.planingCompartido.setMetodoMinado(filas);
-    //     });
-    // }
+            // console.log(filas)
+            this.planingCompartido.setMetodoMinado(filas, 'metodo_minado');
+        });
+    }
 
     // =====================================================
     //   LOOKUP SELECT EXPLORACIÓN

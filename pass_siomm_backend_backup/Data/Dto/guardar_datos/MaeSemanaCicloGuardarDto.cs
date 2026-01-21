@@ -22,8 +22,5 @@
         public string? usu_modi { get; set; }
         public DateTime? fec_modi { get; set; }
 
-
-
-
     }
 }

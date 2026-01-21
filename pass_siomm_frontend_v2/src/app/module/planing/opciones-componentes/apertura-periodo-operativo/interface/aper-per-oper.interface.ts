@@ -121,6 +121,8 @@ export interface MaeExploEstandar {
 }
 
 export interface MaePerMetExplotacion {
+    cie_ano: string;
+    cie_per: string;
     cod_metexp: string;
     nom_metexp: string;
     ind_calculo_dilucion: string;
@@ -130,11 +132,12 @@ export interface MaePerMetExplotacion {
 
 
 export interface MaeSemanaCiclo {
-
     num_semana: number;
-    fec_ini: Date;
-    fec_fin: Date;
+    fec_ini: string;
+    fec_fin: string;
     desc_semana: string;
+    cie_ano: string;
+    cie_per: string;
 }
 
 
@@ -225,7 +228,7 @@ export const TD_CAMPOS_TABLE: TableField[] = [
     { type: "text", name: "val_des_tipo_fac", readonly: true },
     { type: "number", name: "val_fac_ag", readonly: false },
     { type: "number", name: "val_fac_cu", readonly: false },
-    { type: "number", name: "val_fac_pb", readonly: false},
+    { type: "number", name: "val_fac_pb", readonly: false },
     { type: "number", name: "val_fac_zn", readonly: false },
     { type: "number", name: "val_fac_au", readonly: false },
     { type: "text", name: "val_fac_rec_ag", readonly: false },

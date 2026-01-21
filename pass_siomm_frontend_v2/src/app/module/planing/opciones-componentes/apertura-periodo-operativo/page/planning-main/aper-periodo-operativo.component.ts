@@ -341,6 +341,7 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
     onEditar() {
 
         this.modoBoton = 'E';
+        this.planingCompartido.agregarFila(true);
 
         this.planingCompartido.setFormBloqueadoCentral(false);
         this.planingCompartido.setModoEditar(true);
@@ -369,14 +370,14 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
 
         this.modoBoton = 'N';
 
-
+        this.planingCompartido.agregarFila(false);
 
         this.planingCompartido.setModoEditar(false);
-        this.planingCompartido.setFormBloqueadoCentral(false);
+        // this.planingCompartido.setFormBloqueadoCentral(false);
         this.planingCompartido.setCambios(true);
 
         this.planingCompartido.notifyResetSemanas();
-        this.planingCompartido.limpiezaBotonNuevo();
+        // this.planingCompartido.limpiezaBotonNuevo();
 
         this.limpiarFormulario();
 
@@ -397,6 +398,7 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
     }
 
     onVisualizar() {
+        this.planingCompartido.agregarFila(true);
 
         this.planingCompartido.onVisualizarGlobal();
         this.planingCompartido.notifyResetSemanas();
@@ -416,11 +418,6 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
         this.showData.get('fechaFin')?.enable();
     }
 
-
-
-    // ngOnInit() {
-    //     console.log('onGuardar dentro del componente:', this.onGuardar());
-    // }
 
 
 
@@ -473,7 +470,7 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
         this.guardarDatos();
     }
 
-    
+
 
 
     private guardarDatos() {

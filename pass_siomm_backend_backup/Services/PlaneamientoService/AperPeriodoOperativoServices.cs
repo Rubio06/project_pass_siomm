@@ -263,6 +263,12 @@ namespace pass_siomm_backend.Services.PlaneamientoService
             {
                 lista.Add(new MaePerMetExplotacionDto
                 {
+                    //                    public string cie_ano { get; set; } = string.Empty;
+                    //public string cie_per { get; set; } = string.Empty;
+
+                    cie_ano = reader["cie_ano"].ToString(),
+                    cie_per = reader["cie_per"].ToString(),
+
                     cod_metexp = reader["cod_metexp"].ToString(),
                     nom_metexp = reader["nom_metexp"].ToString(),
                     ind_calculo_dilucion = reader["ind_calculo_dilucion"].ToString(),
@@ -282,6 +288,8 @@ namespace pass_siomm_backend.Services.PlaneamientoService
             {
                 lista.Add(new MaeSemanaCicloDto
                 {
+                    cie_ano = reader["cie_ano"].ToString(),
+                    cie_per = reader["cie_per"].ToString(),
                     num_semana = Convert.ToInt32(reader["num_semana"]),
                     fec_ini = Convert.ToDateTime(reader["fec_ini"]),
                     fec_fin = Convert.ToDateTime(reader["fec_fin"]),

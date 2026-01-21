@@ -106,8 +106,10 @@ export class PlaningCompartidoService {
         this._lastTab = tab || '';
     }
 
-    setSemanaCiclo(data: MaeSemanaCiclo | MaeSemanaCiclo[]) {
+    setSemanaCiclo(data: MaeSemanaCiclo | MaeSemanaCiclo[], tab?: string) {
         this._semana_ciclo.set(Array.isArray(data) ? data : [data]);
+        this._lastTab = tab || ''; // opcional: guardas cuál se actualizó
+
     }
 
 
@@ -116,8 +118,9 @@ export class PlaningCompartidoService {
         this._laboratorio_estandar.set(Array.isArray(data) ? data : [data]);
     }
 
-    setMetodoMinado(data: MaePerMetExplotacion | MaePerMetExplotacion[]) {
+    setMetodoMinado(data: MaePerMetExplotacion | MaePerMetExplotacion[], tab?: string) {
         this._metodo_minado.set(Array.isArray(data) ? data : [data]);
+        this._lastTab = tab || ''; // opcional: guardas cuál se actualizó
     }
 
     private toDateTime(fecha: string): string {
@@ -157,7 +160,38 @@ export class PlaningCompartidoService {
                 payload = {
                     semana_avance: semanasFormateadas,
                     modo: modoBoton,
-                    validacion: 'TABLA',
+                    validacion: 'SEMANA_AVANCE',
+                    username: localStorage.getItem('username')
+                }
+                break;
+
+            case 'semana_ciclo':
+                const semanasFormateadoCiclo = this._semana_ciclo().map(s => ({
+                    ...s,
+                    // cie_ano: anio,
+                    // cie_per: mes,
+                    fec_ini: this.toDateTime(s.fec_ini),
+                    fec_fin: this.toDateTime(s.fec_fin),
+                }));
+
+
+                payload = {
+                    semana_ciclo: semanasFormateadoCiclo,
+                    modo: modoBoton,
+                    validacion: 'SEMANA_CICLO',
+                    username: localStorage.getItem('username')
+                }
+                break;
+
+            case 'metodo_minado':
+                const semanasMetodoMinado = this._metodo_minado().map(s => ({
+                    ...s,
+                }));
+
+                payload = {
+                    metodo_minado: semanasMetodoMinado,
+                    modo: modoBoton,
+                    validacion: 'METODO_MINADO',
                     username: localStorage.getItem('username')
                 }
                 break;
@@ -344,6 +378,17 @@ export class PlaningCompartidoService {
     // Método para actualizar las fechas
     setFechas(fechas: Fechas) {
         this._fechas.set(fechas);
+    }
+
+
+
+    ////////BLOQUEO AGREGAR FILA
+
+    private _nuevoRegistro = signal(true);
+    readonly nuevoRegistro = this._nuevoRegistro.asReadonly();
+
+    agregarFila(valor: boolean) {
+        this._nuevoRegistro.set(valor);
     }
 
 

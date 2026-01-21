@@ -21,71 +21,71 @@ namespace pass_siomm_backend.Services.PlaneamientoService
 
 
 
-        public async Task<bool> GuardarSemanaAsync(MaeSemanaAvanceDto semana)
-        {
-            try
-            {
-                using (var connection = new SqlConnection(_connectionString))
-                {
-                    await connection.OpenAsync();
+        //public async Task<bool> GuardarSemanaAsync(MaeSemanaAvanceDto semana)
+        //{
+        //    try
+        //    {
+        //        using (var connection = new SqlConnection(_connectionString))
+        //        {
+        //            await connection.OpenAsync();
 
-                    using (var cmd = new SqlCommand(@"
-                INSERT INTO mae_semana_avance (
-                    cod_empresa, 
-                    cod_empresa_unidad, 
-                    cie_ano,
-                    cie_per, 
-                    num_semana, 
-                    fec_ini, 
-                    fec_fin, 
-                    desc_semana,
-                    usu_creo,
-                    fec_creo,
-                    usu_modi,
-                    fec_modi
-                )
-                VALUES (
-                    @cod_empresa,
-                    @cod_empresa_unidad, 
-                    @cie_ano, 
-                    @cie_per, 
-                    @num_semana, 
-                    @fec_ini, 
-                    @fec_fin, 
-                    @desc_semana,
-                    @usu_creo,
-                    @fec_creo,
-                    @usu_modi,
-                    @fec_modi
-                )", connection))
-                    {
-                        cmd.Parameters.AddWithValue("@cod_empresa", semana.cod_empresa);
-                        cmd.Parameters.AddWithValue("@cod_empresa_unidad", semana.cod_empresa_unidad);
-                        cmd.Parameters.AddWithValue("@cie_ano", semana.cie_ano);
-                        cmd.Parameters.AddWithValue("@cie_per", semana.cie_per);
+        //            using (var cmd = new SqlCommand(@"
+        //        INSERT INTO mae_semana_avance (
+        //            cod_empresa, 
+        //            cod_empresa_unidad, 
+        //            cie_ano,
+        //            cie_per, 
+        //            num_semana, 
+        //            fec_ini, 
+        //            fec_fin, 
+        //            desc_semana,
+        //            usu_creo,
+        //            fec_creo,
+        //            usu_modi,
+        //            fec_modi
+        //        )
+        //        VALUES (
+        //            @cod_empresa,
+        //            @cod_empresa_unidad, 
+        //            @cie_ano, 
+        //            @cie_per, 
+        //            @num_semana, 
+        //            @fec_ini, 
+        //            @fec_fin, 
+        //            @desc_semana,
+        //            @usu_creo,
+        //            @fec_creo,
+        //            @usu_modi,
+        //            @fec_modi
+        //        )", connection))
+        //            {
+        //                cmd.Parameters.AddWithValue("@cod_empresa", semana.cod_empresa);
+        //                cmd.Parameters.AddWithValue("@cod_empresa_unidad", semana.cod_empresa_unidad);
+        //                cmd.Parameters.AddWithValue("@cie_ano", semana.cie_ano);
+        //                cmd.Parameters.AddWithValue("@cie_per", semana.cie_per);
 
-                        cmd.Parameters.AddWithValue("@num_semana", semana.num_semana);
-                        cmd.Parameters.AddWithValue("@fec_ini", semana.fec_ini ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@fec_fin", semana.fec_fin ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@desc_semana", semana.desc_semana);
+        //                cmd.Parameters.AddWithValue("@num_semana", semana.num_semana);
+        //                cmd.Parameters.AddWithValue("@fec_ini", semana.fec_ini ?? (object)DBNull.Value);
+        //                cmd.Parameters.AddWithValue("@fec_fin", semana.fec_fin ?? (object)DBNull.Value);
+        //                cmd.Parameters.AddWithValue("@desc_semana", semana.desc_semana);
 
-                        cmd.Parameters.AddWithValue("@usu_creo", semana.usu_creo);
-                        cmd.Parameters.AddWithValue("@fec_creo", semana.fec_creo ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@usu_modi", semana.usu_modi ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@fec_modi", semana.fec_modi ?? (object)DBNull.Value);
+        //                cmd.Parameters.AddWithValue("@usu_creo", semana.usu_creo);
+        //                cmd.Parameters.AddWithValue("@fec_creo", semana.fec_creo ?? (object)DBNull.Value);
+        //                cmd.Parameters.AddWithValue("@usu_modi", semana.usu_modi ?? (object)DBNull.Value);
+        //                cmd.Parameters.AddWithValue("@fec_modi", semana.fec_modi ?? (object)DBNull.Value);
 
-                        await cmd.ExecuteNonQueryAsync();
-                    }
-                }
+        //                await cmd.ExecuteNonQueryAsync();
+        //            }
+        //        }
 
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error al guardar la semana: " + ex.Message);
-                return false;
-            }
-        }
+        //        return true;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine("Error al guardar la semana: " + ex.Message);
+        //        return false;
+        //    }
+        //}
 
 
         /* LOGICA PARA COPIAR DATOS */
@@ -158,7 +158,7 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                 }
 
                 // 🟢 CASO 2: SEMANA AVANCE
-                if (datos.validacion == "TABLA")
+                if (datos.validacion == "SEMANA_AVANCE")
                 {
                     if (datos.semana_avance == null || !datos.semana_avance.Any())
                     {
@@ -171,6 +171,43 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                         connection,
                         transaction,
                         datos.semana_avance,
+                        datos.username,
+                        datos.modo
+                    );
+                }
+
+                if (datos.validacion == "SEMANA_CICLO")
+                {
+                    if (datos.semana_ciclo == null || !datos.semana_ciclo.Any())
+                    {
+                        throw new InvalidOperationException(
+                            "Debe ingresar semanas de avance."
+                        );
+                    }
+
+                    await GuardarSemanaCicloAsync(
+                        connection,
+                        transaction,
+                        datos.semana_ciclo,
+                        datos.username,
+                        datos.modo
+                    );
+                }
+
+
+                if (datos.validacion == "METODO_MINADO")
+                {
+                    if (datos.metodo_minado == null || !datos.metodo_minado.Any())
+                    {
+                        throw new InvalidOperationException(
+                            "Debe ingresar semanas de avance."
+                        );
+                    }
+
+                    await GuardarMetodoMinadoAsync(
+                        connection,
+                        transaction,
+                        datos.metodo_minado,
                         datos.username,
                         datos.modo
                     );
@@ -841,7 +878,7 @@ namespace pass_siomm_backend.Services.PlaneamientoService
         private async Task GuardarMetodoMinadoAsync(
             SqlConnection conn,
             SqlTransaction trx,
-            List<MaePerMetExplotacionGuardarDto> metodos, string? username, string mes, string anio, string modo)
+            List<MaePerMetExplotacionGuardarDto> metodos, string? username, string modo)
         {
             if (metodos == null || metodos.Count == 0)
                 return;
@@ -860,10 +897,10 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                     .Value = "01";
 
                 cmd.Parameters.Add("@cie_ano", SqlDbType.VarChar, 4)
-                    .Value = anio ?? (object)DBNull.Value;
+                    .Value = m.cie_ano ?? (object)DBNull.Value;
 
                 cmd.Parameters.Add("@cie_per", SqlDbType.VarChar, 2)
-                    .Value = mes ?? (object)DBNull.Value;
+                    .Value = m.cie_per ?? (object)DBNull.Value;
 
                 cmd.Parameters.Add("@cod_metexp", SqlDbType.VarChar, 3)
                     .Value = m.cod_metexp ?? (object)DBNull.Value;
@@ -888,16 +925,16 @@ namespace pass_siomm_backend.Services.PlaneamientoService
 
                 // 🔹 Auditoría
                 cmd.Parameters.Add("@usu_creo", SqlDbType.VarChar, 20)
-                    .Value = m.usu_creo ?? (object)DBNull.Value;
+                    .Value = username ?? (object)DBNull.Value;
 
-                cmd.Parameters.Add("@fec_creo", SqlDbType.DateTime)
-                    .Value = m.fec_creo ?? (object)DBNull.Value;
+                //cmd.Parameters.Add("@fec_creo", SqlDbType.DateTime)
+                //    .Value = m.fec_creo ?? (object)DBNull.Value;
 
-                cmd.Parameters.Add("@usu_modi", SqlDbType.VarChar, 20)
-                    .Value = m.usu_modi ?? (object)DBNull.Value;
+                //cmd.Parameters.Add("@usu_modi", SqlDbType.VarChar, 20)
+                //    .Value = m.usu_modi ?? (object)DBNull.Value;
 
-                cmd.Parameters.Add("@fec_modi", SqlDbType.DateTime)
-                    .Value = m.fec_modi ?? (object)DBNull.Value;
+                //cmd.Parameters.Add("@fec_modi", SqlDbType.DateTime)
+                //    .Value = m.fec_modi ?? (object)DBNull.Value;
 
                 cmd.Parameters.Add("@modo", SqlDbType.Char, 1)
                     .Value = modo;
@@ -915,7 +952,7 @@ namespace pass_siomm_backend.Services.PlaneamientoService
         private async Task GuardarSemanaCicloAsync(
             SqlConnection conn,
             SqlTransaction trx,
-            List<MaeSemanaCicloGuardarDto> semanas, string? username, string mes, string anio, string modo)
+            List<MaeSemanaCicloGuardarDto> semanas, string? username, string modo)
         {
             // 1️⃣ Validación
             if (semanas == null || semanas.Count == 0)
@@ -942,10 +979,10 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                     .Value = "01";
 
                 cmd.Parameters.Add("@cie_ano", SqlDbType.VarChar, 4)
-                    .Value = anio ?? (object)DBNull.Value;
+                    .Value = s.cie_ano ?? (object)DBNull.Value;
 
                 cmd.Parameters.Add("@cie_per", SqlDbType.VarChar, 2)
-                    .Value = mes ?? (object)DBNull.Value;
+                    .Value = s.cie_per ?? (object)DBNull.Value;
 
                 cmd.Parameters.Add("@num_semana", SqlDbType.Int)
                     .Value = s.num_semana;
@@ -963,16 +1000,16 @@ namespace pass_siomm_backend.Services.PlaneamientoService
 
                 // 🔹 Auditoría
                 cmd.Parameters.Add("@usu_creo", SqlDbType.VarChar, 20)
-                    .Value = s.usu_creo ?? (object)DBNull.Value;
+                    .Value = username ?? (object)DBNull.Value;
 
-                cmd.Parameters.Add("@fec_creo", SqlDbType.DateTime)
-                    .Value = s.fec_creo ?? (object)DBNull.Value;
+                //cmd.Parameters.Add("@fec_creo", SqlDbType.DateTime)
+                //    .Value = s.fec_creo ?? (object)DBNull.Value;
 
-                cmd.Parameters.Add("@usu_modi", SqlDbType.VarChar, 20)
-                    .Value = s.usu_modi ?? (object)DBNull.Value;
+                //cmd.Parameters.Add("@usu_modi", SqlDbType.VarChar, 20)
+                //    .Value = s.usu_modi ?? (object)DBNull.Value;
 
-                cmd.Parameters.Add("@fec_modi", SqlDbType.DateTime)
-                    .Value = s.fec_modi ?? (object)DBNull.Value;
+                //cmd.Parameters.Add("@fec_modi", SqlDbType.DateTime)
+                //    .Value = s.fec_modi ?? (object)DBNull.Value;
 
                 cmd.Parameters.Add("@modo", SqlDbType.Char, 1)
                     .Value = modo;
@@ -1022,7 +1059,7 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                     .Value = p.cie_per ?? (object)DBNull.Value;
 
                 cmd.Parameters.Add("@num_semana", SqlDbType.Int)
-                    .Value = p.num_semana;
+                    .Value = Convert.ToInt32(p.num_semana);
 
                 // 🔹 Fechas
                 cmd.Parameters.Add("@fec_ini", SqlDbType.DateTime)
@@ -1039,14 +1076,14 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                 cmd.Parameters.Add("@usu_creo", SqlDbType.VarChar, 20)
                     .Value = username ?? (object)DBNull.Value;
 
-                cmd.Parameters.Add("@fec_creo", SqlDbType.DateTime)
-                    .Value = p.fec_creo ?? (object)DBNull.Value;
+                //cmd.Parameters.Add("@fec_creo", SqlDbType.DateTime)
+                //    .Value = p.fec_creo ?? (object)DBNull.Value;
 
-                cmd.Parameters.Add("@usu_modi", SqlDbType.VarChar, 20)
-                    .Value = p.usu_modi ?? (object)DBNull.Value;
+                //cmd.Parameters.Add("@usu_modi", SqlDbType.VarChar, 20)
+                //    .Value = p.usu_modi ?? (object)DBNull.Value;
 
-                cmd.Parameters.Add("@fec_modi", SqlDbType.DateTime)
-                    .Value = p.fec_modi ?? (object)DBNull.Value;
+                //cmd.Parameters.Add("@fec_modi", SqlDbType.DateTime)
+                //    .Value = p.fec_modi ?? (object)DBNull.Value;
 
                 cmd.Parameters.Add("@modo", SqlDbType.Char, 1)
                     .Value = modo;
