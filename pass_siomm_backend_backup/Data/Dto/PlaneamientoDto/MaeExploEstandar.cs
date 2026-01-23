@@ -2,6 +2,11 @@
 {
     public class MaeExploEstandar
     {
+
+
+
+        public string cie_ano { get; set; }
+        public string cie_per { get; set; }
         public string cod_zona { get; set; }
         public string lab_pieper { get; set; }
         public string lab_broca { get; set; }

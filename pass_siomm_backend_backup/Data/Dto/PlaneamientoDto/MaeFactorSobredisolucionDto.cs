@@ -3,6 +3,9 @@
     public class MaeFactorSobredisolucionDto
     {
 
+        public string cie_ano { get; set; }
+        public string cie_per { get; set; }
+
         public string val_fac_ag { get; set; }
         public string val_fac_cu { get; set; }
         public string val_fac_pb { get; set; }

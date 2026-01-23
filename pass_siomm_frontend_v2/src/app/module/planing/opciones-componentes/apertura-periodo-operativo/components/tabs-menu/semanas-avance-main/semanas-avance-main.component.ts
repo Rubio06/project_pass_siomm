@@ -121,8 +121,8 @@ export class SemanasAvanceMainComponent {
 
 
     bloquearCampo(row: AbstractControl): boolean {
-        return this.planingCompartido.bloqueoFormGeneral()
-            && !row.get('esNuevo')?.value;
+        return this.planingCompartido.bloqueoFormEditar() &&
+        !row.get('esNuevo')?.value;
     }
 
 

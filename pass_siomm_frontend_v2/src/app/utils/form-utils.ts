@@ -258,6 +258,7 @@ export class FormUtils {
         for (const key of Object.keys(error)) {
             switch (key) {
                 case 'required':
+                    console.log("Entre aqui")
                     return 'Este campo es requerido';
 
                 case 'minlength':
@@ -267,6 +268,7 @@ export class FormUtils {
                     return `Valor minimo de  ${error['min'].min}`;
 
                 case 'pattern':
+                    console.log("Entre aqui")
                     return this.getPatternErrorMessage(
                         error['pattern'].requiredPattern
                     );
@@ -279,7 +281,8 @@ export class FormUtils {
         const patterns: Record<string, string> = {
             '/^[1-7]$/': 'Solo se permiten semanas del 1 al 7',
             '/^(19\\d{2}|20\\d{2}|2100)$/': 'Debe ingresar un año válido ejem.(2025)',
-            '/^(0[1-9]|[12]\\d|3[01])\\/(0[1-9]|1[0-2])\\/(19\\d{2}|20\\d{2}|2100)$/': 'Debe ingresar fecha valida ejem.(22/12/2025)'
+            '/^(0[1-9]|[12]\\d|3[01])\\/(0[1-9]|1[0-2])\\/(19\\d{2}|20\\d{2}|2100)$/': 'Debe ingresar fecha valida ejem.(22/12/2025)',
+            '/^\\d+(\\.\\d+)?$/': 'El campo solo acepta numeros o decimales'
         };
         return patterns[pattern] ?? 'Formato inválido';
     }

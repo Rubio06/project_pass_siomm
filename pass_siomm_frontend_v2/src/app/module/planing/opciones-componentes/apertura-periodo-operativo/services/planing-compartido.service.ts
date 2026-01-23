@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, Signal, signal, WritableSignal } from '@angular/core';
-import { AperPeriodo, MaeExploEstandar, MaeFactor, MaeFactorRecuperacion, MaeFactorSobredisolucion, MaePerMetExplotacion, MaeSemanaAvance, MaeSemanaCiclo, MaeTipLabEstandar, MaeValCanchas, MaeValOperativoDetalle, PlanningData } from '../interface/aper-per-oper.interface';
+import { AperPeriodo, MaeExploEstandar, MaeFactor, MaeFactorRecuperacion, MaeFactorSobredisolucion, MaePerMetExplotacion, MaeSemanaAvance, MaeSemanaCiclo, MaeTipLabEstandar, MaeValCanchas, MaeValOperativo, MaeValOperativoDetalle, PlanningData } from '../interface/aper-per-oper.interface';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '@environments/environments';
 import { ValidationErrors } from '@angular/forms';
@@ -23,7 +23,7 @@ export class PlaningCompartidoService {
     private _cierre_periodo: WritableSignal<AperPeriodo[]> = signal([]);
     private _exploracion_extandar: WritableSignal<MaeExploEstandar[]> = signal([]);
     private _factor: WritableSignal<MaeFactor[]> = signal([]);
-    // private _factorOperativo: WritableSignal<MaeValOperativo[]> = signal([]);
+    private _factorOperativo: WritableSignal<MaeValOperativo[]> = signal([]);
     private _factorSobredisolucion: WritableSignal<MaeFactorSobredisolucion[]> = signal([]);
     private _laboratorio_estandar: WritableSignal<MaeTipLabEstandar[]> = signal([]);
     private _metodo_minado: WritableSignal<MaePerMetExplotacion[]> = signal([]);
@@ -38,7 +38,7 @@ export class PlaningCompartidoService {
     readonly cierre_periodo = this._cierre_periodo.asReadonly();
     readonly exploracion_extandar = this._exploracion_extandar.asReadonly();
     readonly factor = this._factor.asReadonly();
-    // readonly factorOperativo = this._factorOperativo.asReadonly();
+    readonly factorOperativo = this._factorOperativo.asReadonly();
     readonly factorSobredisolucion = this._factorSobredisolucion.asReadonly();
     readonly laboratorio_estandar = this._laboratorio_estandar.asReadonly();
     readonly metodo_minado = this._metodo_minado.asReadonly();
@@ -66,14 +66,14 @@ export class PlaningCompartidoService {
         this._lastTab = tab || ''; // opcional: guardas cuál se actualizó
 
     }
-    // setOperativoDetalle(data: MaeValOperativoDetalle | MaeValOperativoDetalle[], tab?: string) {
-    //     this._operativo_detalle.set(Array.isArray(data) ? data : [data]);
-    //     this._lastTab = tab || ''; // opcional: guardas cuál se actualizó
+    setOperativoDetalle(data: MaeValOperativoDetalle | MaeValOperativoDetalle[], tab?: string) {
+        this._operativo_detalle.set(Array.isArray(data) ? data : [data]);
+        this._lastTab = tab || ''; // opcional: guardas cuál se actualizó
 
-    // }
+    }
 
-    setFactorOperativo(data: MaeValOperativoDetalle[], tab?: string) {
-        this._operativo_detalle.set(data);
+    setFactorOperativo(data: MaeValOperativo |  MaeValOperativo[], tab?: string) {
+        this._factorOperativo.set(Array.isArray(data) ? data : [data]);
         this._lastTab = tab ?? '';
     }
 
@@ -96,8 +96,9 @@ export class PlaningCompartidoService {
 
 
     ///tablas
-    setExploracionExtandar(data: MaeExploEstandar | MaeExploEstandar[]) {
+    setExploracionExtandar(data: MaeExploEstandar | MaeExploEstandar[], tab?: string) {
         this._exploracion_extandar.set(Array.isArray(data) ? data : [data]);
+        this._lastTab = tab || ''; // opcional: guardas cuál se actualizó
     }
 
 
@@ -112,10 +113,20 @@ export class PlaningCompartidoService {
 
     }
 
+    private _laboratorio_valid = signal<boolean>(false);
+    private _trigger_validacion = signal(false);
 
+    laboratorioValido = this._laboratorio_valid.asReadonly();
+    triggerValidacion$ = this._trigger_validacion.asReadonly();
 
-    setLaboratorioEstandar(data: MaeTipLabEstandar | MaeTipLabEstandar[]) {
+    setLaboratorioEstandar(data: MaeTipLabEstandar | MaeTipLabEstandar[], tab?: string, estado?: { valid: boolean; dirty?: boolean }) {
         this._laboratorio_estandar.set(Array.isArray(data) ? data : [data]);
+        this._lastTab = tab || ''; // opcional: guardas cuál se actualizó
+        this._laboratorio_valid.set(estado?.valid ?? false);
+    }
+
+    triggerValidacion() {
+        this._trigger_validacion.set(true);
     }
 
     setMetodoMinado(data: MaePerMetExplotacion | MaePerMetExplotacion[], tab?: string) {
@@ -137,10 +148,12 @@ export class PlaningCompartidoService {
                 payload = {
                     cierre_periodo: this._cierre_periodo(),
                     factor: this._factor(),
+                    factorOperativo: this._factorOperativo(),
                     operativo_detalle: this._operativo_detalle(),
                     canchas: this._canchas(),
                     recuperacionBudget: this._recuperacionBudget(),
                     factorSobredisolucion: this._factorSobredisolucion(),
+
                     modo: modoBoton,
                     validacion: 'FORMULARIO',
                     username: localStorage.getItem('username'),
@@ -195,6 +208,35 @@ export class PlaningCompartidoService {
                     username: localStorage.getItem('username')
                 }
                 break;
+
+
+            case 'exploracion_estandar':
+                const semanasExploracionEstandar = this._exploracion_extandar().map(s => ({
+                    ...s,
+                }));
+
+                payload = {
+                    exploracion_extandar: semanasExploracionEstandar,
+                    modo: modoBoton,
+                    validacion: 'EXPLORACION_ESTANDAR',
+                    username: localStorage.getItem('username')
+                }
+                break;
+
+            case 'estandar_avance':
+
+                const semanasLaboratorioEstandar = this._laboratorio_estandar().map(s => ({
+                    ...s,
+                }));
+
+                payload = {
+                    laboratorio_estandar: semanasLaboratorioEstandar,
+                    modo: modoBoton,
+                    validacion: 'ESTANDAR_AVANCE',
+                    username: localStorage.getItem('username')
+                }
+                break;
+
         }
 
         console.log("los datos recibidos son: " + JSON.stringify(payload, null, 2));
@@ -257,6 +299,19 @@ export class PlaningCompartidoService {
     );
 
 
+    private _formBloqueadoEditar = signal<boolean>(true);
+    readonly formBloqueadoEditar = this._formBloqueadoEditar.asReadonly();
+
+    setFormBloqueadoEditar(valor: boolean) {
+        this._formBloqueadoEditar.set(valor);
+    }
+
+    readonly bloqueoFormEditar = computed(
+        () => this.formBloqueadoEditar()
+    );
+
+
+
     // ===============================
     //  EVENTO RESET DE FORMS PARA BOTON NUEVO
     // ===============================
@@ -291,6 +346,8 @@ export class PlaningCompartidoService {
     public readonly dataRoutes: Signal<any> = this._dataRoutes.asReadonly();
 
     setData(data: object): void {
+
+        console.log(data)
         this._dataRoutes.set(data);
     }
 

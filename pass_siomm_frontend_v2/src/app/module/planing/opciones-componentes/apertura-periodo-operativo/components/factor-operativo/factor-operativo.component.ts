@@ -43,6 +43,8 @@ export class FactorOperativoComonent {
 
 
     form: FormGroup = this.fb.group({
+        // cie_ano: ['', Validators.required],
+        // cie_per: ['', Validators.required],
         fac_denmin: ['0.000', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
         fac_dendes: ['0.000', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
         fac_vptmin: ['0.000', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
@@ -72,6 +74,8 @@ export class FactorOperativoComonent {
 
             if (periodo) {
                 this.form.patchValue({
+                    // cie_ano: periodo.cie_ano,
+                    // cie_per: periodo.cie_per,
                     fac_denmin: periodo.fac_denmin,
                     fac_dendes: periodo.fac_dendes,
                     fac_vptmin: periodo.fac_vptmin,

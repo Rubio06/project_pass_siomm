@@ -17,9 +17,9 @@
                     }
                 </tr>
             </thead>
-            <tbody formArrayName="factorOperativo">
-                @if (factorOperativoFA.length !== 0) {
-                @for (fila of factorOperativoFA.controls; let i = $index; track i) {
+            <tbody formArrayName="factorOperativoDetalle">
+                @if (factorOperativoDetalle.length !== 0) {
+                @for (fila of factorOperativoDetalle.controls; let i = $index; track i) {
                     <tr class="text-center bg-white" [formGroupName]="i">
                             @for (td of tdCampos(); track $index) {
                                 <td class="border-2 border-gray-400 px-2 py-1">

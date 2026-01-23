@@ -6,6 +6,9 @@ export interface AperPeriodo {
 }
 
 export interface MaeValCanchas {
+    // cie_per: string;
+    // cie_ano: string;
+
     val_tms: string;
     val_ag: string;
     val_cu: string;
@@ -16,6 +19,9 @@ export interface MaeValCanchas {
 
 
 export interface MaeFactorSobredisolucion {
+    cie_per: string;
+    cie_ano: string;
+
     val_fac_ag: string;
     val_fac_cu: string;
     val_fac_pb: string;
@@ -24,6 +30,9 @@ export interface MaeFactorSobredisolucion {
 }
 
 export interface MaeFactorRecuperacion {
+    cie_per: string;
+    cie_ano: string;
+
     val_fac_bud_ag: string;
     val_fac_bud_cu: string;
     val_fac_bud_pb: string;
@@ -38,21 +47,20 @@ export interface MaeFactorRecuperacion {
 }
 
 
-export interface MaeValOperativoDetalle {
-    // val_des_tipo_fac: string;
-    val_fac_ag: string;
+export interface MaeValOperativo {
+    // val_per: string;
+    // val_ano: string;
+
     val_pre_ag: string;
-    val_fac_cu: string;
     val_pre_cu: string;
-    val_fac_pb: string;
     val_pre_pb: string;
-    val_fac_zn: string;
     val_pre_zn: string;
-    val_fac_au: string;
-    val_pre_au: string;
 }
 
+
 export interface MaeFactor {
+    // cie_ano: string;
+    // cie_per: string;
     fac_denmin: string;
     fac_dendes: string;
     fac_vptmin: string;
@@ -66,6 +74,8 @@ export interface MaeFactor {
 
 
 export interface MaeValOperativoDetalle {
+    // val_ano: string;
+    // val_per: string;
     val_fac_ag: string;
     // val_pre_ag: string;
     val_fac_cu: string;
@@ -90,7 +100,7 @@ export interface MaeValOperativoDetalle {
 export interface PlanningData {
     cierre_periodo: AperPeriodo[];
 
-    // operativo_detalle: MaeValOperativoDetalle[];
+    factorOperativo: MaeValOperativo[];
     canchas: MaeValCanchas[];
     sobredisolucion: MaeFactorSobredisolucion[];
     recuperacionBudget: MaeFactorRecuperacion[];
@@ -107,6 +117,8 @@ export interface PlanningData {
 
 
 export interface MaeExploEstandar {
+    cie_ano: string;
+    cie_per: string;
     cod_zona: string;
     lab_pieper: string;
     lab_broca: string;
@@ -319,23 +331,21 @@ export const TH_ESTANDAR_EXPLORACION: thTitulos[] = [
     { titulo: 'Conectores' },
     { titulo: 'Puntal Marchavante' },
     { titulo: 'Tabla' },
-    { titulo: 'Activ.' },
     { titulo: 'Aprobado' }
 ]
 
 export const DATOS_METODO_EXPLORACION: EstructuraDatosOtros[] = [
     { type: 'select', name: 'cod_zona', width: '210px' },
-    { type: 'text', name: 'lab_pieper', width: '20px' },
-    { type: 'text', name: 'lab_broca', width: '20px' },
-    { type: 'text', name: 'lab_barcon', width: '20px' },
-    { type: 'text', name: 'lab_barren', width: '20px' },
-    { type: 'text', name: 'lab_facpot', width: '20px' },
-    { type: 'text', name: 'lab_fulmin', width: '20px' },
-    { type: 'text', name: 'lab_conect', width: '20px' },
-    { type: 'text', name: 'lab_punmar', width: '20px' },
-    { type: 'text', name: 'lab_tabla', width: '20px' },
-    { type: 'text', name: 'ind_act', width: '20px' },
-    { type: 'text', name: 'lab_apr', width: '20px' },
+    { type: 'text', name: 'lab_pieper', width: '80px' },
+    { type: 'text', name: 'lab_broca', width: '80px' },
+    { type: 'text', name: 'lab_barcon', width: '80px' },
+    { type: 'text', name: 'lab_barren', width: '80px' },
+    { type: 'text', name: 'lab_facpot', width: '80px' },
+    { type: 'text', name: 'lab_fulmin', width: '80px' },
+    { type: 'text', name: 'lab_conect', width: '80px' },
+    { type: 'text', name: 'lab_punmar', width: '80px' },
+    { type: 'text', name: 'lab_tabla', width: '80px' },
+    { type: 'text', name: 'lab_apr', width: '80px' },
 ]
 
 
@@ -356,18 +366,18 @@ export const TH_ESTANDAR_AVANCE = [
 ]
 
 export const DATOS_ESTANDER_AVANCE: EstructuraDatosOtros[] = [
-    { type: 'select', name: 'cod_tiplab', width: '210px' },
-    { type: 'text', name: 'nro_lab_ancho', width: '20px' },
-    { type: 'text', name: 'nro_lab_altura', width: '20px' },
-    { type: 'text', name: 'nro_lab_pieper', width: '20px' },
-    { type: 'text', name: 'nro_lab_broca', width: '20px' },
-    { type: 'text', name: 'nro_lab_barcon', width: '20px' },
-    { type: 'text', name: 'nro_lab_barren', width: '20px' },
-    { type: 'text', name: 'nro_lab_facpot', width: '20px' },
-    { type: 'text', name: 'nro_lab_fulmin', width: '20px' },
-    { type: 'text', name: 'nro_lab_conect', width: '20px' },
-    { type: 'text', name: 'nro_lab_punmar', width: '20px' },
-    { type: 'text', name: 'nro_lab_tabla', width: '20px' },
+    { type: 'select', name: 'cod_tiplab', width: '200px' },
+    { type: 'number', name: 'nro_lab_ancho', width: '60px' },
+    { type: 'number', name: 'nro_lab_altura', width: '90px' },
+    { type: 'number', name: 'nro_lab_pieper', width: '90px' },
+    { type: 'number', name: 'nro_lab_broca', width: '60px' },
+    { type: 'number', name: 'nro_lab_barcon', width: '60px' },
+    { type: 'number', name: 'nro_lab_barren', width: '60px' },
+    { type: 'number', name: 'nro_lab_facpot', width: '60px' },
+    { type: 'number', name: 'nro_lab_fulmin', width: '80px' },
+    { type: 'number', name: 'nro_lab_conect', width: '90px' },
+    { type: 'number', name: 'nro_lab_punmar', width: '100px' },
+    { type: 'number', name: 'nro_lab_tabla', width: '60px' },
 ]
 
 

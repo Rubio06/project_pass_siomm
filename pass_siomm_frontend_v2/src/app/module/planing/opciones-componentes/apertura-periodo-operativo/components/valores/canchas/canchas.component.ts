@@ -20,6 +20,8 @@ export class CanchasComponent {
     // bloqueo = inject(PlaningCompartido).bloqueo;
 
     form: FormGroup = this.fb.group({
+        // cie_ano: [''],
+        // cie_per: [''],
         val_tms: ['0.000', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
         val_ag: ['0.000', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
         val_cu: ['0.000', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
@@ -36,6 +38,8 @@ export class CanchasComponent {
             if (response?.data?.canchas?.length) {
                 const canchas = response.data.canchas[0];
                 this.form.patchValue({
+                    // cie_ano: canchas.cie_ano,
+                    // cie_per: canchas.cie_per,
                     val_tms: canchas.val_tms,
                     val_ag: canchas.val_ag,
                     val_cu: canchas.val_cu,

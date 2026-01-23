@@ -61,9 +61,12 @@ namespace pass_siomm_backend.Controllers.aper_per_oper
             }
             catch (System.Exception ex)
             {
-                return StatusCode(500, $"Error al obtener los meses: {ex.Message}");
+                return StatusCode(500, $"Erro del sistema: {ex.Message}");
             }
         }
+
+
+
 
         [HttpGet("select-tipo-labor")]
         public async Task<IActionResult> SelectMetTipoLabor()

@@ -3,6 +3,8 @@
     public class MaeValCanchasDto
     {
 
+        public string cie_per { get; set; }
+        public string cie_ano { get; set; }
         public string val_tms { get; set; }
         public string val_ag { get; set; }
         public string val_cu { get; set; }

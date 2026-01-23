@@ -61,6 +61,11 @@ namespace pass_siomm_backend.Services.PlaneamientoService
 
         public async Task<object> ObtenerDatosCompletos(string month, string anio)
         {
+
+            Console.WriteLine("El mes es : " + month);
+            Console.WriteLine("El anio es " + anio);
+
+
             var result = new DatosCompletosDto();
 
             using var conn = new SqlConnection(_connectionString);
@@ -118,6 +123,8 @@ namespace pass_siomm_backend.Services.PlaneamientoService
             return new { success = true, data = result };
         }
 
+
+        // 1️⃣ Cierre de periodo
         private async Task<List<AperPeriodoDto>> LeerCierrePeriodo(SqlDataReader reader)
         {
             var lista = new List<AperPeriodoDto>();
@@ -127,15 +134,12 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                 lista.Add(new AperPeriodoDto
                 {
                     cie_per = reader["cie_per"]?.ToString(),
-
                     fec_ini = reader.IsDBNull(reader.GetOrdinal("fec_ini"))
                                 ? null
                                 : reader.GetDateTime(reader.GetOrdinal("fec_ini")),
-
                     fec_fin = reader.IsDBNull(reader.GetOrdinal("fec_fin"))
                                 ? null
                                 : reader.GetDateTime(reader.GetOrdinal("fec_fin")),
-
                     cie_ano = reader["cie_ano"]?.ToString()
                 });
             }
@@ -143,6 +147,7 @@ namespace pass_siomm_backend.Services.PlaneamientoService
             return lista;
         }
 
+        // 2️⃣ Factor operativo
         private async Task<List<MaeValOperativoDto>> LeerFactorOperativo(SqlDataReader reader)
         {
             var lista = new List<MaeValOperativoDto>();
@@ -150,37 +155,32 @@ namespace pass_siomm_backend.Services.PlaneamientoService
             {
                 lista.Add(new MaeValOperativoDto
                 {
-                    val_fac_ag = reader["val_fac_ag"].ToString(),
-                    //val_pre_ag = reader["val_pre_ag"].ToString(),
-                    val_fac_cu = reader["val_fac_cu"].ToString(),
-                    //val_pre_cu = reader["val_pre_cu"].ToString(),
-                    val_fac_pb = reader["val_fac_pb"].ToString(),
-                    //val_pre_pb = reader["val_pre_pb"].ToString(),
-                    val_fac_zn = reader["val_fac_zn"].ToString(),
-                    //val_pre_zn = reader["val_pre_zn"].ToString(),
-                    val_fac_au = reader["val_fac_au"].ToString(),
-                    //val_pre_au = reader["val_pre_au"].ToString(),
+                    // Quitar cie_ano y cie_per
 
-
-                    val_fac_rec_ag = reader["val_fac_rec_ag"].ToString(),
-                    val_fac_rec_cu = reader["val_fac_rec_cu"].ToString(),
-
-                    val_fac_rec_pb = reader["val_fac_rec_pb"].ToString(),
-                    val_fac_rec_zn = reader["val_fac_rec_zn"].ToString(),
-                    val_fac_rec_au = reader["val_fac_rec_au"].ToString(),
-                    val_des_tipo_fac = reader["val_des_tipo_fac"].ToString(),
+                    val_ano = reader["val_ano"].ToString(),
+                    val_per = reader["val_per"].ToString(),
+                    val_pre_ag = reader["val_pre_ag"].ToString(),
+                    val_pre_cu = reader["val_pre_cu"].ToString(),
+                    val_pre_pb = reader["val_pre_pb"].ToString(),
+                    val_pre_zn = reader["val_pre_zn"].ToString(),
+                    val_pre_au = reader["val_pre_au"].ToString(),
                 });
             }
             return lista;
         }
 
+        // 3️⃣ Canchas
         private async Task<List<MaeValCanchasDto>> LeerCanchas(SqlDataReader reader)
         {
             var lista = new List<MaeValCanchasDto>();
+
             while (await reader.ReadAsync())
             {
                 lista.Add(new MaeValCanchasDto
                 {
+                    cie_ano = reader["cie_ano"].ToString(),
+                    cie_per = reader["cie_per"].ToString(),
+
                     val_tms = reader["val_tms"].ToString(),
                     val_ag = reader["val_ag"].ToString(),
                     val_cu = reader["val_cu"].ToString(),
@@ -189,16 +189,21 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                     val_vpt = reader["val_vpt"].ToString()
                 });
             }
+
             return lista;
         }
 
+        // 4️⃣ Factor sobredilución
         private async Task<List<MaeFactorSobredisolucionDto>> LeerFactorSobredisolucion(SqlDataReader reader)
         {
             var lista = new List<MaeFactorSobredisolucionDto>();
+
             while (await reader.ReadAsync())
             {
                 lista.Add(new MaeFactorSobredisolucionDto
                 {
+                    cie_ano = reader["cie_ano"].ToString(),
+                    cie_per = reader["cie_per"].ToString(),
                     val_fac_ag = reader["val_fac_ag"].ToString(),
                     val_fac_cu = reader["val_fac_cu"].ToString(),
                     val_fac_pb = reader["val_fac_pb"].ToString(),
@@ -206,16 +211,21 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                     val_fac_au = reader["val_fac_au"].ToString()
                 });
             }
+
             return lista;
         }
 
+        // 5️⃣ Recuperación budget
         private async Task<List<MaeFactorRecuperacionDto>> LeerRecuperacionBudget(SqlDataReader reader)
         {
             var lista = new List<MaeFactorRecuperacionDto>();
+
             while (await reader.ReadAsync())
             {
                 lista.Add(new MaeFactorRecuperacionDto
                 {
+                    cie_ano = reader["cie_ano"].ToString(),
+                    cie_per = reader["cie_per"].ToString(),
                     val_fac_bud_ag = reader["val_fac_bud_ag"].ToString(),
                     val_fac_bud_cu = reader["val_fac_bud_cu"].ToString(),
                     val_fac_bud_pb = reader["val_fac_bud_pb"].ToString(),
@@ -228,16 +238,21 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                     val_con_au = reader["val_con_au"].ToString()
                 });
             }
+
             return lista;
         }
 
+        // 6️⃣ Factor general
         private async Task<List<MaeFactorDto>> LeerFactor(SqlDataReader reader)
         {
             var lista = new List<MaeFactorDto>();
+
             while (await reader.ReadAsync())
             {
                 lista.Add(new MaeFactorDto
                 {
+                    cie_ano = reader["cie_ano"].ToString(),
+                    cie_per = reader["cie_per"].ToString(),
                     fac_denmin = reader["fac_denmin"].ToString(),
                     fac_dendes = reader["fac_dendes"].ToString(),
                     fac_vptmin = reader["fac_vptmin"].ToString(),
@@ -248,27 +263,21 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                     fac_tms_dif = reader["fac_tms_dif"].ToString()
                 });
             }
+
             return lista;
         }
 
-
-
+        // 7️⃣ Método Minado
         private async Task<List<MaePerMetExplotacionDto>> MetodoMinado(SqlDataReader reader)
         {
             var lista = new List<MaePerMetExplotacionDto>();
 
-
-            //Console.WriteLine(reader["cod_metexp"]); // Verifica que llega algo
             while (await reader.ReadAsync())
             {
                 lista.Add(new MaePerMetExplotacionDto
                 {
-                    //                    public string cie_ano { get; set; } = string.Empty;
-                    //public string cie_per { get; set; } = string.Empty;
-
                     cie_ano = reader["cie_ano"].ToString(),
                     cie_per = reader["cie_per"].ToString(),
-
                     cod_metexp = reader["cod_metexp"].ToString(),
                     nom_metexp = reader["nom_metexp"].ToString(),
                     ind_calculo_dilucion = reader["ind_calculo_dilucion"].ToString(),
@@ -276,10 +285,11 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                     ind_act = reader["ind_act"].ToString(),
                 });
             }
+
             return lista;
         }
 
-
+        // 8️⃣ Semanas ciclo
         public async Task<List<MaeSemanaCicloDto>> LeerSemanaCiclo(SqlDataReader reader)
         {
             var lista = new List<MaeSemanaCicloDto>();
@@ -296,10 +306,11 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                     desc_semana = reader["desc_semana"].ToString()
                 });
             }
-            return lista;
 
+            return lista;
         }
 
+        // 9️⃣ Semanas avance
         public async Task<List<MaeSemanaAvanceDto>> LeerSeamanAvance(SqlDataReader reader)
         {
             var lista = new List<MaeSemanaAvanceDto>();
@@ -310,24 +321,27 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                 {
                     cie_ano = reader["cie_ano"].ToString(),
                     cie_per = reader["cie_per"].ToString(),
-
                     num_semana = reader["num_semana"] == DBNull.Value ? 0 : Convert.ToInt32(reader["num_semana"]),
                     fec_ini = reader["fec_ini"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["fec_ini"]),
                     fec_fin = reader["fec_fin"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["fec_fin"]),
                     desc_semana = reader["desc_semana"]?.ToString()
                 });
             }
-            return lista;
 
+            return lista;
         }
 
+        // 🔟 Laboratorio Estándar
         private async Task<List<MaeLaboratorioEstandarDto>> LeerLaboratorioEstandar(SqlDataReader reader)
         {
             var lista = new List<MaeLaboratorioEstandarDto>();
+
             while (await reader.ReadAsync())
             {
                 lista.Add(new MaeLaboratorioEstandarDto
                 {
+                    cie_ano = reader["cie_ano"].ToString(),
+                    cie_per = reader["cie_per"].ToString(),
                     cod_tiplab = reader["cod_tiplab"].ToString(),
                     nro_lab_ancho = reader["nro_lab_ancho"].ToString(),
                     nro_lab_altura = reader["nro_lab_altura"].ToString(),
@@ -342,10 +356,11 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                     nro_lab_tabla = reader["nro_lab_tabla"].ToString()
                 });
             }
+
             return lista;
         }
 
-
+        // 11️⃣ Exploración Estándar
         public async Task<List<MaeExploEstandar>> LeerExploracionEstandar(SqlDataReader reader)
         {
             var lista = new List<MaeExploEstandar>();
@@ -354,6 +369,8 @@ namespace pass_siomm_backend.Services.PlaneamientoService
             {
                 lista.Add(new MaeExploEstandar
                 {
+                    cie_ano = reader["cie_ano"].ToString(),
+                    cie_per = reader["cie_per"].ToString(),
                     cod_zona = reader["cod_zona"].ToString(),
                     lab_pieper = reader["lab_pieper"].ToString(),
                     lab_broca = reader["lab_broca"].ToString(),
@@ -365,66 +382,47 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                     lab_punmar = reader["lab_punmar"].ToString(),
                     lab_tabla = reader["lab_tabla"].ToString(),
                     lab_apr = reader["lab_apr"].ToString(),
-
                 });
             }
-            return lista;
 
+            return lista;
         }
+
+        // 12️⃣ Detalle operativo
         private async Task<List<MaeValOperativoDetalleDto>> LeerOperativoDetalle(SqlDataReader reader)
         {
             var lista = new List<MaeValOperativoDetalleDto>();
+
             while (await reader.ReadAsync())
             {
                 lista.Add(new MaeValOperativoDetalleDto
                 {
-                    val_fac_ag = reader["val_fac_ag"] != DBNull.Value
-            ? reader["val_fac_ag"].ToString()
-            : "0.0000",
-
-                    val_pre_ag = reader["val_pre_ag"] != DBNull.Value
-            ? reader["val_pre_ag"].ToString()
-            : "0.0000",
-
-                    val_fac_cu = reader["val_fac_cu"] != DBNull.Value
-            ? reader["val_fac_cu"].ToString()
-            : "0.0000",
-
-                    val_pre_cu = reader["val_pre_cu"] != DBNull.Value
-            ? reader["val_pre_cu"].ToString()
-            : "0.0000",
-
-                    val_fac_pb = reader["val_fac_pb"] != DBNull.Value
-            ? reader["val_fac_pb"].ToString()
-            : "0.0000",
-
-                    val_pre_pb = reader["val_pre_pb"] != DBNull.Value
-            ? reader["val_pre_pb"].ToString()
-            : "0.0000",
-
-                    val_fac_zn = reader["val_fac_zn"] != DBNull.Value
-            ? reader["val_fac_zn"].ToString()
-            : "0.0000",
-
-                    val_pre_zn = reader["val_pre_zn"] != DBNull.Value
-            ? reader["val_pre_zn"].ToString()
-            : "0.0000",
-
-                    val_fac_au = reader["val_fac_au"] != DBNull.Value
-            ? reader["val_fac_au"].ToString()
-            : "0.0000",
-
-                    val_pre_au = reader["val_pre_au"] != DBNull.Value
-            ? reader["val_pre_au"].ToString()
-            : "0.0000",
-
-
+                    cod_empresa = reader["cod_empresa"]?.ToString() ?? "",
+                    cod_empresa_unidad = reader["cod_empresa_unidad"]?.ToString() ?? "",
+                    val_ano = reader["val_ano"]?.ToString() ?? "",
+                    val_per = reader["val_per"]?.ToString() ?? "",
+                    val_tipo_fac = reader["val_tipo_fac"]?.ToString() ?? "",
+                    val_des_tipo_fac = reader["val_des_tipo_fac"]?.ToString() ?? "",
+                    val_ind_principal = reader["val_ind_principal"]?.ToString() ?? "",
+                    val_fac_ag = reader["val_fac_ag"]?.ToString() ?? "0.0000",
+                    val_fac_cu = reader["val_fac_cu"]?.ToString() ?? "0.0000",
+                    val_fac_pb = reader["val_fac_pb"]?.ToString() ?? "0.0000",
+                    val_fac_zn = reader["val_fac_zn"]?.ToString() ?? "0.0000",
+                    val_fac_au = reader["val_fac_au"]?.ToString() ?? "0.0000",
+                    usu_creo = reader["usu_creo"]?.ToString() ?? "",
+                    fec_creo = reader["fec_creo"]?.ToString() ?? "",
+                    usu_modi = reader["usu_modi"]?.ToString() ?? "",
+                    fec_modi = reader["fec_modi"]?.ToString() ?? "",
+                    val_fac_rec_ag = reader["val_fac_rec_ag"]?.ToString() ?? "0.0000",
+                    val_fac_rec_cu = reader["val_fac_rec_cu"]?.ToString() ?? "0.0000",
+                    val_fac_rec_pb = reader["val_fac_rec_pb"]?.ToString() ?? "0.0000",
+                    val_fac_rec_zn = reader["val_fac_rec_zn"]?.ToString() ?? "0.0000",
+                    val_fac_rec_au = reader["val_fac_rec_au"]?.ToString() ?? "0.0000",
                 });
             }
+
             return lista;
         }
-
-
 
 
 

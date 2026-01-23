@@ -274,7 +274,7 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
         };
 
 
-        console.log(payload);
+        console.log("los datos de copiar peridio son : " + payload);
 
 
 
@@ -292,6 +292,8 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
                         copiarPeriodo: true,
                     });
 
+                    this.planingCompartido.notifyResetSemanas();
+
                     this.limpiarFormulario();
                 } else {
                     this.formsUtils.errorCopiado(resp.message);
@@ -302,6 +304,8 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
             }
         })
     }
+
+
 
     convertToISO(value: string): string {
         return `${value} 00:00:00.000`;
@@ -344,6 +348,9 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
         this.planingCompartido.agregarFila(true);
 
         this.planingCompartido.setFormBloqueadoCentral(false);
+
+        this.planingCompartido.setFormBloqueadoEditar(false);
+
         this.planingCompartido.setModoEditar(true);
 
         this.setBotonesState({
@@ -373,11 +380,12 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
         this.planingCompartido.agregarFila(false);
 
         this.planingCompartido.setModoEditar(false);
-        // this.planingCompartido.setFormBloqueadoCentral(false);
+        this.planingCompartido.setFormBloqueadoCentral(false);
+
         this.planingCompartido.setCambios(true);
 
         this.planingCompartido.notifyResetSemanas();
-        // this.planingCompartido.limpiezaBotonNuevo();
+        this.planingCompartido.limpiezaBotonNuevo();
 
         this.limpiarFormulario();
 
@@ -403,6 +411,8 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
         this.planingCompartido.onVisualizarGlobal();
         this.planingCompartido.notifyResetSemanas();
         this.planingCompartido.limpiezaBotonNuevo();
+        this.planingCompartido.setFormBloqueadoEditar(true);
+
         this.limpiarFormulario();
 
 
@@ -458,27 +468,26 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
         return this.modoBoton === 'N' ? 'N' : 'E';
     }
 
-    public async onGuardar() {
 
-        // if (!this.validarFactorOperativo()) {
-        //     this.mostrarErrorGeneral = true;
+    readonly laboratorio_valid = this.planingCompartido.laboratorioValido;
+
+
+    public async onGuardar() {
+        // if (!this.laboratorio_valid()) {
+        //     // 🔥 aquí está la clave
+        //     alert("Debe completar los datos")
+        //     this.planingCompartido.triggerValidacion();
         //     return;
         // }
+
         const confirmado = await this.formsUtils.confirmarGuardado();
         if (!confirmado) return;
 
         this.guardarDatos();
     }
 
-
-
-
     private guardarDatos() {
 
-        // if (this.form.invalid) {
-        //     this.form.markAllAsTouched(); // 🔥 obliga al usuario
-        //     return; // ⛔ NO backend
-        // }
 
         const anioOrigen = this.showData.get('fechaInicio')?.value;
         const mesOrigen = this.showData.get('fechaFin')?.value;
@@ -491,6 +500,8 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
                 this.showData.get('fechaInicio')?.enable();
                 this.showData.get('fechaFin')?.enable();
                 this.planingCompartido.setCambios(false);
+                this.planingCompartido.setFormBloqueadoEditar(true);
+
             },
             error: (err) => {
                 // mensaje que viene del backend

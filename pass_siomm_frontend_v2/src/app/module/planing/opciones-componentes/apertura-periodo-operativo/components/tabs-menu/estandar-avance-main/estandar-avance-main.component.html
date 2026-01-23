@@ -24,10 +24,13 @@
                 </div>
 
                 <div class="relative flex gap-4">
-                    <div class="flex-11">
+                    <!-- <div class="flex-11">
                         <div class="w-full mx-auto rounded-lg overflow-x-auto shadow-md border border-gray-300">
-                            <table class="min-w-full border-collapse text-sm text-gray-800">
+                            <table class="min-w-full border-collapse text-sm text-gray-800"> -->
 
+                    <div class="flex-11 border mx-auto rounded-lg overflow-x-auto shadow-md border border-gray-300">
+                        <div class="">
+                            <table class="min-w-full border-collapse text-sm text-gray-800">
                                 <thead>
                                     <tr class="text-center text-gray-700 font-bold bg-gray-200 uppercase text-xs">
                                         @for (col of titulo; track $index) {
@@ -49,44 +52,54 @@
                                     <!-- <tr class="border-y border-gray-300"> -->
                                     @for (item of semanas.controls; track $index; let i = $index) {
                                     <tr [formGroupName]="i"
-                                        class="even:bg-gray-50 odd:bg-white hover:bg-blue-50/70 transition duration-150">
+                                        class="even:bg-gray-50 odd:bg-white hover:bg-blue-50/70 transition duration-150 ">
 
-                                        @for (colData of datosColumna(); track $index; let j = $index) {
-                                        <td class="border-x border-gray-300 p-1.5">
-                                            @if (colData.type == 'select') {
+                                        @for (col of datosColumna(); track $index; let j = $index) {
+                                        <td class="border border-gray-300 p-1.5  align-top">
+                                            @if (col.type == 'select') {
 
-                                            <select [formControlName]="colData.name" [style.width]="colData.width"
-                                                [class.opacity-30]="planingCompartido.bloqueoFormGeneral()"
-                                                [class.pointer-events-none]="planingCompartido.bloqueoFormGeneral()"
+                                            <select [formControlName]="col.name" [style.width]="col.width"
+                                                [class.opacity-30]="bloquearCampo(item)"
+                                                [class.pointer-events-none]="bloquearCampo(item)"
                                                 class="select-xs mx-auto select text-sm font-medium outline-none flex items-center border border-gray-300 rounded-lg px-2 py-1 bg-white shadow-sm hover:shadow-md transition-shadow duration-300 ease-in-out focus:border-[#033351] focus:ring-1 focus:ring-[rgb(3,102,157)] focus:ring-opacity-40 w-full">
 
                                                 <option value="" disabled> Selecione una opción</option>
                                                 @for (opt of cod_tiplab(); track $index) {
-                                                <option [value]="opt.cod_tipo_labor ">{{ opt.cod_tipo_labor }} {{
-                                                    opt.nom_tipo_labor }}
-                                                </option>
+
+                                                <option [value]="opt.cod_tipo_labor">{{ opt.cod_tipo_labor }}
+                                                    {{opt.nom_tipo_labor }} </option>
                                                 }
                                             </select>
 
+                                            @if ( formUtils.isValidFieldInArray(item, col.name) ) {
+                                            <span class="text-[10px] text-error block">
+                                                <b>{{formUtils.getFiledErrorArray(item, col.name)}}</b>
+                                            </span>
+                                            }
+
                                             } @else {
                                             <div
-                                                class="flex items-center border border-gray-300 rounded-md px-2 py-1 bg-white shadow-sm
+                                                class="flex flex-start items-center border border-gray-300 rounded-md px-2 py-1 bg-white shadow-sm
                                                                                              hover:shadow-md transition-shadow duration-300 ease-in-out
                                                                                              focus-within:border-[#033351] focus-within:ring-1 focus-within:ring-[rgb(3,102,157)]
                                                                                              focus-within:ring-opacity-40 focus-within:shadow-md">
-                                                <input [type]="colData.type" [formControlName]="colData.name"
-                                                    [style.width]="colData.width"
-                                                    [class.opacity-30]="planingCompartido.bloqueoFormGeneral()"
-                                                    [class.pointer-events-none]="planingCompartido.bloqueoFormGeneral()"
+                                                <input [type]="col.type" [formControlName]="col.name"
+                                                    [style.width]="col.width" [class.opacity-30]="bloquearCampo(item)"
+                                                    [class.pointer-events-none]="bloquearCampo(item)"
                                                     class="w-full  bg-transparent outline-none text-gray-800 placeholder-gray-400 text-xs font-medium" />
                                             </div>
+
+                                            @if ( formUtils.isValidFieldInArray(item, col.name) ) {
+                                            <span class="text-[10px] text-error block">
+                                                <b>{{formUtils.getFiledErrorArray(item, col.name)}}</b>
+                                            </span>
+                                            }
                                             }
                                         </td>
                                         }
-
-                                        <td class="border-x border-gray-300 p-1.5 w-24 text-center">
+                                        <td class="border-x border-gray-300 p-1.5 w-24 text-center align-top">
                                             <button type="button" (click)="eliminarFila(item, i)"
-                                                [disabled]="planingCompartido.bloqueoFormGeneral()"
+                                                [disabled]="bloquearCampo(item)"
                                                 class="flex disabled:bg-gray-100 items-center justify-center gap-1 mx-auto bg-[#A3361D] hover:bg-red-700 text-white px-2 py-1.5 rounded-md shadow-sm transition-all duration-200 font-medium text-xs disabled:opacity-50 disabled:cursor-not-allowed">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -107,7 +120,7 @@
                             </table>
                         </div>
                     </div>
-                    <button type="button" (click)="agregarFilas()" [disabled]="planingCompartido.bloqueoFormGeneral()"
+                    <button type="button" (click)="agregarFilas()" [disabled]="planingCompartido.nuevoRegistro()"
                         title="Agregar registro" class="
                             self-start flex-1
                             sticky top-24

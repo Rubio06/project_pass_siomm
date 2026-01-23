@@ -2,6 +2,9 @@
 {
     public class MaeFactorRecuperacionDto
     {
+        public string cie_ano { get; set; }
+        public string cie_per { get; set; }
+
         public string val_fac_bud_ag { get; set; }
         public string val_fac_bud_cu { get; set; }
         public string val_fac_bud_pb { get; set; }

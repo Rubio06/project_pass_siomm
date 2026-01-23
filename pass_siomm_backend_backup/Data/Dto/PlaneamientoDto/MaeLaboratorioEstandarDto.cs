@@ -2,6 +2,9 @@
 {
     public class MaeLaboratorioEstandarDto
     {
+
+        public string? cie_ano { get; set; }
+        public string? cie_per { get; set; }
         public string cod_tiplab { get; set; }
         public string? nro_lab_ancho { get; set; }
         public string? nro_lab_altura { get; set; }

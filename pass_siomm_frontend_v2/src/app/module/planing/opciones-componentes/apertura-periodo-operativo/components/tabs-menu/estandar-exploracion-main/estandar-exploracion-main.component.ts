@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, effect, inject, signal } from '@angular/core';
-import { FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DATOS_METODO_EXPLORACION, EstructuraDatosOtros, SelectZona, TH_ESTANDAR_EXPLORACION, thTitulos } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/interface/aper-per-oper.interface';
 import { PlanningService } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/services/planning.service';
 import { PlaningCompartidoService } from '../../../services/planing-compartido.service';
@@ -106,6 +106,8 @@ export class EstandarExploracionMainComponent {
         data.forEach((item, index) => {
             this.semanas.push(
                 this.fb.group({
+                    cie_ano: [item.cie_ano, Validators.required],
+                    cie_per: [item.cie_per, Validators.required],
                     cod_zona: [item.cod_zona, Validators.required],
                     lab_pieper: [item.lab_pieper || ''],
                     lab_broca: [item.lab_broca || ''],
@@ -116,7 +118,7 @@ export class EstandarExploracionMainComponent {
                     lab_conect: [item.lab_conect || ''],
                     lab_punmar: [item.lab_punmar || ''],
                     lab_tabla: [item.lab_tabla || ''],
-                    ind_act: [item.ind_act || ''],
+                    // ind_act: [item.ind_act || ''],
                     lab_apr: [item.lab_apr || ''],
                     accion: [''],
                     esNuevo: [false]
@@ -126,40 +128,65 @@ export class EstandarExploracionMainComponent {
         });
     }
 
-    /**
-     * Agrega fila editable nueva
-     */
-
     agregarFilas() {
+        const ultima = this.semanas.length
+            ? this.semanas.at(this.semanas.length - 1)?.getRawValue()
+            : null;
 
-        if (this.semanas.length >= 1) {
-            return;
-        }
+        const origen = ultima || {
+            cie_ano: new Date().getFullYear().toString(),
+            cie_per: (new Date().getMonth() + 1).toString().padStart(2, '0'),
+        };
 
-        // this.planingCompartido.setBloqueoFormEditar(false);
+        const nuevoGrupo = this.fb.group({
+            cie_ano: [origen.cie_ano, Validators.required],
+            cie_per: [origen.cie_per, Validators.required],
+            cod_zona: ['', Validators.required],
+            lab_pieper: ['', Validators.required],
+            lab_broca: ['', Validators.required],
+            lab_barcon: ['', Validators.required],
+            lab_barren: ['', Validators.required],
+            lab_facpot: ['', Validators.required],
+            lab_fulmin: ['', Validators.required],
+            lab_conect: ['', Validators.required],
+            lab_punmar: ['', Validators.required],
+            lab_tabla: ['', Validators.required],
+            // ind_act: ['', Validators.required],
+            lab_apr: ['', Validators.required],
+            esNuevo: [true]
+        });
 
-        this.semanas.push(
-            this.fb.group({
-                cod_zona: ['', Validators.required],
-                lab_pieper: ['', Validators.required],
-                lab_broca: ['', Validators.required],
-                lab_barcon: ['', Validators.required],
-                lab_barren: ['', Validators.required],
-                lab_facpot: ['', Validators.required],
-                lab_fulmin: ['', Validators.required],
-                lab_conect: ['', Validators.required],
-                lab_punmar: ['', Validators.required],
-                lab_tabla: ['', Validators.required],
-                ind_act: ['', Validators.required],
-                lab_apr: ['', Validators.required],
-                esNuevo: [true]
+        this.semanas.push(nuevoGrupo);
 
-            })
-        );
+        const filaNueva = this.semanas.at(this.semanas.length - 1);
+        this.enviarFilaNueva(filaNueva!);
 
-        // this.planingCompartido.setBloqueo(false);
-        this.message.set('');
     }
+
+    bloquearCampo(row: AbstractControl): boolean {
+        return this.planingCompartido.bloqueoFormEditar() && !row.get('esNuevo')?.value;
+    }
+
+
+    enviarFilaNueva(row: AbstractControl) {
+        this.myForm.valueChanges.subscribe(val => {
+            const payload = row.getRawValue(); // objeto plano
+
+            console.log(payload);
+            this.planingCompartido.setExploracionExtandar(payload, 'exploracion_estandar');
+        });
+    }
+
+    ngOnInit() {
+        this.myForm.valueChanges.subscribe(val => {
+            const filas = this.semanas.getRawValue();
+            this.planingCompartido.setExploracionExtandar(filas, 'exploracion_estandar');
+            // console.log("📤 TAB semana actualizó servicio:", filas);
+        });
+    }
+    /**
+     * Envía datos (simulación)
+     */
 
 
     async eliminarFila(data: any, index: number) {
@@ -203,18 +230,6 @@ export class EstandarExploracionMainComponent {
                 }
             },
             error: (err) => this.utils.mensajeError(err.message)
-        });
-    }
-
-    /**
-     * Envía datos (simulación)
-     */
-
-    ngOnInit() {
-        this.myForm.valueChanges.subscribe(val => {
-            const filas = this.semanas.getRawValue();
-            this.planingCompartido.setExploracionExtandar(filas);
-            // console.log("📤 TAB semana actualizó servicio:", filas);
         });
     }
 

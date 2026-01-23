@@ -27,21 +27,22 @@ export class FactorOperativoTablaComponent {
 
 
     form: FormGroup = this.fb.group({
-        factorOperativo: this.fb.array([])
+        factorOperativoDetalle: this.fb.array([])
     });
 
 
 
-    get factorOperativoFA(): FormArray {
-        return this.form.get('factorOperativo') as FormArray;
+    get factorOperativoDetalle(): FormArray {
+        return this.form.get('factorOperativoDetalle') as FormArray;
     }
 
 
-    private crearFactorOperativo(item: MaeValOperativoDetalle): FormGroup {
+    private crearFactorOperativoDetalle(item: MaeValOperativoDetalle): FormGroup {
         // this.factorOperativoFA.clear();
 
         return this.fb.group({
-
+            // val_ano: [item.val_ano],
+            // val_per: [item.val_per],
             val_des_tipo_fac: [{ value: item.val_des_tipo_fac, disabled: true }], // bloqueado
             val_tipo_fac: [item.val_des_tipo_fac === 'GENERAL' ? 'FAC1' : 'FAC2'],
             val_ind_principal: [item.val_des_tipo_fac === 'GENERAL' ? 'S' : 'N'],
@@ -64,13 +65,13 @@ export class FactorOperativoTablaComponent {
         effect(() => {
             const response = this.rutas();
 
-            if (!response?.data?.factorOperativo) return;
+            if (!response?.data?.operativo_detalle) return;
 
-            const filas = response.data.factorOperativo.map((item: any) =>
-                this.crearFactorOperativo(item)
+            const filas = response.data.operativo_detalle.map((item: any) =>
+                this.crearFactorOperativoDetalle(item)
             );
 
-            this.form.setControl('factorOperativo', this.fb.array(filas));
+            this.form.setControl('factorOperativoDetalle', this.fb.array(filas));
         }, { allowSignalWrites: true });
 
 
@@ -108,7 +109,7 @@ export class FactorOperativoTablaComponent {
     }
 
     resetearFormulario() {
-        const fa = this.factorOperativoFA; // tu FormArray
+        const fa = this.factorOperativoDetalle; // tu FormArray
 
         fa.controls.forEach((fg: AbstractControl, index: number) => {
             const desTipo = index === 0 ? 'GENERAL' : 'EZPERANZA'; // fila 0 → GENERAL, fila 1 → EZPERANZA
@@ -175,9 +176,9 @@ export class FactorOperativoTablaComponent {
     ngOnInit() {
         this.form.valueChanges.subscribe(() => {
 
-            const filas = this.factorOperativoFA.getRawValue();
+            const filas = this.factorOperativoDetalle.getRawValue();
 
-            this.planingCompartido.setFactorOperativo(
+            this.planingCompartido.setOperativoDetalle(
                 filas,
                 'factor_operativo'
             );
