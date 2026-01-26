@@ -230,7 +230,10 @@ export class MetodoMinadoMainComponent {
             const payload = row.getRawValue(); // objeto plano
 
             console.log(payload);
-            this.planingCompartido.setMetodoMinado(payload, 'metodo_minado');
+            this.planingCompartido.setMetodoMinado(payload, 'metodo_minado', {
+                valid: this.myForm.valid,
+                dirty: this.myForm.dirty
+            });
         });
     }
 
@@ -243,7 +246,10 @@ export class MetodoMinadoMainComponent {
             const filas = this.semanas.getRawValue();
 
             // console.log(filas)
-            this.planingCompartido.setMetodoMinado(filas, 'metodo_minado');
+            this.planingCompartido.setMetodoMinado(filas, 'metodo_minado', {
+                valid: this.myForm.valid,
+                dirty: this.myForm.dirty
+            });
         });
     }
 

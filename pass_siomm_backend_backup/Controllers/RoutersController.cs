@@ -6,7 +6,7 @@ using pass_siomm_backend.Services;
 namespace pass_siomm_backend.Controllers
 {
 
-    //[Authorize]
+    [Authorize]
     [Route("rutas")]
     [ApiController]
     public class RoutersController : ControllerBase

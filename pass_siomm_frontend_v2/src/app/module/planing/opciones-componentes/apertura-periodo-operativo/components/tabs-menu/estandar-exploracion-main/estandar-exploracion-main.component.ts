@@ -173,14 +173,20 @@ export class EstandarExploracionMainComponent {
             const payload = row.getRawValue(); // objeto plano
 
             console.log(payload);
-            this.planingCompartido.setExploracionExtandar(payload, 'exploracion_estandar');
+            this.planingCompartido.setExploracionExtandar(payload, 'exploracion_estandar', {
+                valid: this.myForm.valid,
+                dirty: this.myForm.dirty
+            });
         });
     }
 
     ngOnInit() {
         this.myForm.valueChanges.subscribe(val => {
             const filas = this.semanas.getRawValue();
-            this.planingCompartido.setExploracionExtandar(filas, 'exploracion_estandar');
+            this.planingCompartido.setExploracionExtandar(filas, 'exploracion_estandar', {
+                valid: this.myForm.valid,
+                dirty: this.myForm.dirty
+            });
             // console.log("📤 TAB semana actualizó servicio:", filas);
         });
     }

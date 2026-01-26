@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Server.IISIntegration;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using pass_siomm.Data;
 using pass_siomm.Services;
 using pass_siomm_backend.Services;
@@ -21,19 +22,64 @@ builder.Services.AddScoped<AperPeriodoOperativoServices>();
 builder.Services.AddScoped<SemanaAvanceServices>();
 
 //CODIGO DEL TOKEN
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-        .AddJwtBearer(options =>
-        {
-            options.TokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"])),
-                ValidateIssuer = false,
-                ValidateAudience = false,
-                ValidateLifetime = true, // ✅ valida expiración
+//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+//        .AddJwtBearer(options =>
+//        {
+//            options.TokenValidationParameters = new TokenValidationParameters
+//            {
+//                ValidateIssuerSigningKey = true,
+//                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"])),
+//                ValidateIssuer = false,
+//                ValidateAudience = false,
+//                ValidateLifetime = true, // ✅ valida expiración
 
-            };
-        });
+//            };
+//        });
+
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"])),
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        ValidateLifetime = true,
+    };
+});
+
+builder.Services.AddSwaggerGen(c =>
+{
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "JWT Authorization header using the Bearer scheme",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer"
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
+            },
+            new string[]{}
+        }
+    });
+});
+
+
+builder.Services.AddAuthorization();
 
 // Autenticación Windows (si la usas)
 builder.Services.AddAuthentication(IISDefaults.AuthenticationScheme);

@@ -46,4 +46,9 @@ export class LoginPageComponent {
             }
         });
     }
+
+    @HostListener('window:beforeunload', ['$event'])
+    beforeUnloadHandler(event: Event) {
+        sessionStorage.removeItem('token'); // elimina token de localStorage
+    }
 }

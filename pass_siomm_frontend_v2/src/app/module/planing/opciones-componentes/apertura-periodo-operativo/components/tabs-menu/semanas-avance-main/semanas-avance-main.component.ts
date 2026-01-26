@@ -188,7 +188,10 @@ export class SemanasAvanceMainComponent {
     enviarFilaNueva(row: AbstractControl) {
         this.myForm.valueChanges.subscribe(val => {
             const payload = row.getRawValue(); // objeto plano
-            this.planingCompartido.setSemanaAvance(payload, 'semana_avance');
+            this.planingCompartido.setSemanaAvance(payload, 'semana_avance', {
+                valid: this.myForm.valid,
+                dirty: this.myForm.dirty
+            });
         });
     }
 
@@ -198,7 +201,10 @@ export class SemanasAvanceMainComponent {
             const filas = this.semanas.getRawValue();
             console.log(filas)
 
-            this.planingCompartido.setSemanaAvance(filas, 'semana_avance');
+            this.planingCompartido.setSemanaAvance(filas, 'semana_avance', {
+                valid: this.myForm.valid,
+                dirty: this.myForm.dirty
+            });
             // console.log("📤 TAB semana actualizó servicio:", filas);
         });
     }

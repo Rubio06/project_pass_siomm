@@ -7,7 +7,7 @@ using pass_siomm_backend.Services.PlaneamientoService;
 
 namespace pass_siomm_backend.Controllers.aper_per_oper
 {
-    //[Authorize]
+    [Authorize]
     [Route("planeamiento/aper-periodo-operativo")]
     [ApiController]
     public class AperPerodioOperativoController : ControllerBase

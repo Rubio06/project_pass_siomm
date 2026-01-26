@@ -43,9 +43,11 @@
                         class="select-xs mx-auto select text-sm font-medium outline-none flex items-center
                     border border-gray-300 rounded-lg px-2 py-1 bg-gray-50 shadow-sm hover:shadow-md
                     transition-shadow duration-300 ease-in-out focus-within:border-[#033351] focus-within:ring-2 focus-within:ring-[rgb(3,102,157)] focus-within:ring-opacity-40">
+
                         <option value="" disabled selected>Seleccione un mes</option>
-                        <option value="01">Enero</option>
-                        <option value="02">Febrero</option>
+                        @for (mes of mesesBloqueadosArray(); track $index) {
+                            <option [value]="mes">{{ mes | transfornMonth }}</option>}
+                        <!-- <option value="02">Febrero</option>
                         <option value="03">Marzo</option>
                         <option value="04">Abril</option>
                         <option value="05">Mayo</option>
@@ -55,7 +57,7 @@
                         <option value="09">Septiembre</option>
                         <option value="10">Octubre</option>
                         <option value="11">Noviembre</option>
-                        <option value="12">Diciembre</option>
+                        <option value="12">Diciembre</option> -->
                     </select>
                 </div>
 

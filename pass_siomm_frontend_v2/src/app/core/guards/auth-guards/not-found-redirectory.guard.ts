@@ -11,8 +11,8 @@ export class NotFoundRedirectGuard implements CanActivate {
 
     canActivate(): boolean {
         if (isPlatformBrowser(this.platformId)) {
-            const token = localStorage.getItem('token');
-            const username = localStorage.getItem('username');
+            const token = sessionStorage.getItem('token');
+            const username = sessionStorage.getItem('username');
 
             if (username && token && this.authService.isAuthenticated()) {
                 this.router.navigate(['/menu-principal']);

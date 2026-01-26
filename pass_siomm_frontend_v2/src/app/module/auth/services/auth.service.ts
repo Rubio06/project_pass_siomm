@@ -14,25 +14,28 @@ export class AuthService {
     public loggedIn = signal(false);
     public hasError = signal('');
 
+
     constructor(@Inject(PLATFORM_ID) private platformId: Object, private router: Router) {
         if (isPlatformBrowser(this.platformId)) {
-            const token = localStorage.getItem('token');
+            const token = sessionStorage.getItem('token');
             if (token) {
                 this.loggedIn.set(true);
             }
         }
+
+        // this.startInactivityWatcher();
+
     }
 
     login(username: string, password: string): Observable<boolean> {
-        console.log("la url es " + this.authUrl)
         return this.http
             .post<LogResponse>(`${this.authUrl}auth/authenticate`, { username, password })
             .pipe(
                 map((resp) => {
 
                     if (resp.success && isPlatformBrowser(this.platformId)) {
-                        localStorage.setItem('token', resp.data.token);
-                        localStorage.setItem('username', resp.data.username);
+                        sessionStorage.setItem('token', resp.data.token);
+                        sessionStorage.setItem('username', resp.data.username);
                         this.loggedIn.set(true);
                         return true;
                     }
@@ -59,11 +62,39 @@ export class AuthService {
 
     logout(): void {
         if (isPlatformBrowser(this.platformId)) {
-            localStorage.removeItem('token');
-            localStorage.removeItem('username');
+            sessionStorage.removeItem('token');
+            sessionStorage.removeItem('username');
         }
 
         this.router.navigate(['/auth/login']);
         this.loggedIn.set(false);
+
+        // this.clearInactivityTimer();
+
     }
+    // 🔹 Nuevo: revisar token expirado periódicamente
+    // private startInactivityWatcher() {
+    //     if (!isPlatformBrowser(this.platformId)) return;
+
+    //     const resetTimer = () => {
+    //         this.clearInactivityTimer();
+    //         this.inactivityTimer = setTimeout(() => {
+    //             this.logout();
+    //         }, this.TIMEOUT);
+    //     };
+
+    //     // Eventos que cuentan como “actividad”
+    //     ['click', 'keydown', 'mousemove', 'scroll'].forEach(event =>
+    //         document.addEventListener(event, resetTimer)
+    //     );
+
+    //     // Iniciamos el timer por primera vez
+    //     resetTimer();
+    // }
+
+    // private clearInactivityTimer() {
+    //     if (this.inactivityTimer) {
+    //         clearTimeout(this.inactivityTimer);
+    //     }
+    // }
 }

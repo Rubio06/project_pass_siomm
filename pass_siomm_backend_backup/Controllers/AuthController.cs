@@ -136,7 +136,7 @@ namespace pass_siomm.Controllers
 
             var securityToken = new JwtSecurityToken(
                     claims: claims,
-                    expires: DateTime.Now.AddMinutes(1),
+                    expires: DateTime.Now.AddHours(2), // ✅ token válido por 2 horas
                     signingCredentials: creds);
 
             var token = new JwtSecurityTokenHandler().WriteToken(securityToken);

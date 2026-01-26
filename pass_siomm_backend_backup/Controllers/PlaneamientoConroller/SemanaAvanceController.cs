@@ -12,7 +12,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace pass_siomm_backend.Controllers.PlaneamientoConroller
 {
 
-    //[Authorize]
+    [Authorize]
     [Route("aper-periodo-operativo")]
     [ApiController]
     public class SemanaController : ControllerBase

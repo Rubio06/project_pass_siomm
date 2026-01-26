@@ -72,7 +72,7 @@ export class PlaningCompartidoService {
 
     }
 
-    setFactorOperativo(data: MaeValOperativo |  MaeValOperativo[], tab?: string) {
+    setFactorOperativo(data: MaeValOperativo | MaeValOperativo[], tab?: string) {
         this._factorOperativo.set(Array.isArray(data) ? data : [data]);
         this._lastTab = tab ?? '';
     }
@@ -95,44 +95,107 @@ export class PlaningCompartidoService {
     }
 
 
-    ///tablas
-    setExploracionExtandar(data: MaeExploEstandar | MaeExploEstandar[], tab?: string) {
-        this._exploracion_extandar.set(Array.isArray(data) ? data : [data]);
-        this._lastTab = tab || ''; // opcional: guardas cuál se actualizó
-    }
 
+    // Señales de datos
+    // private _exploracion_extandar = signal<MaeExploEstandar[]>([]);
+    // private _semana_avance = signal<MaeSemanaAvance[]>([]);
+    // private _semana_ciclo = signal<MaeSemanaCiclo[]>([]);
+    // private _laboratorio_estandar = signal<MaeTipLabEstandar[]>([]);
+    // private _metodo_minado = signal<MaePerMetExplotacion[]>([]);
 
-    setSemanaAvance(data: MaeSemanaAvance | MaeSemanaAvance[], tab?: string) {
-        this._semana_avance.set(Array.isArray(data) ? data : [data]);
-        this._lastTab = tab || '';
-    }
-
-    setSemanaCiclo(data: MaeSemanaCiclo | MaeSemanaCiclo[], tab?: string) {
-        this._semana_ciclo.set(Array.isArray(data) ? data : [data]);
-        this._lastTab = tab || ''; // opcional: guardas cuál se actualizó
-
-    }
-
+    // Señales de validación independientes
+    private _exploracionEstandar_valid = signal<boolean>(false);
+    private _semanaAvance_valid = signal<boolean>(false);
+    private _semanaCiclo_valid = signal<boolean>(false);
     private _laboratorio_valid = signal<boolean>(false);
+    private _metodoMinado_valid = signal<boolean>(false);
+
+    // Señal para disparar validación global (opcional)
     private _trigger_validacion = signal(false);
 
-    laboratorioValido = this._laboratorio_valid.asReadonly();
+    // Lectura pública de validaciones
+    semanaAvanceValido = this._semanaAvance_valid.asReadonly();
+    semanaCicloValido = this._semanaCiclo_valid.asReadonly();
+    metodoMinadoValido = this._metodoMinado_valid.asReadonly();
     triggerValidacion$ = this._trigger_validacion.asReadonly();
 
-    setLaboratorioEstandar(data: MaeTipLabEstandar | MaeTipLabEstandar[], tab?: string, estado?: { valid: boolean; dirty?: boolean }) {
+
+    laboratorioValido = this._laboratorio_valid.asReadonly();
+    setLaboratorioEstandar(
+        data: MaeTipLabEstandar | MaeTipLabEstandar[],
+        tab?: string,
+        estado?: { valid: boolean; dirty?: boolean }
+    ) {
         this._laboratorio_estandar.set(Array.isArray(data) ? data : [data]);
-        this._lastTab = tab || ''; // opcional: guardas cuál se actualizó
+        this._lastTab = tab || '';
         this._laboratorio_valid.set(estado?.valid ?? false);
     }
 
-    triggerValidacion() {
-        this._trigger_validacion.set(true);
+
+    // ============================
+    // Métodos para setear datos y validación de cada tab
+    // ============================
+
+
+    exploracionEstandarValido = this._exploracionEstandar_valid.asReadonly();
+
+    setExploracionExtandar(
+        data: MaeExploEstandar | MaeExploEstandar[],
+        tab?: string,
+        estado?: { valid: boolean; dirty?: boolean }
+    ) {
+        this._exploracion_extandar.set(Array.isArray(data) ? data : [data]);
+        this._lastTab = tab || '';
+        this._exploracionEstandar_valid.set(estado?.valid ?? false);
     }
 
-    setMetodoMinado(data: MaePerMetExplotacion | MaePerMetExplotacion[], tab?: string) {
-        this._metodo_minado.set(Array.isArray(data) ? data : [data]);
-        this._lastTab = tab || ''; // opcional: guardas cuál se actualizó
+    setSemanaAvance(
+        data: MaeSemanaAvance | MaeSemanaAvance[],
+        tab?: string,
+        estado?: { valid: boolean; dirty?: boolean }
+    ) {
+        this._semana_avance.set(Array.isArray(data) ? data : [data]);
+        this._lastTab = tab || '';
+        this._semanaAvance_valid.set(estado?.valid ?? false);
     }
+
+    setSemanaCiclo(
+        data: MaeSemanaCiclo | MaeSemanaCiclo[],
+        tab?: string,
+        estado?: { valid: boolean; dirty?: boolean }
+    ) {
+        this._semana_ciclo.set(Array.isArray(data) ? data : [data]);
+        this._lastTab = tab || '';
+        this._semanaCiclo_valid.set(estado?.valid ?? false);
+    }
+
+    setMetodoMinado(
+        data: MaePerMetExplotacion | MaePerMetExplotacion[],
+        tab?: string,
+        estado?: { valid: boolean; dirty?: boolean }
+    ) {
+        this._metodo_minado.set(Array.isArray(data) ? data : [data]);
+        this._lastTab = tab || '';
+        this._metodoMinado_valid.set(estado?.valid ?? false);
+    }
+
+    // ============================
+    // Método opcional para disparar validación global
+    // ============================
+    // triggerValidacion() {
+    //     this._trigger_validacion.set(true);
+    // }
+
+
+
+
+
+
+
+
+
+
+
 
     private toDateTime(fecha: string): string {
         const [d, m, y] = fecha.split('/');
@@ -448,6 +511,14 @@ export class PlaningCompartidoService {
         this._nuevoRegistro.set(valor);
     }
 
+
+    /*****data de meses *****/
+    private _mesesBloqueados = signal<string[]>([]);
+    mesesBloqueados = this._mesesBloqueados.asReadonly();
+
+    setMesesBloqueados(meses: string[]) {
+        this._mesesBloqueados.set(meses ?? []);
+    }
 
 
 }

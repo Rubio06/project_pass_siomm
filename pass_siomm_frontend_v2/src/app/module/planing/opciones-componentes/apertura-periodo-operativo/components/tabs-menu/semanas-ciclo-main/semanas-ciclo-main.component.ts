@@ -203,7 +203,10 @@ export class SemanasCicloMainComponent {
 
             console.log(payload)
 
-            this.planingCompartido.setSemanaCiclo(payload, 'semana_ciclo');
+            this.planingCompartido.setSemanaCiclo(payload, 'semana_ciclo', {
+                valid: this.myForm.valid,
+                dirty: this.myForm.dirty
+            });
         });
     }
 
@@ -214,7 +217,10 @@ export class SemanasCicloMainComponent {
             const filas = this.semanas.getRawValue();
             console.log(filas)
 
-            this.planingCompartido.setSemanaCiclo(filas, 'semana_ciclo');
+            this.planingCompartido.setSemanaCiclo(filas, 'semana_ciclo', {
+                valid: this.myForm.valid,
+                dirty: this.myForm.dirty
+            });
             // console.log("📤 TAB semana actualizó servicio:", filas);
         });
     }

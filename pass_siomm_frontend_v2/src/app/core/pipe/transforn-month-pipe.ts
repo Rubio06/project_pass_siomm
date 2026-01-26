@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class TransfornMonthPipe implements PipeTransform {
 
-    private months: { [key: string]: string } = {
+    private readonly meses: Record<string, string> = {
         '01': 'Enero',
         '02': 'Febrero',
         '03': 'Marzo',
@@ -20,9 +20,9 @@ export class TransfornMonthPipe implements PipeTransform {
         '12': 'Diciembre'
     };
 
-    transform(value: string | number, ...args: unknown[]): unknown {
+    transform(value: string | number): string {
         const key = value.toString().padStart(2, '0');
-        return this.months[key] || value.toString();
+        return this.meses[key] ?? value.toString();
     }
 
 }

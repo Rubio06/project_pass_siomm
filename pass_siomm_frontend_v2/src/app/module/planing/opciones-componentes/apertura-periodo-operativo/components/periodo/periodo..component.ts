@@ -339,6 +339,8 @@ export class AperPerOperComponent {
 
             const payload = this.form.getRawValue();
 
+            console.log(payload);
+
             this.planingCompartido.setCierrePeriodo(
                 payload,
                 'factor_operativo'

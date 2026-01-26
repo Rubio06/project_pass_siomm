@@ -475,8 +475,15 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
     public async onGuardar() {
         // if (!this.laboratorio_valid()) {
         //     // 🔥 aquí está la clave
-        //     alert("Debe completar los datos")
-        //     this.planingCompartido.triggerValidacion();
+        //     Swal.fire({
+        //         icon: 'warning',          // Tipo de alerta: warning, error, success, info
+        //         title: 'Oops...',
+        //         text: 'Debe ', // Tu mensaje
+        //         confirmButtonText: 'Aceptar',
+        //         timer: 3000,              // Opcional: se cierra solo después de 3s
+        //         timerProgressBar: true     // Barra de progreso opcional
+        //     });
+        //     // this.planingCompartido.triggerValidacion();
         //     return;
         // }
 
