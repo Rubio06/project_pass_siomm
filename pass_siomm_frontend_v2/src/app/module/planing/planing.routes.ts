@@ -13,8 +13,9 @@ export const planingMainRouter: Routes = [
                     import('./opciones-componentes/apertura-periodo-operativo/apertura-periodo-operativo.routes')
                         .then(m => m.default),
 
-                data: { noReuse: true }
-            }
+                data: { noReuse: true } // 👈 Esto indica que la ruta general se debe destruir
+
+            },
         ]
     }
 ];

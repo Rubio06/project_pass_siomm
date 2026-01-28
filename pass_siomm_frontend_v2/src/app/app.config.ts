@@ -22,10 +22,10 @@ export const appConfig: ApplicationConfig = {
         provideHttpClient(withFetch()),
         provideHttpClient(withInterceptors([authInterceptor])),
 
-        // provideRouter(routes),
-        // {
-        //     provide: RouteReuseStrategy,
-        //     useClass: AppRouteReuseStrategy
-        // }
+        provideRouter(routes),
+        {
+            provide: RouteReuseStrategy,
+            useClass: AppRouteReuseStrategy
+        }
     ],
 };

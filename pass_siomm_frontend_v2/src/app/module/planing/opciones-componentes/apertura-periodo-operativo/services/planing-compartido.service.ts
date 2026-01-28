@@ -491,29 +491,4 @@ export class PlaningCompartidoService {
     }
 
 
-
-    public datosGlobales = signal<any>(this.leerDeMemoria());
-
-    constructor() {
-        // Cada vez que los datos cambien, se guardan en el navegador automáticamente
-        effect(() => {
-            localStorage.setItem('mi_guardado', JSON.stringify(this.datosGlobales()));
-        });
-    }
-
-    // Función para guardar lo de un tab específico
-    guardarCopiaTemporal(nombreTab: string, data: any) {
-        this.datosGlobales.update(actual => ({
-            ...actual,
-            [nombreTab]: data
-        }));
-    }
-
-    private leerDeMemoria() {
-        const data = localStorage.getItem('mi_guardado');
-        return data ? JSON.parse(data) : {};
-    }
-
-
-
 }
