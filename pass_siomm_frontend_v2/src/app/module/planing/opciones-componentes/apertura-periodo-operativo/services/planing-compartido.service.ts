@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
-import { computed, inject, Injectable, Signal, signal, WritableSignal } from '@angular/core';
+import { computed, effect, inject, Injectable, Signal, signal, WritableSignal } from '@angular/core';
 import { AperPeriodo, MaeExploEstandar, MaeFactor, MaeFactorRecuperacion, MaeFactorSobredisolucion, MaePerMetExplotacion, MaeSemanaAvance, MaeSemanaCiclo, MaeTipLabEstandar, MaeValCanchas, MaeValOperativo, MaeValOperativoDetalle, PlanningData } from '../interface/aper-per-oper.interface';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '@environments/environments';
-import { ValidationErrors } from '@angular/forms';
+import { FormGroup, ValidationErrors } from '@angular/forms';
 
 export interface Fechas {
     fec_ini: string;
@@ -49,16 +49,49 @@ export class PlaningCompartidoService {
     // readonly valores = this._valores.asReadonly();
 
 
-    private _cierrePeriodoValid = signal<boolean>(false);
-    private _cierrePeriodoErrors = signal<ValidationErrors | null>(null);
+    //VALIDACIONES PARA FORMULARIOS REACTIVOS
+    private forms = new Map<string, FormGroup>();
+    private activeTab: string | null = null;
 
-    cierrePeriodoValid = this._cierrePeriodoValid.asReadonly();
-    cierrePeriodoErrors = this._cierrePeriodoErrors.asReadonly();
+    /* Registrar form por tab */
+    registerForm(tab: string, form: FormGroup) {
+        // console.log(tab, form);
+        this.forms.set(tab, form);
+    }
+
+    /* Decir cuál tab está activo */
+    setActiveTab(tab: string) {
+        this.activeTab = tab;
+    }
+
+    /* Obtener el form actual */
+    getActiveForm(): FormGroup | null {
+        return this.activeTab ? this.forms.get(this.activeTab) ?? null : null;
+    }
+
+    /* Validar SOLO el tab activo */
+    isActiveFormValid(): boolean {
+        const form = this.getActiveForm();
+        return form ? form.valid : true;
+    }
+
+    markActiveFormAsTouched() {
+        const form = this.getActiveForm();
+        form?.markAllAsTouched();
+    }
+
+    /* 🔒 (opcional) validación global */
+    isAllValid(): boolean {
+        return [...this.forms.values()].every(f => f.valid);
+    }
+
+
+
     /// FACTOR OPERATIVO
     setCierrePeriodo(data: AperPeriodo | AperPeriodo[], tab?: string) {
         this._cierre_periodo.set(Array.isArray(data) ? data : [data]);
         this._lastTab = tab || ''; // opcional: guardas cuál se actualizó
-
+        // this._periodo_valid.set(estado?.valid ?? false);
     }
 
     setFactor(data: MaeFactor | MaeFactor[], tab?: string) {
@@ -95,118 +128,61 @@ export class PlaningCompartidoService {
     }
 
 
-
-    // Señales de datos
-    // private _exploracion_extandar = signal<MaeExploEstandar[]>([]);
-    // private _semana_avance = signal<MaeSemanaAvance[]>([]);
-    // private _semana_ciclo = signal<MaeSemanaCiclo[]>([]);
-    // private _laboratorio_estandar = signal<MaeTipLabEstandar[]>([]);
-    // private _metodo_minado = signal<MaePerMetExplotacion[]>([]);
-
-    // Señales de validación independientes
-    private _exploracionEstandar_valid = signal<boolean>(false);
-    private _semanaAvance_valid = signal<boolean>(false);
-    private _semanaCiclo_valid = signal<boolean>(false);
-    private _laboratorio_valid = signal<boolean>(false);
-    private _metodoMinado_valid = signal<boolean>(false);
-
-    // Señal para disparar validación global (opcional)
-    private _trigger_validacion = signal(false);
-
-    // Lectura pública de validaciones
-    semanaAvanceValido = this._semanaAvance_valid.asReadonly();
-    semanaCicloValido = this._semanaCiclo_valid.asReadonly();
-    metodoMinadoValido = this._metodoMinado_valid.asReadonly();
-    triggerValidacion$ = this._trigger_validacion.asReadonly();
-
-
-    laboratorioValido = this._laboratorio_valid.asReadonly();
-    setLaboratorioEstandar(
-        data: MaeTipLabEstandar | MaeTipLabEstandar[],
-        tab?: string,
-        estado?: { valid: boolean; dirty?: boolean }
-    ) {
-        this._laboratorio_estandar.set(Array.isArray(data) ? data : [data]);
-        this._lastTab = tab || '';
-        this._laboratorio_valid.set(estado?.valid ?? false);
-    }
-
-
-    // ============================
-    // Métodos para setear datos y validación de cada tab
-    // ============================
-
-
-    exploracionEstandarValido = this._exploracionEstandar_valid.asReadonly();
-
-    setExploracionExtandar(
-        data: MaeExploEstandar | MaeExploEstandar[],
-        tab?: string,
-        estado?: { valid: boolean; dirty?: boolean }
-    ) {
+    ///tablas
+    setExploracionExtandar(data: MaeExploEstandar | MaeExploEstandar[], tab?: string) {
         this._exploracion_extandar.set(Array.isArray(data) ? data : [data]);
-        this._lastTab = tab || '';
-        this._exploracionEstandar_valid.set(estado?.valid ?? false);
+        this._lastTab = tab || ''; // opcional: guardas cuál se actualizó
     }
 
-    setSemanaAvance(
-        data: MaeSemanaAvance | MaeSemanaAvance[],
-        tab?: string,
-        estado?: { valid: boolean; dirty?: boolean }
-    ) {
+
+    setSemanaAvance(data: MaeSemanaAvance | MaeSemanaAvance[], tab?: string) {
         this._semana_avance.set(Array.isArray(data) ? data : [data]);
         this._lastTab = tab || '';
-        this._semanaAvance_valid.set(estado?.valid ?? false);
     }
 
-    setSemanaCiclo(
-        data: MaeSemanaCiclo | MaeSemanaCiclo[],
-        tab?: string,
-        estado?: { valid: boolean; dirty?: boolean }
-    ) {
-        this._semana_ciclo.set(Array.isArray(data) ? data : [data]);
+    setSemanaCiclo(data: MaeSemanaCiclo | MaeSemanaCiclo[], tab?: string) {
+        let current = this._semana_ciclo(); // obtener lo actual
+        if (!Array.isArray(data)) {
+            // si es una sola fila, buscar si ya existe y reemplazar
+            const index = current.findIndex(d => d.num_semana === data.num_semana);
+            if (index >= 0) {
+                current[index] = data; // reemplaza fila existente
+            } else {
+                current.push(data); // agregar nueva fila
+            }
+        } else {
+            // si es un array, reemplaza todo (solo cuando venga de backend)
+            current = data;
+        }
+
+        this._semana_ciclo.set(current);
         this._lastTab = tab || '';
-        this._semanaCiclo_valid.set(estado?.valid ?? false);
     }
 
-    setMetodoMinado(
-        data: MaePerMetExplotacion | MaePerMetExplotacion[],
-        tab?: string,
-        estado?: { valid: boolean; dirty?: boolean }
-    ) {
+
+    setLaboratorioEstandar(data: MaeTipLabEstandar | MaeTipLabEstandar[], tab?: string, estado?: { valid: boolean; dirty?: boolean }) {
+        this._laboratorio_estandar.set(Array.isArray(data) ? data : [data]);
+        this._lastTab = tab || ''; // opcional: guardas cuál se actualizó
+    }
+
+    setMetodoMinado(data: MaePerMetExplotacion | MaePerMetExplotacion[], tab?: string) {
         this._metodo_minado.set(Array.isArray(data) ? data : [data]);
-        this._lastTab = tab || '';
-        this._metodoMinado_valid.set(estado?.valid ?? false);
+        this._lastTab = tab || ''; // opcional: guardas cuál se actualizó
     }
-
-    // ============================
-    // Método opcional para disparar validación global
-    // ============================
-    // triggerValidacion() {
-    //     this._trigger_validacion.set(true);
-    // }
-
-
-
-
-
-
-
-
-
-
-
 
     private toDateTime(fecha: string): string {
         const [d, m, y] = fecha.split('/');
         return `${y}-${m}-${d}T00:00:00`;
     }
 
-    public guardarTodo(modoBoton: 'N' | 'E', anio: string, mes: string) {
+    //guardar datos
+    public guardarTodo(modoBoton: 'N' | 'E') {
 
         let payload: any = {};
 
         switch (this._lastTab) {
+
+
             case 'factor_operativo':
                 payload = {
                     cierre_periodo: this._cierre_periodo(),
@@ -301,8 +277,10 @@ export class PlaningCompartidoService {
                 break;
 
         }
-
-        console.log("los datos recibidos son: " + JSON.stringify(payload, null, 2));
+        console.log(
+            'Mis datos enviados son:\n',
+            JSON.stringify(payload, null, 2)
+        );
         return this.http.post(
             `${this.planingUrl}aper-periodo-operativo/semana/guardar-datos`,
             payload
@@ -445,23 +423,6 @@ export class PlaningCompartidoService {
         }
     }
 
-    ///VALIDAR FORMULARIO DE PERIODO
-
-    private _periodoValido = signal<boolean>(false);
-    private _cierre_periodo_DOS = signal<AperPeriodo | null>(null);
-
-    setPeriodoValido(valido: boolean) {
-        this._periodoValido.set(valido);
-    }
-
-    isPeriodoValido(): boolean {
-        return this._periodoValido();
-    }
-
-    setCierrePeriodo_Dos(data: AperPeriodo) {
-        this._cierre_periodo_DOS.set(data);
-    }
-
 
     //ESTADO PERIODO
     anio = signal<string[]>([]);
@@ -511,14 +472,48 @@ export class PlaningCompartidoService {
         this._nuevoRegistro.set(valor);
     }
 
-
-    /*****data de meses *****/
     private _mesesBloqueados = signal<string[]>([]);
     mesesBloqueados = this._mesesBloqueados.asReadonly();
 
     setMesesBloqueados(meses: string[]) {
         this._mesesBloqueados.set(meses ?? []);
     }
+
+
+
+
+    /**FLAG PARA EL BOTON DE AGREGAR NUEVOI REGISTRO*/
+    public _agregarRegistro = signal(true);
+    readonly agregarRegistro = this._agregarRegistro.asReadonly();
+
+    setAgregarRegistro(valor: boolean) {
+        this._agregarRegistro.set(valor);
+    }
+
+
+
+    public datosGlobales = signal<any>(this.leerDeMemoria());
+
+    constructor() {
+        // Cada vez que los datos cambien, se guardan en el navegador automáticamente
+        effect(() => {
+            localStorage.setItem('mi_guardado', JSON.stringify(this.datosGlobales()));
+        });
+    }
+
+    // Función para guardar lo de un tab específico
+    guardarCopiaTemporal(nombreTab: string, data: any) {
+        this.datosGlobales.update(actual => ({
+            ...actual,
+            [nombreTab]: data
+        }));
+    }
+
+    private leerDeMemoria() {
+        const data = localStorage.getItem('mi_guardado');
+        return data ? JSON.parse(data) : {};
+    }
+
 
 
 }

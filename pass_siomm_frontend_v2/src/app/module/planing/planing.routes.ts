@@ -12,6 +12,8 @@ export const planingMainRouter: Routes = [
                 loadChildren: () =>
                     import('./opciones-componentes/apertura-periodo-operativo/apertura-periodo-operativo.routes')
                         .then(m => m.default),
+
+                data: { noReuse: true }
             }
         ]
     }

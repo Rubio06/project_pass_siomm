@@ -46,19 +46,35 @@
 
                         <option value="" disabled selected>Seleccione un mes</option>
                         @for (mes of mesesBloqueadosArray(); track $index) {
-                            <option [value]="mes">{{ mes | transfornMonth }}</option>}
-                        <!-- <option value="02">Febrero</option>
-                        <option value="03">Marzo</option>
-                        <option value="04">Abril</option>
-                        <option value="05">Mayo</option>
-                        <option value="06">Junio</option>
-                        <option value="07">Julio</option>
-                        <option value="08">Agosto</option>
-                        <option value="09">Septiembre</option>
-                        <option value="10">Octubre</option>
-                        <option value="11">Noviembre</option>
-                        <option value="12">Diciembre</option> -->
+                        <option [value]="mes">{{ mes | transfornMonth }}</option>}
                     </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-1">Fecha Inicio Destino</label>
+                    <input type="text" formControlName="fechaInicioOrigen"  [value]="myForm.get('fechaInicioOrigen')?.value | date:'dd-MM-yyyy'"
+                        class="input input-xs font-medium w-full border border-gray-300 rounded-md px-3 py-0.5 text-sm shadow-sm
+                   focus:border-[#033351] focus:ring-2 focus:ring-[rgb(3,102,157)] focus:ring-opacity-40 outline-none" />
+
+                    @if ( formsUtils.isValidField(myForm ,'fechaInicioOrigen') ) {
+                    <span class="text-xs text-red-600 mt-1 block">
+                        <!-- Debe de ser de 3 letras -->
+                        {{ formsUtils.getFiledError(myForm, 'fechaInicioOrigen') }}
+                    </span>
+                    }
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-1">Fecha Fin Destino</label>
+                    <input type="text" formControlName="fechaFinOrigen"  [value]="myForm.get('fechaFinOrigen')?.value | date:'dd-MM-yyyy'"
+                        class="input input-xs font-medium w-full border border-gray-300 rounded-md px-3 py-0.5 text-sm shadow-sm
+                   focus:border-[#033351] focus:ring-2 focus:ring-[rgb(3,102,157)] focus:ring-opacity-40 outline-none" />
+
+                    @if ( formsUtils.isValidField(myForm ,'fechaFinOrigen') ) {
+                    <span class="text-xs text-red-600 mt-1 block">
+                        <!-- Debe de ser de 3 letras -->
+                        {{ formsUtils.getFiledError(myForm, 'fechaFinOrigen') }}
+                    </span>
+                    }
                 </div>
 
             </div>
@@ -94,33 +110,6 @@
                     <span class="text-xs text-red-600 mt-1 block">
                         <!-- Debe de ser de 3 letras -->
                         {{ formsUtils.getFiledError(myForm, 'mesOrigen') }}
-                    </span>
-                    }
-                </div>
-
-                <div>
-                    <label class="block text-sm font-medium text-gray-600 mb-1">Fecha Origen</label>
-                    <input type="text" formControlName="fechaInicioOrigen"
-                        class="input input-xs font-medium w-full border border-gray-300 rounded-md px-3 py-0.5 text-sm shadow-sm
-                   focus:border-[#033351] focus:ring-2 focus:ring-[rgb(3,102,157)] focus:ring-opacity-40 outline-none" />
-
-                    @if ( formsUtils.isValidField(myForm ,'fechaInicioOrigen') ) {
-                    <span class="text-xs text-red-600 mt-1 block">
-                        <!-- Debe de ser de 3 letras -->
-                        {{ formsUtils.getFiledError(myForm, 'fechaInicioOrigen') }}
-                    </span>
-                    }
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-600 mb-1">Fecha Destino</label>
-                    <input type="text" formControlName="fechaFinOrigen"
-                        class="input input-xs font-medium w-full border border-gray-300 rounded-md px-3 py-0.5 text-sm shadow-sm
-                   focus:border-[#033351] focus:ring-2 focus:ring-[rgb(3,102,157)] focus:ring-opacity-40 outline-none" />
-
-                    @if ( formsUtils.isValidField(myForm ,'fechaFinOrigen') ) {
-                    <span class="text-xs text-red-600 mt-1 block">
-                        <!-- Debe de ser de 3 letras -->
-                        {{ formsUtils.getFiledError(myForm, 'fechaFinOrigen') }}
                     </span>
                     }
                 </div>

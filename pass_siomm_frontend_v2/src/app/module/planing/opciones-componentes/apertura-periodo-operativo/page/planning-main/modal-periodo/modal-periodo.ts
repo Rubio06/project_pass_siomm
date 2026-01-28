@@ -6,10 +6,11 @@ import { PlaningCompartidoService } from '../../../services/planing-compartido.s
 import { PlanningService } from '../../../services/planning.service';
 import { TransfornMonthPipe } from 'src/app/core/pipe/transforn-month-pipe';
 import { startWith } from 'rxjs';
+import { DatePipe } from '@angular/common';
 
 @Component({
     selector: 'app-modal-periodo',
-    imports: [ReactiveFormsModule, TransfornMonthPipe],
+    imports: [ReactiveFormsModule, TransfornMonthPipe, DatePipe],
     templateUrl: './modal-periodo.html',
     styleUrl: './modal-periodo.css',
 })
@@ -63,26 +64,12 @@ export class ModalPeriodo {
 
     mesesBloqueadosArray = signal<string[]>([]);
 
-    // meses = signal<any[]>([
-    //     { value: '01', label: 'Enero' },
-    //     { value: '02', label: 'Febrero' },
-    //     { value: '03', label: 'Marzo' },
-    //     { value: '04', label: 'Abril' },
-    //     { value: '05', label: 'Mayo' },
-    //     { value: '06', label: 'Junio' },
-    //     { value: '07', label: 'Julio' },
-    //     { value: '08', label: 'Agosto' },
-    //     { value: '09', label: 'Septiembre' },
-    //     { value: '10', label: 'Octubre' },
-    //     { value: '11', label: 'Noviembre' },
-    //     { value: '12', label: 'Diciembre' },
-    // ]);
-
 
     constructor(
     ) {
         this.createForm();
         this.listenFechasSignal();
+        this.listenMesDestino();
     }
 
     ngOnInit(): void {
@@ -122,38 +109,47 @@ export class ModalPeriodo {
 
             anioOrigen: [{ value: '', disabled: true }, [Validators.required]],
             mesOrigen: [{ value: '', disabled: true }, [Validators.required]],
+
         });
+    }
+
+
+    private getInicioFinMes(anio: string, mes: string) {
+        const year = Number(anio);
+        const month = Number(mes) - 1;
+
+        return {
+            inicio: new Date(year, month, 1).toISOString(),
+            fin: new Date(year, month + 1, 0).toISOString()
+        };
     }
 
     private listenFechasSignal(): void {
         effect(() => {
             const fechas = this.planingCompartido.fechas();
-
             if (!fechas) return;
 
-            this.fechaInicioOrigen = fechas.fec_ini;
-            this.fechaInicioDestino = fechas.fec_fin;
-
-            this.anioOrigen = fechas.cie_ano;
-            this.mesOrigen = fechas.cie_per;
-
             this.myForm.patchValue({
-                fechaInicioOrigen: fechas.fec_ini,
-                fechaFinOrigen: fechas.fec_fin,
                 anioOrigen: fechas.cie_ano,
                 mesOrigen: fechas.cie_per
-            });
+            }, { emitEvent: false });
         });
     }
 
-    // private patchPeriodoOrigen(): void {
-    //     if (!this.anioOrigen || !this.mesOrigen) return;
+    private listenMesDestino(): void {
+        this.myForm.get('mesDestino')?.valueChanges.subscribe(mes => {
+            const anio = this.myForm.get('anioDestino')?.value;
 
-    //     this.myForm.patchValue({
-    //         anioOrigen: this.anioOrigen,
-    //         mesOrigen: this.mesOrigen
-    //     });
-    // }
+            if (!anio || !mes) return;
+
+            const { inicio, fin } = this.getInicioFinMes(anio, mes);
+
+            this.myForm.patchValue({
+                fechaInicioOrigen: inicio,
+                fechaFinOrigen: fin
+            }, { emitEvent: false });
+        });
+    }
 
     onSubmit(): void {
         if (this.myForm.invalid) {
@@ -162,7 +158,6 @@ export class ModalPeriodo {
         }
 
         const payload = this.myForm.getRawValue();
-
 
         this.aceptar.emit(payload as PeriodoDestino);
 

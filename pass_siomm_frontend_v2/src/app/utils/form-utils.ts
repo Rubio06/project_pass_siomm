@@ -258,7 +258,6 @@ export class FormUtils {
         for (const key of Object.keys(error)) {
             switch (key) {
                 case 'required':
-                    console.log("Entre aqui")
                     return 'Este campo es requerido';
 
                 case 'minlength':
@@ -268,7 +267,6 @@ export class FormUtils {
                     return `Valor minimo de  ${error['min'].min}`;
 
                 case 'pattern':
-                    console.log("Entre aqui")
                     return this.getPatternErrorMessage(
                         error['pattern'].requiredPattern
                     );

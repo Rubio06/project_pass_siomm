@@ -56,35 +56,36 @@ export class SemanasCicloMainComponent {
 
         effect(() => {
             const data = this.planingCompartido.dataRoutes();
+            if (!data) return;
+
             const tabSemanaCiclo = data?.data?.semana_ciclo || [];
 
-            this.loadSemanas(tabSemanaCiclo);
-            console.log(tabSemanaCiclo)
-
-            this.myForm.patchValue(data || {}, { emitEvent: false });
-
-            // this.cd.detectChanges();
-
-        });
-
-
-        //BOTRON EDITAR///
-        ///
-        effect(() => {
-
-            if (!this.myForm) return;
-
-            if (this.planingCompartido.bloqueoFormGeneral()) {
-                this.myForm.disable({ emitEvent: false });
-
-            } else {
-                this.myForm.enable({ emitEvent: false });
+            // ⚡ Solo cargar si no hay filas (primer render)
+            if (this.semanas.length === 0) {
+                this.loadSemanas(tabSemanaCiclo);
             }
         });
 
 
-    }
 
+
+
+        //BOTRON EDITAR///
+        ///
+        // effect(() => {
+
+        //     if (!this.myForm) return;
+
+        //     if (this.planingCompartido.bloqueoFormGeneral()) {
+        //         this.myForm.disable({ emitEvent: false });
+
+        //     } else {
+        //         this.myForm.enable({ emitEvent: false });
+        //     }
+        // });
+
+
+    }
 
     loadSemanas(data: MaeSemanaCiclo[]) {
         this.semanas.clear();  // limpia todo
@@ -141,7 +142,6 @@ export class SemanasCicloMainComponent {
 
         const filaNueva = this.semanas.at(this.semanas.length - 1);
         this.enviarFilaNueva(filaNueva!);
-
     }
 
 
@@ -193,43 +193,38 @@ export class SemanasCicloMainComponent {
     //     this.myForm.valueChanges.subscribe(val => {
     //         const filas = this.myForm.getRawValue();
 
-    //         this.planingCompartido.setSemanaCiclo(filas);
+    //         this.planingCompartido.setSemanaCiclo(filas, 'semana_ciclo');
     //     });
     // }
 
-    enviarFilaNueva(row: AbstractControl) {
-        this.myForm.valueChanges.subscribe(val => {
-            const payload = row.getRawValue(); // objeto plano
-
-            console.log(payload)
-
-            this.planingCompartido.setSemanaCiclo(payload, 'semana_ciclo', {
-                valid: this.myForm.valid,
-                dirty: this.myForm.dirty
-            });
-        });
-    }
-
-
 
     ngOnInit() {
+
+        const dataGuardada = this.planingCompartido.datosGlobales().tabPrincipal;
+
+        if (dataGuardada) {
+            // Rellenamos el formulario con lo que recuperamos
+            this.myForm.patchValue(dataGuardada);
+        }
+
         this.myForm.valueChanges.subscribe(val => {
             const filas = this.semanas.getRawValue();
-            console.log(filas)
+            this.planingCompartido.setSemanaCiclo(filas, 'semana_ciclo');
+            this.planingCompartido.registerForm('semana_ciclo', this.myForm);
 
-            this.planingCompartido.setSemanaCiclo(filas, 'semana_ciclo', {
-                valid: this.myForm.valid,
-                dirty: this.myForm.dirty
-            });
             // console.log("📤 TAB semana actualizó servicio:", filas);
         });
     }
 
+    enviarFilaNueva(row: AbstractControl) {
+        this.planingCompartido.registerForm('ciclo_minado', this.myForm);
+        this.planingCompartido.setActiveTab('ciclo_minado');
+        this.myForm.valueChanges.subscribe(val => {
+            const payload = row.getRawValue(); // objeto plano
 
-    // hasPendingChanges(): boolean {
-    //     return this.planingCompartido.getCambios();
-    // }
-
+            this.planingCompartido.setSemanaCiclo(payload, 'semana_ciclo');
+        });
+    }
 
 
 }

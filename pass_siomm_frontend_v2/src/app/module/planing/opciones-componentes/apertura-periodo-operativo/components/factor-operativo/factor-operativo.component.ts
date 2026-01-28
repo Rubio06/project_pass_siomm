@@ -70,8 +70,6 @@ export class FactorOperativoComonent {
             //     console.log(periodo)
             // }
 
-            console.log(periodo);
-
             if (periodo) {
                 this.form.patchValue({
                     // cie_ano: periodo.cie_ano,

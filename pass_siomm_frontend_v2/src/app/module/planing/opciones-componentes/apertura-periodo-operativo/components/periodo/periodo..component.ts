@@ -163,7 +163,6 @@ export class AperPerOperComponent {
 
         effect(() => {
             const year = this.planingCompartido.anioSeleccionado();
-            console.log(year);
             if (year) {
                 this.form.get('cie_ano')?.setValue(year, { emitEvent: false });
             }
@@ -176,6 +175,7 @@ export class AperPerOperComponent {
             }
         });
 
+        //VALIDACION PERIODO
 
     }
 
@@ -333,18 +333,22 @@ export class AperPerOperComponent {
     }
 
     ngOnInit(): void {
+        // this.planingCompartido.setLastTab('periodo');
+
         this.form.valueChanges.subscribe(() => {
 
             if (this.form.invalid) return;
 
             const payload = this.form.getRawValue();
 
-            console.log(payload);
 
             this.planingCompartido.setCierrePeriodo(
                 payload,
-                'factor_operativo'
+                'factor_operativo',
+
             );
+            this.planingCompartido.registerForm('cierre_periodo', this.form);
+            this.planingCompartido.setActiveTab('cierre_periodo');
         });
     }
 

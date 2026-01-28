@@ -70,12 +70,17 @@ export class SemanasAvanceMainComponent {
         data.forEach((item) => {
             this.semanas.push(
                 this.fb.group({
-                    cie_ano: [{ value: item.cie_ano, disabled: true }],
-                    cie_per: [{ value: item.cie_per, disabled: true }],
-                    num_semana: [{ value: item.num_semana, disabled: true }],
-                    fec_ini: [this.formUtils.formatDate(item.fec_ini)],
-                    fec_fin: [this.formUtils.formatDate(item.fec_fin)],
-                    desc_semana: [item.desc_semana],
+                    cie_ano: [{ value: item.cie_ano, disabled: true }, Validators.required],
+                    cie_per: [{ value: item.cie_per, disabled: true }, Validators.required],
+                    num_semana: [{ value: item.num_semana, disabled: true }, [
+                        Validators.required,
+                        Validators.min(1),
+                        Validators.max(7),
+                        Validators.pattern(/^[1-7]$/)
+                    ]],
+                    fec_ini: [this.formUtils.formatDate(item.fec_ini), Validators.required],
+                    fec_fin: [this.formUtils.formatDate(item.fec_fin), Validators.required],
+                    desc_semana: [item.desc_semana, Validators.required],
                     accion: [],
                     esNuevo: [false]
                 })
@@ -122,7 +127,7 @@ export class SemanasAvanceMainComponent {
 
     bloquearCampo(row: AbstractControl): boolean {
         return this.planingCompartido.bloqueoFormEditar() &&
-        !row.get('esNuevo')?.value;
+            !row.get('esNuevo')?.value;
     }
 
 
@@ -154,11 +159,6 @@ export class SemanasAvanceMainComponent {
             desc_semana: semana.desc_semana
         };
 
-        // 👉 Confirmación usando tu utilitario
-
-
-        // console.log("datos eliminados correctamente " + payload)
-
         this.semanasAvanceMainService.eliminarSemanaAvance(payload).subscribe({
             next: (res: any) => {
                 if (res.success) {
@@ -186,25 +186,24 @@ export class SemanasAvanceMainComponent {
      */
 
     enviarFilaNueva(row: AbstractControl) {
+
+
         this.myForm.valueChanges.subscribe(val => {
             const payload = row.getRawValue(); // objeto plano
-            this.planingCompartido.setSemanaAvance(payload, 'semana_avance', {
-                valid: this.myForm.valid,
-                dirty: this.myForm.dirty
-            });
+            this.planingCompartido.setSemanaAvance(payload, 'semana_avance');
+            this.planingCompartido.registerForm('estandar_avance', this.myForm);
+            this.planingCompartido.setActiveTab('estandar_avance');
         });
     }
 
 
     ngOnInit() {
+
         this.myForm.valueChanges.subscribe(val => {
             const filas = this.semanas.getRawValue();
-            console.log(filas)
-
-            this.planingCompartido.setSemanaAvance(filas, 'semana_avance', {
-                valid: this.myForm.valid,
-                dirty: this.myForm.dirty
-            });
+            this.planingCompartido.setSemanaAvance(filas, 'semana_avance');
+            this.planingCompartido.registerForm('estandar_avance', this.myForm);
+            this.planingCompartido.setActiveTab('estandar_avance');
             // console.log("📤 TAB semana actualizó servicio:", filas);
         });
     }

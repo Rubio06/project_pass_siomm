@@ -77,15 +77,15 @@ export class EstandarExploracionMainComponent {
         });
 
         ///boton editar
-        effect(() => {
-            if (!this.myForm) return;
+        // effect(() => {
+        //     if (!this.myForm) return;
 
-            if (this.planingCompartido.bloqueoFormGeneral()) {
-                this.myForm.disable({ emitEvent: false });
-            } else {
-                this.myForm.enable({ emitEvent: false });
-            }
-        });
+        //     if (this.planingCompartido.bloqueoFormGeneral()) {
+        //         this.myForm.disable({ emitEvent: false });
+        //     } else {
+        //         this.myForm.enable({ emitEvent: false });
+        //     }
+        // });
         this.loadZonas();
 
 
@@ -169,24 +169,23 @@ export class EstandarExploracionMainComponent {
 
 
     enviarFilaNueva(row: AbstractControl) {
+        this.planingCompartido.registerForm('exploracion_estandar', this.myForm);
+        this.planingCompartido.setActiveTab('exploracion_estandar');
+
         this.myForm.valueChanges.subscribe(val => {
             const payload = row.getRawValue(); // objeto plano
 
-            console.log(payload);
-            this.planingCompartido.setExploracionExtandar(payload, 'exploracion_estandar', {
-                valid: this.myForm.valid,
-                dirty: this.myForm.dirty
-            });
+            this.planingCompartido.setExploracionExtandar(payload, 'exploracion_estandar',);
         });
     }
 
     ngOnInit() {
+        this.planingCompartido.registerForm('exploracion_estandar', this.myForm);
+        this.planingCompartido.setActiveTab('exploracion_estandar');
+
         this.myForm.valueChanges.subscribe(val => {
             const filas = this.semanas.getRawValue();
-            this.planingCompartido.setExploracionExtandar(filas, 'exploracion_estandar', {
-                valid: this.myForm.valid,
-                dirty: this.myForm.dirty
-            });
+            this.planingCompartido.setExploracionExtandar(filas, 'exploracion_estandar');
             // console.log("📤 TAB semana actualizó servicio:", filas);
         });
     }

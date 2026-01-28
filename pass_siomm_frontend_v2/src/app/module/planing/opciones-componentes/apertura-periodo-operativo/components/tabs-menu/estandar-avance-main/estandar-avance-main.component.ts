@@ -79,23 +79,23 @@ export class EstandarAvanceComponent {
         });
 
         ///BOTON EDITAR
-        effect(() => {
-            if (!this.myForm) return;
+        // effect(() => {
+        //     if (!this.myForm) return;
 
-            if (this.planingCompartido.bloqueoFormGeneral()) {
-                this.myForm.disable({ emitEvent: false });
-            } else {
-                this.myForm.enable({ emitEvent: false });
-            }
-        });
+        //     if (this.planingCompartido.bloqueoFormGeneral()) {
+        //         this.myForm.disable({ emitEvent: false });
+        //     } else {
+        //         this.myForm.enable({ emitEvent: false });
+        //     }
+        // });
         this.loadTiposLabor();
 
         //VALIDACION DE CAMPOS
-        effect(() => {
-            if (this.planingCompartido.triggerValidacion$()) {
-                this.myForm.markAllAsTouched();
-            }
-        });
+        // effect(() => {
+        //     if (this.planingCompartido.triggerValidacion$()) {
+        //         this.myForm.markAllAsTouched();
+        //     }
+        // });
 
 
     }
@@ -145,7 +145,7 @@ export class EstandarAvanceComponent {
     agregarFilas() {
 
 
-        
+
         const ultima = this.semanas.length
             ? this.semanas.at(this.semanas.length - 1)?.getRawValue()
             : null;
@@ -189,10 +189,10 @@ export class EstandarAvanceComponent {
         this.myForm.valueChanges.subscribe(val => {
             const payload = row.getRawValue(); // objeto plano
 
-            this.planingCompartido.setLaboratorioEstandar(payload, 'estandar_avance', {
-                valid: this.myForm.valid,
-                dirty: this.myForm.dirty
-            });
+            this.planingCompartido.registerForm('estadar_avance', this.myForm);
+            this.planingCompartido.setActiveTab('estadar_avance'); this.planingCompartido.setLaboratorioEstandar(payload, 'estandar_avance');
+
+
         });
     }
 
@@ -240,13 +240,14 @@ export class EstandarAvanceComponent {
      * Envía datos del formulario
      */
     ngOnInit() {
+        this.planingCompartido.registerForm('estadar_avance', this.myForm);
+        this.planingCompartido.setActiveTab('estadar_avance');
         this.myForm.valueChanges.subscribe(val => {
             const filas = this.semanas.getRawValue();
             // const markTouched = this.myForm.markAllAsTouched();
-            this.planingCompartido.setLaboratorioEstandar(filas, 'estandar_avance', {
-                valid: this.myForm.valid,
-                dirty: this.myForm.dirty
-            });
+            this.planingCompartido.setLaboratorioEstandar(filas, 'estandar_avance');
+
+            
             // console.log("📤 TAB semana actualizó servicio:", filas);
         });
     }

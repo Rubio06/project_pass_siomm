@@ -84,15 +84,15 @@ export class MetodoMinadoMainComponent {
         // Lookups iniciales
 
 
-        effect(() => {
-            if (!this.myForm) return;
+        // effect(() => {
+        //     if (!this.myForm) return;
 
-            if (this.planingCompartido.bloqueoFormGeneral()) {
-                this.myForm.disable({ emitEvent: false });
-            } else {
-                this.myForm.enable({ emitEvent: false });
-            }
-        });
+        //     if (this.planingCompartido.bloqueoFormGeneral()) {
+        //         this.myForm.disable({ emitEvent: false });
+        //     } else {
+        //         this.myForm.enable({ emitEvent: false });
+        //     }
+        // });
     }
 
 
@@ -226,14 +226,14 @@ export class MetodoMinadoMainComponent {
 
 
     enviarFilaNueva(row: AbstractControl) {
+
+        this.planingCompartido.registerForm('metodo_minado', this.myForm);
+        this.planingCompartido.setActiveTab('metodo_minado');
         this.myForm.valueChanges.subscribe(val => {
             const payload = row.getRawValue(); // objeto plano
 
             console.log(payload);
-            this.planingCompartido.setMetodoMinado(payload, 'metodo_minado', {
-                valid: this.myForm.valid,
-                dirty: this.myForm.dirty
-            });
+            this.planingCompartido.setMetodoMinado(payload, 'metodo_minado');
         });
     }
 
@@ -242,14 +242,14 @@ export class MetodoMinadoMainComponent {
     //   SUBMIT SOLO DE LA ÚLTIMA FILA
     // =====================================================
     ngOnInit() {
+
+        this.planingCompartido.registerForm('metodo_minado', this.myForm);
+        this.planingCompartido.setActiveTab('metodo_minado');
         this.myForm.valueChanges.subscribe(val => {
             const filas = this.semanas.getRawValue();
 
             // console.log(filas)
-            this.planingCompartido.setMetodoMinado(filas, 'metodo_minado', {
-                valid: this.myForm.valid,
-                dirty: this.myForm.dirty
-            });
+            this.planingCompartido.setMetodoMinado(filas, 'metodo_minado');
         });
     }
 

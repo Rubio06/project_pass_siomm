@@ -72,7 +72,7 @@ export class FactorOperativoTablaComponent {
             );
 
             this.form.setControl('factorOperativoDetalle', this.fb.array(filas));
-        }, { allowSignalWrites: true });
+        });
 
 
         effect(() => {
