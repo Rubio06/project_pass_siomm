@@ -22,16 +22,17 @@ export class PendingGeneralGuard implements CanDeactivate<CanComponentDeactivate
 
         if (!this.planingCompartido.getCambios()) return true;
 
-        const accion = await FormUtils.confirmarDescartarCambios();
+        const guardar = await FormUtils.confirmarDescartarCambios();
 
-        if (accion) {
-
+        if (guardar) {
+            // 🟦 Guardar Cambios
             await this.planingCompartido.ejecutarGuardar();
-
-            return true;
+        } else {
+            // 🟥 No descartar → Visualizar
+            await this.planingCompartido.ejecutarVisualizar();
         }
 
-        return false;
+        return true; // ✅ permitir navegación
     }
 }
 

@@ -122,13 +122,15 @@ export class MetodoMinadoMainComponent {
     loadSemanas(data: MaePerMetExplotacion[]) {
         this.semanas.clear(); // limpiar FormArray
 
+        const periodo = this.planingCompartido.periodo();
+
         data.forEach(item => {
 
             this.semanas.push(
                 this.fb.group({
-                    cie_ano: [{ value: item.cie_ano, disabled: true }],
-                    cie_per: [{ value: item.cie_per, disabled: true }],
-                    cod_metexp: [item.cod_metexp, Validators.required],
+                    cie_ano: [periodo?.anio],
+                    cie_per: [periodo?.mes],
+                    cod_metexp: [{ value: item.cod_metexp, disabled: true }, Validators.required],
                     nom_metexp: [item.nom_metexp || '', Validators.required],
                     ind_calculo_dilucion: [item.ind_calculo_dilucion || ''],
                     ind_calculo_leyes_min: [item.ind_calculo_leyes_min || ''],
@@ -148,18 +150,12 @@ export class MetodoMinadoMainComponent {
 
     agregarFilas() {
 
-        const ultima = this.semanas.length
-            ? this.semanas.at(this.semanas.length - 1)?.getRawValue()
-            : null;
+        const periodo = this.planingCompartido.periodo();
 
-        const origen = ultima || {
-            cie_ano: new Date().getFullYear().toString(),
-            cie_per: (new Date().getMonth() + 1).toString().padStart(2, '0'),
-        };
 
         const nuevoGrupo = this.fb.group({
-            cie_ano: [origen.cie_ano, Validators.required],
-            cie_per: [origen.cie_per, Validators.required],
+            cie_ano: [periodo?.anio, Validators.required],
+            cie_per: [periodo?.mes, Validators.required],
             cod_metexp: ['', Validators.required], // 👈 CLAVE
             nom_metexp: ['', Validators.required],
             ind_calculo_dilucion: ['', Validators.required],
@@ -181,6 +177,9 @@ export class MetodoMinadoMainComponent {
     //   ELIMINAR FILA
     // =====================================================
     async eliminarFila(data: any, index: number) {
+
+        const periodo = this.planingCompartido.periodo();
+
         const semana = data.getRawValue ? data.getRawValue() : data.value;
         const esNuevo = semana.esNuevo;
 
@@ -192,8 +191,8 @@ export class MetodoMinadoMainComponent {
 
         const payload = {
             cod_metexp: semana.cod_metexp,
-            anio: this.semanasAvanceMainService.anio(),
-            mes: this.semanasAvanceMainService.mes(),
+            cie_ano: periodo?.anio,
+            cie_per: periodo?.mes,
         };
 
         const confirmado = await this.utils.confirmarEliminacion();
@@ -220,15 +219,15 @@ export class MetodoMinadoMainComponent {
 
 
     bloquearCampo(row: AbstractControl): boolean {
-        return this.planingCompartido.bloqueoFormEditar() && !row.get('esNuevo')?.value;
+        return !row.get('esNuevo')?.value;
     }
 
 
 
     enviarFilaNueva(row: AbstractControl) {
 
-        this.planingCompartido.registerForm('metodo_minado', this.myForm);
-        this.planingCompartido.setActiveTab('metodo_minado');
+        // this.planingCompartido.registerForm('metodo_minado', this.myForm);
+        // this.planingCompartido.setActiveTab('metodo_minado');
         this.myForm.valueChanges.subscribe(val => {
             const payload = row.getRawValue(); // objeto plano
 
@@ -243,8 +242,8 @@ export class MetodoMinadoMainComponent {
     // =====================================================
     ngOnInit() {
 
-        this.planingCompartido.registerForm('metodo_minado', this.myForm);
-        this.planingCompartido.setActiveTab('metodo_minado');
+        // this.planingCompartido.registerForm('metodo_minado', this.myForm);
+        // this.planingCompartido.setActiveTab('metodo_minado');
         this.myForm.valueChanges.subscribe(val => {
             const filas = this.semanas.getRawValue();
 

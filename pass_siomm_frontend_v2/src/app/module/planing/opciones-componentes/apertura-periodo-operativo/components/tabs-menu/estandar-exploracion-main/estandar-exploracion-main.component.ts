@@ -102,13 +102,15 @@ export class EstandarExploracionMainComponent {
      */
     loadSemanas(data: any[]) {
         this.semanas.clear();
+        const periodo = this.planingCompartido.periodo();
+
 
         data.forEach((item, index) => {
             this.semanas.push(
                 this.fb.group({
-                    cie_ano: [item.cie_ano, Validators.required],
-                    cie_per: [item.cie_per, Validators.required],
-                    cod_zona: [item.cod_zona, Validators.required],
+                    cie_ano: [periodo?.anio, Validators.required],
+                    cie_per: [periodo?.mes, Validators.required],
+                    cod_zona: [{value: item.cod_zona, disabled: true}, Validators.required],
                     lab_pieper: [item.lab_pieper || ''],
                     lab_broca: [item.lab_broca || ''],
                     lab_barcon: [item.lab_barcon || ''],
@@ -129,18 +131,20 @@ export class EstandarExploracionMainComponent {
     }
 
     agregarFilas() {
-        const ultima = this.semanas.length
-            ? this.semanas.at(this.semanas.length - 1)?.getRawValue()
-            : null;
+        // const ultima = this.semanas.length
+        //     ? this.semanas.at(this.semanas.length - 1)?.getRawValue()
+        //     : null;
 
-        const origen = ultima || {
-            cie_ano: new Date().getFullYear().toString(),
-            cie_per: (new Date().getMonth() + 1).toString().padStart(2, '0'),
-        };
+        // const origen = ultima || {
+        //     cie_ano: new Date().getFullYear().toString(),
+        //     cie_per: (new Date().getMonth() + 1).toString().padStart(2, '0'),
+        // };
+        const periodo = this.planingCompartido.periodo();
+
 
         const nuevoGrupo = this.fb.group({
-            cie_ano: [origen.cie_ano, Validators.required],
-            cie_per: [origen.cie_per, Validators.required],
+            cie_ano: [periodo?.anio, Validators.required],
+            cie_per: [periodo?.mes, Validators.required],
             cod_zona: ['', Validators.required],
             lab_pieper: ['', Validators.required],
             lab_broca: ['', Validators.required],
@@ -169,8 +173,8 @@ export class EstandarExploracionMainComponent {
 
 
     enviarFilaNueva(row: AbstractControl) {
-        this.planingCompartido.registerForm('exploracion_estandar', this.myForm);
-        this.planingCompartido.setActiveTab('exploracion_estandar');
+        // this.planingCompartido.registerForm('exploracion_estandar', this.myForm);
+        // this.planingCompartido.setActiveTab('exploracion_estandar');
 
         this.myForm.valueChanges.subscribe(val => {
             const payload = row.getRawValue(); // objeto plano
@@ -180,8 +184,8 @@ export class EstandarExploracionMainComponent {
     }
 
     ngOnInit() {
-        this.planingCompartido.registerForm('exploracion_estandar', this.myForm);
-        this.planingCompartido.setActiveTab('exploracion_estandar');
+        // this.planingCompartido.registerForm('exploracion_estandar', this.myForm);
+        // this.planingCompartido.setActiveTab('exploracion_estandar');
 
         this.myForm.valueChanges.subscribe(val => {
             const filas = this.semanas.getRawValue();
@@ -197,6 +201,7 @@ export class EstandarExploracionMainComponent {
     async eliminarFila(data: any, index: number) {
         const semana = data.getRawValue ? data.getRawValue() : data.value;
 
+        const periodo = this.planingCompartido.periodo();
 
         const esNuevo = semana.esNuevo;
 
@@ -209,8 +214,8 @@ export class EstandarExploracionMainComponent {
 
         const payload = {
             cod_zona: semana.cod_zona,
-            anio: this.semanasAvanceMainService.anio(),
-            mes: this.semanasAvanceMainService.mes(),
+            cie_ano: periodo?.anio,
+            cie_per: periodo?.mes,
         };
 
         const confirmado = await this.utils.confirmarEliminacion();

@@ -46,45 +46,6 @@ export class PlaningCompartidoService {
     readonly recuperacionBudget = this._recuperacionBudget.asReadonly();
     readonly semana_avance = this._semana_avance.asReadonly();
     readonly semana_ciclo = this._semana_ciclo.asReadonly();
-    // readonly valores = this._valores.asReadonly();
-
-
-    //VALIDACIONES PARA FORMULARIOS REACTIVOS
-    private forms = new Map<string, FormGroup>();
-    private activeTab: string | null = null;
-
-    /* Registrar form por tab */
-    registerForm(tab: string, form: FormGroup) {
-        // console.log(tab, form);
-        this.forms.set(tab, form);
-    }
-
-    /* Decir cuál tab está activo */
-    setActiveTab(tab: string) {
-        this.activeTab = tab;
-    }
-
-    /* Obtener el form actual */
-    getActiveForm(): FormGroup | null {
-        return this.activeTab ? this.forms.get(this.activeTab) ?? null : null;
-    }
-
-    /* Validar SOLO el tab activo */
-    isActiveFormValid(): boolean {
-        const form = this.getActiveForm();
-        return form ? form.valid : true;
-    }
-
-    markActiveFormAsTouched() {
-        const form = this.getActiveForm();
-        form?.markAllAsTouched();
-    }
-
-    /* 🔒 (opcional) validación global */
-    isAllValid(): boolean {
-        return [...this.forms.values()].every(f => f.valid);
-    }
-
 
 
     /// FACTOR OPERATIVO
@@ -141,22 +102,9 @@ export class PlaningCompartidoService {
     }
 
     setSemanaCiclo(data: MaeSemanaCiclo | MaeSemanaCiclo[], tab?: string) {
-        let current = this._semana_ciclo(); // obtener lo actual
-        if (!Array.isArray(data)) {
-            // si es una sola fila, buscar si ya existe y reemplazar
-            const index = current.findIndex(d => d.num_semana === data.num_semana);
-            if (index >= 0) {
-                current[index] = data; // reemplaza fila existente
-            } else {
-                current.push(data); // agregar nueva fila
-            }
-        } else {
-            // si es un array, reemplaza todo (solo cuando venga de backend)
-            current = data;
-        }
 
-        this._semana_ciclo.set(current);
-        this._lastTab = tab || '';
+        this._semana_ciclo.set(Array.isArray(data) ? data : [data]);
+        this._lastTab = tab || ''; // opcional: guardas cuál se actualizó
     }
 
 
@@ -316,13 +264,6 @@ export class PlaningCompartidoService {
 
 
 
-    private _hasChanges = signal(false);
-    readonly hasChanges = this._hasChanges.asReadonly();
-
-    setChanges(v: boolean) {
-        this._hasChanges.set(v);
-    }
-
 
 
     // ===============================
@@ -358,16 +299,16 @@ export class PlaningCompartidoService {
     // ===============================
 
 
-    private _resetSemanas = signal(false);
-    readonly resetSemanas = this._resetSemanas.asReadonly();
+    // private _resetSemanas = signal(false);
+    // readonly resetSemanas = this._resetSemanas.asReadonly();
 
-    notifyResetSemanas() {
-        this._resetSemanas.set(true);
-    }
+    // notifyResetSemanas() {
+    //     this._resetSemanas.set(true);
+    // }
 
-    resetSemanasDone() {
-        this._resetSemanas.set(false);
-    }
+    // resetSemanasDone() {
+    //     this._resetSemanas.set(false);
+    // }
 
 
 
@@ -397,21 +338,14 @@ export class PlaningCompartidoService {
     }
 
 
-    limpiezaBotonNuevo() {
-        const current = this._dataRoutes();
-        if (!current) return;
-
-        this._dataRoutes.set({
-            semana_ciclo: [],
-            metodo_minado: [],
-            semana_avance: [],
-            exploracion_extandar: [],
-            laboratorio_estandar: []
-        });
+    limpiezaDataRoutes() {
+        this._dataRoutes.set({});
     }
 
     /// GUARD PARA MI SERVICIO COMPARTIDO
     private guardarHandler?: () => Promise<void> | void;
+    private visualizarHandler?: () => Promise<void> | void;
+
 
     registrarGuardar(fn: () => Promise<void> | void) {
         this.guardarHandler = fn;
@@ -422,6 +356,19 @@ export class PlaningCompartidoService {
             await this.guardarHandler();
         }
     }
+
+
+    registrarVisualizar(fn: () => Promise<void> | void) {
+        this.visualizarHandler = fn;
+    }
+
+
+    async ejecutarVisualizar() {
+        if (this.visualizarHandler) {
+            await this.visualizarHandler();
+        }
+    }
+
 
 
     //ESTADO PERIODO
@@ -439,15 +386,6 @@ export class PlaningCompartidoService {
             this.anioSeleccionado.set(data[0]);
         }
     }
-
-    setMonths(data: string[]) {
-        this.meses.set(data);
-
-        if (!this.mesSeleccionado() && data.length) {
-            this.mesSeleccionado.set(data[0]);
-        }
-    }
-
 
     private _fechas = signal<Fechas | null>(null);
 
@@ -490,5 +428,47 @@ export class PlaningCompartidoService {
         this._agregarRegistro.set(valor);
     }
 
+
+
+
+    // FORMULARIO
+    private _formFactorBloqueado = signal<boolean>(true);
+    readonly formFactorBloqueado = this._formFactorBloqueado.asReadonly();
+
+    setFormFactorBloqueado(v: boolean) {
+        this._formFactorBloqueado.set(v);
+    }
+
+    // TABLAS
+    private _tablaBloqueada = signal<boolean>(true);
+    readonly tablaBloqueada = this._tablaBloqueada.asReadonly();
+
+    setTablaBloqueada(v: boolean) {
+        this._tablaBloqueada.set(v);
+    }
+
+
+    ///FLAG PARA RESETEAR EL FORMULARIO PERIODO
+
+    private _resetPeriodo = signal(false);
+    readonly resetPeriodo = this._resetPeriodo.asReadonly();
+
+    triggerResetPeriodo() {
+        this._resetPeriodo.set(true);
+    }
+
+    clearResetPeriodo() {
+        this._resetPeriodo.set(false);
+    }
+
+
+    ///GUARDAR EL AÑO Y MES PARA USARLO EN OTROS COMPONENTES
+
+    private _periodo = signal<{ anio: string; mes: string } | null>(null);
+    periodo = this._periodo.asReadonly();
+
+    setPeriodo(anio: string, mes: string) {
+        this._periodo.set({ anio, mes });
+    }
 
 }

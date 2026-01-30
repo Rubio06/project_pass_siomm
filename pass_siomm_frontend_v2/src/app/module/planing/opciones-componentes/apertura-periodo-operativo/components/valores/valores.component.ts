@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, effect, inject, signal } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CanchasComponent } from './canchas/canchas.component';
 import { PlanningService } from '../../services/planning.service';
 import { PlaningCompartidoService } from '../../services/planing-compartido.service';
@@ -43,17 +43,12 @@ export class ValoresComponent {
         this.elements.forEach(item => {
             item.fields.forEach(field => {
                 controls[field] = [
-                    { value: '0.000', disabled: true },
+                    { value: '0.000' },
                     [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]
                 ];
             });
         });
 
-        // campos de contexto (NO dinámicos)
-        // controls['cie_ano'] = [null];
-        // controls['cie_per'] = [null];
-        // controls['val_ano'] = [null];
-        // controls['val_per'] = [null];
 
         // crear el form UNA SOLA VEZ
         this.form = this.fb.group(controls);
@@ -61,24 +56,13 @@ export class ValoresComponent {
         effect(() => {
             const response = this.planingCompartido.dataRoutes();
 
-
             if (!response) return;
 
             const factorOperativo = response.data?.factorOperativo?.[0];
-
-
             const factorSobredisolucion = response.data?.factorSobredisolucion?.[0]; // LISTO
-
             const factorBugetConversion = response.data?.recuperacionBudget?.[0];  //listo
 
-            // if (!factor || !factor_2 || !factorBugetConversion) return;
-
-
             this.form.patchValue({
-                // cie_ano: factorSobredisolucion?.cie_ano ?? factorBugetConversion?.cie_ano,
-                // cie_per: factorSobredisolucion?.cie_per ?? factorBugetConversion?.cie_per,
-                // val_ano: factorOperativo?.val_ano,
-                // val_per: factorOperativo?.val_per,
 
                 val_fac_ag: factorSobredisolucion?.val_fac_ag || '0.0000',
                 val_fac_bud_ag: factorBugetConversion?.val_fac_bud_ag || '0.0000',
@@ -110,52 +94,15 @@ export class ValoresComponent {
                 val_con_au: factorBugetConversion?.val_con_au || '0.0000'
             });
 
-            // this.form.patchValue({
-            // }, { emitEvent: false });
-
         });
 
         effect(() => {
-            const data = this.planingCompartido.dataRoutes();
+            if (this.planingCompartido.resetPeriodo()) return;
 
-            if (data === null || data?.length === 0) {
-                this.resetearFormulario();   // 🔥 Se ejecuta en TODOS los componentes
-                return;
-            }
-
-            // si hay data, llenas tus formularios
-            this.form.patchValue(data);
+            console.log("salio del if")
+            this.resetearFormulario();
+            this.planingCompartido.clearResetPeriodo();
         });
-
-        //BOTON EDITAR
-        effect(() => {
-            if (!this.form) return;
-
-            if (this.planingCompartido.bloqueoFormGeneral()) {
-                this.form.disable({ emitEvent: false });
-            } else {
-                this.form.enable({ emitEvent: false });
-            }
-        });
-
-        effect(() => {
-
-            if (!this.planingCompartido.resetSemanas()) {
-                // this.semanas.clear();
-                this.resetearFormulario();
-
-                return;
-            }
-
-
-        });
-    }
-
-
-
-
-    blockForm() {
-        this.form.disable();
     }
 
 
@@ -253,4 +200,8 @@ export class ValoresComponent {
             this.planingCompartido.setRecuperacionBudget(recuperacionBudget, 'factor_operativo');
         });
     }
+
+    // bloquearCampo(): boolean {
+    //     return this.planingCompartido.bloqueoFormEditar();
+    // }
 }

@@ -58,69 +58,30 @@ export class FactorOperativoComonent {
 
     constructor() {
         effect(() => {
-            const response = this.rutas();
 
-            let periodo = response?.data?.factor?.[0];
+            const response = this.planingCompartido.dataRoutes();
+            const factor = response.data?.factor?.[0];
 
-            // Si no hay data en el período actual, copiamos del período anterior
-            // if (!periodo && response?.data?.factor?.length === 0) {
-            //     console.log("No hay data, copiando del período anterior...");
-            //     periodo = response?.data?.factor_anterior?.[0]; // <-- aquí debes traer la data del período anterior desde backend
+            this.form.patchValue({
+                // cie_ano: periodo.cie_ano,
+                // cie_per: periodo.cie_per,
+                fac_denmin: factor?.fac_denmin || '0.000',
+                fac_dendes: factor?.fac_dendes || '0.000',
+                fac_vptmin: factor?.fac_vptmin || '0.000',
+                fac_dialab: factor?.fac_dialab || '0.000',
+                fac_tarhor: factor?.fac_tarhor || '0.000',
+                fac_porcum: factor?.fac_porcum || '0.000',
+                fac_porhum: factor?.fac_porhum || '0.000',
+                fac_tms_dif: factor?.fac_tms_dif || '0.000',
+            });
 
-            //     console.log(periodo)
-            // }
-
-            if (periodo) {
-                this.form.patchValue({
-                    // cie_ano: periodo.cie_ano,
-                    // cie_per: periodo.cie_per,
-                    fac_denmin: periodo.fac_denmin,
-                    fac_dendes: periodo.fac_dendes,
-                    fac_vptmin: periodo.fac_vptmin,
-                    fac_dialab: periodo.fac_dialab,
-                    fac_tarhor: periodo.fac_tarhor,
-                    fac_porcum: periodo.fac_porcum,
-                    fac_porhum: periodo.fac_porhum,
-                    fac_tms_dif: periodo.fac_tms_dif,
-                });
-            }
         });
-
 
         effect(() => {
-            const data = this.planingCompartido.dataRoutes();
-
-            if (data === null || data?.length === 0) {
-                this.resetearFormulario();   // 🔥 Se ejecuta en TODOS los componentes
-
-                return;
-            }
-            // si hay data, llenas tus formularios
-            this.form.patchValue(data);
+            if (this.planingCompartido.resetPeriodo()) return;
+            this.resetearFormulario();
+            this.planingCompartido.clearResetPeriodo();
         });
-
-        //BOTON EDITAR//
-        effect(() => {
-            if (!this.form) return;
-
-            if (this.planingCompartido.bloqueoFormGeneral()) {
-                this.form.disable({ emitEvent: false });
-            } else {
-                this.form.enable({ emitEvent: false });
-            }
-        });
-
-
-        effect(() => {
-
-            if (!this.planingCompartido.resetSemanas()) {
-                // this.semanas.clear();
-                this.resetearFormulario();
-                return;
-            }
-            this.planingCompartido.resetSemanasDone();
-        });
-
     }
 
     blockForm() {
@@ -146,8 +107,11 @@ export class FactorOperativoComonent {
             const filas = this.form.getRawValue();
 
             this.planingCompartido.setFactor(filas, 'factor_operativo');
-            // console.log("📤 TAB semana actualizó servicio:", filas);
         });
 
+    }
+
+    bloquearCampo(): boolean {
+        return this.planingCompartido.bloqueoFormEditar();
     }
 }

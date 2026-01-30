@@ -54,8 +54,8 @@
 
                                             @if (colData.type == "select") {
                                             <select [formControlName]="colData.name" [style.width]="colData.width"
-                                                    [class.opacity-30]="bloquearCampo(item)"
-                                                    [class.pointer-events-none]="bloquearCampo(item)"
+                                                [class.opacity-40]="planingCompartido.tablaBloqueada() && !item.get('esNuevo')?.value"
+                                                [class.pointer-events-none]="planingCompartido.tablaBloqueada() && !item.get('esNuevo')?.value"
                                                 class="select-xs mx-auto select text-sm font-medium outline-none flex items-center border border-gray-300 rounded-lg px-2 py-1 bg-white shadow-sm hover:shadow-md transition-shadow duration-300 ease-in-out focus:border-[#033351] focus:ring-1 focus:ring-[rgb(3,102,157)] focus:ring-opacity-40 w-full">
                                                 @if (colData.name === 'cod_zona') {
 
@@ -74,8 +74,8 @@
                                                          focus-within:border-[#033351] focus-within:ring-1 focus-within:ring-[rgb(3,102,157)]
                                                          focus-within:ring-opacity-40 focus-within:shadow-md">
                                                 <input [type]="colData.type" [formControlName]="colData.name"
-                                                       [class.opacity-30]="bloquearCampo(item)"
-                                                    [class.pointer-events-none]="bloquearCampo(item)"
+                                                [class.opacity-40]="planingCompartido.tablaBloqueada() && !item.get('esNuevo')?.value"
+                                                [class.pointer-events-none]="planingCompartido.tablaBloqueada() && !item.get('esNuevo')?.value"
                                                     [style.width]="colData.width"
                                                     class="w-full bg-transparent outline-none text-gray-800 placeholder-gray-400 text-xs font-medium" />
                                             </div>
@@ -85,7 +85,7 @@
 
                                         <td class="border-x border-gray-300 p-1.5 w-24 text-center">
                                             <button type="button" (click)="eliminarFila(item,i)"
-                                                [disabled]="bloquearCampo(item)"
+                                                [disabled]="planingCompartido.tablaBloqueada() && !item.get('esNuevo')?.value"
                                                 class="flex disabled:opacity-50 items-center justify-center gap-1 mx-auto bg-[#A3361D] hover:bg-red-700 text-white px-2 py-1.5 rounded-md shadow-sm transition-all duration-200 font-medium text-xs disabled:cursor-not-allowed">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                     viewBox="0 0 24 24" fill="none" stroke="currentColor"

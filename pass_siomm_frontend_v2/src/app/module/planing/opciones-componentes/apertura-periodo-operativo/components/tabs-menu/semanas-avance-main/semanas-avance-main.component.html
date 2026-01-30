@@ -55,9 +55,9 @@
                                             <div
                                                 class="flex items-center border border-gray-300 rounded-md px-2 py-1 bg-white shadow-sm">
                                                 <input [type]="col.type" [formControlName]="col.name"
-                                                    [class.opacity-40]="col.name === 'num_semana'"
-                                                    [class.opacity-30]="bloquearCampo(item)"
-                                                    [class.pointer-events-none]="bloquearCampo(item)"
+                                                    [class.opacity-30]="col.name === 'num_semana'"
+                                                    [class.opacity-40]="planingCompartido.tablaBloqueada() && !item.get('esNuevo')?.value"
+                                                    [class.pointer-events-none]="planingCompartido.tablaBloqueada() && !item.get('esNuevo')?.value"
                                                     class="w-full bg-transparent outline-none text-gray-800 placeholder-gray-400 text-sm font-medium" />
                                             </div>
 
@@ -72,7 +72,7 @@
 
                                         <td class="border-x border-gray-300 p-1.5 w-24 text-center">
                                             <button type="button" (click)="eliminarFila(item, i)"
-                                                [disabled]="bloquearCampo(item)"
+                                                [disabled]="planingCompartido.tablaBloqueada() && !item.get('esNuevo')?.value"
                                                 class="flex items-center justify-center gap-1 mx-auto bg-[#A3361D] hover:bg-red-700 text-white px-2 py-1.5 rounded-md shadow-sm transition-all duration-200 font-medium text-xs disabled:opacity-30 disabled:cursor-not-allowed">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                     viewBox="0 0 24 24" fill="none" stroke="currentColor"

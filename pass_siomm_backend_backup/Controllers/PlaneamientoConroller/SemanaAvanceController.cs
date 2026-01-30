@@ -144,6 +144,11 @@ namespace pass_siomm_backend.Controllers.PlaneamientoConroller
         public async Task<IActionResult> EliminarEstandarAvance([FromBody] MaeLaboratorioEstandarEliminarDto semana)
         {
 
+
+            //Console.WriteLine("mis datos de llegada son: " + JsonSerializer.Serialize(semana, new JsonSerializerOptions { WriteIndented = true }));
+
+            //return Ok(semana);
+
             try
             {
 

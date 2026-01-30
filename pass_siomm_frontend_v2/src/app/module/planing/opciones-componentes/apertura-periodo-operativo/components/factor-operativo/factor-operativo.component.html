@@ -1,27 +1,33 @@
 <form [formGroup]="form" class="mx-auto w-full max-w-[1100px] flex flex-col items-center px-2 flex-wrap">
-        <h1 class="text-[15px] font-bold text-gray-800 w-full" style="color: #013B5C;">
-            Factor Operativo
-        </h1>
+    <h1 class="text-[15px] font-bold text-gray-800 w-full" style="color: #013B5C;">
+        Factor Operativo
+    </h1>
 
-        <div class="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-8 gap-4
+    <div class="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-8 gap-4
                   border-2 border-gray-400 rounded-xl p-4 bg-gray-100 mb-4 w-full flex items-end">
 
-            @for (item of fieldInputs(); track item.name) {
-            <div class="flex flex-col">
-                <label for="" class="text-sm font-medium">{{ item.label }}</label>
-                <input [type]="item.type" [formControlName]="item.name"
-                    [class.opacity-30]="planingCompartido.bloqueoFormGeneral()"
-                    [class.pointer-events-none]="planingCompartido.bloqueoFormGeneral()" class="text-xs font-medium border border-gray-300 rounded-lg px-1 py-0.5 text-right bg-white
+        @for (item of fieldInputs(); track item.name) {
+        <div class="flex flex-col">
+            <label for="" class="text-sm font-medium">{{ item.label }}</label>
+
+
+            <input [type]="item.type" [formControlName]="item.name"
+                                [readonly]="planingCompartido.formFactorBloqueado()"
+                                [attr.tabindex]="planingCompartido.formFactorBloqueado() ? -1 : 0"
+                                [class.pointer-events-none]="planingCompartido.formFactorBloqueado()"
+                                [class.opacity-40]="planingCompartido.formFactorBloqueado()"
+
+                class="text-xs font-medium border border-gray-300 rounded-lg px-1 py-0.5 text-right bg-white
                      shadow-sm hover:shadow-md transition-shadow duration-200
                      focus:border-[#033351] focus:ring-2 focus:ring-[rgb(3,102,157)]
                      focus:ring-opacity-40 outline-none w-full" />
 
-                @if ( formUtils.isValidField(form ,item.name) ) {
-                <div class="form-text text-danger text-[red] text-xs">
-                    {{ formUtils.getFiledError(form, item.name) }}
-                </div>
-                }
+            @if ( formUtils.isValidField(form ,item.name) ) {
+            <div class="form-text text-danger text-[red] text-xs">
+                {{ formUtils.getFiledError(form, item.name) }}
             </div>
             }
         </div>
+        }
+    </div>
 </form>

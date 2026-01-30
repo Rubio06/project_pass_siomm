@@ -24,7 +24,7 @@ export const aperturaPeriodoOperativoRouter: Routes = [
                 redirectTo: 'factor-operativo',
                 pathMatch: 'full',  // ⚠️ Crucial: Asegura que solo redirija si el path es EXACTAMENTE vacío.
             },
-            { path: 'factor-operativo', component: FactorOperativoMainComponent, canDeactivate: [PendingGeneralGuard] },
+            { path: 'factor-operativo', component: FactorOperativoMainComponent, canDeactivate: [PendingGeneralGuard]},
             { path: 'estandar-avance', component: EstandarAvanceComponent, canDeactivate: [PendingGeneralGuard] },
             { path: 'estandar-exploracion', component: EstandarExploracionMainComponent, canDeactivate: [PendingGeneralGuard] },
             { path: 'metodo-minado', component: MetodoMinadoMainComponent, canDeactivate: [PendingGeneralGuard] },

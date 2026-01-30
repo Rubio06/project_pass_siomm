@@ -1284,8 +1284,8 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                         cmd.CommandType = CommandType.StoredProcedure;
 
 
-                        cmd.Parameters.Add("@cie_anio", SqlDbType.VarChar).Value = semana.anio;
-                        cmd.Parameters.AddWithValue("@cie_per", SqlDbType.VarChar).Value = semana.mes;
+                        cmd.Parameters.Add("@cie_ano", SqlDbType.VarChar).Value = semana.cie_ano;
+                        cmd.Parameters.AddWithValue("@cie_per", SqlDbType.VarChar).Value = semana.cie_per;
                         cmd.Parameters.AddWithValue("@cod_metexp", SqlDbType.VarChar).Value = semana.cod_metexp;
 
                         int rowsAffected = await cmd.ExecuteNonQueryAsync();
@@ -1313,8 +1313,8 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                     using (var cmd = new SqlCommand(sql, connection))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@cie_anio", SqlDbType.VarChar).Value = semana.anio;
-                        cmd.Parameters.AddWithValue("@cie_per", SqlDbType.VarChar).Value = semana.mes;
+                        cmd.Parameters.AddWithValue("@cie_ano", SqlDbType.VarChar).Value = semana.cie_ano;
+                        cmd.Parameters.AddWithValue("@cie_per", SqlDbType.VarChar).Value = semana.cie_per;
                         cmd.Parameters.AddWithValue("@cod_zona", SqlDbType.VarChar).Value = semana.cod_zona;
 
                         int rowsAffected = await cmd.ExecuteNonQueryAsync();
@@ -1333,7 +1333,8 @@ namespace pass_siomm_backend.Services.PlaneamientoService
         public async Task<bool> EliminarEstandarAvance(MaeLaboratorioEstandarEliminarDto semana)
         {
             try
-            {
+            {   
+                
                 using (var connection = new SqlConnection(_connectionString))
                 {
                     await connection.OpenAsync();
@@ -1343,8 +1344,8 @@ namespace pass_siomm_backend.Services.PlaneamientoService
                     using (var cmd = new SqlCommand(sql, connection))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.Add("@cie_anio", SqlDbType.VarChar).Value = semana.anio;
-                        cmd.Parameters.Add("@cie_per", SqlDbType.VarChar).Value = semana.mes;
+                        cmd.Parameters.Add("@cie_ano", SqlDbType.VarChar).Value = semana.cie_ano;
+                        cmd.Parameters.Add("@cie_per", SqlDbType.VarChar).Value = semana.cie_per;
                         cmd.Parameters.Add("@cod_tiplab", SqlDbType.VarChar).Value = semana.cod_tiplab;
 
                         int rowsAffected = await cmd.ExecuteNonQueryAsync();

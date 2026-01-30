@@ -63,44 +63,23 @@ export class FactorOperativoTablaComponent {
     constructor() {
 
         effect(() => {
-            const response = this.rutas();
+            const detalle = this.rutas()?.data?.operativo_detalle;
 
-            if (!response?.data?.operativo_detalle) return;
+            if (!detalle || detalle.length === 0) {
+                this.resetearFormulario();
 
-            const filas = response.data.operativo_detalle.map((item: any) =>
+                return
+            }// 🔐 clave
+
+            const filas = detalle.map((item: any) =>
                 this.crearFactorOperativoDetalle(item)
             );
 
-            this.form.setControl('factorOperativoDetalle', this.fb.array(filas));
+            this.form.setControl(
+                'factorOperativoDetalle',
+                this.fb.array(filas)
+            );
         });
-
-
-        effect(() => {
-            if (!this.form) return;
-
-            if (this.planingCompartido.bloqueoFormGeneral()) {
-                // this.factorOperativoFA.clear();
-
-                this.form.disable({ emitEvent: false });
-            } else {
-                this.form.enable({ emitEvent: false });
-            }
-        });
-
-
-        //EFECTO PARA RESETEAR LOS FORMULARIOS
-        effect(() => {
-
-            if (!this.planingCompartido.resetSemanas()) {
-                // this.factorOperativoFA.clear();
-                this.resetearFormulario();
-                // Agregamos 2 filas vacía
-                return;
-            }
-            // Agregar 2 filas vacías
-
-        });
-
     }
 
 
@@ -132,46 +111,25 @@ export class FactorOperativoTablaComponent {
         });
     }
 
-
-    // resetearFormulario() {
-    //     this.form.reset({
-    //         val_fac_ag: '0.0000',
-    //         val_fac_cu: '0.0000',
-    //         val_fac_pb: '0.0000',
-    //         val_fac_zn: '0.0000',
-    //         val_fac_au: '0.0000',
-
-
-    //         val_fac_rec_ag: '0.0000',
-    //         val_fac_rec_cu: '0.0000',
-    //         val_fac_rec_pb: '0.0000',
-    //         val_fac_rec_zn: '0.0000',
-    //         val_fac_rec_au: '0.0000',
-    //     });
-    // }
-
-    // bloqueoFormulario() {
-    //     const bloqueado = this.planingCompartido.bloqueoForm();
-    //     if (bloqueado) {
-    //         this.form.disable();
-    //     } else {
-    //         this.form.enable();
-    //     }
-    // }
-
-    // ngOnInit() {
-    //     this.form.valueChanges.subscribe(val => {
-    //         const filas = this.form.getRawValue();
-
-    //         // this.planingCompartido.setOperativoDetalle(filas, 'factor_operativo');
-
-    //         console.log(filas);
-
-    //         this.planingCompartido.setFactorOperativo(filas, 'factor_operativo');
+    crearFilaFactor(desTipo: 'GENERAL' | 'EZPERANZA'): FormGroup {
+        return this.fb.group({
+            val_des_tipo_fac: [desTipo],
+            val_tipo_fac: [desTipo === 'GENERAL' ? 'FAC1' : 'FAC2'],
+            val_ind_principal: [desTipo === 'GENERAL' ? 'S' : 'N'],
+            val_fac_ag: ['0.0000'],
+            val_fac_cu: ['0.0000'],
+            val_fac_pb: ['0.0000'],
+            val_fac_zn: ['0.0000'],
+            val_fac_au: ['0.0000'],
+            val_fac_rec_ag: ['0.0000'],
+            val_fac_rec_cu: ['0.0000'],
+            val_fac_rec_pb: ['0.0000'],
+            val_fac_rec_zn: ['0.0000'],
+            val_fac_rec_au: ['0.0000'],
+        });
+    }
 
 
-    //     });
-    // }
 
     ngOnInit() {
         this.form.valueChanges.subscribe(() => {
@@ -185,5 +143,9 @@ export class FactorOperativoTablaComponent {
 
         });
         this.resetearFormulario();
+    }
+
+    bloquearCampo(): boolean {
+        return this.planingCompartido.bloqueoFormEditar();
     }
 }

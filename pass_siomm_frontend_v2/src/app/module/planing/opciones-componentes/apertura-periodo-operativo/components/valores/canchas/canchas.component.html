@@ -7,8 +7,14 @@
 
         <!-- Primera fila -->
         <div class="flex flex-col  w-full">
-            <input type="number" [class.opacity-30]="planingCompartido.bloqueoFormGeneral()"
-                [class.pointer-events-none]="planingCompartido.bloqueoFormGeneral()" class="text-xs font-medium border border-gray-300 rounded-lg px-1 py-0.5 text-right bg-white
+            <input type="number"
+
+                                [readonly]="planingCompartido.formFactorBloqueado()"
+                                [attr.tabindex]="planingCompartido.formFactorBloqueado() ? -1 : 0"
+                                [class.pointer-events-none]="planingCompartido.formFactorBloqueado()"
+                                [class.opacity-40]="planingCompartido.formFactorBloqueado()"
+
+                class="text-xs font-medium border border-gray-300 rounded-lg px-1 py-0.5 text-right bg-white
                     shadow-sm hover:shadow-md transition-shadow duration-200
                     focus:border-[#033351] focus:ring-2 focus:ring-[rgb(3,102,157)]
                     focus:ring-opacity-40 outline-none w-full" formControlName="val_ag" placeholder="val_ag" />
@@ -21,8 +27,13 @@
 
         <div class="flex flex-col w-full items-center">
             <label class="text-sm font-semibold text-gray-700 mb-1 text-center">TMS</label>
-            <input type="number" [class.opacity-30]="planingCompartido.bloqueoFormGeneral()"
-                [class.pointer-events-none]="planingCompartido.bloqueoFormGeneral()" class="text-xs font-medium border border-gray-300 rounded-lg px-1 py-0.5 text-right bg-white
+            <input type="number"
+
+                            [readonly]="planingCompartido.formFactorBloqueado()" [attr.tabindex]="planingCompartido.formFactorBloqueado() ? -1 : 0"
+                            [class.pointer-events-none]="planingCompartido.formFactorBloqueado()"
+                            [class.opacity-40]="planingCompartido.formFactorBloqueado()"
+
+                class="text-xs font-medium border border-gray-300 rounded-lg px-1 py-0.5 text-right bg-white
                     shadow-sm hover:shadow-md transition-shadow duration-200
                     focus:border-[#033351] focus:ring-2 focus:ring-[rgb(3,102,157)]
                     focus:ring-opacity-40 outline-none w-full" formControlName="val_tms" placeholder="val_tms" />
@@ -35,8 +46,13 @@
 
         <!-- Segunda fila -->
         <div class="flex flex-col w-full">
-            <input type="number" [class.opacity-30]="planingCompartido.bloqueoFormGeneral()"
-                [class.pointer-events-none]="planingCompartido.bloqueoFormGeneral()" class="text-xs font-medium border border-gray-300 rounded-lg px-1 py-0.5 text-right bg-white
+            <input type="number"
+                                [readonly]="planingCompartido.formFactorBloqueado()"
+                                [attr.tabindex]="planingCompartido.formFactorBloqueado() ? -1 : 0"
+                                [class.pointer-events-none]="planingCompartido.formFactorBloqueado()"
+                                [class.opacity-40]="planingCompartido.formFactorBloqueado()"
+
+                class="text-xs font-medium border border-gray-300 rounded-lg px-1 py-0.5 text-right bg-white
                     shadow-sm hover:shadow-md transition-shadow duration-200
                     focus:border-[#033351] focus:ring-2 focus:ring-[rgb(3,102,157)]
                     focus:ring-opacity-40 outline-none w-full" formControlName="val_cu"  placeholder="val_cu"/>
@@ -49,8 +65,14 @@
 
         <div class="flex flex-col w-full items-center">
             <label class="text-sm font-semibold text-gray-700 mb-1 text-center">VTP</label>
-            <input type="number" [class.opacity-30]="planingCompartido.bloqueoFormGeneral()" placeholder=""
-                [class.pointer-events-none]="planingCompartido.bloqueoFormGeneral()" class="text-xs font-medium border border-gray-300 rounded-lg px-1 py-0.5 text-right bg-white
+            <input type="number"
+
+                                [readonly]="planingCompartido.formFactorBloqueado()"
+                                [attr.tabindex]="planingCompartido.formFactorBloqueado() ? -1 : 0"
+                                [class.pointer-events-none]="planingCompartido.formFactorBloqueado()"
+                                [class.opacity-40]="planingCompartido.formFactorBloqueado()"
+
+                class="text-xs font-medium border border-gray-300 rounded-lg px-1 py-0.5 text-right bg-white
                     shadow-sm hover:shadow-md transition-shadow duration-200
                     focus:border-[#033351] focus:ring-2 focus:ring-[rgb(3,102,157)]
                     focus:ring-opacity-40 outline-none w-full" formControlName="val_vpt"  placeholder="val_vpt"/>
@@ -63,8 +85,14 @@
 
         <!-- Tercera fila -->
         <div class="flex flex-col w-full">
-            <input type="number" [class.opacity-30]="planingCompartido.bloqueoFormGeneral()"
-                [class.pointer-events-none]="planingCompartido.bloqueoFormGeneral()" class="text-xs font-medium border border-gray-300 rounded-lg px-1 py-0.5 text-right bg-white
+            <input type="number"
+
+                                [readonly]="planingCompartido.formFactorBloqueado()"
+                                [attr.tabindex]="planingCompartido.formFactorBloqueado() ? -1 : 0"
+                                [class.pointer-events-none]="planingCompartido.formFactorBloqueado()"
+                                [class.opacity-40]="planingCompartido.formFactorBloqueado()"
+
+                class="text-xs font-medium border border-gray-300 rounded-lg px-1 py-0.5 text-right bg-white
                     shadow-sm hover:shadow-md transition-shadow duration-200
                     focus:border-[#033351] focus:ring-2 focus:ring-[rgb(3,102,157)]
                     focus:ring-opacity-40 outline-none w-full" formControlName="val_pb" placeholder="val_pb"/>
@@ -76,8 +104,14 @@
         </div>
 
         <div class="flex flex-col w-full">
-            <input type="number" [class.opacity-30]="planingCompartido.bloqueoFormGeneral()"
-                [class.pointer-events-none]="planingCompartido.bloqueoFormGeneral()" class="text-xs font-medium border border-gray-300 rounded-lg px-1 py-0.5 text-right bg-white
+            <input type="number"
+                                [readonly]="planingCompartido.formFactorBloqueado()"
+                                [attr.tabindex]="planingCompartido.formFactorBloqueado() ? -1 : 0"
+                                [class.pointer-events-none]="planingCompartido.formFactorBloqueado()"
+                                [class.opacity-40]="planingCompartido.formFactorBloqueado()"
+
+
+                class="text-xs font-medium border border-gray-300 rounded-lg px-1 py-0.5 text-right bg-white
                     shadow-sm hover:shadow-md transition-shadow duration-200
                     focus:border-[#033351] focus:ring-2 focus:ring-[rgb(3,102,157)]
                     focus:ring-opacity-40 outline-none w-full" formControlName="val_zn"  placeholder="val_zn"/>

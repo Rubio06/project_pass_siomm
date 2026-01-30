@@ -34,55 +34,23 @@ export class CanchasComponent {
 
         effect(() => {
             const response = this.planingCompartido.dataRoutes();
+            const canchas = response.data?.canchas?.[0];
 
-            if (response?.data?.canchas?.length) {
-                const canchas = response.data.canchas[0];
-                this.form.patchValue({
-                    // cie_ano: canchas.cie_ano,
-                    // cie_per: canchas.cie_per,
-                    val_tms: canchas.val_tms,
-                    val_ag: canchas.val_ag,
-                    val_cu: canchas.val_cu,
-                    val_pb: canchas.val_pb,
-                    val_zn: canchas.val_zn,
-                    val_vpt: canchas.val_vpt
+            this.form.patchValue({
+                val_tms: canchas?.val_tms || '0.000',
+                val_ag: canchas?.val_ag || '0.000',
+                val_cu: canchas?.val_cu || '0.000',
+                val_pb: canchas?.val_pb || '0.000',
+                val_zn: canchas?.val_zn || '0.000',
+                val_vpt: canchas?.val_vpt || '0.000'
+            });
 
-                });
-            }
         });
 
         effect(() => {
-            const data = this.planingCompartido.dataRoutes();
-
-            if (data === null || data?.length === 0) {
-                this.resetearFormulario();   // 🔥 Se ejecuta en TODOS los componentes
-                return;
-            }
-
-            // si hay data, llenas tus formularios
-            this.form.patchValue(data);
-        });
-
-        effect(() => {
-            if (!this.form) return;
-
-            if (this.planingCompartido.bloqueoFormGeneral()) {
-                this.form.disable({ emitEvent: false });
-            } else {
-                this.form.enable({ emitEvent: false });
-            }
-        });
-
-        //EFECTO PARA RESETEAR LOS FORMULARIOS
-        effect(() => {
-
-            if (!this.planingCompartido.resetSemanas()) {
-                // this.semanas.clear();
-                this.resetearFormulario();
-
-                return;
-            }
-
+            if (this.planingCompartido.resetPeriodo()) return;
+            this.resetearFormulario();
+            this.planingCompartido.clearResetPeriodo();
         });
     }
 
@@ -104,7 +72,7 @@ export class CanchasComponent {
     }
 
     ngOnInit() {
-        this.form.valueChanges.subscribe(val => {
+        this.form.valueChanges.subscribe(() => {
             const filas = this.form.getRawValue();
 
             this.planingCompartido.setCanchas(filas, 'factor_operativo');
@@ -112,5 +80,9 @@ export class CanchasComponent {
         });
     }
 
+
+    bloquearCampo(): boolean {
+        return this.planingCompartido.bloqueoFormEditar();
+    }
 
 }

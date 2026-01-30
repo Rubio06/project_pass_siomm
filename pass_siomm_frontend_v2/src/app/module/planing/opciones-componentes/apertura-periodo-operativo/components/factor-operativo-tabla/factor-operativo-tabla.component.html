@@ -17,32 +17,37 @@
                     }
                 </tr>
             </thead>
+            <!-- [readonly]="td.readonly" -->
             <tbody formArrayName="factorOperativoDetalle">
                 @if (factorOperativoDetalle.length !== 0) {
                 @for (fila of factorOperativoDetalle.controls; let i = $index; track i) {
-                    <tr class="text-center bg-white" [formGroupName]="i">
-                            @for (td of tdCampos(); track $index) {
-                                <td class="border-2 border-gray-400 px-2 py-1">
+                <tr class="text-center bg-white" [formGroupName]="i">
+                    @for (td of tdCampos(); track $index) {
+                    <td class="border-2 border-gray-400 px-2 py-1">
 
-                                    <div class="w-full">
-                                        <input [type]="td.type" [formControlName]="td.name" [readonly]="td.readonly"
-                                        [class.opacity-30]="planingCompartido.bloqueoFormGeneral()"
-                                        [class.pointer-events-none]="planingCompartido.bloqueoFormGeneral()"
-                                        class="w-full bg-transparent outline-none text-gray-800 placeholder-gray-400 text-xs font-medium" />
-                                    </div>
+                        <div class="w-full">
+                            <input [type]="td.type" [formControlName]="td.name"
+                                [readonly]="planingCompartido.formFactorBloqueado()"
+                                [attr.tabindex]="planingCompartido.formFactorBloqueado() ? -1 : 0"
+                                [class.pointer-events-none]="planingCompartido.formFactorBloqueado()"
+                                [class.opacity-40]="planingCompartido.formFactorBloqueado()"
+                                class="w-full bg-transparent outline-none text-gray-800 placeholder-gray-400 text-xs font-medium" />
+                        </div>
 
-                                    <!-- @if (formUtils.isValidField(fila, td.name)) {
+                        <!-- @if (formUtils.isValidField(fila, td.name)) {
                                         <div class="form-text text-danger text-[red] text-xs">
                                             {{ formUtils.getFiledError(fila, td.name) }}
                                         </div>
                                         } -->
 
-                                </td>
-                            }
-                        </tr>
+                    </td>
                     }
+                </tr>
+                }
                 }@else {
-                    <td colspan="11" class="border-2 border-gray-400 px-2 py-1" style="background-color: rgb(255, 238, 238); text-align: center;"><b>No existen datos para mostrar.</b></td>
+                <td colspan="11" class="border-2 border-gray-400 px-2 py-1"
+                    style="background-color: rgb(255, 238, 238); text-align: center;"><b>No existen datos para
+                        mostrar.</b></td>
                 }
             </tbody>
         </table>

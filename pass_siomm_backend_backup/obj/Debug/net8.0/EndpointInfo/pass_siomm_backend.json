@@ -571,11 +571,11 @@
             "type": "string",
             "nullable": true
           },
-          "anio": {
+          "cie_ano": {
             "type": "string",
             "nullable": true
           },
-          "mes": {
+          "cie_per": {
             "type": "string",
             "nullable": true
           }
@@ -1050,11 +1050,11 @@
             "type": "string",
             "nullable": true
           },
-          "mes": {
+          "cie_per": {
             "type": "string",
             "nullable": true
           },
-          "anio": {
+          "cie_ano": {
             "type": "string",
             "nullable": true
           }
@@ -1176,7 +1176,7 @@
       "MaePerMetExplotacionEliminarDto": {
         "type": "object",
         "properties": {
-          "anio": {
+          "cie_per": {
             "type": "string",
             "nullable": true
           },
@@ -1184,7 +1184,7 @@
             "type": "string",
             "nullable": true
           },
-          "mes": {
+          "cie_ano": {
             "type": "string",
             "nullable": true
           }

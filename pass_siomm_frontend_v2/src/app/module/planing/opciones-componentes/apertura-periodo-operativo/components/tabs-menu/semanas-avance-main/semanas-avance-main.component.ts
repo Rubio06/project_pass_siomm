@@ -53,6 +53,7 @@ export class SemanasAvanceMainComponent {
 
         effect(() => {
             const data = this.planingCompartido.dataRoutes();
+            if (!data) return;
 
             const semanas = data?.data?.semana_avance || [];
 
@@ -66,12 +67,13 @@ export class SemanasAvanceMainComponent {
 
     loadSemanas(data: MaeSemanaAvance[]) {
         this.semanas.clear();
+        const periodo = this.planingCompartido.periodo();
 
         data.forEach((item) => {
             this.semanas.push(
                 this.fb.group({
-                    cie_ano: [{ value: item.cie_ano, disabled: true }, Validators.required],
-                    cie_per: [{ value: item.cie_per, disabled: true }, Validators.required],
+                    cie_ano: [periodo?.anio , Validators.required],
+                    cie_per: [periodo?.mes , Validators.required],
                     num_semana: [{ value: item.num_semana, disabled: true }, [
                         Validators.required,
                         Validators.min(1),
@@ -89,10 +91,12 @@ export class SemanasAvanceMainComponent {
     }
 
     agregarFilas() {
+        const periodo = this.planingCompartido.periodo();
 
         const ultima = this.semanas.length
             ? this.semanas.at(this.semanas.length - 1)?.getRawValue()
             : null;
+
 
         const origen = ultima || {
             cie_ano: new Date().getFullYear().toString(),
@@ -103,8 +107,8 @@ export class SemanasAvanceMainComponent {
         const numSemanaNueva = ultima ? ultima.num_semana + 1 : origen.num_semana;
 
         const nuevoGrupo = this.fb.group({
-            cie_ano: [origen.cie_ano, Validators.required],
-            cie_per: [origen.cie_per, Validators.required],
+            cie_ano: [periodo?.anio, Validators.required],
+            cie_per: [periodo?.mes, Validators.required],
             num_semana: [numSemanaNueva, [
                 Validators.required,
                 Validators.min(1),
@@ -134,6 +138,7 @@ export class SemanasAvanceMainComponent {
 
     async eliminarFila(data: any, index: number) {
         const semana = data.getRawValue ? data.getRawValue() : data.value;
+        const periodo = this.planingCompartido.periodo();
 
         const esNuevo = semana.esNuevo;
 
@@ -151,8 +156,8 @@ export class SemanasAvanceMainComponent {
         }
 
         const payload = {
-            cie_ano: semana.cie_ano,
-            cie_per: semana.cie_per,
+            cie_ano: periodo?.anio,
+            cie_per: periodo?.mes,
             num_semana: semana.num_semana,
             fec_ini: this.formUtils.convertToISO(semana.fec_ini),
             fec_fin: this.formUtils.convertToISO(semana.fec_fin),
@@ -191,8 +196,8 @@ export class SemanasAvanceMainComponent {
         this.myForm.valueChanges.subscribe(val => {
             const payload = row.getRawValue(); // objeto plano
             this.planingCompartido.setSemanaAvance(payload, 'semana_avance');
-            this.planingCompartido.registerForm('estandar_avance', this.myForm);
-            this.planingCompartido.setActiveTab('estandar_avance');
+            // this.planingCompartido.registerForm('estandar_avance', this.myForm);
+            // this.planingCompartido.setActiveTab('estandar_avance');
         });
     }
 
@@ -202,8 +207,8 @@ export class SemanasAvanceMainComponent {
         this.myForm.valueChanges.subscribe(val => {
             const filas = this.semanas.getRawValue();
             this.planingCompartido.setSemanaAvance(filas, 'semana_avance');
-            this.planingCompartido.registerForm('estandar_avance', this.myForm);
-            this.planingCompartido.setActiveTab('estandar_avance');
+            // this.planingCompartido.registerForm('estandar_avance', this.myForm);
+            // this.planingCompartido.setActiveTab('estandar_avance');
             // console.log("📤 TAB semana actualizó servicio:", filas);
         });
     }

@@ -72,31 +72,10 @@ export class EstandarAvanceComponent {
 
             this.loadSemanas(semanas);
             this.myForm.patchValue(data || {}, { emitEvent: false });
-
-            // this.cd.detectChanges();              // opcional
-
-
         });
 
-        ///BOTON EDITAR
-        // effect(() => {
-        //     if (!this.myForm) return;
 
-        //     if (this.planingCompartido.bloqueoFormGeneral()) {
-        //         this.myForm.disable({ emitEvent: false });
-        //     } else {
-        //         this.myForm.enable({ emitEvent: false });
-        //     }
-        // });
         this.loadTiposLabor();
-
-        //VALIDACION DE CAMPOS
-        // effect(() => {
-        //     if (this.planingCompartido.triggerValidacion$()) {
-        //         this.myForm.markAllAsTouched();
-        //     }
-        // });
-
 
     }
 
@@ -114,15 +93,18 @@ export class EstandarAvanceComponent {
      * Carga data desde backend
      */
     loadSemanas(data: any[]) {
+
+        const periodo = this.planingCompartido.periodo();
+
         this.semanas.clear();
 
         data.forEach((item, index) => {
 
             this.semanas.push(
                 this.fb.group({
-                    cie_ano: [item.cie_ano, Validators.required],
-                    cie_per: [item.cie_per, Validators.required],
-                    cod_tiplab: [item.cod_tiplab, Validators.required],
+                    cie_ano: [periodo?.anio, Validators.required],
+                    cie_per: [periodo?.mes, Validators.required],
+                    cod_tiplab: [{value: item.cod_tiplab, disabled: true}, Validators.required],
                     nro_lab_ancho: [item.nro_lab_ancho || '', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
                     nro_lab_altura: [item.nro_lab_altura || '', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
                     nro_lab_pieper: [item.nro_lab_pieper || '', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
@@ -145,31 +127,24 @@ export class EstandarAvanceComponent {
     agregarFilas() {
 
 
-
-        const ultima = this.semanas.length
-            ? this.semanas.at(this.semanas.length - 1)?.getRawValue()
-            : null;
-
-        const origen = ultima || {
-            cie_ano: new Date().getFullYear().toString(),
-            cie_per: (new Date().getMonth() + 1).toString().padStart(2, '0'),
-        };
+        const periodo = this.planingCompartido.periodo();
+;
 
         const nuevoGrupo = this.fb.group({
-            cie_ano: [origen.cie_ano, Validators.required],
-            cie_per: [origen.cie_per, Validators.required],
+            cie_ano: [periodo?.anio, Validators.required],
+            cie_per: [periodo?.mes, Validators.required],
             cod_tiplab: ['', Validators.required],
-            nro_lab_ancho: [origen.nro_lab_ancho || '', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-            nro_lab_altura: [origen.nro_lab_altura || '', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-            nro_lab_pieper: [origen.nro_lab_pieper || '', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-            nro_lab_broca: [origen.nro_lab_broca || '', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-            nro_lab_barcon: [origen.nro_lab_barcon || '', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-            nro_lab_barren: [origen.nro_lab_barren || '', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-            nro_lab_facpot: [origen.nro_lab_facpot || '', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-            nro_lab_fulmin: [origen.nro_lab_fulmin || '', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-            nro_lab_conect: [origen.nro_lab_conect || '', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-            nro_lab_punmar: [origen.nro_lab_punmar || '', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-            nro_lab_tabla: [origen.nro_lab_tabla || '', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+            nro_lab_ancho: ['', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+            nro_lab_altura: ['', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+            nro_lab_pieper: ['', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+            nro_lab_broca: ['', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+            nro_lab_barcon: ['', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+            nro_lab_barren: ['', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+            nro_lab_facpot: ['', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+            nro_lab_fulmin: ['', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+            nro_lab_conect: ['', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+            nro_lab_punmar: ['', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+            nro_lab_tabla: ['', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
             esNuevo: [true]
         });
 
@@ -189,8 +164,10 @@ export class EstandarAvanceComponent {
         this.myForm.valueChanges.subscribe(val => {
             const payload = row.getRawValue(); // objeto plano
 
-            this.planingCompartido.registerForm('estadar_avance', this.myForm);
-            this.planingCompartido.setActiveTab('estadar_avance'); this.planingCompartido.setLaboratorioEstandar(payload, 'estandar_avance');
+            // this.planingCompartido.registerForm('estadar_avance', this.myForm);
+            // this.planingCompartido.setActiveTab('estadar_avance');
+
+            this.planingCompartido.setLaboratorioEstandar(payload, 'estandar_avance');
 
 
         });
@@ -200,9 +177,12 @@ export class EstandarAvanceComponent {
      * Elimina fila específica
      */
     async eliminarFila(data: any, index: number) {
+
         const semana = data.getRawValue ? data.getRawValue() : data.value;
 
         const esNuevo = semana.esNuevo;
+
+        const periodo = this.planingCompartido.periodo();
 
         if (esNuevo) {
             this.semanas.removeAt(index);
@@ -212,8 +192,8 @@ export class EstandarAvanceComponent {
 
         const payload = {
             cod_tiplab: semana.cod_tiplab,
-            anio: this.semanasAvanceMainService.anio(),
-            mes: this.semanasAvanceMainService.mes(),
+            cie_ano: periodo?.anio,
+            cie_per: periodo?.mes,
         };
 
         const confirmado = await this.utils.confirmarEliminacion();
@@ -240,14 +220,14 @@ export class EstandarAvanceComponent {
      * Envía datos del formulario
      */
     ngOnInit() {
-        this.planingCompartido.registerForm('estadar_avance', this.myForm);
-        this.planingCompartido.setActiveTab('estadar_avance');
+        // this.planingCompartido.registerForm('estadar_avance', this.myForm);
+        // this.planingCompartido.setActiveTab('estadar_avance');
         this.myForm.valueChanges.subscribe(val => {
             const filas = this.semanas.getRawValue();
             // const markTouched = this.myForm.markAllAsTouched();
             this.planingCompartido.setLaboratorioEstandar(filas, 'estandar_avance');
 
-            
+
             // console.log("📤 TAB semana actualizó servicio:", filas);
         });
     }
