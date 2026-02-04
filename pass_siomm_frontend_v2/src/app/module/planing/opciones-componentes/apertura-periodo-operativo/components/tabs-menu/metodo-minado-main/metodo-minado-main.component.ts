@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, effect, inject, signal } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DATOS_METODO_MINADO, MaePerMetExplotacion, SelectExploracion, TH_METODOLO_MINADO, thTitulos } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/interface/aper-per-oper.interface';
 import { PlanningService } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/services/planning.service';
 import { PlaningCompartidoService } from '../../../services/planing-compartido.service';
@@ -34,12 +34,13 @@ export class MetodoMinadoMainComponent {
     //   FORMULARIO PRINCIPAL
     // ========================================
     myForm = this.fb.group({
-        semanas: this.fb.array([]),
+        semanas: this.fb.array<FormGroup>([]),
     });
 
     get semanas(): FormArray {
         return this.myForm.get('semanas') as FormArray;
     }
+
 
     // ========================================
     //   SIGNALS
@@ -50,6 +51,7 @@ export class MetodoMinadoMainComponent {
     modoVisualizar = signal<boolean>(false);
 
     cod_metexp = signal<SelectExploracion[]>([]);
+    cod_metexpBloqueo = signal<string[]>([]);
 
     ind_calculo_dilucion = signal<any[]>([
         { value: 'C', label: 'Contrato' },
@@ -74,73 +76,45 @@ export class MetodoMinadoMainComponent {
             const semanas = data?.data?.metodo_minado || [];
 
             this.loadSemanas(semanas);
-            this.myForm.patchValue(data || {}, { emitEvent: false });
             // this.cd.detectChanges();
 
         });
 
         this.loadSelectExploracion();
-
-        // Lookups iniciales
-
-
-        // effect(() => {
-        //     if (!this.myForm) return;
-
-        //     if (this.planingCompartido.bloqueoFormGeneral()) {
-        //         this.myForm.disable({ emitEvent: false });
-        //     } else {
-        //         this.myForm.enable({ emitEvent: false });
-        //     }
-        // });
     }
 
 
-    // hasPendingChanges(): boolean {
-    //     return this.planingCompartido.getCambios(); // revisa los cambios pendientes
-    // }
-
-
-
-
-
-    blockForm() {
-        this.myForm.disable(); // bloquea todos los campos
-        // this.filas.forEach(f => f.disable()); // bloquea filas si tienes tabla
+    trackByIndex(index: number) {
+        return index;
     }
-
-    resetForm() {
-        this.myForm.reset();
-        this.semanas.clear();
-    }
-
-
 
     // =====================================================
     //   CARGAR DATOS DESDE BACKEND
     // =====================================================
     loadSemanas(data: MaePerMetExplotacion[]) {
-        this.semanas.clear(); // limpiar FormArray
-
         const periodo = this.planingCompartido.periodo();
 
-        data.forEach(item => {
+        if (!periodo?.anio || !periodo?.mes) {
+            return;
+        }
 
-            this.semanas.push(
+        const formArray = this.fb.array(
+            data.map(item =>
                 this.fb.group({
                     cie_ano: [periodo?.anio],
                     cie_per: [periodo?.mes],
-                    cod_metexp: [{ value: item.cod_metexp, disabled: true }, Validators.required],
-                    nom_metexp: [item.nom_metexp || '', Validators.required],
+                    cod_metexp: [{ value: item.cod_metexp, disabled: true }],
+                    nom_metexp: [item.nom_metexp || ''],
                     ind_calculo_dilucion: [item.ind_calculo_dilucion || ''],
                     ind_calculo_leyes_min: [item.ind_calculo_leyes_min || ''],
                     ind_act: [item.ind_act || ''],
                     accion: [''],
                     esNuevo: [false]
                 })
-            );
-        });
+            )
+        );
 
+        this.myForm.setControl('semanas', formArray);
     }
 
     // =====================================================
@@ -149,8 +123,13 @@ export class MetodoMinadoMainComponent {
 
 
     agregarFilas() {
-
+        this.bloqueoSelect();
         const periodo = this.planingCompartido.periodo();
+
+
+        if (!periodo?.anio || !periodo?.mes) {
+            return;
+        }
 
 
         const nuevoGrupo = this.fb.group({
@@ -165,10 +144,13 @@ export class MetodoMinadoMainComponent {
         });
 
         this.semanas.push(nuevoGrupo);
+    }
 
-        const filaNueva = this.semanas.at(this.semanas.length - 1);
-        this.enviarFilaNueva(filaNueva!);
-
+    valoresSeleccionados(excluirItem: AbstractControl): string[] {
+        return this.semanas.controls
+            .filter(ctrl => ctrl !== excluirItem)                   // Excluimos la fila actual
+            .map(ctrl => ctrl.get('cod_metexp')?.value)        // Tomamos el valor
+            .filter(val => !!val);                                  // Quitamos nulos/vacíos
     }
 
 
@@ -179,6 +161,10 @@ export class MetodoMinadoMainComponent {
     async eliminarFila(data: any, index: number) {
 
         const periodo = this.planingCompartido.periodo();
+
+        if (!periodo?.anio || !periodo?.mes) {
+            return;
+        }
 
         const semana = data.getRawValue ? data.getRawValue() : data.value;
         const esNuevo = semana.esNuevo;
@@ -223,31 +209,15 @@ export class MetodoMinadoMainComponent {
     }
 
 
-
-    enviarFilaNueva(row: AbstractControl) {
-
-        // this.planingCompartido.registerForm('metodo_minado', this.myForm);
-        // this.planingCompartido.setActiveTab('metodo_minado');
-        this.myForm.valueChanges.subscribe(val => {
-            const payload = row.getRawValue(); // objeto plano
-
-            console.log(payload);
-            this.planingCompartido.setMetodoMinado(payload, 'metodo_minado');
-        });
-    }
-
-
     // =====================================================
     //   SUBMIT SOLO DE LA ÚLTIMA FILA
     // =====================================================
     ngOnInit() {
+        this.planingCompartido.setLastTab('metodo_minado');
 
-        // this.planingCompartido.registerForm('metodo_minado', this.myForm);
-        // this.planingCompartido.setActiveTab('metodo_minado');
+        this.planingCompartido.registrarFormulario('metodo_minado', this.myForm);
         this.myForm.valueChanges.subscribe(val => {
             const filas = this.semanas.getRawValue();
-
-            // console.log(filas)
             this.planingCompartido.setMetodoMinado(filas, 'metodo_minado');
         });
     }
@@ -261,4 +231,18 @@ export class MetodoMinadoMainComponent {
             error: (e) => console.error('Error cargando métodos de exploración', e)
         });
     }
+
+    private bloqueoSelect() {
+        const periodo = this.planingCompartido.periodo();
+
+        if (!periodo?.anio || !periodo?.mes) {
+            return;
+        }
+
+        this.planingService.bloqueoSelect(periodo?.anio, periodo?.mes, 'bloqueo-metodo-minado').subscribe({
+            next: (data: any) => this.cod_metexpBloqueo.set(data),
+            error: (err) => console.error('Error al cargar tipos de labor:', err),
+        });
+    }
+
 }

@@ -1,19 +1,20 @@
 import { CommonModule } from '@angular/common';
 import { Component, effect, inject, signal, OnInit, ChangeDetectorRef, DestroyRef } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { FormUtils } from 'src/app/utils/form-utils';
 
-import { DATOS_COLUMNA_SEMANA_CICLO_MINADO, EstructuraDatos, MaeSemanaCiclo, TH_SEMANA_CICLO_MINADO, thTitulos } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/interface/aper-per-oper.interface';
+import { DATOS_COLUMNA_SEMANA_CICLO_MINADO, EstructuraDatos, ListNumSemanaResponse, MaeSemanaCiclo, TH_SEMANA_CICLO_MINADO, thTitulos } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/interface/aper-per-oper.interface';
 import { PlanningService } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/services/planning.service';
 import { PlaningCompartidoService } from '../../../services/planing-compartido.service';
 import { SemanasAvanceMainService } from '../../../services/semanas-avance-main/semanas-avance-main.service';
+import { PaginacionComponent } from 'src/app/shared/components/paginacion/paginacion.component';
 
 
 @Component({
     selector: 'app-semanas-ciclo-main',
     standalone: true,
-    imports: [ReactiveFormsModule, CommonModule],
+    imports: [ReactiveFormsModule],
     templateUrl: './semanas-ciclo-main.component.html',
     styleUrl: './semanas-ciclo-main.component.css',
 })
@@ -22,7 +23,7 @@ export class SemanasCicloMainComponent {
     planingService = inject(PlanningService);
 
     myForm = this.fb.group({
-        semanas: this.fb.array([])
+        semanas: this.fb.array<FormGroup>([])
     });
 
 
@@ -34,17 +35,17 @@ export class SemanasCicloMainComponent {
 
     formUtils = FormUtils;
 
+    private siguienteSemana = 0;
+
     datosColumna = signal<EstructuraDatos[]>(DATOS_COLUMNA_SEMANA_CICLO_MINADO)
+
+    semana_num_lista = signal<ListNumSemanaResponse[]>([]);
 
     get semanas(): FormArray {
         return this.myForm.get('semanas') as FormArray;
     }
 
     private cd = inject(ChangeDetectorRef);
-
-
-
-
 
 
     constructor() {
@@ -56,70 +57,95 @@ export class SemanasCicloMainComponent {
 
                 const tabSemanaCiclo = data?.data?.semana_ciclo || [];
                 this.loadSemanas(tabSemanaCiclo);
+                this.listaEnteros();
 
-                this.myForm.patchValue(data, { emitEvent: false });
-            },
+            }
         );
     }
 
-    loadSemanas(data: MaeSemanaCiclo[]) {
-        this.semanas.clear();  // limpia todo
 
+
+    trackByIndex(index: number) {
+        return index;
+    }
+
+    loadSemanas(data: MaeSemanaCiclo[]) {
         const periodo = this.planingCompartido.periodo();
 
-        data.forEach((item) => {
-            this.semanas.push(
+        const formArray = this.fb.array(
+            data.map(item =>
                 this.fb.group({
-
                     cie_ano: [periodo?.anio, Validators.required],
                     cie_per: [periodo?.mes, Validators.required],
-                    num_semana: [{ value: item.num_semana, disabled: true }, [Validators.required, Validators.min(1), Validators.max(7), Validators.pattern(/^[1-7]$/)]],
-                    fec_ini: [this.formUtils.formatDate(item.fec_ini), [Validators.required, Validators.pattern(/^(0[1-9]|[12]\d|3[01])\/(0[1-9]|1[0-2])\/(19\d{2}|20\d{2}|2100)$/)]],
-                    fec_fin: [this.formUtils.formatDate(item.fec_fin), [Validators.required, Validators.pattern(/^(0[1-9]|[12]\d|3[01])\/(0[1-9]|1[0-2])\/(19\d{2}|20\d{2}|2100)$/)]],
-                    desc_semana: [item.desc_semana, [Validators.required]],
+                    num_semana: [
+                        { value: item.num_semana, disabled: true },
+                        [
+                            Validators.required,
+                            Validators.min(1),
+                            Validators.max(7),
+                            Validators.pattern(/^[1-7]$/)
+                        ]
+                    ],
+                    fec_ini: [
+                        this.formUtils.formatDate(item.fec_ini),
+                        [
+                            Validators.required,
+                            Validators.pattern(
+                                /^(0[1-9]|[12]\d|3[01])\/(0[1-9]|1[0-2])\/(19\d{2}|20\d{2}|2100)$/
+                            )
+                        ]
+                    ],
+                    fec_fin: [
+                        this.formUtils.formatDate(item.fec_fin),
+                        [
+                            Validators.required,
+                            Validators.pattern(
+                                /^(0[1-9]|[12]\d|3[01])\/(0[1-9]|1[0-2])\/(19\d{2}|20\d{2}|2100)$/
+                            )
+                        ]
+                    ],
+                    desc_semana: [item.desc_semana, Validators.required],
                     accion: [''],
                     esNuevo: [false]
-
                 })
-            );
-        });
+            )
+        );
+
+        this.myForm.setControl('semanas', formArray);
     }
 
     agregarFilas() {
-
         const periodo = this.planingCompartido.periodo();
+        if (!periodo?.anio || !periodo?.mes) return;
 
-        const ultima = this.semanas.length
-            ? this.semanas.at(this.semanas.length - 1)?.getRawValue()
-            : null;
+        const semanas_lista = this.semana_num_lista() || [];
+        const ultimo = semanas_lista.length > 0
+            ? Number(semanas_lista[semanas_lista.length - 1].num_semana)
+            : 0;
 
-        const origen = ultima || {
-            cie_ano: new Date().getFullYear().toString(),
-            cie_per: (new Date().getMonth() + 1).toString().padStart(2, '0'),
-            num_semana: 1
-        };
+        this.siguienteSemana = ultimo + 1;
 
-        const numSemanaNueva = ultima ? ultima.num_semana + 1 : origen.num_semana;
+        if (this.siguienteSemana > 7) return;
+
+        let fec_fin_nueva = '';
+        if (semanas_lista.length > 0) {
+            const ultimaFecha = new Date(semanas_lista[semanas_lista.length - 1].fec_fin);
+            ultimaFecha.setDate(ultimaFecha.getDate() + 1); // suma 1 día
+            fec_fin_nueva = this.formUtils.formatDate(ultimaFecha);
+        }
 
         const nuevoGrupo = this.fb.group({
-            cie_ano: [periodo?.anio, Validators.required],
-            cie_per: [periodo?.mes, Validators.required],
-            num_semana: [numSemanaNueva, [
-                Validators.required,
-                Validators.min(1),
-                Validators.max(7),
-                Validators.pattern(/^[1-7]$/)
-            ]],
-            fec_ini: ['', Validators.required],
-            fec_fin: ['', Validators.required],
+            cie_ano: [periodo.anio, Validators.required],
+            cie_per: [periodo.mes, Validators.required],
+            num_semana: [{ value: this.siguienteSemana, disabled: true }, Validators.required],
+            fec_ini: ['', [Validators.required, Validators.pattern(/^(0[1-9]|[12]\d|3[01])\/(0[1-9]|1[0-2])\/(19\d{2}|20\d{2}|2100)$/)]],
+            fec_fin: ['', [Validators.required, Validators.pattern(/^(0[1-9]|[12]\d|3[01])\/(0[1-9]|1[0-2])\/(19\d{2}|20\d{2}|2100)$/)]],
             desc_semana: ['', Validators.required],
             esNuevo: [true]
         });
 
         this.semanas.push(nuevoGrupo);
-
-        const filaNueva = this.semanas.at(this.semanas.length - 1);
-        this.enviarFilaNueva(filaNueva!);
+        this.semana_num_lista.set([...semanas_lista, { num_semana: this.siguienteSemana, fec_fin: fec_fin_nueva }]);
     }
 
 
@@ -135,7 +161,6 @@ export class SemanasCicloMainComponent {
         const esNuevo = semana.esNuevo;
 
         const periodo = this.planingCompartido.periodo();
-
 
         if (esNuevo) {
             this.semanas.removeAt(index);
@@ -162,6 +187,9 @@ export class SemanasCicloMainComponent {
             next: (res: any) => {
                 if (res.success) {
                     this.formUtils.alertaEliminado(res.message);
+                    this.semanas.removeAt(index);
+                    this.cd.detectChanges();
+
                 } else {
                     this.formUtils.alertaEliminado(res.message);
                 }
@@ -171,19 +199,28 @@ export class SemanasCicloMainComponent {
     }
 
 
+    private listaEnteros() {
+        const periodo = this.planingCompartido.periodo();
+        if (!periodo?.anio || !periodo?.mes) return;
+
+        this.planingService.listaEnteros(periodo.anio, periodo.mes, 'semana-ciclo-secuencia')
+            .subscribe({
+                next: (data: ListNumSemanaResponse[]) => {
+                    this.semana_num_lista.set(data);
+
+                },
+                error: (err) => console.error('Error al cargar semanas:', err)
+            });
+    }
+
+
     ngOnInit() {
+        this.planingCompartido.setLastTab('semana_ciclo');
+        this.planingCompartido.registrarFormulario('semana_ciclo', this.myForm);
 
         this.myForm.valueChanges.subscribe(val => {
             const filas = this.semanas.getRawValue();
             this.planingCompartido.setSemanaCiclo(filas, 'semana_ciclo');
-        });
-    }
-
-    enviarFilaNueva(row: AbstractControl) {
-        this.myForm.valueChanges.subscribe(val => {
-            const payload = row.getRawValue(); // objeto plano
-
-            this.planingCompartido.setSemanaCiclo(payload, 'semana_ciclo');
         });
     }
 }

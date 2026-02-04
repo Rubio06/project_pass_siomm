@@ -29,6 +29,15 @@ interface BotonesState {
     guardar: boolean;
 }
 
+
+export interface TabFormulario {
+    nombre: string;
+    activo: boolean;
+    esValido: boolean;
+    getData(): any;
+    marcarErrores(): void;
+}
+
 @Component({
     selector: 'app-planning-main',
     imports: [CommonModule, RouterOutlet, TransfornMonthPipe, RouterLink, ReactiveFormsModule, RouterLinkActive, ModalPeriodo],
@@ -312,10 +321,6 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
         this.modoBoton = 'E';
         this.planingCompartido.agregarFila(true);
 
-        // this.planingCompartido.setFormBloqueadoCentral(false);
-
-        // this.planingCompartido.setFormBloqueadoEditar(false);
-
         this.planingCompartido.setFormFactorBloqueado(false); // 🔓
         this.planingCompartido.setTablaBloqueada(false);
 
@@ -330,17 +335,6 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
             guardar: false,       // ✅
             visualizar: false     // ✅
         });
-
-        // this.planingCompartido.setCambios(true); // 👈 IMPORTANTE
-        // this.planingCompartido.setChanges(true);
-        //GUARD PARA PROTEGER TABS
-
-
-        // const inicioControl = this.showData.get('fechaInicio');
-        // const finControl = this.showData.get('fechaFin');
-
-        // if (inicioControl) inicioControl.disable({ emitEvent: false });
-        // if (finControl) finControl.disable({ emitEvent: false });
     }
 
     onNuevo() {
@@ -399,6 +393,8 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
         this.planingCompartido.setCambios(false); // 👈 IMPORTANTE
 
 
+        this.onVisualizarGuard();
+
         this.planingCompartido.setFormFactorBloqueado(true); // 🔓
         this.planingCompartido.setTablaBloqueada(true);
 
@@ -409,9 +405,6 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
             guardar: false,
             visualizar: true
         });
-
-        // this.showData.get('fechaInicio')?.enable();
-        // this.showData.get('fechaFin')?.enable();
     }
 
 
@@ -437,7 +430,7 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
     }
 
     public async onVisualizarGuard() {
-        this.onVisualizar();
+        // this.onVisualizar();
         this.showData.get('fechaInicio')?.enable();
         this.showData.get('fechaFin')?.enable();
         this.planingCompartido.setCambios(false);
@@ -454,14 +447,10 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
         this.planingCompartido.registrarGuardar(() => this.onGuardarGuard());
 
         this.planingCompartido.registrarVisualizar(() => this.onVisualizarGuard());
-
-
     }
 
 
 
-
-    mostrarErrorGeneral = false;
 
 
     //GUARDAR DATOS COMPONENTE
@@ -470,60 +459,35 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
     }
 
 
-    // periodoValido = this._periodoValid.asReadonly();
+
+
 
     public async onGuardar() {
+        const esValido = this.planingCompartido.validarTabActivo();
 
-        // Obtener el formulario del tab activo
-        // const activeForm = this.planingCompartido.getActiveForm();
-
-        // // Actualizar validez antes de validar (para nuevos registros)
-        // activeForm?.updateValueAndValidity();
-
-        // if (!this.planingCompartido.isActiveFormValid()) {
-        //     this.planingCompartido.markActiveFormAsTouched();
-
-        //     console.log("Metdo de la validacion " + this.planingCompartido.isActiveFormValid())
-
-        //     // Swal.fire({
-        //     //     icon: 'warning',
-        //     //     text: 'Complete los campos obligatorios del tab actual'
-        //     // });
-        //     return;
-        // }
-
+        if (!esValido) {
+            this.formsUtils.errorGuardar(
+                'El formulario tiene errores, reviselos'
+            );
+            return;
+        }
 
         const confirmado = await this.formsUtils.confirmarGuardado();
         if (!confirmado) return;
-
         this.guardarDatos();
     }
 
     private guardarDatos() {
-
-
-        const anioOrigen = this.showData.get('fechaInicio')?.value;
-        const mesOrigen = this.showData.get('fechaFin')?.value;
-
         this.planingCompartido.guardarTodo(this.mapModo()).subscribe({
             next: () => {
-                // this.onVisualizar();
-                // const activeForm = this.planingCompartido.getActiveForm();
-
-                // this.planingCompartido.onVisualizarGlobal();
-                // // this.planingCompartido.notifyResetSemanas();
-                // this.planingCompartido.setFormBloqueadoEditar(true);
-
-                // this.limpiarFormulario();
-                this.planingCompartido.limpiezaDataRoutes();
                 this.planingCompartido.triggerResetPeriodo();
-
-
+                this.planingCompartido.setFormFactorBloqueado(true); // 🔓
+                this.planingCompartido.setTablaBloqueada(true);
+                this.planingCompartido.setCambios(false);
                 this.formsUtils.mostrarExito();
-                // this.planingCompartido.setAgregarRegistro(true);
+                this.planingCompartido.setAgregarRegistro(true);
+                this.onVisualizarGuard();
 
-                // this.planingCompartido.setCambios(false);
-                this.onVisualizar()
 
                 this.setBotonesState({
                     nuevo: true,
@@ -532,11 +496,6 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
                     guardar: true,
                     visualizar: true
                 });
-
-
-                // activeForm?.updateValueAndValidity();
-
-
             },
             error: (err) => {
                 // mensaje que viene del backend

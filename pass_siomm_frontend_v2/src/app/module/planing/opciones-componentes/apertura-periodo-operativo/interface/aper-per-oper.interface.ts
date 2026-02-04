@@ -400,6 +400,11 @@ export interface ApiResponse {
 }
 
 
+export interface ListNumSemanaResponse {
+    num_semana: number;
+    fec_fin: string;
+}
+
 
 
 

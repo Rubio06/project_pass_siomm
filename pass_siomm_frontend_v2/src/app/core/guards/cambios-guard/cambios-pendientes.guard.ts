@@ -17,19 +17,29 @@ export interface CanComponentDeactivate {
 export class PendingGeneralGuard implements CanDeactivate<CanComponentDeactivate> {
 
     planingCompartido = inject(PlaningCompartidoService);
+    formsUtils = FormUtils;
 
     async canDeactivate(component: CanComponentDeactivate): Promise<boolean> {
 
+        // 1️⃣ Validar el formulario del tab activo
+        // const esValido = this.planingCompartido.validarTabActivo();
+        // if (!esValido) {
+        //     this.formsUtils.errorGuardar('El formulario tiene errores, revísalos');
+        //     return false; // ❌ bloquea navegación
+        // }
+
+        // 2️⃣ Revisar si hay cambios
         if (!this.planingCompartido.getCambios()) return true;
 
-        const guardar = await FormUtils.confirmarDescartarCambios();
-
+        // 3️⃣ Preguntar si quiere guardar
+        const guardar = await this.formsUtils.confirmarDescartarCambios();
         if (guardar) {
-            // 🟦 Guardar Cambios
             await this.planingCompartido.ejecutarGuardar();
         } else {
-            // 🟥 No descartar → Visualizar
             await this.planingCompartido.ejecutarVisualizar();
+            this.planingCompartido.setFormFactorBloqueado(true);
+            this.planingCompartido.setTablaBloqueada(true);
+            this.planingCompartido.setAgregarRegistro(true);
         }
 
         return true; // ✅ permitir navegación

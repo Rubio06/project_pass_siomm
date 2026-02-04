@@ -24,8 +24,8 @@
                 </div>
 
                 <div class="relative flex gap-4">
-                    <div class="flex-11">
-                        <div class="w-full mx-auto rounded-lg overflow-x-auto shadow-md border border-gray-300">
+                    <div class="flex-11 border mx-auto rounded-lg overflow-x-auto shadow-md border border-gray-300">
+                        <div class="">
                             <table class="min-w-full border-collapse text-sm text-gray-800">
 
                                 <thead>
@@ -64,16 +64,18 @@
                                             <div
                                                 class="flex items-center border border-gray-300 rounded-md px-2 py-1 bg-white shadow-sm">
                                                 <input [type]="col.type" [formControlName]="col.name"
-                                                    [class.opacity-30]="col.name === 'num_semana'"
+                                                    [class.opacity-30]="col.name =='num_semana'"
                                                     [class.opacity-40]="planingCompartido.tablaBloqueada() && !item.get('esNuevo')?.value"
                                                     [class.pointer-events-none]="planingCompartido.tablaBloqueada() && !item.get('esNuevo')?.value"
                                                     class="w-full bg-transparent outline-none text-gray-800 placeholder-gray-400 text-sm font-medium" />
                                             </div>
 
                                             @if ( formUtils.isValidFieldInArray(item, col.name) ) {
-                                            <span class="text-[10px] text-error block">
-                                                <b>{{ formUtils.getFiledErrorArray(item, col.name) }}</b>
-                                            </span>
+                                                <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                                    <span>
+                                                        <b>{{ formUtils.getFiledErrorArray(item, col.name) }}</b>
+                                                    </span>
+                                                </div>
                                             }
                                         </td>
                                         }
@@ -123,5 +125,7 @@
             <!-- <button type="submit">Enviar datos</button> -->
         </form>
 
+
     </div>
 </div>
+<!-- <app-paginacion /> -->

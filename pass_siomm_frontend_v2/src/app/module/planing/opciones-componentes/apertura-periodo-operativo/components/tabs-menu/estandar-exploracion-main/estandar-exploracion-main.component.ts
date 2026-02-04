@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, effect, inject, signal } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { DATOS_METODO_EXPLORACION, EstructuraDatosOtros, SelectZona, TH_ESTANDAR_EXPLORACION, thTitulos } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/interface/aper-per-oper.interface';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { DATOS_METODO_EXPLORACION, EstructuraDatosOtros, MaeExploEstandar, SelectZona, TH_ESTANDAR_EXPLORACION, thTitulos } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/interface/aper-per-oper.interface';
 import { PlanningService } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/services/planning.service';
 import { PlaningCompartidoService } from '../../../services/planing-compartido.service';
 import { FormUtils } from 'src/app/utils/form-utils';
@@ -19,7 +19,7 @@ export class EstandarExploracionMainComponent {
     // ===============================
     private fb = inject(FormBuilder);
     private planingService = inject(PlanningService);
-
+    formUtils = FormUtils;
     planingCompartido = inject(PlaningCompartidoService);
     semanasAvanceMainService = inject(SemanasAvanceMainService);
 
@@ -40,7 +40,7 @@ export class EstandarExploracionMainComponent {
     //   FORMULARIO PRINCIPAL
     // ===============================
     myForm = this.fb.group({
-        semanas: this.fb.array([]),
+        semanas: this.fb.array<FormGroup>([]),
     });
 
     get semanas(): FormArray {
@@ -60,7 +60,7 @@ export class EstandarExploracionMainComponent {
     //   CONSTRUCTOR
     // ===============================
     bloqueoBotonNuevo = signal<boolean>(true);
-
+    cod_zonaBloqueo = signal<string[]>([]);
 
     constructor() {
 
@@ -68,24 +68,8 @@ export class EstandarExploracionMainComponent {
         effect(() => {
             const data = this.planingCompartido.dataRoutes();
             const semanas = data?.data?.exploracion_extandar || [];
-
-
-
             this.loadSemanas(semanas);
-            this.myForm.patchValue(data || {}, { emitEvent: false });
-
         });
-
-        ///boton editar
-        // effect(() => {
-        //     if (!this.myForm) return;
-
-        //     if (this.planingCompartido.bloqueoFormGeneral()) {
-        //         this.myForm.disable({ emitEvent: false });
-        //     } else {
-        //         this.myForm.enable({ emitEvent: false });
-        //     }
-        // });
         this.loadZonas();
 
 
@@ -96,75 +80,82 @@ export class EstandarExploracionMainComponent {
     // }
 
 
+    trackByIndex(index: number) {
+        return index;
+    }
 
     /**
      * Carga data desde backend
      */
-    loadSemanas(data: any[]) {
-        this.semanas.clear();
+    loadSemanas(data: MaeExploEstandar[]) {
         const periodo = this.planingCompartido.periodo();
 
+        if (!periodo?.anio || !periodo?.mes) {
+            return;
+        }
 
-        data.forEach((item, index) => {
-            this.semanas.push(
+        const formArray = this.fb.array(
+            data.map(item =>
                 this.fb.group({
                     cie_ano: [periodo?.anio, Validators.required],
                     cie_per: [periodo?.mes, Validators.required],
-                    cod_zona: [{value: item.cod_zona, disabled: true}, Validators.required],
-                    lab_pieper: [item.lab_pieper || ''],
-                    lab_broca: [item.lab_broca || ''],
-                    lab_barcon: [item.lab_barcon || ''],
-                    lab_barren: [item.lab_barren || ''],
-                    lab_facpot: [item.lab_facpot || ''],
-                    lab_fulmin: [item.lab_fulmin || ''],
-                    lab_conect: [item.lab_conect || ''],
-                    lab_punmar: [item.lab_punmar || ''],
-                    lab_tabla: [item.lab_tabla || ''],
-                    // ind_act: [item.ind_act || ''],
-                    lab_apr: [item.lab_apr || ''],
+                    cod_zona: [{ value: item.cod_zona, disabled: true }, Validators.required],
+                    lab_pieper: [item.lab_pieper || '', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+                    lab_broca: [item.lab_broca || '', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+                    lab_barcon: [item.lab_barcon || '', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+                    lab_barren: [item.lab_barren || '', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+                    lab_facpot: [item.lab_facpot || '', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+                    lab_fulmin: [item.lab_fulmin || '', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+                    lab_conect: [item.lab_conect || '', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+                    lab_punmar: [item.lab_punmar || '', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+                    lab_tabla: [item.lab_tabla || '', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+                    lab_apr: [item.lab_apr || '', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
                     accion: [''],
                     esNuevo: [false]
-
                 })
-            );
-        });
+            )
+        );
+
+        this.myForm.setControl('semanas', formArray);
     }
 
-    agregarFilas() {
-        // const ultima = this.semanas.length
-        //     ? this.semanas.at(this.semanas.length - 1)?.getRawValue()
-        //     : null;
 
-        // const origen = ultima || {
-        //     cie_ano: new Date().getFullYear().toString(),
-        //     cie_per: (new Date().getMonth() + 1).toString().padStart(2, '0'),
-        // };
+    agregarFilas() {
+        this.bloqueoSelect()
         const periodo = this.planingCompartido.periodo();
+
+        if (!periodo?.anio || !periodo?.mes) {
+            return;
+        }
 
 
         const nuevoGrupo = this.fb.group({
             cie_ano: [periodo?.anio, Validators.required],
             cie_per: [periodo?.mes, Validators.required],
-            cod_zona: ['', Validators.required],
-            lab_pieper: ['', Validators.required],
-            lab_broca: ['', Validators.required],
-            lab_barcon: ['', Validators.required],
-            lab_barren: ['', Validators.required],
-            lab_facpot: ['', Validators.required],
-            lab_fulmin: ['', Validators.required],
-            lab_conect: ['', Validators.required],
-            lab_punmar: ['', Validators.required],
-            lab_tabla: ['', Validators.required],
-            // ind_act: ['', Validators.required],
-            lab_apr: ['', Validators.required],
+            cod_zona: ['', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+            lab_pieper: ['', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+            lab_broca: ['', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+            lab_barcon: ['', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+            lab_barren: ['', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+            lab_facpot: ['', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+            lab_fulmin: ['', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+            lab_conect: ['', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+            lab_punmar: ['', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+            lab_tabla: ['', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+            lab_apr: ['', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
             esNuevo: [true]
         });
 
         this.semanas.push(nuevoGrupo);
 
-        const filaNueva = this.semanas.at(this.semanas.length - 1);
-        this.enviarFilaNueva(filaNueva!);
 
+    }
+
+    valoresSeleccionados(excluirItem: AbstractControl): string[] {
+        return this.semanas.controls
+            .filter(ctrl => ctrl !== excluirItem)                   // Excluimos la fila actual
+            .map(ctrl => ctrl.get('cod_zona')?.value)        // Tomamos el valor
+            .filter(val => !!val);                                  // Quitamos nulos/vacíos
     }
 
     bloquearCampo(row: AbstractControl): boolean {
@@ -172,36 +163,27 @@ export class EstandarExploracionMainComponent {
     }
 
 
-    enviarFilaNueva(row: AbstractControl) {
-        // this.planingCompartido.registerForm('exploracion_estandar', this.myForm);
-        // this.planingCompartido.setActiveTab('exploracion_estandar');
-
-        this.myForm.valueChanges.subscribe(val => {
-            const payload = row.getRawValue(); // objeto plano
-
-            this.planingCompartido.setExploracionExtandar(payload, 'exploracion_estandar',);
-        });
-    }
-
     ngOnInit() {
-        // this.planingCompartido.registerForm('exploracion_estandar', this.myForm);
-        // this.planingCompartido.setActiveTab('exploracion_estandar');
+
+        this.planingCompartido.setLastTab('exploracion_estandar');
+
+        this.planingCompartido.registrarFormulario('exploracion_estandar', this.myForm);
 
         this.myForm.valueChanges.subscribe(val => {
             const filas = this.semanas.getRawValue();
             this.planingCompartido.setExploracionExtandar(filas, 'exploracion_estandar');
-            // console.log("📤 TAB semana actualizó servicio:", filas);
         });
     }
-    /**
-     * Envía datos (simulación)
-     */
-
 
     async eliminarFila(data: any, index: number) {
         const semana = data.getRawValue ? data.getRawValue() : data.value;
 
+
         const periodo = this.planingCompartido.periodo();
+
+        if (!periodo?.anio || !periodo?.mes) {
+            return;
+        }
 
         const esNuevo = semana.esNuevo;
 
@@ -227,16 +209,12 @@ export class EstandarExploracionMainComponent {
         this.semanasAvanceMainService.estandarExploracion(payload).subscribe({
             next: (res: any) => {
                 if (res.success) {
-                    // 👉 Elimina del FormArray
-
-                    // 👉 Muestra alerta de éxito desde el utilitario
                     this.utils.alertaEliminado(res.message);
                     this.semanas.removeAt(index);
                     this.cd.detectChanges();              // opcional
 
                 } else {
                     this.utils.alertaEliminado(res.message);
-
                 }
             },
             error: (err) => this.utils.mensajeError(err.message)
@@ -250,6 +228,19 @@ export class EstandarExploracionMainComponent {
         this.planingService.SelectZona().subscribe({
             next: (data: any) => this.cod_zona.set(data),
             error: (err) => console.error('Error al cargar zonas:', err),
+        });
+    }
+
+
+    private bloqueoSelect() {
+        const periodo = this.planingCompartido.periodo();
+
+        if (!periodo?.anio || !periodo?.mes) {
+            return;
+        }
+        this.planingService.bloqueoSelect(periodo?.anio, periodo?.mes, 'bloqueo-estandar-exploracion').subscribe({
+            next: (data: any) => this.cod_zonaBloqueo.set(data),
+            error: (err) => console.error('Error al cargar tipos de labor:', err),
         });
     }
 

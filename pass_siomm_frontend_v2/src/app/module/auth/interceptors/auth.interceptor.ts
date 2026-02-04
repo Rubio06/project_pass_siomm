@@ -41,7 +41,7 @@ export const authInterceptor: HttpInterceptorFn = (
             if (Date.now() > expires) {
                 // Token expirado
                 authService.logout();
-                router.navigate(['/login']);
+                router.navigate(['auth/login']);
                 return throwError(() => new Error('Token expirado'));
             }
 
@@ -54,7 +54,7 @@ export const authInterceptor: HttpInterceptorFn = (
         } catch (err) {
             console.error('Error al leer el token:', err);
             authService.logout();
-            router.navigate(['/login']);
+            router.navigate(['auth/login']);
             return throwError(() => new Error('Token inválido'));
         }
     }
@@ -64,7 +64,7 @@ export const authInterceptor: HttpInterceptorFn = (
         catchError((err: HttpErrorResponse) => {
             if (err.status === 401) {
                 authService.logout();
-                router.navigate(['/login']);
+                router.navigate(['auth/login']);
             }
             return throwError(() => err);
         })

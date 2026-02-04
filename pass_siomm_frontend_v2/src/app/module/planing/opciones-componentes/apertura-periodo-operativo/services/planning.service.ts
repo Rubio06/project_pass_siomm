@@ -1,5 +1,5 @@
 import { environment } from '@environments/environments';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable, Signal, signal, WritableSignal } from '@angular/core';
 import { catchError, Observable, of } from 'rxjs';
 import { PlanningData, SelectExploracion, SelectTipoLabor, SelectZona } from '../interface/aper-per-oper.interface';
@@ -81,6 +81,42 @@ export class PlanningService {
             this.utils.mensajeError(error.message)
             return of([]);
         }));
+    }
+
+    public bloqueoSelect(anio?: string, mes?: string, tipoConsulta?: string): Observable<any[]> {
+        let params = new HttpParams();
+
+        if (anio) params = params.set('anio', anio);
+        if (mes) params = params.set('mes', mes);
+        if (tipoConsulta != null) params = params.set('tipoConsulta', tipoConsulta); // <-- nuevo parámetro
+
+        return this.planningHttp.get<any[]>(
+            `${this.planingUrl}planeamiento/aper-periodo-operativo/select-lab-estandar-bloqueo`,
+            { params } // enviamos los query params
+        ).pipe(
+            catchError(error => {
+                this.utils.mensajeError(error.message);
+                return of([]);
+            })
+        );
+    }
+
+    public listaEnteros(anio?: string, mes?: string, tipoConsulta?: string): Observable<any[]> {
+        let params = new HttpParams();
+
+        if (anio) params = params.set('anio', anio);
+        if (mes) params = params.set('mes', mes);
+        if (tipoConsulta != null) params = params.set('tipoConsulta', tipoConsulta); // <-- nuevo parámetro
+
+        return this.planningHttp.get<any[]>(
+            `${this.planingUrl}planeamiento/aper-periodo-operativo/lista-enteros-num-semana`,
+            { params } // enviamos los query params
+        ).pipe(
+            catchError(error => {
+                this.utils.mensajeError(error.message);
+                return of([]);
+            })
+        );
     }
 
 }

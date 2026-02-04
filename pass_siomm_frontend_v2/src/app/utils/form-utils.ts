@@ -162,6 +162,9 @@ export class FormUtils {
             cancelButtonColor: '#9E9E9E',
             reverseButtons: true,
             focusCancel: true,
+            allowOutsideClick: false,   // 🚫 click fuera
+            allowEscapeKey: false,     // 🚫 ESC
+            allowEnterKey: false,
             backdrop: 'rgba(0,0,0,0.4)',
             customClass: {
                 popup: 'rounded-xl',
@@ -233,7 +236,10 @@ export class FormUtils {
             confirmButtonText: 'Guardar Cambios',
             cancelButtonText: 'No, descartar',
             confirmButtonColor: '#033351',
-            cancelButtonColor: '#d33'
+            cancelButtonColor: '#d33',
+            allowOutsideClick: false,   // 🚫 click fuera
+            allowEscapeKey: false,     // 🚫 ESC
+            allowEnterKey: false
         }).then(result => result.isConfirmed);
     }
 

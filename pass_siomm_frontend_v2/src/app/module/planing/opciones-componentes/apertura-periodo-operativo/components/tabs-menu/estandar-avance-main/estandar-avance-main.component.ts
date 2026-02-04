@@ -2,7 +2,7 @@ import { Component, signal, input, effect, inject, WritableSignal, ChangeDetecto
 import { AbstractControl, FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { FormUtils } from 'src/app/utils/form-utils';
-import { DATOS_ESTANDER_AVANCE, SelectTipoLabor, TH_ESTANDAR_AVANCE, thTitulos } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/interface/aper-per-oper.interface';
+import { DATOS_ESTANDER_AVANCE, MaeTipLabEstandar, SelectTipoLabor, TH_ESTANDAR_AVANCE, thTitulos } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/interface/aper-per-oper.interface';
 import { PlanningService } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/services/planning.service';
 import { PlaningCompartidoService } from '../../../services/planing-compartido.service';
 import { SemanasAvanceMainService } from '../../../services/semanas-avance-main/semanas-avance-main.service';
@@ -38,11 +38,13 @@ export class EstandarAvanceComponent {
     // ===============================
     cod_tiplab = signal<SelectTipoLabor[]>([]);
 
+    cod_tiplabBloqueo = signal<any[]>([]);
+
     // ===============================
     //   FORMULARIO PRINCIPAL
     // ===============================
     myForm = this.fb.group({
-        semanas: this.fb.array([]),
+        semanas: this.fb.array<FormGroup>([]),
     });
 
     get semanas(): FormArray {
@@ -71,64 +73,61 @@ export class EstandarAvanceComponent {
             const semanas = data?.data?.laboratorio_estandar || [];
 
             this.loadSemanas(semanas);
-            this.myForm.patchValue(data || {}, { emitEvent: false });
         });
-
 
         this.loadTiposLabor();
 
     }
 
 
-    blockForm() {
-        this.myForm.disable(); // bloquea todos los campos
-    }
 
-    resetForm() {
-        this.myForm.reset();
-        this.semanas.clear();
+    trackByIndex(index: number) {
+        return index;
     }
 
     /**
      * Carga data desde backend
      */
-    loadSemanas(data: any[]) {
-
+    loadSemanas(data: MaeTipLabEstandar[]) {
         const periodo = this.planingCompartido.periodo();
 
-        this.semanas.clear();
+        if (!periodo?.anio || !periodo?.mes) {
+            return;
+        }
 
-        data.forEach((item, index) => {
-
-            this.semanas.push(
+        const formArray = this.fb.array(
+            data.map(item =>
                 this.fb.group({
                     cie_ano: [periodo?.anio, Validators.required],
                     cie_per: [periodo?.mes, Validators.required],
-                    cod_tiplab: [{value: item.cod_tiplab, disabled: true}, Validators.required],
-                    nro_lab_ancho: [item.nro_lab_ancho || '', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-                    nro_lab_altura: [item.nro_lab_altura || '', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-                    nro_lab_pieper: [item.nro_lab_pieper || '', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-                    nro_lab_broca: [item.nro_lab_broca || '', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-                    nro_lab_barcon: [item.nro_lab_barcon || '', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-                    nro_lab_barren: [item.nro_lab_barren || '', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-                    nro_lab_facpot: [item.nro_lab_facpot || '', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-                    nro_lab_fulmin: [item.nro_lab_fulmin || '', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-                    nro_lab_conect: [item.nro_lab_conect || '', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-                    nro_lab_punmar: [item.nro_lab_punmar || '', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-                    nro_lab_tabla: [item.nro_lab_tabla || '', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+                    cod_tiplab: [{ value: item.cod_tiplab, disabled: true }],
+                    nro_lab_ancho: [item.nro_lab_ancho, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+                    nro_lab_altura: [item.nro_lab_altura, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+                    nro_lab_pieper: [item.nro_lab_pieper, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+                    nro_lab_broca: [item.nro_lab_broca, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+                    nro_lab_barcon: [item.nro_lab_barcon, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+                    nro_lab_barren: [item.nro_lab_barren, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+                    nro_lab_facpot: [item.nro_lab_facpot, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+                    nro_lab_fulmin: [item.nro_lab_fulmin, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+                    nro_lab_conect: [item.nro_lab_conect, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+                    nro_lab_punmar: [item.nro_lab_punmar, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+                    nro_lab_tabla: [item.nro_lab_tabla],
                     accion: [''],
                     esNuevo: [false]
-
                 })
-            );
-        });
+            )
+        );
+        this.myForm.setControl('semanas', formArray);
     }
 
     agregarFilas() {
-
+        this.bloqueoSelect();
 
         const periodo = this.planingCompartido.periodo();
-;
+
+        if (!periodo?.anio || !periodo?.mes) {
+            return;
+        }
 
         const nuevoGrupo = this.fb.group({
             cie_ano: [periodo?.anio, Validators.required],
@@ -150,27 +149,18 @@ export class EstandarAvanceComponent {
 
         this.semanas.push(nuevoGrupo);
 
-        const filaNueva = this.semanas.at(this.semanas.length - 1);
-        this.enviarFilaNueva(filaNueva!);
-
     }
+
+    valoresSeleccionados(excluirItem: AbstractControl): string[] {
+        return this.semanas.controls
+            .filter(ctrl => ctrl !== excluirItem)                   // Excluimos la fila actual
+            .map(ctrl => ctrl.get('cod_tiplab')?.value)        // Tomamos el valor
+            .filter(val => !!val);                                  // Quitamos nulos/vacíos
+    }
+
 
     bloquearCampo(row: AbstractControl): boolean {
         return this.planingCompartido.bloqueoFormEditar() && !row.get('esNuevo')?.value;
-    }
-
-
-    enviarFilaNueva(row: AbstractControl) {
-        this.myForm.valueChanges.subscribe(val => {
-            const payload = row.getRawValue(); // objeto plano
-
-            // this.planingCompartido.registerForm('estadar_avance', this.myForm);
-            // this.planingCompartido.setActiveTab('estadar_avance');
-
-            this.planingCompartido.setLaboratorioEstandar(payload, 'estandar_avance');
-
-
-        });
     }
 
     /**
@@ -183,6 +173,10 @@ export class EstandarAvanceComponent {
         const esNuevo = semana.esNuevo;
 
         const periodo = this.planingCompartido.periodo();
+
+        if (!periodo?.anio || !periodo?.mes) {
+            return;
+        }
 
         if (esNuevo) {
             this.semanas.removeAt(index);
@@ -219,19 +213,20 @@ export class EstandarAvanceComponent {
     /**
      * Envía datos del formulario
      */
+
     ngOnInit() {
-        // this.planingCompartido.registerForm('estadar_avance', this.myForm);
-        // this.planingCompartido.setActiveTab('estadar_avance');
-        this.myForm.valueChanges.subscribe(val => {
+        this.planingCompartido.setLastTab('estandar_avance');
+        this.planingCompartido.registrarFormulario('estandar_avance', this.myForm);
+
+        this.myForm.valueChanges.subscribe(() => {
             const filas = this.semanas.getRawValue();
-            // const markTouched = this.myForm.markAllAsTouched();
-            this.planingCompartido.setLaboratorioEstandar(filas, 'estandar_avance');
 
-
-            // console.log("📤 TAB semana actualizó servicio:", filas);
+            this.planingCompartido.setLaboratorioEstandar(
+                filas,
+                'estandar_avance'
+            );
         });
     }
-
 
     /**
      * Carga Tipos de Labor desde el servicio (Lookups)
@@ -239,6 +234,19 @@ export class EstandarAvanceComponent {
     private loadTiposLabor() {
         this.planingService.SelectTipoLabor().subscribe({
             next: (data: any) => this.cod_tiplab.set(data),
+            error: (err) => console.error('Error al cargar tipos de labor:', err),
+        });
+    }
+
+    private bloqueoSelect() {
+        const periodo = this.planingCompartido.periodo();
+
+        if (!periodo?.anio || !periodo?.mes) {
+            return;
+        }
+
+        this.planingService.bloqueoSelect(periodo?.anio, periodo?.mes, 'bloqueo-estandar-avance').subscribe({
+            next: (data: any) => this.cod_tiplabBloqueo.set(data),
             error: (err) => console.error('Error al cargar tipos de labor:', err),
         });
     }

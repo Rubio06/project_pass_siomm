@@ -2,10 +2,10 @@
 using Microsoft.AspNetCore.Server.IISIntegration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using pass_siomm.Data;
-using pass_siomm.Services;
-using pass_siomm_backend.Services;
-using pass_siomm_backend.Services.PlaneamientoService;
+using pass_siomm_backend.Autenticacion.Service;
+using pass_siomm_backend.Conexion;
+using pass_siomm_backend.Planeamiento.Services.PlaneamientoService;
+using pass_siomm_backend.Rutas.Service;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);

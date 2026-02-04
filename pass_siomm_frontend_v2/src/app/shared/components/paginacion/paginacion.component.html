@@ -1,0 +1,19 @@
+<!-- Paginación DaisyUI -->
+<div class="flex justify-center mt-4">
+    <ul class="btn-group">
+        <!-- (click)="previousPage()" -->
+        <button class="btn btn-outline" [disabled]="currentPage === 1">
+            «
+        </button>
+
+        <!-- (click)="goToPage(page)" -->
+        <button *ngFor="let page of pages" class="btn btn-outline" [class.btn-active]="currentPage === page">
+            {{ page }}
+        </button>
+
+        <!-- (click)="nextPage()" -->
+        <button class="btn btn-outline" [disabled]="currentPage === totalPages">
+            »
+        </button>
+    </ul>
+</div>

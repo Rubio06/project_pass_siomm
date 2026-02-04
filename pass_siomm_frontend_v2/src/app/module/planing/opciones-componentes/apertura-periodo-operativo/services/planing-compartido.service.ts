@@ -126,114 +126,158 @@ export class PlaningCompartidoService {
     //guardar datos
     public guardarTodo(modoBoton: 'N' | 'E') {
 
-        let payload: any = {};
+        const username = localStorage.getItem('username') ?? '';
+
+        let payload: any;
 
         switch (this._lastTab) {
 
-
             case 'factor_operativo':
-                payload = {
-                    cierre_periodo: this._cierre_periodo(),
-                    factor: this._factor(),
-                    factorOperativo: this._factorOperativo(),
-                    operativo_detalle: this._operativo_detalle(),
-                    canchas: this._canchas(),
-                    recuperacionBudget: this._recuperacionBudget(),
-                    factorSobredisolucion: this._factorSobredisolucion(),
-
-                    modo: modoBoton,
-                    validacion: 'FORMULARIO',
-                    username: localStorage.getItem('username'),
-                };
+                payload = this.buildFactorOperativoPayload(modoBoton, username);
                 break;
 
             case 'semana_avance':
-                const semanasFormateadas = this._semana_avance().map(s => ({
-                    ...s,
-                    // cie_ano: anio,
-                    // cie_per: mes,
-                    fec_ini: this.toDateTime(s.fec_ini),
-                    fec_fin: this.toDateTime(s.fec_fin),
-                }));
-
-
-                payload = {
-                    semana_avance: semanasFormateadas,
-                    modo: modoBoton,
-                    validacion: 'SEMANA_AVANCE',
-                    username: localStorage.getItem('username')
-                }
+                payload = this.buildSemanaAvancePayload(modoBoton, username);
                 break;
 
             case 'semana_ciclo':
-                const semanasFormateadoCiclo = this._semana_ciclo().map(s => ({
-                    ...s,
-                    // cie_ano: anio,
-                    // cie_per: mes,
-                    fec_ini: this.toDateTime(s.fec_ini),
-                    fec_fin: this.toDateTime(s.fec_fin),
-                }));
-
-
-                payload = {
-                    semana_ciclo: semanasFormateadoCiclo,
-                    modo: modoBoton,
-                    validacion: 'SEMANA_CICLO',
-                    username: localStorage.getItem('username')
-                }
+                payload = this.buildSemanaCicloPayload(modoBoton, username);
                 break;
 
             case 'metodo_minado':
-                const semanasMetodoMinado = this._metodo_minado().map(s => ({
-                    ...s,
-                }));
-
-                payload = {
-                    metodo_minado: semanasMetodoMinado,
-                    modo: modoBoton,
-                    validacion: 'METODO_MINADO',
-                    username: localStorage.getItem('username')
-                }
+                payload = this.buildMetodoMinadoPayload(modoBoton, username);
                 break;
 
-
             case 'exploracion_estandar':
-                const semanasExploracionEstandar = this._exploracion_extandar().map(s => ({
-                    ...s,
-                }));
-
-                payload = {
-                    exploracion_extandar: semanasExploracionEstandar,
-                    modo: modoBoton,
-                    validacion: 'EXPLORACION_ESTANDAR',
-                    username: localStorage.getItem('username')
-                }
+                payload = this.buildExploracionEstandarPayload(modoBoton, username);
                 break;
 
             case 'estandar_avance':
-
-                const semanasLaboratorioEstandar = this._laboratorio_estandar().map(s => ({
-                    ...s,
-                }));
-
-                payload = {
-                    laboratorio_estandar: semanasLaboratorioEstandar,
-                    modo: modoBoton,
-                    validacion: 'ESTANDAR_AVANCE',
-                    username: localStorage.getItem('username')
-                }
+                payload = this.buildEstandarAvancePayload(modoBoton, username);
                 break;
 
+            default:
+                throw new Error('Tab no soportado para guardado');
         }
+
         console.log(
             'Mis datos enviados son:\n',
             JSON.stringify(payload, null, 2)
         );
+
         return this.http.post(
             `${this.planingUrl}aper-periodo-operativo/semana/guardar-datos`,
             payload
         );
     }
+
+    private buildFactorOperativoPayload(modo: 'N' | 'E', username: string) {
+        return {
+            cierre_periodo: this._cierre_periodo(),
+            factor: this._factor(),
+            factorOperativo: this._factorOperativo(),
+            operativo_detalle: this._operativo_detalle(),
+            canchas: this._canchas(),
+            recuperacionBudget: this._recuperacionBudget(),
+            factorSobredisolucion: this._factorSobredisolucion(),
+            modo,
+            validacion: 'FORMULARIO',
+            username
+        };
+    }
+
+    private buildSemanaAvancePayload(modo: 'N' | 'E', username: string) {
+
+        const semanas = this._semana_avance().map(s => ({
+            ...s,
+            fec_ini: this.toDateTime(s.fec_ini),
+            fec_fin: this.toDateTime(s.fec_fin),
+        }));
+
+        return {
+            semana_avance: semanas,
+            modo,
+            validacion: 'SEMANA_AVANCE',
+            username
+        };
+    }
+
+
+    private buildSemanaCicloPayload(modo: 'N' | 'E', username: string) {
+
+        const semanas = this._semana_ciclo().map(s => ({
+            ...s,
+            fec_ini: this.toDateTime(s.fec_ini),
+            fec_fin: this.toDateTime(s.fec_fin),
+        }));
+
+        return {
+            semana_ciclo: semanas,
+            modo,
+            validacion: 'SEMANA_CICLO',
+            username
+        };
+    }
+
+    private buildMetodoMinadoPayload(modo: 'N' | 'E', username: string) {
+        return {
+            metodo_minado: this._metodo_minado(),
+            modo,
+            validacion: 'METODO_MINADO',
+            username
+        };
+    }
+
+
+    private buildExploracionEstandarPayload(modo: 'N' | 'E', username: string) {
+        return {
+            exploracion_extandar: this._exploracion_extandar(),
+            modo,
+            validacion: 'EXPLORACION_ESTANDAR',
+            username
+        };
+    }
+
+    private buildEstandarAvancePayload(modo: 'N' | 'E', username: string) {
+        return {
+            laboratorio_estandar: this._laboratorio_estandar(),
+            modo,
+            validacion: 'ESTANDAR_AVANCE',
+            username
+        };
+    }
+
+    ///ESTADO PARA LA VALIDACION
+    private _lastTabDos = '';
+    private formularios = new Map<string, FormGroup>();
+
+    // 1. Decir qué tab está activo
+    setLastTab(tab: string) {
+        this._lastTabDos = tab;
+    }
+
+    getLastTab(): string {
+        return this._lastTabDos;
+    }
+
+    // 2. Registrar formularios
+    registrarFormulario(tab: string, form: FormGroup) {
+        this.formularios.set(tab, form);
+    }
+
+    // 3. Validar SOLO el tab activo
+    validarTabActivo(): boolean {
+        const form = this.formularios.get(this._lastTabDos);
+
+        if (!form) return false;
+
+        form.markAllAsTouched();
+        return form.valid;
+    }
+
+
+
+
 
     ///COMPONENTE VISUALIZAR
     onVisualizarGlobal() {
@@ -248,6 +292,7 @@ export class PlaningCompartidoService {
         this.setCambios(false);
 
     }
+
 
 
 
@@ -469,6 +514,17 @@ export class PlaningCompartidoService {
 
     setPeriodo(anio: string, mes: string) {
         this._periodo.set({ anio, mes });
+    }
+
+    ///VOLVER A MOSTRAR LA DATA
+    private _visualizar = signal(0);
+
+    visualizar() {
+        this._visualizar.update(v => v + 1); // evento
+    }
+
+    visualizarSignal() {
+        return this._visualizar;
     }
 
 }

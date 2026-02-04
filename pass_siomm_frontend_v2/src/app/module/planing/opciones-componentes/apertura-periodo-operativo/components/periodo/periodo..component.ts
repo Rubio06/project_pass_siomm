@@ -243,19 +243,25 @@ export class AperPerOperComponent {
         return local.toISOString().split('T')[0];
     }
 
+
     ngOnInit() {
-        this.form.valueChanges.subscribe(val => {
-            const filas = this.form.getRawValue();
-            this.planingCompartido.setCierrePeriodo(filas, 'factor_operativo');
+
+        // 1️⃣ marcar el tab como activo (UNA VEZ)
+        this.planingCompartido.setLastTab('factor_operativo');
+
+        // 2️⃣ registrar el formulario (UNA VEZ)
+        this.planingCompartido.registrarFormulario(
+            'factor_operativo',
+            this.form
+        );
+
+        // 3️⃣ (opcional) solo para guardar data
+        this.form.valueChanges.subscribe(() => {
+            if (this.form.valid) {
+                this.planingCompartido.setCierrePeriodo(
+                    this.form.getRawValue(), 'factor_operativo'
+                );
+            }
         });
     }
-
-
-    // enviarCierrePeriodo() {
-    //     if (this.form.invalid) return;
-
-    //     const data = this.form.getRawValue();
-
-    //     this.planingCompartido.setCierrePeriodo(data, 'factor_operativo');
-    // }
 }

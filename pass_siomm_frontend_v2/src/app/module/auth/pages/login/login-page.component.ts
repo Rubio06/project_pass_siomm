@@ -3,10 +3,12 @@ import { AuthService } from '../../services/auth.service';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
+import { SpinnerService } from 'src/app/shared/components/spinner/service/spinner.service';
 
 @Component({
     selector: 'app-login',
-    imports: [ReactiveFormsModule, CommonModule],
+    imports: [ReactiveFormsModule, CommonModule, SpinnerComponent],
     templateUrl: './login-page.component.html',
     styleUrl: './login-page.component.css',
 })
@@ -15,6 +17,8 @@ export class LoginPageComponent {
     fb = inject(FormBuilder);
     hasError = signal(false);
     router = inject(Router);
+
+    spinnerService = inject(SpinnerService);
 
     loginForm = this.fb.group({
         username: ['pract_ir.sist.cmc', [Validators.required]],
@@ -30,18 +34,23 @@ export class LoginPageComponent {
 
         const { username, password } = this.loginForm.value;
 
+        // Mostrar spinner antes de la petición
+        // this.spinnerService.show();
+
         this.authServices.login(username!, password!).subscribe({
             next: (res: boolean) => {
+                // Ocultar spinner cuando termine
+                // this.spinnerService.hide();
+
                 if (res) {
                     this.router.navigate(['/menu-principal']);
                 } else {
                     this.hasError.set(true);
-                    setTimeout(() => {
-                        this.hasError.set(false);
-                    }, 3000);
+                    setTimeout(() => this.hasError.set(false), 3000);
                 }
             },
             error: (err) => {
+                // this.spinnerService.hide();
                 console.error('Error al autenticar', err);
             }
         });
