@@ -55,17 +55,17 @@ export class MetodoMinadoMainComponent {
 
     ind_calculo_dilucion = signal<any[]>([
         { value: 'C', label: 'Contrato' },
-        { value: null, label: 'O´hara' }
+        { value: 'O', label: "'O'Hara'" }
     ]);
 
     ind_calculo_leyes_min = signal<any[]>([
         { value: 'C', label: 'Contrato' },
-        { value: null, label: 'O´hara' }
+        { value: 'O', label: "'O'Hara'" }
     ]);
 
     ind_act = signal<any[]>([
         { value: 'S', label: 'Sí' },
-        { value: null, label: 'No' }
+        { value: 'N', label: 'No' }
     ]);
 
     private cd = inject(ChangeDetectorRef);
@@ -104,7 +104,7 @@ export class MetodoMinadoMainComponent {
                     cie_ano: [periodo?.anio],
                     cie_per: [periodo?.mes],
                     cod_metexp: [{ value: item.cod_metexp, disabled: true }],
-                    nom_metexp: [item.nom_metexp || ''],
+                    nom_metexp: [item.nom_metexp],
                     ind_calculo_dilucion: [item.ind_calculo_dilucion || ''],
                     ind_calculo_leyes_min: [item.ind_calculo_leyes_min || ''],
                     ind_act: [item.ind_act || ''],
@@ -136,7 +136,7 @@ export class MetodoMinadoMainComponent {
             cie_ano: [periodo?.anio, Validators.required],
             cie_per: [periodo?.mes, Validators.required],
             cod_metexp: ['', Validators.required], // 👈 CLAVE
-            nom_metexp: ['', Validators.required],
+            nom_metexp: [''],
             ind_calculo_dilucion: ['', Validators.required],
             ind_calculo_leyes_min: ['', Validators.required],
             ind_act: ['', Validators.required],

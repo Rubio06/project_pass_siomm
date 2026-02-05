@@ -56,6 +56,9 @@ export class SemanasAvanceMainComponent {
         effect(() => {
             const data = this.planingCompartido.dataRoutes();
             if (!data) return;
+            
+            const periodo = this.planingCompartido.periodo();
+            if (!periodo?.anio || !periodo?.mes) return;
 
             const semanas = data?.data?.semana_avance || [];
             this.loadSemanas(semanas);

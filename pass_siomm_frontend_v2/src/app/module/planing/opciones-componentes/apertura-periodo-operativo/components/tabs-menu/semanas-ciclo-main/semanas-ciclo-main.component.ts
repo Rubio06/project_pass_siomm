@@ -55,6 +55,9 @@ export class SemanasCicloMainComponent {
                 const data = this.planingCompartido.dataRoutes();
                 if (!data) return;
 
+                const periodo = this.planingCompartido.periodo();
+                if (!periodo?.anio || !periodo?.mes) return;
+
                 const tabSemanaCiclo = data?.data?.semana_ciclo || [];
                 this.loadSemanas(tabSemanaCiclo);
                 this.listaEnteros();
@@ -212,7 +215,9 @@ export class SemanasCicloMainComponent {
                 error: (err) => console.error('Error al cargar semanas:', err)
             });
     }
-
+    // hasPendingChanges(): boolean {
+    //     return this.planingCompartido.getCambios();
+    // }
 
     ngOnInit() {
         this.planingCompartido.setLastTab('semana_ciclo');

@@ -19,35 +19,6 @@ namespace pass_siomm_backend.Planeamiento.Controllers.PlaneamientoConroller
         }
 
 
-        [HttpGet("meses")]
-        public async Task<IActionResult> ObtenerMeses([FromQuery] string year)
-        {
-            try
-            {
-                var meses = await _AperPeriodoOperativoService.ObtenerMeses(year);
-                return Ok(meses);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Error al obtener los meses: {ex.Message}");
-            }
-        }
-
-        [HttpGet("anio")]
-        public async Task<IActionResult> ObtenerAnio()
-        {
-            try
-            {
-                var anio = await _AperPeriodoOperativoService.ObtenerAnio();
-                return Ok(anio);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Error al obtener los meses: {ex.Message}");
-            }
-        }
-
-
         [HttpGet("obtener-datos")]
         public async Task<IActionResult> FactorOperativo([FromQuery] string month, string anio)
         {

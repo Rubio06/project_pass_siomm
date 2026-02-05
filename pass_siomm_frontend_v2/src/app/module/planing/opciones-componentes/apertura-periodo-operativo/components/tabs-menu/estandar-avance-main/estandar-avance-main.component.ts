@@ -95,22 +95,24 @@ export class EstandarAvanceComponent {
             return;
         }
 
+        const valorDefecto = (val: any) => (val === null || val === '' ? '00.00' : val);
+
         const formArray = this.fb.array(
             data.map(item =>
                 this.fb.group({
                     cie_ano: [periodo?.anio, Validators.required],
                     cie_per: [periodo?.mes, Validators.required],
                     cod_tiplab: [{ value: item.cod_tiplab, disabled: true }],
-                    nro_lab_ancho: [item.nro_lab_ancho, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-                    nro_lab_altura: [item.nro_lab_altura, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-                    nro_lab_pieper: [item.nro_lab_pieper, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-                    nro_lab_broca: [item.nro_lab_broca, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-                    nro_lab_barcon: [item.nro_lab_barcon, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-                    nro_lab_barren: [item.nro_lab_barren, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-                    nro_lab_facpot: [item.nro_lab_facpot, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-                    nro_lab_fulmin: [item.nro_lab_fulmin, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-                    nro_lab_conect: [item.nro_lab_conect, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-                    nro_lab_punmar: [item.nro_lab_punmar, [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+                    nro_lab_ancho: [item.nro_lab_ancho, [Validators.pattern(/^\d+(\.\d+)?$/)]],
+                    nro_lab_altura: [item.nro_lab_altura, [Validators.pattern(/^\d+(\.\d+)?$/)]],
+                    nro_lab_pieper: [item.nro_lab_pieper, [ Validators.pattern(/^\d+(\.\d+)?$/)]],
+                    nro_lab_broca: [item.nro_lab_broca, [ Validators.pattern(/^\d+(\.\d+)?$/)]],
+                    nro_lab_barcon: [item.nro_lab_barcon, [ Validators.pattern(/^\d+(\.\d+)?$/)]],
+                    nro_lab_barren: [item.nro_lab_barren, [ Validators.pattern(/^\d+(\.\d+)?$/)]],
+                    nro_lab_facpot: [item.nro_lab_facpot, [ Validators.pattern(/^\d+(\.\d+)?$/)]],
+                    nro_lab_fulmin: [item.nro_lab_fulmin, [ Validators.pattern(/^\d+(\.\d+)?$/)]],
+                    nro_lab_conect: [item.nro_lab_conect, [ Validators.pattern(/^\d+(\.\d+)?$/)]],
+                    nro_lab_punmar: [item.nro_lab_punmar, [ Validators.pattern(/^\d+(\.\d+)?$/)]],
                     nro_lab_tabla: [item.nro_lab_tabla],
                     accion: [''],
                     esNuevo: [false]
@@ -133,17 +135,17 @@ export class EstandarAvanceComponent {
             cie_ano: [periodo?.anio, Validators.required],
             cie_per: [periodo?.mes, Validators.required],
             cod_tiplab: ['', Validators.required],
-            nro_lab_ancho: ['', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-            nro_lab_altura: ['', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-            nro_lab_pieper: ['', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-            nro_lab_broca: ['', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-            nro_lab_barcon: ['', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-            nro_lab_barren: ['', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-            nro_lab_facpot: ['', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-            nro_lab_fulmin: ['', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-            nro_lab_conect: ['', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-            nro_lab_punmar: ['', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-            nro_lab_tabla: ['', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+            nro_lab_ancho: ['', [Validators.pattern(/^\d+(\.\d+)?$/)]],
+            nro_lab_altura: ['', [Validators.pattern(/^\d+(\.\d+)?$/)]],
+            nro_lab_pieper: ['', [Validators.pattern(/^\d+(\.\d+)?$/)]],
+            nro_lab_broca: ['', [ Validators.pattern(/^\d+(\.\d+)?$/)]],
+            nro_lab_barcon: ['', [ Validators.pattern(/^\d+(\.\d+)?$/)]],
+            nro_lab_barren: ['', [ Validators.pattern(/^\d+(\.\d+)?$/)]],
+            nro_lab_facpot: ['', [ Validators.pattern(/^\d+(\.\d+)?$/)]],
+            nro_lab_fulmin: ['', [ Validators.pattern(/^\d+(\.\d+)?$/)]],
+            nro_lab_conect: ['', [ Validators.pattern(/^\d+(\.\d+)?$/)]],
+            nro_lab_punmar: ['', [ Validators.pattern(/^\d+(\.\d+)?$/)]],
+            nro_lab_tabla: ['', [ Validators.pattern(/^\d+(\.\d+)?$/)]],
             esNuevo: [true]
         });
 
@@ -219,12 +221,22 @@ export class EstandarAvanceComponent {
         this.planingCompartido.registrarFormulario('estandar_avance', this.myForm);
 
         this.myForm.valueChanges.subscribe(() => {
-            const filas = this.semanas.getRawValue();
+            // Tomamos los valores actuales
+            const filas = this.semanas.getRawValue().map((fila: any) => {
+                const filaProcesada: any = {};
 
-            this.planingCompartido.setLaboratorioEstandar(
-                filas,
-                'estandar_avance'
-            );
+                Object.keys(fila).forEach(key => {
+                    // Reemplazamos nulos, undefined o strings vacíos por '00.00'
+                    filaProcesada[key] = fila[key] === null || fila[key] === undefined || fila[key] === ''
+                        ? '00.00'
+                        : fila[key];
+                });
+
+                return filaProcesada;
+            });
+
+            // Enviamos filas ya procesadas
+            this.planingCompartido.setLaboratorioEstandar(filas, 'estandar_avance');
         });
     }
 

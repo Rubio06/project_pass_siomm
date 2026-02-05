@@ -44,7 +44,7 @@ export interface TabFormulario {
     templateUrl: './aper-periodo-operativo.component.html',
     styleUrl: './aper-periodo-operativo.component.css',
 })
-export class AperturPeriodoComponent implements CanComponentDeactivate {
+export class AperturPeriodoComponent {
     /* ============================
      * 🔹 INYECCIONES
      * ============================ */
@@ -121,7 +121,14 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
 
         this.planingCompartido.setFormBloqueadoEditar(true);
 
-        this.planingCompartido.limpiezaDataRoutes()
+        this.planingCompartido.limpiezaDataRoutes();
+
+
+        this.planingCompartido.setCambios(false);
+
+        this.planingCompartido.setFormFactorBloqueado(true); // 🔓
+        this.planingCompartido.setTablaBloqueada(true);
+
     }
 
     /* ============================
@@ -297,9 +304,9 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
 
     ////GUARD PARA CAMBIAR DE RUTAS
 
-    hasPendingChanges(): boolean {
-        return this.planingCompartido.getCambios();
-    }
+    // hasPendingChanges(): boolean {
+    //     return this.planingCompartido.getCambios();
+    // }
 
     botonesState = signal({
         nuevo: false,
@@ -341,21 +348,12 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
 
         this.modoBoton = 'N';
 
-
-
-
-        // this.planingCompartido.setFormBloqueadoEditar(false);
-
         this.planingCompartido.triggerResetPeriodo();
 
         this.planingCompartido.setFormFactorBloqueado(false); // 🔓
         this.planingCompartido.setTablaBloqueada(true);
 
         this.planingCompartido.limpiezaDataRoutes();
-
-        // this.planingCompartido.setModoEditar(false);
-
-        // this.planingCompartido.triggerResetFactorOperativo();
 
 
         this.planingCompartido.setCambios(true);
@@ -369,27 +367,13 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
             visualizar: false     // ✅
         });
 
-        // this.limpiarFormulario();
-
-        // const inicioControl = this.showData.get('fechaInicio');
-        // const finControl = this.showData.get('fechaFin');
-
-        // if (inicioControl) inicioControl.disable({ emitEvent: false });
-        // if (finControl) finControl.disable({ emitEvent: false });
-
     }
 
     onVisualizar() {
-        // this.planingCompartido.agregarFila(true);
-
         this.planingCompartido.onVisualizarGlobal();
         this.planingCompartido.setFormBloqueadoEditar(true);
-
-        // this.planingCompartido.notifyResetSemanas();
-        // this.planingCompartido.limpiezaBotonNuevo();
         this.planingCompartido.setAgregarRegistro(true);
 
-        // this.limpiarFormulario();
         this.planingCompartido.setCambios(false); // 👈 IMPORTANTE
 
 
@@ -412,6 +396,7 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
 
     public async onGuardarGuard() {
         try {
+
             await this.guardarDatos();  // ⏳ ahora sí espera
 
 
@@ -431,6 +416,8 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
 
     public async onVisualizarGuard() {
         // this.onVisualizar();
+
+
         this.showData.get('fechaInicio')?.enable();
         this.showData.get('fechaFin')?.enable();
         this.planingCompartido.setCambios(false);
@@ -438,9 +425,9 @@ export class AperturPeriodoComponent implements CanComponentDeactivate {
     }
 
 
-    tieneCambios(): boolean {
-        return this.planingCompartido.getCambios();
-    }
+    // tieneCambios(): boolean {
+    //     return this.planingCompartido.getCambios();
+    // }
 
 
     ngOnInit() {

@@ -32,8 +32,8 @@ export class FactorOperativoMainComponent {
     //     return this.planingCompartido.getCambios(); // revisa los cambios pendientes
     // }
 
-    tieneCambios(): boolean {
-        return this.planingCompartido.getCambios();
-    }
+    // tieneCambios(): boolean {
+    //     return this.planingCompartido.getCambios();
+    // }
 
 }

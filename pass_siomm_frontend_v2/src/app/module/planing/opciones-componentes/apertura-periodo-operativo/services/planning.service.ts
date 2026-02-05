@@ -16,7 +16,7 @@ export class PlanningService {
     utils = FormUtils;
 
     public getMonths(yearData: string): Observable<string[]> {
-        return this.planningHttp.get<string[]>(`${this.planingUrl}planeamiento/aper-periodo-operativo/meses`,
+        return this.planningHttp.get<string[]>(`${this.planingUrl}fechas-filtros/select-data/meses`,
             {
                 params: {
                     year: yearData
@@ -30,7 +30,7 @@ export class PlanningService {
 
     public getYear(): Observable<string[]> {
         return this.planningHttp.get<string[]>(
-            `${this.planingUrl}planeamiento/aper-periodo-operativo/anio`
+            `${this.planingUrl}fechas-filtros/select-data/anio`
         ).pipe(catchError(error => {
             this.utils.mensajeError(error.message)
             return of([]);

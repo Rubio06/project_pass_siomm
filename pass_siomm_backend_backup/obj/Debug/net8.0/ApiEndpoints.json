@@ -128,13 +128,29 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "pass_siomm_backend.Planeamiento.Controllers.PlaneamientoConroller.AperPerodioOperativoController",
+    "ContainingType": "pass_siomm_backend.Utilitarios.Fechas_Filtros.Controller.FiltrosFechasController",
     "Method": "ObtenerAnio",
-    "RelativePath": "planeamiento/aper-periodo-operativo/anio",
+    "RelativePath": "fechas-filtros/select-data/anio",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Utilitarios.Fechas_Filtros.Controller.FiltrosFechasController",
+    "Method": "ObtenerMeses",
+    "RelativePath": "fechas-filtros/select-data/meses",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "year",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
     "ReturnTypes": []
   },
   {
@@ -157,22 +173,6 @@
       },
       {
         "Name": "tipoConsulta",
-        "Type": "System.String",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "pass_siomm_backend.Planeamiento.Controllers.PlaneamientoConroller.AperPerodioOperativoController",
-    "Method": "ObtenerMeses",
-    "RelativePath": "planeamiento/aper-periodo-operativo/meses",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "year",
         "Type": "System.String",
         "IsRequired": false
       }

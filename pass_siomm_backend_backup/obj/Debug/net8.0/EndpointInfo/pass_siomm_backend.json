@@ -5,39 +5,6 @@
     "version": "1.0"
   },
   "paths": {
-    "/planeamiento/aper-periodo-operativo/meses": {
-      "get": {
-        "tags": [
-          "AperPerodioOperativo"
-        ],
-        "parameters": [
-          {
-            "name": "year",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/planeamiento/aper-periodo-operativo/anio": {
-      "get": {
-        "tags": [
-          "AperPerodioOperativo"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
     "/planeamiento/aper-periodo-operativo/obtener-datos": {
       "get": {
         "tags": [
@@ -196,6 +163,39 @@
             }
           }
         },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/fechas-filtros/select-data/meses": {
+      "get": {
+        "tags": [
+          "FiltrosFechas"
+        ],
+        "parameters": [
+          {
+            "name": "year",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/fechas-filtros/select-data/anio": {
+      "get": {
+        "tags": [
+          "FiltrosFechas"
+        ],
         "responses": {
           "200": {
             "description": "OK"

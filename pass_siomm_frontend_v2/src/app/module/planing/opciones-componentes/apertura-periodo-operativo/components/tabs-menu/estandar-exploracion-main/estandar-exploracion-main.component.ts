@@ -97,19 +97,19 @@ export class EstandarExploracionMainComponent {
         const formArray = this.fb.array(
             data.map(item =>
                 this.fb.group({
-                    cie_ano: [periodo?.anio, Validators.required],
-                    cie_per: [periodo?.mes, Validators.required],
-                    cod_zona: [{ value: item.cod_zona, disabled: true }, Validators.required],
-                    lab_pieper: [item.lab_pieper || '', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-                    lab_broca: [item.lab_broca || '', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-                    lab_barcon: [item.lab_barcon || '', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-                    lab_barren: [item.lab_barren || '', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-                    lab_facpot: [item.lab_facpot || '', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-                    lab_fulmin: [item.lab_fulmin || '', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-                    lab_conect: [item.lab_conect || '', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-                    lab_punmar: [item.lab_punmar || '', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-                    lab_tabla: [item.lab_tabla || '', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-                    lab_apr: [item.lab_apr || '', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+                    cie_ano: [periodo?.anio],
+                    cie_per: [periodo?.mes],
+                    cod_zona: [{ value: item.cod_zona, disabled: true }],
+                    lab_pieper: [item.lab_pieper, [Validators.pattern(/^\d+(\.\d+)?$/)]],
+                    lab_broca: [item.lab_broca, [Validators.pattern(/^\d+(\.\d+)?$/)]],
+                    lab_barcon: [item.lab_barcon, [Validators.pattern(/^\d+(\.\d+)?$/)]],
+                    lab_barren: [item.lab_barren, [Validators.pattern(/^\d+(\.\d+)?$/)]],
+                    lab_facpot: [item.lab_facpot, [Validators.pattern(/^\d+(\.\d+)?$/)]],
+                    lab_fulmin: [item.lab_fulmin, [Validators.pattern(/^\d+(\.\d+)?$/)]],
+                    lab_conect: [item.lab_conect, [Validators.pattern(/^\d+(\.\d+)?$/)]],
+                    lab_punmar: [item.lab_punmar, [Validators.pattern(/^\d+(\.\d+)?$/)]],
+                    lab_tabla: [item.lab_tabla, [Validators.pattern(/^\d+(\.\d+)?$/)]],
+                    lab_apr: [item.lab_apr, [Validators.pattern(/^\d+(\.\d+)?$/)]],
                     accion: [''],
                     esNuevo: [false]
                 })
@@ -130,19 +130,19 @@ export class EstandarExploracionMainComponent {
 
 
         const nuevoGrupo = this.fb.group({
-            cie_ano: [periodo?.anio, Validators.required],
-            cie_per: [periodo?.mes, Validators.required],
-            cod_zona: ['', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-            lab_pieper: ['', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-            lab_broca: ['', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-            lab_barcon: ['', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-            lab_barren: ['', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-            lab_facpot: ['', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-            lab_fulmin: ['', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-            lab_conect: ['', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-            lab_punmar: ['', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-            lab_tabla: ['', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-            lab_apr: ['', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+            cie_ano: [periodo?.anio],
+            cie_per: [periodo?.mes],
+            cod_zona: ['', [Validators.pattern(/^\d+(\.\d+)?$/)]],
+            lab_pieper: ['', [Validators.pattern(/^\d+(\.\d+)?$/)]],
+            lab_broca: ['', [Validators.pattern(/^\d+(\.\d+)?$/)]],
+            lab_barcon: ['', [Validators.pattern(/^\d+(\.\d+)?$/)]],
+            lab_barren: ['', [Validators.pattern(/^\d+(\.\d+)?$/)]],
+            lab_facpot: ['', [Validators.pattern(/^\d+(\.\d+)?$/)]],
+            lab_fulmin: ['', [Validators.pattern(/^\d+(\.\d+)?$/)]],
+            lab_conect: ['', [Validators.pattern(/^\d+(\.\d+)?$/)]],
+            lab_punmar: ['', [Validators.pattern(/^\d+(\.\d+)?$/)]],
+            lab_tabla: ['', [Validators.pattern(/^\d+(\.\d+)?$/)]],
+            lab_apr: ['', [Validators.pattern(/^\d+(\.\d+)?$/)]],
             esNuevo: [true]
         });
 
@@ -169,10 +169,29 @@ export class EstandarExploracionMainComponent {
 
         this.planingCompartido.registrarFormulario('exploracion_estandar', this.myForm);
 
-        this.myForm.valueChanges.subscribe(val => {
-            const filas = this.semanas.getRawValue();
+
+
+        this.myForm.valueChanges.subscribe(() => {
+            // Tomamos los valores actuales
+            const filas = this.semanas.getRawValue().map((fila: any) => {
+                const filaProcesada: any = {};
+
+                Object.keys(fila).forEach(key => {
+                    // Reemplazamos nulos, undefined o strings vacíos por '00.00'
+                    filaProcesada[key] = fila[key] === null || fila[key] === undefined || fila[key] === ''
+                        ? '00.00'
+                        : fila[key];
+                });
+
+                return filaProcesada;
+            });
+
+            // Enviamos filas ya procesadas
             this.planingCompartido.setExploracionExtandar(filas, 'exploracion_estandar');
         });
+
+
+
     }
 
     async eliminarFila(data: any, index: number) {

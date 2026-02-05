@@ -6,6 +6,7 @@ using pass_siomm_backend.Autenticacion.Service;
 using pass_siomm_backend.Conexion;
 using pass_siomm_backend.Planeamiento.Services.PlaneamientoService;
 using pass_siomm_backend.Rutas.Service;
+using pass_siomm_backend.Utilitarios.Fechas_Filtros.Servicio;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +21,10 @@ builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<RoutesService>();
 builder.Services.AddScoped<AperPeriodoOperativoServices>();
 builder.Services.AddScoped<SemanaAvanceServices>();
+
+
+builder.Services.AddScoped<FiltrosFechasService>();
+
 
 //CODIGO DEL TOKEN
 //builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

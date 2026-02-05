@@ -275,6 +275,63 @@ export class PlaningCompartidoService {
         return form.valid;
     }
 
+    validarTodosTabs(): boolean {
+        let esValido = true;
+
+        this.formularios.forEach(form => {
+            if (!form) return;
+
+            form.markAllAsTouched();
+            if (!form.valid) {
+                esValido = false;
+            }
+        });
+
+        return esValido;
+    }
+
+    todosLosTabsSonValidos(): boolean {
+        for (const form of this.formularios.values()) {
+            if (!form) continue;
+
+            if (form.disabled) continue;
+
+            if (!form.valid) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /// GUARD PARA MI SERVICIO COMPARTIDO
+    private guardarHandler?: () => Promise<void> | void;
+    private visualizarHandler?: () => Promise<void> | void;
+
+
+    async ejecutarGuardar() {
+        if (this.guardarHandler) {
+            await this.guardarHandler();
+        }
+    }
+
+    registrarGuardar(fn: () => Promise<void> | void) {
+        this.guardarHandler = fn;
+    }
+
+
+    async ejecutarVisualizar() {
+        if (this.visualizarHandler) {
+            await this.visualizarHandler();
+        }
+    }
+
+    registrarVisualizar(fn: () => Promise<void> | void) {
+        this.visualizarHandler = fn;
+    }
+
+
+
 
 
 
@@ -344,19 +401,6 @@ export class PlaningCompartidoService {
     // ===============================
 
 
-    // private _resetSemanas = signal(false);
-    // readonly resetSemanas = this._resetSemanas.asReadonly();
-
-    // notifyResetSemanas() {
-    //     this._resetSemanas.set(true);
-    // }
-
-    // resetSemanasDone() {
-    //     this._resetSemanas.set(false);
-    // }
-
-
-
 
     ////////PERMANECE BLOQUEADO DOS INPUTS EN PERIODO
     private _modoEditar = signal(false);
@@ -387,32 +431,6 @@ export class PlaningCompartidoService {
         this._dataRoutes.set({});
     }
 
-    /// GUARD PARA MI SERVICIO COMPARTIDO
-    private guardarHandler?: () => Promise<void> | void;
-    private visualizarHandler?: () => Promise<void> | void;
-
-
-    registrarGuardar(fn: () => Promise<void> | void) {
-        this.guardarHandler = fn;
-    }
-
-    async ejecutarGuardar() {
-        if (this.guardarHandler) {
-            await this.guardarHandler();
-        }
-    }
-
-
-    registrarVisualizar(fn: () => Promise<void> | void) {
-        this.visualizarHandler = fn;
-    }
-
-
-    async ejecutarVisualizar() {
-        if (this.visualizarHandler) {
-            await this.visualizarHandler();
-        }
-    }
 
 
 

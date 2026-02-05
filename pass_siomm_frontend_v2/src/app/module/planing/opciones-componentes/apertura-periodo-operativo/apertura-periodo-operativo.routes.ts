@@ -16,20 +16,19 @@ export const aperturaPeriodoOperativoRouter: Routes = [
     {
         path: '',
         component: AperturPeriodoComponent,
-        canDeactivate: [PendingGeneralGuard],
-
+        data: { noReuse: true },
         children: [
             {
                 path: '',
                 redirectTo: 'factor-operativo',
                 pathMatch: 'full',  // ⚠️ Crucial: Asegura que solo redirija si el path es EXACTAMENTE vacío.
             },
-            { path: 'factor-operativo', component: FactorOperativoMainComponent, canDeactivate: [PendingGeneralGuard]},
-            { path: 'estandar-avance', component: EstandarAvanceComponent, canDeactivate: [PendingGeneralGuard] },
-            { path: 'estandar-exploracion', component: EstandarExploracionMainComponent, canDeactivate: [PendingGeneralGuard] },
-            { path: 'metodo-minado', component: MetodoMinadoMainComponent, canDeactivate: [PendingGeneralGuard] },
-            { path: 'semanas-avance', component: SemanasAvanceMainComponent, canDeactivate: [PendingGeneralGuard] },
-            { path: 'semanas-ciclo', component: SemanasCicloMainComponent, canDeactivate: [PendingGeneralGuard] },
+            { path: 'factor-operativo', component: FactorOperativoMainComponent, canDeactivate: [PendingGeneralGuard], data: { noReuse: true } },
+            { path: 'estandar-avance', component: EstandarAvanceComponent, canDeactivate: [PendingGeneralGuard], data: { noReuse: true } },
+            { path: 'estandar-exploracion', component: EstandarExploracionMainComponent, canDeactivate: [PendingGeneralGuard], data: { noReuse: true } },
+            { path: 'metodo-minado', component: MetodoMinadoMainComponent, canDeactivate: [PendingGeneralGuard], data: { noReuse: true } },
+            { path: 'semanas-avance', component: SemanasAvanceMainComponent, canDeactivate: [PendingGeneralGuard], data: { noReuse: true } },
+            { path: 'semanas-ciclo', component: SemanasCicloMainComponent, canDeactivate: [PendingGeneralGuard], data: { noReuse: true } },
         ]
     }
 ];

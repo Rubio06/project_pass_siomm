@@ -19,70 +19,46 @@ export class PendingGeneralGuard implements CanDeactivate<CanComponentDeactivate
     planingCompartido = inject(PlaningCompartidoService);
     formsUtils = FormUtils;
 
-    async canDeactivate(component: CanComponentDeactivate): Promise<boolean> {
 
-        // 1️⃣ Validar el formulario del tab activo
-        // const esValido = this.planingCompartido.validarTabActivo();
-        // if (!esValido) {
-        //     this.formsUtils.errorGuardar('El formulario tiene errores, revísalos');
-        //     return false; // ❌ bloquea navegación
-        // }
 
-        // 2️⃣ Revisar si hay cambios
-        if (!this.planingCompartido.getCambios()) return true;
+    async canDeactivate(
+        component: any,
+        currentRoute: any,
+        currentState: any,
+        nextState?: any
+    ): Promise<boolean> {
 
-        // 3️⃣ Preguntar si quiere guardar
-        const guardar = await this.formsUtils.confirmarDescartarCambios();
-        if (guardar) {
+        // 👉 Si NO hay cambios → salir siempre
+        // 👉 Sin cambios, salir libre
+        if (!this.planingCompartido.getCambios()) {
+            return true;
+        }
+
+        const currentUrl = currentState.url;
+        const nextUrl = nextState?.url ?? '';
+
+        // ✅ CAMBIO DE TAB (sigue dentro del padre)
+        if (
+            currentUrl.includes('apertura_de_periodo_operativo') &&
+            !nextUrl.includes('apertura_de_periodo_operativo')
+        ) {
+            return true; // ❌ NO mostrar popup
+        }
+
+        // 🚨 SALIENDO del componente padre
+        const confirmar = await FormUtils.confirmarDescartarCambios();
+
+        if (confirmar) {
             await this.planingCompartido.ejecutarGuardar();
         } else {
             await this.planingCompartido.ejecutarVisualizar();
             this.planingCompartido.setFormFactorBloqueado(true);
             this.planingCompartido.setTablaBloqueada(true);
             this.planingCompartido.setAgregarRegistro(true);
+
         }
 
-        return true; // ✅ permitir navegación
+        return true;
     }
+
 }
-
-// export class PendingChangesGuard implements CanDeactivate<any> {
-
-//     planingCompartido = inject(PlaningCompartidoService);
-
-//     async canDeactivate(): Promise<boolean> {
-
-//         if (!this.planingCompartido.getCambios()) {
-//             return true;
-//         }
-
-//         const confirmar = confirm('¿Desea guardar los cambios?');
-
-//         if (!confirmar) return false;
-
-//         await this.planingCompartido.ejecutarOnGuardar();
-
-//         return true;
-//     }
-// }
-
-
-// export class PendingTabsGuard implements CanDeactivate<object> {
-
-//     planingCompartido = inject(PlaningCompartidoService);
-
-//     async canDeactivate(): Promise<boolean> {
-
-//         if (!this.planingCompartido.getCambios()) return true;
-
-//         const confirmar = confirm('¿Desea guardar los cambios?');
-
-//         if (!confirmar) return false;
-
-//         await this.planingCompartido.guardarTodoCompleto();
-
-//         this.planingCompartido.setCambios(false);
-
-//         return true;
-//     }
-// }

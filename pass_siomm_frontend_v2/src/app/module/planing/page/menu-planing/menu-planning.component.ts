@@ -8,5 +8,5 @@ import { RouterOutlet } from '@angular/router';
     styleUrl: './menu-planning.component.css',
 })
 export class menuPlaningComponent {
-
+    
 }
