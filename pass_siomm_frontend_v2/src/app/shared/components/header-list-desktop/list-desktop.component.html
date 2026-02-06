@@ -15,6 +15,7 @@
             </span>
         </button>
 
+        <!-- para que funcione en las rutas deben de ser iguales a lo que viene de la bd -->
         <!-- SUBMENÚ INDENTADO -->
         <ul class="submenu ml-8 pl-2 border-l-2 border-[#033351]/30
                                        bg-[#E6F2ED] rounded w-55
@@ -25,13 +26,10 @@
 
 
             @for (subRuta of ruta.rutas_secundarias; track $index) {
-            <li routerLinkActive="router-link" (click)="closeDrawer()" [routerLinkActiveOptions]="{ exact: false }"
-                [routerLink]="['planeamiento', toUrl(subRuta.nom_ruta_secun)]" class="flex gap-2 p-1 text-xs font-bold
-         transition-colors duration-200 cursor-pointer
-         text-gray-700 hover:text-white
-         hover:bg-[#03335169] rounded">
-                {{ subRuta.nom_ruta_secun | replaceUnderscore }}
-            </li>
+                <li routerLinkActive="router-link" (click)="closeDrawer()" [routerLinkActiveOptions]="{ exact: false }"
+                    [routerLink]="['planeamiento', toUrl(subRuta.nom_ruta_secun)]" class="flex gap-2 p-1 text-xs font-bold transition-colors duration-200 cursor-pointer text-gray-700 hover:text-white hover:bg-[#03335169] rounded">
+                    {{ subRuta.nom_ruta_secun | replaceUnderscore }}
+                </li>
             }
         </ul>
 

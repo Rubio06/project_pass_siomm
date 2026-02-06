@@ -16,3 +16,19 @@
 .animate-fadeIn {
     animation: fadeIn 0.4s ease-in-out;
 }
+
+
+@layer components {
+    .select-base {
+        @apply  select-sm mx-auto select text-sm font-medium outline-none flex items-center border border-gray-300
+                rounded-lg px-2 py-1 bg-gray-50 shadow-sm hover:shadow-md transition-shadow duration-300 ease-in-out focus-within:border-[#033351]
+                focus-within:ring-2 focus-within:ring-[rgb(3,102,157)] w-75;
+    }
+}
+
+/* select-sm mx-auto select text-sm font-medium outline-none flex items-center border border-gray-300
+rounded-lg px-2 py-1 bg-gray-50 shadow-sm hover:shadow-md transition-shadow duration-300 ease-in-out focus-within:border-[#033351]
+focus-within:ring-1 focus-within:ring-[rgb(3,102,157)] focus-within:ring-opacity-40 w-75 */
+
+
+

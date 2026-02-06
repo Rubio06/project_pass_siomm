@@ -16,6 +16,15 @@ export const planingMainRouter: Routes = [
                 data: { noReuse: true } // 👈 Esto indica que la ruta general se debe destruir
 
             },
+            {
+                path: 'programa_mensual_de_labores',
+                loadChildren: () =>
+                    import('./opciones-componentes/programa-mensual-labores/programama-mensua.routes')
+                        .then(m => m.default),
+
+                data: { noReuse: true } // 👈 Esto indica que la ruta general se debe destruir
+
+            },
         ]
     }
 ];

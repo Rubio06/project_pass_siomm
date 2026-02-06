@@ -1,18 +1,16 @@
 import { catchError } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject, Input, signal, ViewChild, WritableSignal } from '@angular/core';
+import { Component, inject, signal, ViewChild } from '@angular/core';
 import { PlanningService } from '../../services/planning.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CanDeactivate, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { SemanasAvanceMainService } from '../../services/semanas-avance-main/semanas-avance-main.service';
 import { TransfornMonthPipe } from 'src/app/core/pipe/transforn-month-pipe';
 import { PeriodoDestino, PlanningData } from '../../interface/aper-per-oper.interface';
 import { PlaningCompartidoService } from '../../services/planing-compartido.service';
 import { FormUtils } from 'src/app/utils/form-utils';
-import Swal from 'sweetalert2';
 import { ModalPeriodo } from "./modal-periodo/modal-periodo";
-import { CanComponentDeactivate } from 'src/app/core/guards/cambios-guard/cambios-pendientes.guard';
-import { AperPerOperComponent } from '../../components/periodo/periodo..component';
+import { MostrarDatosFiltrosService } from 'src/app/module/planing/service/mostrar-datos-filtros.service';
 
 
 export enum ViewMode {
@@ -40,7 +38,7 @@ export interface TabFormulario {
 
 @Component({
     selector: 'app-planning-main',
-    imports: [CommonModule, RouterOutlet, TransfornMonthPipe, RouterLink, ReactiveFormsModule, RouterLinkActive, ModalPeriodo],
+    imports: [CommonModule, RouterOutlet, RouterLink, ReactiveFormsModule, RouterLinkActive, ModalPeriodo, TransfornMonthPipe],
     templateUrl: './aper-periodo-operativo.component.html',
     styleUrl: './aper-periodo-operativo.component.css',
 })
@@ -52,6 +50,8 @@ export class AperturPeriodoComponent {
     private planingCompartido = inject(PlaningCompartidoService);
     private semanasAvanceService = inject(SemanasAvanceMainService);
     private fb = inject(FormBuilder);
+
+    private mostrarDatosFiltrosService = inject(MostrarDatosFiltrosService)
 
     @ViewChild(ModalPeriodo)
     child!: ModalPeriodo;
@@ -135,7 +135,7 @@ export class AperturPeriodoComponent {
      * 🔹 CARGA DE DATOS
      * ============================ */
     private cargarAnios(): void {
-        this.planingService.getYear().subscribe({
+        this.mostrarDatosFiltrosService.getYear().subscribe({
             next: years => {
                 if (!years.length) {
                     this.hasError.set('No se encontraron rutas disponibles.');
@@ -150,7 +150,7 @@ export class AperturPeriodoComponent {
     }
 
     private cargarMeses(year: string): void {
-        this.planingService.getMonths(year).subscribe({
+        this.mostrarDatosFiltrosService.getMonths(year).subscribe({
             next: months => {
                 if (!months.length) {
 
@@ -182,6 +182,7 @@ export class AperturPeriodoComponent {
      * 🔹 HANDLERS
      * ============================ */
 
+
     sendYear() {
 
         this.showData.get('fechaFin')?.valueChanges.subscribe((month) => {
@@ -209,7 +210,6 @@ export class AperturPeriodoComponent {
                 this.cargarPeriodo(mesSeleccionado, anioSeleccionado); // Carga datos del periodo
             }
         });
-
     }
 
     /* ============================

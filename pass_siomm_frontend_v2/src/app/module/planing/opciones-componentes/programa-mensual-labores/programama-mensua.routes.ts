@@ -1,29 +1,18 @@
 import { Routes } from "@angular/router";
+import { ListaProgramaMensualLaboresComponent } from "./pages/lista-programa-mensual-labores/lista-programa-mensual-labores.component";
 
 export const programaMensualRouter: Routes = [
     {
         path: '',
-        children: [
-            {
-                path: 'basic',
-                title: 'Basicos',
-                // component: BasicPageComponent
-            },
-            {
-                path: 'dynamic',
-                title: 'Dinamicos',
-                // component: DynamicPageComponent
-            },
-            {
-                path: 'switches',
-                title: 'Switches',
-                // component: SwitechsPagesComponent
-            },
-            {
-                path: '**',
-                redirectTo: 'basic'
-            }
-        ]
+        component: ListaProgramaMensualLaboresComponent,
+
+        // children: [
+        //     {
+        //         path: '',
+        //         redirectTo: 'programa-mensual',
+        //         pathMatch: 'full',  // ⚠️ Crucial: Asegura que solo redirija si el path es EXACTAMENTE vacío.
+        //     },
+        // ]
     }
 ];
 export default programaMensualRouter;

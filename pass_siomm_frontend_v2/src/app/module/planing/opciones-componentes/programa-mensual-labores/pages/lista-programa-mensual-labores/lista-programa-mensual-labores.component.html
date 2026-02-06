@@ -1,1 +1,94 @@
-<p>lista-programa-mensual-labores works!</p>
+<div class="container mx-auto">
+
+    <!-- Filtros Generales  -->
+    <form [formGroup]="myForm">
+        <div class="m-5 p-5 rounded-xl border border-gray-200 shadow-sm">
+            <app-titulo-modulo [titulo]="'Filtro Periodo Programa Mensual'" />
+            <div class="w-75 flex gap-4">
+                <div class="flex flex-col gap-1">
+                    <app-label-filtro [filtroLabel]="'Seleccione el Anio'" />
+                    <select formControlName="anio" class="select-base">
+                        <app-filtro-anio [listaAnio]="listaAnio()" />
+                    </select>
+                </div>
+                <div class="flex flex-col gap-1">
+                    <app-label-filtro [filtroLabel]="'Seleccione el Mes'" />
+                    <select formControlName="mes" class="select-base">
+                        <app-filtro-mes [listaMeses]="listaMeses()" />
+                    </select>
+
+                </div>
+            </div>
+        </div>
+        <!-- Lista programa mensual de labores -->
+
+
+        <div class="m-5 p-5 rounded-xl">
+            <h3 class="text-lg font-bold mb-4 pb-2 border-b border-gray-300
+                flex items-center gap-2 text-[#013B5C]">
+
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                    stroke="currentColor" class="w-6 h-6 text-[#013B5C]">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M12 3c2.757 0 5.23 1.107 7.071 2.949A10.437 10.437 0 0 1 21 12c0 2.757-1.107 5.23-2.949 7.071A10.437 10.437 0 0 1 12 21c-2.757 0-5.23-1.107-7.071-2.949A10.437 10.437 0 0 1 3 12c0-2.757 1.107-5.23 2.949-7.071A10.437 10.437 0 0 1 12 3Z" />
+                </svg>
+                Acciones – Programa Mensual
+            </h3>
+
+
+            <div class="flex justify-between items-center">
+                <div class="flex flex-wrap items-center gap-4">
+                    @for (btn of botones(); track $index) {
+                        <app-botones [texto]="btn.texto" (accion)="onAccion(btn.accion)" [variant]="btn.variant" />
+                    }
+                </div>
+
+                <div class="flex items-center gap-2 font-medium text-gray-700">
+                    <span class="w-4 h-4 rounded-full" [ngClass]="botoColor()"></span>
+                    <span>{{ botoPresionado() }}</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Lista tabla programa mensual -->
+
+        <div class="m-5 flex justify-between">
+            <h3 class="text-lg font-bold mb-4 pb-2
+                flex items-center gap-2 text-[#013B5C]">
+                <span class="w-1 h-5"></span>
+                Lista de Labores Programa Mensual
+            </h3>
+
+            <h3 class="font-semibold mb-4 pb-2
+                flex items-center gap-2 text-[#013B5C]">
+                Lista de Programa Mensual: 01
+            </h3>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="table table-zebra w-full">
+                <thead>
+                    <tr>
+                        <th class="border-b-2 border-black px-4 py-2 text-[#013B5C]">Icono</th>
+                        <th class="border-b-2 border-black px-4 py-2 text-[#013B5C]">Mes</th>
+                        <th class="border-b-2 border-black px-4 py-2 text-[#013B5C]">Nro. Prog</th>
+                        <th class="border-b-2 border-black px-4 py-2 text-[#013B5C]">Fecha Emisión</th>
+                        <th class="border-b-2 border-black px-4 py-2 text-[#013B5C]">Zona</th>
+                        <th class="border-b-2 border-black px-4 py-2 text-[#013B5C]">Contrata</th>
+                        <th class="border-b-2 border-black px-4 py-2 text-[#013B5C]">Estado</th>
+                        <th class="border-b-2 border-black px-4 py-2 text-[#013B5C]">Fecha Aprobación</th>
+                        <th class="border-b-2 border-black px-4 py-2 text-[#013B5C]">Estado Pre-Aprobación</th>
+                        <th class="border-b-2 border-black px-4 py-2 text-[#013B5C]">Fecha Aprob. Mina</th>
+                        <th class="border-b-2 border-black px-4 py-2 text-[#013B5C]">Aprob. Mina</th>
+                        <th class="border-b-2 border-black px-4 py-2 text-[#013B5C]">Fecha Aprob. Mina</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+
+    </form>
+</div>

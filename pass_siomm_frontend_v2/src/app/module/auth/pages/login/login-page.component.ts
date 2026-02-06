@@ -21,8 +21,8 @@ export class LoginPageComponent {
     spinnerService = inject(SpinnerService);
 
     loginForm = this.fb.group({
-        username: ['', [Validators.required]],
-        password: ['', [Validators.required]]
+        username: ['pract_ir.sist.cmc', [Validators.required]],
+        password: ['camuz351U', [Validators.required]]
     });
 
     onSubmit() {

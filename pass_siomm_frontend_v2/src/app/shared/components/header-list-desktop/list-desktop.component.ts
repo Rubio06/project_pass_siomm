@@ -87,6 +87,7 @@ export class ListDesktopComponent {
         // this.planingService.setBloqueoForm(true);  // ← SIEMPRE desbloquear
         // this.planingService.setData([]);
         // console.log("toke la ruta")
+
         return text
             .toLowerCase()
             .normalize("NFD").replace(/[\u0300-\u036f]/g, "")  // quita acentos

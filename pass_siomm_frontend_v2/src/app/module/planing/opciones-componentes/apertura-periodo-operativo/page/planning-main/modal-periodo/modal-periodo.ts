@@ -7,6 +7,7 @@ import { PlanningService } from '../../../services/planning.service';
 import { TransfornMonthPipe } from 'src/app/core/pipe/transforn-month-pipe';
 import { startWith } from 'rxjs';
 import { DatePipe } from '@angular/common';
+import { MostrarDatosFiltrosService } from 'src/app/module/planing/service/mostrar-datos-filtros.service';
 
 @Component({
     selector: 'app-modal-periodo',
@@ -19,6 +20,8 @@ export class ModalPeriodo {
     aceptar = output<PeriodoDestino>();
     private planingCompartido = inject(PlaningCompartidoService);
     formsUtils = FormUtils;
+
+    private ostrarDatosFiltrosService = inject(MostrarDatosFiltrosService);
 
     private planingService = inject(PlanningService);
 
@@ -170,7 +173,7 @@ export class ModalPeriodo {
 
 
     private cargarMeses(year: string): void {
-        this.planingService.getMonths(year).subscribe({
+        this.ostrarDatosFiltrosService.getMonths(year).subscribe({
             next: (months) => {
 
                 this.planingCompartido.setMesesBloqueados(months);

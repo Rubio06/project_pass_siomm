@@ -15,27 +15,27 @@ export class PlanningService {
     private planingUrl = environment.baseUrl;
     utils = FormUtils;
 
-    public getMonths(yearData: string): Observable<string[]> {
-        return this.planningHttp.get<string[]>(`${this.planingUrl}fechas-filtros/select-data/meses`,
-            {
-                params: {
-                    year: yearData
-                }
-            }
-        ).pipe(catchError(error => {
-            this.utils.mensajeError(error.message)
-            return of([]);
-        }));
-    }
+    // public getMonths(yearData: string): Observable<string[]> {
+    //     return this.planningHttp.get<string[]>(`${this.planingUrl}fechas-filtros/select-data/meses`,
+    //         {
+    //             params: {
+    //                 year: yearData
+    //             }
+    //         }
+    //     ).pipe(catchError(error => {
+    //         this.utils.mensajeError(error.message)
+    //         return of([]);
+    //     }));
+    // }
 
-    public getYear(): Observable<string[]> {
-        return this.planningHttp.get<string[]>(
-            `${this.planingUrl}fechas-filtros/select-data/anio`
-        ).pipe(catchError(error => {
-            this.utils.mensajeError(error.message)
-            return of([]);
-        }));
-    }
+    // public getYear(): Observable<string[]> {
+    //     return this.planningHttp.get<string[]>(
+    //         `${this.planingUrl}fechas-filtros/select-data/anio`
+    //     ).pipe(catchError(error => {
+    //         this.utils.mensajeError(error.message)
+    //         return of([]);
+    //     }));
+    // }
 
     public getDate(dataMes: string, dataAnio: string): Observable<any[]> {
         return this.planningHttp.get<PlanningData[]>(`${this.planingUrl}planeamiento/aper-periodo-operativo/obtener-datos`,

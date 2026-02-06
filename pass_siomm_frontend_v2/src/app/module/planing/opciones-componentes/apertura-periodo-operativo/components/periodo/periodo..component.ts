@@ -4,6 +4,7 @@ import { PlanningService } from '../../services/planning.service';
 import { FormUtils } from 'src/app/utils/form-utils';
 import { SemanasAvanceMainService } from '../../services/semanas-avance-main/semanas-avance-main.service';
 import { PlaningCompartidoService } from '../../services/planing-compartido.service';
+import { MostrarDatosFiltrosService } from 'src/app/module/planing/service/mostrar-datos-filtros.service';
 
 
 interface fieldName {
@@ -76,6 +77,7 @@ export class AperPerOperComponent {
 
     readonly camposBloqueadosEnEditar = ['cie_ano', 'cie_per'];
     arregloMeses = signal<string[]>([]);
+    private mostrarDatosFiltrosService = inject(MostrarDatosFiltrosService)
 
 
     constructor() {
@@ -204,7 +206,7 @@ export class AperPerOperComponent {
     }
 
     private cargarMeses(year: string): void {
-        this.planingService.getMonths(year).subscribe({
+        this.mostrarDatosFiltrosService.getMonths(year).subscribe({
             next: months => {
                 // this.planingCompartido.setMesesBloqueados(months);
 
@@ -217,7 +219,7 @@ export class AperPerOperComponent {
 
 
     public getYear(): void {
-        this.planingService.getYear().subscribe({
+        this.mostrarDatosFiltrosService.getYear().subscribe({
             next: (data: string[]) => {
 
                 const anios = data.includes(this.anio)

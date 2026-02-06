@@ -1,0 +1,4 @@
+<option disabled value="">Selecciona un mes</option>
+@for (item of listaMeses(); track $index) {
+    <option [value]="item">{{ item }}</option>
+}
