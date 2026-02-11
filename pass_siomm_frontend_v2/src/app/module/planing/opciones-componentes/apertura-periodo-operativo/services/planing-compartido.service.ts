@@ -160,11 +160,6 @@ export class PlaningCompartidoService {
                 throw new Error('Tab no soportado para guardado');
         }
 
-        console.log(
-            'Mis datos enviados son:\n',
-            JSON.stringify(payload, null, 2)
-        );
-
         return this.http.post(
             `${this.planingUrl}aper-periodo-operativo/semana/guardar-datos`,
             payload
@@ -417,8 +412,6 @@ export class PlaningCompartidoService {
     public readonly dataRoutes: Signal<any> = this._dataRoutes.asReadonly();
 
     setData(data: object): void {
-
-        console.log(data)
         this._dataRoutes.set(data);
     }
 
@@ -544,5 +537,17 @@ export class PlaningCompartidoService {
     visualizarSignal() {
         return this._visualizar;
     }
+
+    /// BLOQUE SELECTS MES Y ANIO
+    bloqueoEditar = signal<boolean>(false);
+
+
+    // activarBloqueo() {
+    //     this.bloqueoEditar.set(true);
+    // }
+
+    // desactivarBloqueo() {
+    //     this.bloqueoEditar.set(false);
+    // }
 
 }

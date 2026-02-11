@@ -1,6 +1,6 @@
 import { catchError } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { Component, inject, signal, ViewChild } from '@angular/core';
+import { Component, computed, effect, inject, signal, ViewChild } from '@angular/core';
 import { PlanningService } from '../../services/planning.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
@@ -95,11 +95,23 @@ export class AperturPeriodoComponent {
     /* ============================
      * 🔹 CONSTRUCTOR
      * ============================ */
+
+
     constructor() {
         this.cargarAnios();
 
         this.sendYear();
         this.sendMonth();
+
+        effect(() => {
+            const bloqueo = this.planingCompartido.bloqueoEditar();
+
+            if (bloqueo) {
+                this.showData.disable({ emitEvent: false });
+            } else {
+                this.showData.enable({ emitEvent: false });
+            }
+        });
     }
 
 
@@ -139,8 +151,6 @@ export class AperturPeriodoComponent {
             next: years => {
                 if (!years.length) {
                     this.hasError.set('No se encontraron rutas disponibles.');
-                    // console.log(years)
-
                     return;
                 }
                 this._years.set(years);
@@ -181,11 +191,13 @@ export class AperturPeriodoComponent {
     /* ============================
      * 🔹 HANDLERS
      * ============================ */
+    // this.formsUtils.mensajeSelect();
 
 
     sendYear() {
 
         this.showData.get('fechaFin')?.valueChanges.subscribe((month) => {
+
             if (!month) return;
 
             const anio = this.showData.get('fechaInicio')?.value || '';
@@ -204,6 +216,7 @@ export class AperturPeriodoComponent {
 
             // Obtener el mes seleccionado
             const mesSeleccionado = this.showData.get('fechaFin')?.value;
+
 
 
             if (mesSeleccionado) {
@@ -258,10 +271,6 @@ export class AperturPeriodoComponent {
             ...destino,
             username: username ?? ''
         };
-
-
-        console.log("los datos de copiar peridio son : " + JSON.stringify(payload));
-
 
 
         this.semanasAvanceService.copiarPeriodo(payload).subscribe({
@@ -333,6 +342,9 @@ export class AperturPeriodoComponent {
 
         this.planingCompartido.setModoEditar(true);
 
+
+        this.planingCompartido.bloqueoEditar.set(true);
+
         this.planingCompartido.setCambios(true); // 👈 IMPORTANTE
 
         this.setBotonesState({
@@ -354,6 +366,7 @@ export class AperturPeriodoComponent {
         this.planingCompartido.setTablaBloqueada(true);
 
         this.planingCompartido.limpiezaDataRoutes();
+        this.planingCompartido.bloqueoEditar.set(false);
 
 
         this.planingCompartido.setCambios(true);
@@ -375,6 +388,7 @@ export class AperturPeriodoComponent {
         this.planingCompartido.setAgregarRegistro(true);
 
         this.planingCompartido.setCambios(false); // 👈 IMPORTANTE
+        this.planingCompartido.bloqueoEditar.set(false);
 
 
         this.onVisualizarGuard();
@@ -474,6 +488,8 @@ export class AperturPeriodoComponent {
                 this.formsUtils.mostrarExito();
                 this.planingCompartido.setAgregarRegistro(true);
                 this.onVisualizarGuard();
+
+                this.planingCompartido.bloqueoEditar.set(false);
 
 
                 this.setBotonesState({

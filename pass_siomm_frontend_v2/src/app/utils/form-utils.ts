@@ -1,6 +1,6 @@
 import { PlaningCompartidoService } from './../module/planing/opciones-componentes/apertura-periodo-operativo/services/planing-compartido.service';
 import { effect, inject } from '@angular/core';
-import { AbstractControl, FormGroup, ValidationErrors } from '@angular/forms';
+import { AbstractControl, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
 import Swal from 'sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css';
 
@@ -209,6 +209,15 @@ export class FormUtils {
         });
     }
 
+    static mensajeSelect() {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Debe de terminar la edición para cambiar de mes.',
+            confirmButtonColor: '#013B5C'
+        });
+    }
+
 
     static errorGuardar(message: string) {
         return Swal.fire({
@@ -286,7 +295,8 @@ export class FormUtils {
             '/^[1-7]$/': 'Solo se permiten semanas del 1 al 7',
             '/^(19\\d{2}|20\\d{2}|2100)$/': 'Debe ingresar un año válido ejem.(2025)',
             '/^(0[1-9]|[12]\\d|3[01])\\/(0[1-9]|1[0-2])\\/(19\\d{2}|20\\d{2}|2100)$/': 'Debe ingresar fecha valida ejem.(22/12/2025)',
-            '/^\\d+(\\.\\d+)?$/': 'El campo solo acepta numeros o decimales'
+            '/^\\d+(\\.\\d+)?$/': 'El campo solo acepta numeros o decimales',
+            '/^[A-Z]$/': 'Debe colocar una sola letra en mayuscula.'
         };
         return patterns[pattern] ?? 'Formato inválido';
     }
@@ -305,6 +315,36 @@ export class FormUtils {
         const errors = control.errors;
         return FormUtils.getFieldError(errors);
     }
+
+
+    static rangoFechasValidator(): ValidatorFn {
+        return (group: AbstractControl): ValidationErrors | null => {
+            const fecIni = group.get('fec_ini')?.value;
+            const fecFin = group.get('fec_fin')?.value;
+
+            if (!fecIni || !fecFin) {
+                return null;
+            }
+
+            const [d1, m1, y1] = fecIni.split('/');
+            const [d2, m2, y2] = fecFin.split('/');
+
+            const fechaIni = new Date(+y1, +m1 - 1, +d1);
+            const fechaFin = new Date(+y2, +m2 - 1, +d2);
+
+            if (fechaIni.getTime() === fechaFin.getTime()) {
+                return { fechasIguales: true };
+            }
+
+            if (fechaFin < fechaIni) {
+                return { rangoInvalido: true };
+            }
+
+            return null;
+        };
+    }
+
+
 
 
 }

@@ -131,6 +131,7 @@ export class AperPerOperComponent {
 
         /// PARA RESETEAR EL CIERRE CIERRE PERIODO
         effect(() => {
+
             if (!this.planingCompartido.resetPeriodo()) return;
 
             const { anio, mesNombre } = this.obtenerPeriodoInicial();
@@ -148,7 +149,7 @@ export class AperPerOperComponent {
                 this.cargarMeses(year);
             });
 
-            // this.planingCompartido.clearResetPeriodo();
+            this.planingCompartido.clearResetPeriodo();
         });
     }
 
@@ -211,7 +212,6 @@ export class AperPerOperComponent {
                 // this.planingCompartido.setMesesBloqueados(months);
 
                 this.arregloMeses.set(months)
-                console.log(months)
             },
             error: (error) => console.log(error)
         });

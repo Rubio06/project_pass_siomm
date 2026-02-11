@@ -109,7 +109,7 @@ export class EstandarExploracionMainComponent {
                     lab_conect: [item.lab_conect, [Validators.pattern(/^\d+(\.\d+)?$/)]],
                     lab_punmar: [item.lab_punmar, [Validators.pattern(/^\d+(\.\d+)?$/)]],
                     lab_tabla: [item.lab_tabla, [Validators.pattern(/^\d+(\.\d+)?$/)]],
-                    lab_apr: [item.lab_apr, [Validators.pattern(/^\d+(\.\d+)?$/)]],
+                    lab_apr: [item.lab_apr, [Validators.pattern(/^[A-Z]$/)]],
                     accion: [''],
                     esNuevo: [false]
                 })
@@ -207,8 +207,6 @@ export class EstandarExploracionMainComponent {
         const esNuevo = semana.esNuevo;
 
         if (esNuevo) {
-            this.semanas.removeAt(index);
-            this.cd.detectChanges();
             return;
         }
 
@@ -229,15 +227,22 @@ export class EstandarExploracionMainComponent {
             next: (res: any) => {
                 if (res.success) {
                     this.utils.alertaEliminado(res.message);
-                    this.semanas.removeAt(index);
-                    this.cd.detectChanges();              // opcional
+                    this.refrescarDatos();
 
                 } else {
                     this.utils.alertaEliminado(res.message);
+                    this.refrescarDatos();
+
                 }
             },
             error: (err) => this.utils.mensajeError(err.message)
         });
+    }
+
+    private refrescarDatos() {
+        this.planingCompartido.setFormFactorBloqueado(true); // 🔓
+        this.planingCompartido.setTablaBloqueada(true);
+        this.planingCompartido.ejecutarVisualizar();
     }
 
     /**

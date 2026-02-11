@@ -105,14 +105,14 @@ export class EstandarAvanceComponent {
                     cod_tiplab: [{ value: item.cod_tiplab, disabled: true }],
                     nro_lab_ancho: [item.nro_lab_ancho, [Validators.pattern(/^\d+(\.\d+)?$/)]],
                     nro_lab_altura: [item.nro_lab_altura, [Validators.pattern(/^\d+(\.\d+)?$/)]],
-                    nro_lab_pieper: [item.nro_lab_pieper, [ Validators.pattern(/^\d+(\.\d+)?$/)]],
-                    nro_lab_broca: [item.nro_lab_broca, [ Validators.pattern(/^\d+(\.\d+)?$/)]],
-                    nro_lab_barcon: [item.nro_lab_barcon, [ Validators.pattern(/^\d+(\.\d+)?$/)]],
-                    nro_lab_barren: [item.nro_lab_barren, [ Validators.pattern(/^\d+(\.\d+)?$/)]],
-                    nro_lab_facpot: [item.nro_lab_facpot, [ Validators.pattern(/^\d+(\.\d+)?$/)]],
-                    nro_lab_fulmin: [item.nro_lab_fulmin, [ Validators.pattern(/^\d+(\.\d+)?$/)]],
-                    nro_lab_conect: [item.nro_lab_conect, [ Validators.pattern(/^\d+(\.\d+)?$/)]],
-                    nro_lab_punmar: [item.nro_lab_punmar, [ Validators.pattern(/^\d+(\.\d+)?$/)]],
+                    nro_lab_pieper: [item.nro_lab_pieper, [Validators.pattern(/^\d+(\.\d+)?$/)]],
+                    nro_lab_broca: [item.nro_lab_broca, [Validators.pattern(/^\d+(\.\d+)?$/)]],
+                    nro_lab_barcon: [item.nro_lab_barcon, [Validators.pattern(/^\d+(\.\d+)?$/)]],
+                    nro_lab_barren: [item.nro_lab_barren, [Validators.pattern(/^\d+(\.\d+)?$/)]],
+                    nro_lab_facpot: [item.nro_lab_facpot, [Validators.pattern(/^\d+(\.\d+)?$/)]],
+                    nro_lab_fulmin: [item.nro_lab_fulmin, [Validators.pattern(/^\d+(\.\d+)?$/)]],
+                    nro_lab_conect: [item.nro_lab_conect, [Validators.pattern(/^\d+(\.\d+)?$/)]],
+                    nro_lab_punmar: [item.nro_lab_punmar, [Validators.pattern(/^\d+(\.\d+)?$/)]],
                     nro_lab_tabla: [item.nro_lab_tabla],
                     accion: [''],
                     esNuevo: [false]
@@ -138,14 +138,14 @@ export class EstandarAvanceComponent {
             nro_lab_ancho: ['', [Validators.pattern(/^\d+(\.\d+)?$/)]],
             nro_lab_altura: ['', [Validators.pattern(/^\d+(\.\d+)?$/)]],
             nro_lab_pieper: ['', [Validators.pattern(/^\d+(\.\d+)?$/)]],
-            nro_lab_broca: ['', [ Validators.pattern(/^\d+(\.\d+)?$/)]],
-            nro_lab_barcon: ['', [ Validators.pattern(/^\d+(\.\d+)?$/)]],
-            nro_lab_barren: ['', [ Validators.pattern(/^\d+(\.\d+)?$/)]],
-            nro_lab_facpot: ['', [ Validators.pattern(/^\d+(\.\d+)?$/)]],
-            nro_lab_fulmin: ['', [ Validators.pattern(/^\d+(\.\d+)?$/)]],
-            nro_lab_conect: ['', [ Validators.pattern(/^\d+(\.\d+)?$/)]],
-            nro_lab_punmar: ['', [ Validators.pattern(/^\d+(\.\d+)?$/)]],
-            nro_lab_tabla: ['', [ Validators.pattern(/^\d+(\.\d+)?$/)]],
+            nro_lab_broca: ['', [Validators.pattern(/^\d+(\.\d+)?$/)]],
+            nro_lab_barcon: ['', [Validators.pattern(/^\d+(\.\d+)?$/)]],
+            nro_lab_barren: ['', [Validators.pattern(/^\d+(\.\d+)?$/)]],
+            nro_lab_facpot: ['', [Validators.pattern(/^\d+(\.\d+)?$/)]],
+            nro_lab_fulmin: ['', [Validators.pattern(/^\d+(\.\d+)?$/)]],
+            nro_lab_conect: ['', [Validators.pattern(/^\d+(\.\d+)?$/)]],
+            nro_lab_punmar: ['', [Validators.pattern(/^\d+(\.\d+)?$/)]],
+            nro_lab_tabla: ['', [Validators.pattern(/^\d+(\.\d+)?$/)]],
             esNuevo: [true]
         });
 
@@ -181,7 +181,6 @@ export class EstandarAvanceComponent {
         }
 
         if (esNuevo) {
-            this.semanas.removeAt(index);
             this.cd.detectChanges();
             return;
         }
@@ -202,14 +201,23 @@ export class EstandarAvanceComponent {
             next: (res: any) => {
                 if (res.success) {
                     this.utils.alertaEliminado(res.message);
-                    this.semanas.removeAt(index);
-                    this.cd.detectChanges();
+                    this.refrescarDatos();
+
                 } else {
                     this.utils.alertaEliminado(res.message);
+                    this.refrescarDatos();
+
                 }
             },
             error: (err) => this.utils.mensajeError(err.message)
         });
+    }
+
+
+    private refrescarDatos() {
+        this.planingCompartido.setFormFactorBloqueado(true); // 🔓
+        this.planingCompartido.setTablaBloqueada(true);
+        this.planingCompartido.ejecutarVisualizar();
     }
 
     /**

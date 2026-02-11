@@ -77,6 +77,18 @@
                                                     </span>
                                                 </div>
                                             }
+
+                                            @if (col.name === 'fec_fin' && item.errors?.['fechasIguales'] && item.touched) {
+                                                <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                                    <b>Las fechas no pueden ser iguales.</b>
+                                                </div>
+                                            }
+
+                                            @if (col.name === 'fec_fin' && item.errors?.['rangoInvalido'] && item.touched) {
+                                                <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                                    <b>La fecha fin debe ser mayor que la fecha inicio.</b>
+                                                </div>
+                                            }
                                         </td>
                                         }
 

@@ -56,14 +56,13 @@ export class SemanasAvanceMainComponent {
         effect(() => {
             const data = this.planingCompartido.dataRoutes();
             if (!data) return;
-            
+
             const periodo = this.planingCompartido.periodo();
             if (!periodo?.anio || !periodo?.mes) return;
 
             const semanas = data?.data?.semana_avance || [];
             this.loadSemanas(semanas);
             this.listaEnteros();
-            // this.cd.detectChanges();
         });
 
 
@@ -116,7 +115,7 @@ export class SemanasAvanceMainComponent {
                     desc_semana: [item.desc_semana, Validators.required],
                     accion: [],
                     esNuevo: [false]
-                })
+                }, { validators: this.formUtils.rangoFechasValidator() })
             )
         );
 
@@ -154,7 +153,7 @@ export class SemanasAvanceMainComponent {
             fec_fin: ['', [Validators.required, Validators.pattern(/^(0[1-9]|[12]\d|3[01])\/(0[1-9]|1[0-2])\/(19\d{2}|20\d{2}|2100)$/)]],
             desc_semana: ['', Validators.required],
             esNuevo: [true]
-        });
+        }, { validators: this.formUtils.rangoFechasValidator() });
 
         this.semanas.push(nuevoGrupo);
         this.semana_num_lista.set([...semanas_lista, { num_semana: this.siguienteSemana, fec_fin: fec_fin_nueva }]);
@@ -181,8 +180,6 @@ export class SemanasAvanceMainComponent {
         const esNuevo = semana.esNuevo;
 
         if (esNuevo) {
-            this.semanas.removeAt(index);
-            this.cd.detectChanges();
             return;
         }
 
@@ -205,22 +202,22 @@ export class SemanasAvanceMainComponent {
         this.semanasAvanceMainService.eliminarSemanaAvance(payload).subscribe({
             next: (res: any) => {
                 if (res.success) {
-
-                    this.formUtils.alertaEliminado(res.message);
-                    this.semanas.removeAt(index);
-                    this.cd.detectChanges();              // opcional
-
+                    this.formUtils.alertaEliminado(res.message);         // opcional
+                    this.refrescarDatos();
                 } else {
                     this.formUtils.alertaEliminado(res.message);
+                    this.refrescarDatos();
 
                 }
             },
             error: (err) => this.formUtils.mensajeError(err.message)
         });
+    }
 
-        this.semanas.removeAt(index);
-
-        this.cd.detectChanges();
+    private refrescarDatos() {
+        this.planingCompartido.setFormFactorBloqueado(true); // 🔓
+        this.planingCompartido.setTablaBloqueada(true);
+        this.planingCompartido.ejecutarVisualizar();
     }
 
     /**
@@ -245,18 +242,13 @@ export class SemanasAvanceMainComponent {
 
 
     ngOnInit() {
-
         this.planingCompartido.setLastTab('semana_avance');
 
-        // 2️⃣ Registrar el formulario completo en el servicio (solo una vez)
         this.planingCompartido.registrarFormulario('semana_avance', this.myForm);
 
         this.myForm.valueChanges.subscribe(val => {
             const filas = this.semanas.getRawValue();
             this.planingCompartido.setSemanaAvance(filas, 'semana_avance');
-            // this.planingCompartido.registerForm('estandar_avance', this.myForm);
-            // this.planingCompartido.setActiveTab('estandar_avance');
-            // console.log("📤 TAB semana actualizó servicio:", filas);
         });
     }
 }

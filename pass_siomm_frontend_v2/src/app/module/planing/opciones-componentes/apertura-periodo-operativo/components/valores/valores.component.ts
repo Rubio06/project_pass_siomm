@@ -99,7 +99,6 @@ export class ValoresComponent {
         effect(() => {
             if (this.planingCompartido.resetPeriodo()) return;
 
-            console.log("salio del if")
             this.resetearFormulario();
             this.planingCompartido.clearResetPeriodo();
         });

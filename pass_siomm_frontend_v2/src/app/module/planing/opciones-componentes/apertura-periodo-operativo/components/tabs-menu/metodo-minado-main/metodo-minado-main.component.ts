@@ -104,7 +104,7 @@ export class MetodoMinadoMainComponent {
                     cie_ano: [periodo?.anio],
                     cie_per: [periodo?.mes],
                     cod_metexp: [{ value: item.cod_metexp, disabled: true }],
-                    nom_metexp: [item.nom_metexp],
+                    nom_metexp: [item.nom_metexp, [Validators.pattern(/^\d+(\.\d+)?$/)]],
                     ind_calculo_dilucion: [item.ind_calculo_dilucion || ''],
                     ind_calculo_leyes_min: [item.ind_calculo_leyes_min || ''],
                     ind_act: [item.ind_act || ''],
@@ -136,7 +136,7 @@ export class MetodoMinadoMainComponent {
             cie_ano: [periodo?.anio, Validators.required],
             cie_per: [periodo?.mes, Validators.required],
             cod_metexp: ['', Validators.required], // 👈 CLAVE
-            nom_metexp: [''],
+            nom_metexp: ['', [Validators.pattern(/^\d+(\.\d+)?$/)]],
             ind_calculo_dilucion: ['', Validators.required],
             ind_calculo_leyes_min: ['', Validators.required],
             ind_act: ['', Validators.required],
@@ -170,8 +170,6 @@ export class MetodoMinadoMainComponent {
         const esNuevo = semana.esNuevo;
 
         if (esNuevo) {
-            this.semanas.removeAt(index);
-            this.cd.detectChanges();
             return;
         }
 
@@ -191,16 +189,22 @@ export class MetodoMinadoMainComponent {
             next: (res: any) => {
                 if (res.success) {
                     this.utils.alertaEliminado(res.message);
-                    this.semanas.removeAt(index);
-                    this.cd.detectChanges();
+                    this.refrescarDatos();
 
                 } else {
                     this.utils.alertaEliminado(res.message);
+                    this.refrescarDatos();
 
                 }
             },
             error: (err) => this.utils.mensajeError(err.message)
         });
+    }
+
+    private refrescarDatos() {
+        this.planingCompartido.setFormFactorBloqueado(true); // 🔓
+        this.planingCompartido.setTablaBloqueada(true);
+        this.planingCompartido.ejecutarVisualizar();
     }
 
 
@@ -216,11 +220,69 @@ export class MetodoMinadoMainComponent {
         this.planingCompartido.setLastTab('metodo_minado');
 
         this.planingCompartido.registrarFormulario('metodo_minado', this.myForm);
-        this.myForm.valueChanges.subscribe(val => {
-            const filas = this.semanas.getRawValue();
+
+
+        // this.myForm.valueChanges.subscribe(val => {
+        //     const filas = this.semanas.getRawValue();
+        //     this.planingCompartido.setMetodoMinado(filas, 'metodo_minado');
+        // });
+
+
+        this.myForm.valueChanges.subscribe(() => {
+            // Tomamos los valores actuales
+            const filas = this.semanas.getRawValue().map((fila: any) => {
+                const filaProcesada: any = {};
+
+                Object.keys(fila).forEach(key => {
+                    // Reemplazamos nulos, undefined o strings vacíos por '00.00'
+                    filaProcesada[key] = fila[key] === null || fila[key] === undefined || fila[key] === ''
+                        ? '00.00'
+                        : fila[key];
+                });
+
+                return filaProcesada;
+            });
+
+            // Enviamos filas ya procesadas
             this.planingCompartido.setMetodoMinado(filas, 'metodo_minado');
         });
+
     }
+
+
+
+
+    // ngOnInit() {
+
+    //     this.planingCompartido.setLastTab('exploracion_estandar');
+
+    //     this.planingCompartido.registrarFormulario('exploracion_estandar', this.myForm);
+
+
+
+    //     this.myForm.valueChanges.subscribe(() => {
+    //         // Tomamos los valores actuales
+    //         const filas = this.semanas.getRawValue().map((fila: any) => {
+    //             const filaProcesada: any = {};
+
+    //             Object.keys(fila).forEach(key => {
+    //                 // Reemplazamos nulos, undefined o strings vacíos por '00.00'
+    //                 filaProcesada[key] = fila[key] === null || fila[key] === undefined || fila[key] === ''
+    //                     ? '00.00'
+    //                     : fila[key];
+    //             });
+
+    //             return filaProcesada;
+    //         });
+
+    //         // Enviamos filas ya procesadas
+    //         this.planingCompartido.setExploracionExtandar(filas, 'exploracion_estandar');
+    //     });
+
+
+
+    // }
+
 
     // =====================================================
     //   LOOKUP SELECT EXPLORACIÓN

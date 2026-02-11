@@ -42,6 +42,8 @@ export class PendingGeneralGuard implements CanDeactivate<CanComponentDeactivate
             currentUrl.includes('apertura_de_periodo_operativo') &&
             !nextUrl.includes('apertura_de_periodo_operativo')
         ) {
+            this.planingCompartido.bloqueoEditar.set(false);
+
             return true; // ❌ NO mostrar popup
         }
 
@@ -49,8 +51,12 @@ export class PendingGeneralGuard implements CanDeactivate<CanComponentDeactivate
         const confirmar = await FormUtils.confirmarDescartarCambios();
 
         if (confirmar) {
+            this.planingCompartido.bloqueoEditar.set(false);
+
             await this.planingCompartido.ejecutarGuardar();
         } else {
+            this.planingCompartido.bloqueoEditar.set(false);
+
             await this.planingCompartido.ejecutarVisualizar();
             this.planingCompartido.setFormFactorBloqueado(true);
             this.planingCompartido.setTablaBloqueada(true);
