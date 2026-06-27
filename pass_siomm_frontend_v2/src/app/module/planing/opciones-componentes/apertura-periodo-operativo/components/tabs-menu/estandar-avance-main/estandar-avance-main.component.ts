@@ -113,7 +113,11 @@ export class EstandarAvanceComponent {
                     nro_lab_fulmin: [item.nro_lab_fulmin, [Validators.pattern(/^\d+(\.\d+)?$/)]],
                     nro_lab_conect: [item.nro_lab_conect, [Validators.pattern(/^\d+(\.\d+)?$/)]],
                     nro_lab_punmar: [item.nro_lab_punmar, [Validators.pattern(/^\d+(\.\d+)?$/)]],
+<<<<<<< HEAD
                     nro_lab_tabla: [item.nro_lab_tabla, [Validators.pattern(/^\d+(\.\d+)?$/)]],
+=======
+                    nro_lab_tabla: [item.nro_lab_tabla],
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
                     accion: [''],
                     esNuevo: [false]
                 })
@@ -123,11 +127,14 @@ export class EstandarAvanceComponent {
     }
 
     agregarFilas() {
+<<<<<<< HEAD
         this.planingCompartido.setBotonesState({
             ...this.planingCompartido.botonesState(),
             editar: true
         });
 
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
         this.bloqueoSelect();
 
         const periodo = this.planingCompartido.periodo();
@@ -186,7 +193,11 @@ export class EstandarAvanceComponent {
         }
 
         if (esNuevo) {
+<<<<<<< HEAD
             this.semanas.removeAt(index);
+=======
+            this.cd.detectChanges();
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
             return;
         }
 

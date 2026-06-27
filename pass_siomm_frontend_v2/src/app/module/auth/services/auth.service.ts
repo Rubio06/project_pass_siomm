@@ -4,7 +4,11 @@ import { environment } from '@environments/environments';
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { isPlatformBrowser } from '@angular/common';
+<<<<<<< HEAD
 import { emptyMaeUsuario, LogResponse, MaeUsuario } from '../interfaces/auth.interface';
+=======
+import { LogResponse } from '../interfaces/auth.interface';
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
 import { Router } from '@angular/router';
 
 @Injectable({ providedIn: 'root' })
@@ -27,6 +31,7 @@ export class AuthService {
 
     }
 
+<<<<<<< HEAD
     login(username: string, password: string): Observable<LogResponse> {
         return this.http
             .post<LogResponse>(`${this.authUrl}auth/authenticate`, { username, password })
@@ -54,12 +59,42 @@ export class AuthService {
                         data: emptyMaeUsuario()
                     };
                     return of(fallback);
+=======
+    login(username: string, password: string): Observable<boolean> {
+        return this.http
+            .post<LogResponse>(`${this.authUrl}auth/authenticate`, { username, password })
+            .pipe(
+                map((resp) => {
+
+                    if (resp.success && isPlatformBrowser(this.platformId)) {
+                        sessionStorage.setItem('token', resp.data.token);
+                        sessionStorage.setItem('username', resp.data.username);
+                        this.loggedIn.set(true);
+                        return true;
+                    }
+
+                    this.loggedIn.set(false);
+
+                    return false;
+                }),
+                catchError((error) => {
+                    this.hasError.set(error.error?.message || 'Error en autenticación');
+                    setTimeout(() => {
+                        this.hasError.set('');
+                    }, 5000);
+
+                    this.loggedIn.set(false);
+                    return of(false);
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
                 })
             );
     }
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     isAuthenticated(): boolean {
         return this.loggedIn();
     }

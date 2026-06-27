@@ -1,14 +1,20 @@
 is_global = true
 build_property.TargetFramework = net8.0
+<<<<<<< HEAD
 build_property.TargetFrameworkIdentifier = .NETCoreApp
 build_property.TargetFrameworkVersion = v8.0
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
 build_property.TargetPlatformMinVersion = 
 build_property.UsingMicrosoftNETSdkWeb = true
 build_property.ProjectTypeGuids = 
 build_property.InvariantGlobalization = 
 build_property.PlatformNeutralAssembly = 
 build_property.EnforceExtendedAnalyzerRules = 
+<<<<<<< HEAD
 build_property.EntryPointFilePath = 
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = pass_siomm_backend
 build_property.RootNamespace = pass_siomm_backend

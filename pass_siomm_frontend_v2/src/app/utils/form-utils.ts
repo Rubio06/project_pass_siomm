@@ -2,6 +2,7 @@ import { PlaningCompartidoService } from './../module/planing/opciones-component
 import { effect, inject } from '@angular/core';
 import { AbstractControl, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
 import Swal from 'sweetalert2'
+<<<<<<< HEAD
 
 import { ExportarProgramacion } from '../module/planing/opciones-componentes/programa-mensual-labores/interface/programa-mensual.interface';
 
@@ -23,6 +24,11 @@ export class FormUtils {
         '12': 'Diciembre'
     };
 
+=======
+import 'sweetalert2/dist/sweetalert2.min.css';
+
+export class FormUtils {
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     static formatDate(dateStr: string | Date | null | undefined): string {
         if (!dateStr) return '';
 
@@ -67,6 +73,7 @@ export class FormUtils {
         });
     }
 
+<<<<<<< HEAD
     static mensajeErrorClase(error: any) {
         Swal.fire({
             icon: "error",
@@ -98,6 +105,8 @@ export class FormUtils {
     }
 
 
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
 
 
 
@@ -105,11 +114,19 @@ export class FormUtils {
         return Swal.fire({
             title: "Eliminar registro",
             html: `
+<<<<<<< HEAD
             <p style="font-size:14px;">
                 Esta acción <strong>no se puede deshacer</strong>.<br>
                 ¿Deseas eliminar el registro definitivamente?
             </p>
             `,
+=======
+      <p style="font-size:14px;">
+        Esta acción <strong>no se puede deshacer</strong>.<br>
+        ¿Deseas eliminar el registro definitivamente?
+      </p>
+    `,
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#00426F",
@@ -144,6 +161,7 @@ export class FormUtils {
         return Swal.fire({
             title: "Registro eliminado",
             html: `
+<<<<<<< HEAD
                     <p style="font-size:14px;">
                         ${message}<br>
                         <span style="color:#4caf50;font-weight:600;">
@@ -151,12 +169,22 @@ export class FormUtils {
                         </span>
                     </p>
                     `,
+=======
+      <p style="font-size:14px;">
+        ${message}<br>
+        <span style="color:#4caf50;font-weight:600;">
+          La acción se realizó correctamente.
+        </span>
+      </p>
+    `,
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
             icon: "success",
             confirmButtonColor: "#00426F",
             confirmButtonText: "Aceptar"
         });
     }
 
+<<<<<<< HEAD
     
     static alertaInactivo(titulo: string, message: string) {
         return Swal.fire({
@@ -230,6 +258,8 @@ export class FormUtils {
     }
 
 
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     static errorCopiado(message: string) {
         const modal = document.getElementById('my_modal_3');
 
@@ -262,18 +292,29 @@ export class FormUtils {
         return Swal.fire({
             title: "Acción cancelada",
             html: `
+<<<<<<< HEAD
             <p style="font-size:14px;">
                 El registro <strong>no fue eliminado</strong>.<br>
                 Puedes revisarlo nuevamente si lo necesitas.
             </p>
             `,
+=======
+      <p style="font-size:14px;">
+        El registro <strong>no fue eliminado</strong>.<br>
+        Puedes revisarlo nuevamente si lo necesitas.
+      </p>
+    `,
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
             icon: "info",
             confirmButtonColor: "#00426F",
             confirmButtonText: "Entendido"
         });
     }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     static async confirmarGuardado(): Promise<boolean> {
         const result = await Swal.fire({
             title: '¿Desea guardar los datos?',
@@ -355,6 +396,7 @@ export class FormUtils {
             confirmButtonText: "Aceptar"
         });
     }
+<<<<<<< HEAD
     static mensajeNroProg() {
         return Swal.fire({
             icon: 'info',
@@ -438,6 +480,11 @@ export class FormUtils {
 
         return value;
     }
+=======
+
+
+
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
 
     static confirmarDescartarCambios(): Promise<boolean> {
         return Swal.fire({
@@ -455,6 +502,7 @@ export class FormUtils {
         }).then(result => result.isConfirmed);
     }
 
+<<<<<<< HEAD
     static confirmarSalirSinGuardar(): Promise<boolean> {
         return Swal.fire({
             title: 'Cambios pendientes',
@@ -495,6 +543,8 @@ export class FormUtils {
     }
 
 
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
 
     static isValidField(form: FormGroup, fildName: string): boolean | null {
         return (
@@ -513,7 +563,10 @@ export class FormUtils {
 
 
     static getFieldError(error: ValidationErrors) {
+<<<<<<< HEAD
 
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
         for (const key of Object.keys(error)) {
             switch (key) {
                 case 'required':
@@ -522,6 +575,7 @@ export class FormUtils {
                 case 'minlength':
                     return `Minimo de ${error['minlength'].requiredLength} caracteres`;
 
+<<<<<<< HEAD
                 case 'maxlength':
                     return `El formato permitido es hasta ${error['maxlength'].requiredLength} caracteres`;
 
@@ -530,6 +584,10 @@ export class FormUtils {
 
                 case 'max':
                     return `Valor maximo de caracteres pertimidos es ${error['max'].max}`;
+=======
+                case 'min':
+                    return `Valor minimo de  ${error['min'].min}`;
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
 
                 case 'pattern':
                     return this.getPatternErrorMessage(
@@ -546,6 +604,7 @@ export class FormUtils {
             '/^(19\\d{2}|20\\d{2}|2100)$/': 'Debe ingresar un año válido ejem.(2025)',
             '/^(0[1-9]|[12]\\d|3[01])\\/(0[1-9]|1[0-2])\\/(19\\d{2}|20\\d{2}|2100)$/': 'Debe ingresar fecha valida ejem.(22/12/2025)',
             '/^\\d+(\\.\\d+)?$/': 'El campo solo acepta numeros o decimales',
+<<<<<<< HEAD
             '/^[A-Z0-9]$/': 'Debe colocar una sola letra en mayuscula o un solo numero.',
             '/^\\d{11}$/': 'El RUC debe contener exactamente 11 digitos',
             '/^\\d{1,20}$/': 'El Nro. telefono debe de contener 20 digitos',
@@ -556,6 +615,9 @@ export class FormUtils {
 
             '/^\\d{1,10}(\\.\\d{1,3})?$/': 'El campo solo acepta hasta 10 dígitos enteros y 3 decimales',
 
+=======
+            '/^[A-Z]$/': 'Debe colocar una sola letra en mayuscula.'
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
         };
         return patterns[pattern] ?? 'Formato inválido';
     }
@@ -575,11 +637,14 @@ export class FormUtils {
         return FormUtils.getFieldError(errors);
     }
 
+<<<<<<< HEAD
     static isValidFieldDisabled(formGroup: AbstractControl, field: string, filasIncompletas: number[], index: number): boolean {
         const control = formGroup.get(field);
         return !!(control && !control.value && filasIncompletas.includes(index));
     }
 
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
 
     static rangoFechasValidator(): ValidatorFn {
         return (group: AbstractControl): ValidationErrors | null => {
@@ -604,6 +669,7 @@ export class FormUtils {
                 return { rangoInvalido: true };
             }
 
+<<<<<<< HEAD
             const diffMs = fechaFin.getTime() - fechaIni.getTime();
             const diffDias = diffMs / (1000 * 60 * 60 * 24);
 
@@ -612,10 +678,13 @@ export class FormUtils {
                 return { rangoMayorA7Dias: true };
             }
 
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
             return null;
         };
     }
 
+<<<<<<< HEAD
     // Helper para estructurar cada fila con sus validaciones tranpsorte-mineral
     static rutasDistintasValidator(group: AbstractControl) {
         if (!group.get('esNuevo')?.value) return null;
@@ -919,5 +988,9 @@ export class FormUtils {
             input.value = input.value.slice(0, max);
         }
     }
+=======
+
+
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
 
 }

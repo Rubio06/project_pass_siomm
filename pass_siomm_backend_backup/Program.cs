@@ -1,13 +1,19 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+<<<<<<< HEAD
 using Microsoft.AspNetCore.Mvc;
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
 using Microsoft.AspNetCore.Server.IISIntegration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using pass_siomm_backend.Autenticacion.Service;
 using pass_siomm_backend.Conexion;
+<<<<<<< HEAD
 using pass_siomm_backend.Mantenimiento.Planeamiento_mant.Services;
 using pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Services;
 using pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Services.ExplotacionService;
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
 using pass_siomm_backend.Planeamiento.Services.PlaneamientoService;
 using pass_siomm_backend.Rutas.Service;
 using pass_siomm_backend.Utilitarios.Fechas_Filtros.Servicio;
@@ -15,6 +21,7 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+<<<<<<< HEAD
 //builder.Services.AddControllers();
 builder.Services.AddControllers()
     .ConfigureApiBehaviorOptions(options =>
@@ -49,6 +56,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 
+=======
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
 // Dependencias
 builder.Services.AddSingleton<DatabaseHelper>();
 builder.Services.AddScoped<UserService>();
@@ -59,6 +72,7 @@ builder.Services.AddScoped<SemanaAvanceServices>();
 
 builder.Services.AddScoped<FiltrosFechasService>();
 
+<<<<<<< HEAD
 builder.Services.AddScoped<ListaMensualService>();
 
 builder.Services.AddScoped<ExplotacionService>();
@@ -81,6 +95,8 @@ builder.Services.AddScoped<TarifarioEscrituraService>();
 builder.Services.AddScoped<PreciosUnitariosService>();
 builder.Services.AddHttpClient();
 
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
 
 //CODIGO DEL TOKEN
 //builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -160,7 +176,10 @@ builder.Services.AddCors(options =>
 
 //4200
 //8060
+<<<<<<< HEAD
 //http://10.120.124.200
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
 
 var app = builder.Build();
 

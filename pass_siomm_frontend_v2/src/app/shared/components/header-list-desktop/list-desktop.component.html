@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 <!-- <ul class="menu p-0 m-0 text-base-content w-full">
+=======
+<ul class="menu p-0 m-0 text-base-content w-full">
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
 
     @if(routers().length == 0){
         <div style="color: red; text-align: center; border: 2px solid black;"><b>No existen rutas disponibles</b></div>
@@ -7,7 +11,11 @@
     @for (ruta of routers(); track $index) {
     <li class="w-full active" routerLinkActive="active">
 
+<<<<<<< HEAD
 
+=======
+        <!-- BOTÓN PADRE -->
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
         <button class="flex items-center gap-4 cursor-pointer m-1 w-full" (click)="toggle($index)">
             <app-iconos [iconos]="ruta.icon"></app-iconos>
             <span class="font-bold text-sm w-35">
@@ -15,7 +23,12 @@
             </span>
         </button>
 
+<<<<<<< HEAD
 
+=======
+        <!-- para que funcione en las rutas deben de ser iguales a lo que viene de la bd -->
+        <!-- SUBMENÚ INDENTADO -->
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
         <ul class="submenu ml-8 pl-2 border-l-2 border-[#033351]/30
                                        bg-[#E6F2ED] rounded w-55
                                        overflow-hidden
@@ -34,6 +47,7 @@
 
     </li>
     }
+<<<<<<< HEAD
 </ul> -->
 
 
@@ -106,3 +120,6 @@
     </li>
     }
 </ul>
+=======
+</ul>
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190

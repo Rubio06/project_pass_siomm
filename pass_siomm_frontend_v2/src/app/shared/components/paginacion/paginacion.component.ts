@@ -1,4 +1,5 @@
 import { CommonModule } from '@angular/common';
+<<<<<<< HEAD
 import { Component, input, output } from '@angular/core';
 
 @Component({
@@ -22,4 +23,51 @@ export class PaginacionComponent {
         const pagina = Number((event.target as HTMLSelectElement).value);
         this.paginaCambio.emit(pagina);
     }
+=======
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-paginacion',
+  imports: [CommonModule],
+  templateUrl: './paginacion.component.html',
+  styleUrl: './paginacion.component.css',
+})
+export class PaginacionComponent {
+  paginatedData: any[] = [];
+  currentPage = 1;
+  rowsPerPage = 2;
+  totalPages = 1;
+  pages: number[] = [];
+
+//   ngOnInit() {
+//     this.totalPages = Math.ceil(this.data.length / this.rowsPerPage);
+//     this.pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
+//     this.updatePaginatedData();
+//   }
+
+//   updatePaginatedData() {
+//     const start = (this.currentPage - 1) * this.rowsPerPage;
+//     const end = start + this.rowsPerPage;
+//     this.paginatedData = this.data.slice(start, end);
+//   }
+
+//   goToPage(page: number) {
+//     this.currentPage = page;
+//     this.updatePaginatedData();
+//   }
+
+//   previousPage() {
+//     if (this.currentPage > 1) {
+//       this.currentPage--;
+//       this.updatePaginatedData();
+//     }
+//   }
+
+//   nextPage() {
+//     if (this.currentPage < this.totalPages) {
+//       this.currentPage++;
+//       this.updatePaginatedData();
+//     }
+//   }
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
 }

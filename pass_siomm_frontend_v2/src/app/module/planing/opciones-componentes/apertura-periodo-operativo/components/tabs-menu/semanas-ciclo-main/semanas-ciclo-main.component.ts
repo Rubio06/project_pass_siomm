@@ -66,6 +66,11 @@ export class SemanasCicloMainComponent {
         );
     }
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     trackByIndex(index: number) {
         return index;
     }
@@ -119,6 +124,7 @@ export class SemanasCicloMainComponent {
 
 
 
+<<<<<<< HEAD
     bloquearCampo(row: AbstractControl): boolean {
         return this.planingCompartido.bloqueoFormEditar()
             && !row.get('esNuevo')?.value;
@@ -131,20 +137,32 @@ export class SemanasCicloMainComponent {
             editar: true
         });
 
+=======
+
+
+    agregarFilas() {
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
         const periodo = this.planingCompartido.periodo();
         if (!periodo?.anio || !periodo?.mes) return;
 
         const semanas_lista = this.semana_num_lista() || [];
+<<<<<<< HEAD
 
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
         const ultimo = semanas_lista.length > 0
             ? Number(semanas_lista[semanas_lista.length - 1].num_semana)
             : 0;
 
         this.siguienteSemana = ultimo + 1;
 
+<<<<<<< HEAD
         if (this.siguienteSemana > 7) {
             this.siguienteSemana = 1;
         }
+=======
+        if (this.siguienteSemana > 7) return;
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
 
         let fec_fin_nueva = '';
         if (semanas_lista.length > 0) {
@@ -163,12 +181,24 @@ export class SemanasCicloMainComponent {
             esNuevo: [true]
         }, { validators: this.formUtils.rangoFechasValidator() });
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
         this.semanas.push(nuevoGrupo);
         this.semana_num_lista.set([...semanas_lista, { num_semana: this.siguienteSemana, fec_fin: fec_fin_nueva }]);
     }
 
 
+<<<<<<< HEAD
+=======
+    bloquearCampo(row: AbstractControl): boolean {
+        return this.planingCompartido.bloqueoFormEditar()
+            && !row.get('esNuevo')?.value;
+    }
+
+
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
 
     async eliminarFila(data: any, index: number) {
         const semana = data.getRawValue ? data.getRawValue() : data.value;
@@ -177,11 +207,17 @@ export class SemanasCicloMainComponent {
         const periodo = this.planingCompartido.periodo();
 
         if (esNuevo) {
+<<<<<<< HEAD
             this.semanas.removeAt(index);
             return;
         }
 
 
+=======
+            return;
+        }
+
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
         const payload = {
             cie_ano: periodo?.anio,
             cie_per: periodo?.mes,
@@ -197,6 +233,7 @@ export class SemanasCicloMainComponent {
             return;
         }
 
+<<<<<<< HEAD
 
         this.semanasAvanceMainService.eliminarCiclo(payload).subscribe({
 
@@ -207,6 +244,14 @@ export class SemanasCicloMainComponent {
                     this.semanas.removeAt(index);
 
                     this.refrescarDatos();
+=======
+        this.semanasAvanceMainService.eliminarCiclo(payload).subscribe({
+            next: (res: any) => {
+                if (res.success) {
+                    this.formUtils.alertaEliminado(res.message);
+                    this.refrescarDatos();
+
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
                 } else {
                     this.formUtils.alertaEliminado(res.message);
                     this.refrescarDatos();

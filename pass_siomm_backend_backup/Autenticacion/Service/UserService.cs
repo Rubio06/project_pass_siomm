@@ -1,6 +1,9 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Logging;
+<<<<<<< HEAD
 using pass_siomm_backend.Autenticacion.Data;
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
 using pass_siomm_backend.Planeamiento.Data;
 using System.Data;
 using System.Data.Common;
@@ -17,6 +20,7 @@ namespace pass_siomm_backend.Autenticacion.Service
             _connectionString = configuration.GetConnectionString("SqlConnection");
         }
 
+<<<<<<< HEAD
         //public async Task<bool> UserExistsAsync(string username)
         //{
         //    try
@@ -78,6 +82,33 @@ namespace pass_siomm_backend.Autenticacion.Service
             };
 
             return user;
+=======
+        public async Task<bool> UserExistsAsync(string username)
+        {
+            try
+            {
+                await using var conn = new SqlConnection(_connectionString);
+                await using var cmd = new SqlCommand(SqlQueriesLogin.SP_GET_HOME_SESSION, conn);
+
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@cod_usuario", SqlDbType.VarChar, 50).Value = username;
+                await conn.OpenAsync();
+
+                var result = await cmd.ExecuteScalarAsync();
+                return result != null && result != DBNull.Value;
+            }
+
+            catch (SqlException ex)
+            {
+                Console.WriteLine(ex);
+                throw new Exception("Error de base de datos al validar el usuario.", ex);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                throw;
+            }
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
         }
 
 

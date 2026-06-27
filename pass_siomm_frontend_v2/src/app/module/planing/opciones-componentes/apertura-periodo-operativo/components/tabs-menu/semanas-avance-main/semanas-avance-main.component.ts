@@ -8,7 +8,11 @@ import { PlanningService } from 'src/app/module/planing/opciones-componentes/ape
 import { PlaningCompartidoService } from '../../../services/planing-compartido.service';
 import { SemanasAvanceMainService } from '../../../services/semanas-avance-main/semanas-avance-main.service';
 import Swal from 'sweetalert2'
+<<<<<<< HEAD
 
+=======
+import 'sweetalert2/dist/sweetalert2.min.css';
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
 
 @Component({
     selector: 'app-semanas-avance-main',
@@ -125,6 +129,7 @@ export class SemanasAvanceMainComponent {
     private siguienteSemana = 0;
 
     agregarFilas() {
+<<<<<<< HEAD
 
         this.planingCompartido.setBotonesState({
             ...this.planingCompartido.botonesState(),
@@ -146,15 +151,25 @@ export class SemanasAvanceMainComponent {
 
         const semanas_lista = this.semana_num_lista() || [];
 
+=======
+        const periodo = this.planingCompartido.periodo();
+        if (!periodo?.anio || !periodo?.mes) return;
+
+        const semanas_lista = this.semana_num_lista() || [];
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
         const ultimo = semanas_lista.length > 0
             ? Number(semanas_lista[semanas_lista.length - 1].num_semana)
             : 0;
 
         this.siguienteSemana = ultimo + 1;
 
+<<<<<<< HEAD
         if (this.siguienteSemana > 7) {
             this.siguienteSemana = 1;
         }
+=======
+        if (this.siguienteSemana > 7) return;
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
 
         let fec_fin_nueva = '';
         if (semanas_lista.length > 0) {
@@ -199,8 +214,11 @@ export class SemanasAvanceMainComponent {
         const esNuevo = semana.esNuevo;
 
         if (esNuevo) {
+<<<<<<< HEAD
 
             this.semanas.removeAt(index);
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
             return;
         }
 

@@ -7,6 +7,7 @@ C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup
 C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\obj\Release\net8.0\PubTmp\Out\pass_siomm_backend.pdb
 C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\obj\Release\net8.0\PubTmp\Out\Azure.Core.dll
 C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\obj\Release\net8.0\PubTmp\Out\Azure.Identity.dll
+<<<<<<< HEAD
 C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\obj\Release\net8.0\PubTmp\Out\BouncyCastle.Cryptography.dll
 C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\obj\Release\net8.0\PubTmp\Out\ClosedXML.dll
 C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\obj\Release\net8.0\PubTmp\Out\ClosedXML.Parser.dll
@@ -21,13 +22,18 @@ C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup
 C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\obj\Release\net8.0\PubTmp\Out\ExcelNumberFormat.dll
 C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\obj\Release\net8.0\PubTmp\Out\ExtendedNumerics.BigDecimal.dll
 C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\obj\Release\net8.0\PubTmp\Out\MathNet.Numerics.dll
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
 C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\obj\Release\net8.0\PubTmp\Out\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\obj\Release\net8.0\PubTmp\Out\Microsoft.Bcl.AsyncInterfaces.dll
 C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\obj\Release\net8.0\PubTmp\Out\Microsoft.Bcl.Cryptography.dll
 C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\obj\Release\net8.0\PubTmp\Out\Microsoft.Data.SqlClient.dll
 C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\obj\Release\net8.0\PubTmp\Out\Microsoft.Extensions.Caching.Memory.dll
+<<<<<<< HEAD
 C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\obj\Release\net8.0\PubTmp\Out\Microsoft.Extensions.Configuration.FileExtensions.dll
 C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\obj\Release\net8.0\PubTmp\Out\Microsoft.Extensions.Configuration.Json.dll
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
 C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\obj\Release\net8.0\PubTmp\Out\Microsoft.Extensions.DependencyInjection.Abstractions.dll
 C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\obj\Release\net8.0\PubTmp\Out\Microsoft.Extensions.Logging.Abstractions.dll
 C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\obj\Release\net8.0\PubTmp\Out\Microsoft.Extensions.Options.dll
@@ -39,6 +45,7 @@ C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup
 C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\obj\Release\net8.0\PubTmp\Out\Microsoft.IdentityModel.Protocols.dll
 C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\obj\Release\net8.0\PubTmp\Out\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\obj\Release\net8.0\PubTmp\Out\Microsoft.IdentityModel.Tokens.dll
+<<<<<<< HEAD
 C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\obj\Release\net8.0\PubTmp\Out\Microsoft.IO.RecyclableMemoryStream.dll
 C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\obj\Release\net8.0\PubTmp\Out\Microsoft.OpenApi.dll
 C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\obj\Release\net8.0\PubTmp\Out\Microsoft.SqlServer.Server.dll
@@ -51,6 +58,10 @@ C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup
 C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\obj\Release\net8.0\PubTmp\Out\ICSharpCode.SharpZipLib.dll
 C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\obj\Release\net8.0\PubTmp\Out\SixLabors.Fonts.dll
 C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\obj\Release\net8.0\PubTmp\Out\SixLabors.ImageSharp.dll
+=======
+C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\obj\Release\net8.0\PubTmp\Out\Microsoft.OpenApi.dll
+C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\obj\Release\net8.0\PubTmp\Out\Microsoft.SqlServer.Server.dll
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
 C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\obj\Release\net8.0\PubTmp\Out\Swashbuckle.AspNetCore.Swagger.dll
 C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\obj\Release\net8.0\PubTmp\Out\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\obj\Release\net8.0\PubTmp\Out\Swashbuckle.AspNetCore.SwaggerUI.dll
@@ -62,12 +73,18 @@ C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup
 C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\obj\Release\net8.0\PubTmp\Out\System.DirectoryServices.Protocols.dll
 C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\obj\Release\net8.0\PubTmp\Out\System.Formats.Asn1.dll
 C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\obj\Release\net8.0\PubTmp\Out\System.IdentityModel.Tokens.Jwt.dll
+<<<<<<< HEAD
 C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\obj\Release\net8.0\PubTmp\Out\System.IO.Packaging.dll
 C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\obj\Release\net8.0\PubTmp\Out\System.Memory.Data.dll
 C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\obj\Release\net8.0\PubTmp\Out\System.Security.Cryptography.Pkcs.dll
 C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\obj\Release\net8.0\PubTmp\Out\System.Security.Cryptography.ProtectedData.dll
 C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\obj\Release\net8.0\PubTmp\Out\System.Security.Cryptography.Xml.dll
 C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\obj\Release\net8.0\PubTmp\Out\ZString.dll
+=======
+C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\obj\Release\net8.0\PubTmp\Out\System.Memory.Data.dll
+C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\obj\Release\net8.0\PubTmp\Out\System.Security.Cryptography.Pkcs.dll
+C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\obj\Release\net8.0\PubTmp\Out\System.Security.Cryptography.ProtectedData.dll
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
 C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\obj\Release\net8.0\PubTmp\Out\cs\Microsoft.Data.SqlClient.resources.dll
 C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\obj\Release\net8.0\PubTmp\Out\de\Microsoft.Data.SqlClient.resources.dll
 C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\obj\Release\net8.0\PubTmp\Out\es\Microsoft.Data.SqlClient.resources.dll

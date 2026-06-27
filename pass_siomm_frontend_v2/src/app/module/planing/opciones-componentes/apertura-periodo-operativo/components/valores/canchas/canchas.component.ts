@@ -47,11 +47,19 @@ export class CanchasComponent {
 
         });
 
+<<<<<<< HEAD
         // effect(() => {
         //     if (this.planingCompartido.resetPeriodo()) return;
         //     this.resetearFormulario();
         //     this.planingCompartido.clearResetPeriodo();
         // });
+=======
+        effect(() => {
+            if (this.planingCompartido.resetPeriodo()) return;
+            this.resetearFormulario();
+            this.planingCompartido.clearResetPeriodo();
+        });
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     }
 
     blockForm() {
@@ -73,6 +81,7 @@ export class CanchasComponent {
 
     ngOnInit() {
         this.form.valueChanges.subscribe(() => {
+<<<<<<< HEAD
             // const filas = this.form.getRawValue();
 
 
@@ -85,6 +94,10 @@ export class CanchasComponent {
             });
 
 
+=======
+            const filas = this.form.getRawValue();
+
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
             this.planingCompartido.setCanchas(filas, 'factor_operativo');
         });
     }

@@ -5,6 +5,7 @@
         public string username { get; set; }
         public string password { get; set; }
     }
+<<<<<<< HEAD
 
     public class MaeUsuarioDto
     {
@@ -33,4 +34,6 @@
         public MaeUsuarioDto data { get; set; }
 
     }
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
 }

@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+<<<<<<< HEAD
     <PackageReference Include="ClosedXML" Version="0.105.0" />
     <PackageReference Include="Dapper" Version="2.1.72" />
     <PackageReference Include="EPPlus" Version="8.5.1" />
@@ -15,12 +16,19 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.21" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.2" />
     <PackageReference Include="NPOI" Version="2.7.6" />
+=======
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.21" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.2" />
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
     <PackageReference Include="System.DirectoryServices.AccountManagement" Version="9.0.10" />
   </ItemGroup>
 
   <ItemGroup>
+<<<<<<< HEAD
     <Folder Include="Planeamiento\Programa-Mensual-Labores\Services\ExplotacionService\ModalsService\" />
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     <Folder Include="Rutas\Data\Dto\" />
   </ItemGroup>
 

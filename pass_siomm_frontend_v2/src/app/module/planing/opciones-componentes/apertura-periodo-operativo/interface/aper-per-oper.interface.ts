@@ -335,7 +335,11 @@ export const TH_ESTANDAR_EXPLORACION: thTitulos[] = [
 ]
 
 export const DATOS_METODO_EXPLORACION: EstructuraDatosOtros[] = [
+<<<<<<< HEAD
     { type: 'select', name: 'cod_zona', width: '284px' },
+=======
+    { type: 'select', name: 'cod_zona', width: '210px' },
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     { type: 'text', name: 'lab_pieper', width: '80px' },
     { type: 'text', name: 'lab_broca', width: '80px' },
     { type: 'text', name: 'lab_barcon', width: '80px' },
@@ -366,8 +370,13 @@ export const TH_ESTANDAR_AVANCE = [
 ]
 
 export const DATOS_ESTANDER_AVANCE: EstructuraDatosOtros[] = [
+<<<<<<< HEAD
     { type: 'select', name: 'cod_tiplab', width: '247px' },
     { type: 'number', name: 'nro_lab_ancho', width: '80px' },
+=======
+    { type: 'select', name: 'cod_tiplab', width: '200px' },
+    { type: 'number', name: 'nro_lab_ancho', width: '60px' },
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     { type: 'number', name: 'nro_lab_altura', width: '90px' },
     { type: 'number', name: 'nro_lab_pieper', width: '90px' },
     { type: 'number', name: 'nro_lab_broca', width: '60px' },

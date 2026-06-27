@@ -85,9 +85,13 @@ namespace pass_siomm_backend.Rutas.Service
                 int codRutaTerc = reader.GetInt32(4);
                 string nomRutaTerc = reader.GetString(5);
 
+<<<<<<< HEAD
                 var rutaTerc = rutaSec.rutas_terciarias
                     .FirstOrDefault(rt => rt.cod_ruta_terc == codRutaTerc);
 
+=======
+                var rutaTerc = rutaSec.rutas_terciarias.FirstOrDefault(rt => rt.cod_ruta_terc == codRutaTerc);
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
                 if (rutaTerc == null)
                 {
                     rutaTerc = new RutasTerciarias
@@ -96,6 +100,7 @@ namespace pass_siomm_backend.Rutas.Service
                         nom_ruta_terc = nomRutaTerc,
                         rutas_cuartas = new List<RutasCuartas>()
                     };
+<<<<<<< HEAD
 
                     rutaSec.rutas_terciarias.Add(rutaTerc);
 
@@ -111,6 +116,9 @@ namespace pass_siomm_backend.Rutas.Service
                         rutaSec.rutas_terciarias.Remove(tipoLabor);
                         rutaSec.rutas_terciarias.Insert(nivelIndex + 1, tipoLabor);
                     }
+=======
+                    rutaSec.rutas_terciarias.Add(rutaTerc);
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
                 }
 
                 AgregarRutaCuaternaria(rutaTerc, reader);

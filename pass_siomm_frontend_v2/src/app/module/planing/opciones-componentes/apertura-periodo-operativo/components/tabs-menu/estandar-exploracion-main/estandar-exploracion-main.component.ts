@@ -109,7 +109,11 @@ export class EstandarExploracionMainComponent {
                     lab_conect: [item.lab_conect, [Validators.pattern(/^\d+(\.\d+)?$/)]],
                     lab_punmar: [item.lab_punmar, [Validators.pattern(/^\d+(\.\d+)?$/)]],
                     lab_tabla: [item.lab_tabla, [Validators.pattern(/^\d+(\.\d+)?$/)]],
+<<<<<<< HEAD
                     lab_apr: [item.lab_apr, [Validators.pattern(/^[A-Z0-9]$/)]],
+=======
+                    lab_apr: [item.lab_apr, [Validators.pattern(/^[A-Z]$/)]],
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
                     accion: [''],
                     esNuevo: [false]
                 })
@@ -121,11 +125,14 @@ export class EstandarExploracionMainComponent {
 
 
     agregarFilas() {
+<<<<<<< HEAD
         this.planingCompartido.setBotonesState({
             ...this.planingCompartido.botonesState(),
             editar: true
         });
 
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
         this.bloqueoSelect()
         const periodo = this.planingCompartido.periodo();
 
@@ -147,7 +154,11 @@ export class EstandarExploracionMainComponent {
             lab_conect: ['', [Validators.pattern(/^\d+(\.\d+)?$/)]],
             lab_punmar: ['', [Validators.pattern(/^\d+(\.\d+)?$/)]],
             lab_tabla: ['', [Validators.pattern(/^\d+(\.\d+)?$/)]],
+<<<<<<< HEAD
             lab_apr: ['', [Validators.pattern(/^[A-Z0-9]$/)]],
+=======
+            lab_apr: ['', [Validators.pattern(/^\d+(\.\d+)?$/)]],
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
             esNuevo: [true]
         });
 
@@ -212,8 +223,11 @@ export class EstandarExploracionMainComponent {
         const esNuevo = semana.esNuevo;
 
         if (esNuevo) {
+<<<<<<< HEAD
 
             this.semanas.removeAt(index);
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
             return;
         }
 

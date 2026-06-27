@@ -123,10 +123,13 @@ export class MetodoMinadoMainComponent {
 
 
     agregarFilas() {
+<<<<<<< HEAD
         this.planingCompartido.setBotonesState({
             ...this.planingCompartido.botonesState(),
             editar: true
         });
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
         this.bloqueoSelect();
         const periodo = this.planingCompartido.periodo();
 
@@ -174,8 +177,11 @@ export class MetodoMinadoMainComponent {
         const esNuevo = semana.esNuevo;
 
         if (esNuevo) {
+<<<<<<< HEAD
 
             this.semanas.removeAt(index);
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
             return;
         }
 

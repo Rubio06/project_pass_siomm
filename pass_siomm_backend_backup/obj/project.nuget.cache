@@ -1,11 +1,16 @@
 {
   "version": 2,
+<<<<<<< HEAD
   "dgSpecHash": "c5j2n9brd3w=",
+=======
+  "dgSpecHash": "bWNCY4nQPHg=",
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
   "success": true,
   "projectFilePath": "C:\\Users\\pract_ir.sist.cmc\\Desktop\\proyecto_pass_siomm\\pass_siomm_backend_backup\\pass_siomm_backend.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\azure.core\\1.47.1\\azure.core.1.47.1.nupkg.sha512",
     "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\azure.identity\\1.14.2\\azure.identity.1.14.2.nupkg.sha512",
+<<<<<<< HEAD
     "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\bouncycastle.cryptography\\2.6.2\\bouncycastle.cryptography.2.6.2.nupkg.sha512",
     "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\closedxml\\0.105.0\\closedxml.0.105.0.nupkg.sha512",
     "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\closedxml.parser\\2.0.0\\closedxml.parser.2.0.0.nupkg.sha512",
@@ -20,6 +25,8 @@
     "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\excelnumberformat\\1.1.0\\excelnumberformat.1.1.0.nupkg.sha512",
     "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\extendednumerics.bigdecimal\\2025.1001.2.129\\extendednumerics.bigdecimal.2025.1001.2.129.nupkg.sha512",
     "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\mathnet.numerics.signed\\5.0.0\\mathnet.numerics.signed.5.0.0.nupkg.sha512",
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\8.0.21\\microsoft.aspnetcore.authentication.jwtbearer.8.0.21.nupkg.sha512",
     "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\8.0.0\\microsoft.bcl.asyncinterfaces.8.0.0.nupkg.sha512",
     "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\microsoft.bcl.cryptography\\9.0.10\\microsoft.bcl.cryptography.9.0.10.nupkg.sha512",
@@ -28,6 +35,7 @@
     "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
     "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\microsoft.extensions.caching.abstractions\\8.0.0\\microsoft.extensions.caching.abstractions.8.0.0.nupkg.sha512",
     "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\microsoft.extensions.caching.memory\\8.0.1\\microsoft.extensions.caching.memory.8.0.1.nupkg.sha512",
+<<<<<<< HEAD
     "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\microsoft.extensions.configuration\\8.0.0\\microsoft.extensions.configuration.8.0.0.nupkg.sha512",
     "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\8.0.0\\microsoft.extensions.configuration.abstractions.8.0.0.nupkg.sha512",
     "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\microsoft.extensions.configuration.fileextensions\\8.0.1\\microsoft.extensions.configuration.fileextensions.8.0.1.nupkg.sha512",
@@ -36,6 +44,9 @@
     "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\microsoft.extensions.fileproviders.abstractions\\8.0.0\\microsoft.extensions.fileproviders.abstractions.8.0.0.nupkg.sha512",
     "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\microsoft.extensions.fileproviders.physical\\8.0.0\\microsoft.extensions.fileproviders.physical.8.0.0.nupkg.sha512",
     "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\microsoft.extensions.filesystemglobbing\\8.0.0\\microsoft.extensions.filesystemglobbing.8.0.0.nupkg.sha512",
+=======
+    "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.2\\microsoft.extensions.dependencyinjection.abstractions.8.0.2.nupkg.sha512",
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\8.0.3\\microsoft.extensions.logging.abstractions.8.0.3.nupkg.sha512",
     "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\microsoft.extensions.options\\8.0.2\\microsoft.extensions.options.8.0.2.nupkg.sha512",
     "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\microsoft.extensions.primitives\\8.0.0\\microsoft.extensions.primitives.8.0.0.nupkg.sha512",
@@ -47,6 +58,7 @@
     "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\microsoft.identitymodel.protocols\\7.7.1\\microsoft.identitymodel.protocols.7.7.1.nupkg.sha512",
     "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\microsoft.identitymodel.protocols.openidconnect\\7.7.1\\microsoft.identitymodel.protocols.openidconnect.7.7.1.nupkg.sha512",
     "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\microsoft.identitymodel.tokens\\7.7.1\\microsoft.identitymodel.tokens.7.7.1.nupkg.sha512",
+<<<<<<< HEAD
     "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\microsoft.io.recyclablememorystream\\3.0.1\\microsoft.io.recyclablememorystream.3.0.1.nupkg.sha512",
     "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\microsoft.netcore.platforms\\5.0.0\\microsoft.netcore.platforms.5.0.0.nupkg.sha512",
     "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\microsoft.openapi\\1.6.14\\microsoft.openapi.1.6.14.nupkg.sha512",
@@ -57,6 +69,10 @@
     "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\sharpziplib\\1.4.2\\sharpziplib.1.4.2.nupkg.sha512",
     "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\sixlabors.fonts\\1.0.1\\sixlabors.fonts.1.0.1.nupkg.sha512",
     "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\sixlabors.imagesharp\\2.1.11\\sixlabors.imagesharp.2.1.11.nupkg.sha512",
+=======
+    "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\microsoft.openapi\\1.6.14\\microsoft.openapi.1.6.14.nupkg.sha512",
+    "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\microsoft.sqlserver.server\\1.0.0\\microsoft.sqlserver.server.1.0.0.nupkg.sha512",
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\swashbuckle.aspnetcore\\6.6.2\\swashbuckle.aspnetcore.6.6.2.nupkg.sha512",
     "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.6.2\\swashbuckle.aspnetcore.swagger.6.6.2.nupkg.sha512",
     "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.6.2\\swashbuckle.aspnetcore.swaggergen.6.6.2.nupkg.sha512",
@@ -70,16 +86,23 @@
     "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\system.directoryservices.protocols\\9.0.10\\system.directoryservices.protocols.9.0.10.nupkg.sha512",
     "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\system.formats.asn1\\9.0.10\\system.formats.asn1.9.0.10.nupkg.sha512",
     "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\system.identitymodel.tokens.jwt\\7.7.1\\system.identitymodel.tokens.jwt.7.7.1.nupkg.sha512",
+<<<<<<< HEAD
     "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\system.io.packaging\\8.0.1\\system.io.packaging.8.0.1.nupkg.sha512",
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\system.memory\\4.5.5\\system.memory.4.5.5.nupkg.sha512",
     "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\system.memory.data\\8.0.1\\system.memory.data.8.0.1.nupkg.sha512",
     "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
     "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\system.security.cryptography.pkcs\\8.0.1\\system.security.cryptography.pkcs.8.0.1.nupkg.sha512",
     "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\system.security.cryptography.protecteddata\\9.0.10\\system.security.cryptography.protecteddata.9.0.10.nupkg.sha512",
+<<<<<<< HEAD
     "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\system.security.cryptography.xml\\8.0.2\\system.security.cryptography.xml.8.0.2.nupkg.sha512",
     "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\system.text.encoding.codepages\\5.0.0\\system.text.encoding.codepages.5.0.0.nupkg.sha512",
     "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\system.text.json\\8.0.5\\system.text.json.8.0.5.nupkg.sha512",
     "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\zstring\\2.6.0\\zstring.2.6.0.nupkg.sha512"
+=======
+    "C:\\Users\\pract_ir.sist.cmc\\.nuget\\packages\\system.text.json\\8.0.5\\system.text.json.8.0.5.nupkg.sha512"
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
   ],
   "logs": []
 }

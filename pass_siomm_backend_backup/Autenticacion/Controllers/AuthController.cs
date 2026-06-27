@@ -5,7 +5,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+<<<<<<< HEAD
 using pass_siomm_backend.Autenticacion.Data;
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
 using pass_siomm_backend.Autenticacion.Service;
 using System.Data;
 using System.DirectoryServices;
@@ -31,6 +34,7 @@ namespace pass_siomm_backend.Autenticacion.Controllers
             this.config = config;
         }
 
+<<<<<<< HEAD
         //[HttpPost("authenticate")]
         //public async Task<IActionResult> AutenticatheUser([FromBody] LoginRequestDto request)
         //{
@@ -87,6 +91,8 @@ namespace pass_siomm_backend.Autenticacion.Controllers
         //    }
         //}
 
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
         [HttpPost("authenticate")]
         public async Task<IActionResult> AutenticatheUser([FromBody] LoginRequestDto request)
         {
@@ -104,11 +110,23 @@ namespace pass_siomm_backend.Autenticacion.Controllers
                     });
                 }
 
+<<<<<<< HEAD
                 // 1️⃣ Validar usuario y contraseña (Active Directory o sistema)
+=======
+                bool validateBD = await _userService.UserExistsAsync(request.username);
+
+                if (!validateBD)
+                {
+                    mensaje = "Usuario no registrado en la base de datos.";
+                    return Unauthorized(new { success = false, message = mensaje });
+                }
+
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
                 valid = AuthenticateUser(request.username, request.password, ref mensaje);
 
                 if (!valid)
                 {
+<<<<<<< HEAD
                     return Unauthorized(new
                     {
                         success = false,
@@ -139,6 +157,22 @@ namespace pass_siomm_backend.Autenticacion.Controllers
                     token = jwtToken,
                     data = data
 
+=======
+                    return Unauthorized(new { success = false, message = mensaje });
+                }
+
+                string jwtToken = GenerateJwtToken(request);
+
+                return Ok(new
+                {
+                    success = true,
+                    message = "Autenticación exitosa.",
+                    data = new
+                    {
+                        token = jwtToken,
+                        request.username,
+                    }
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
                 });
             }
             catch (Exception ex)

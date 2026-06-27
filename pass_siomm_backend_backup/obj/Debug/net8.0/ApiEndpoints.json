@@ -154,6 +154,7 @@
     "ReturnTypes": []
   },
   {
+<<<<<<< HEAD
     "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.ZonaController",
     "Method": "ObtenerSiguienteCodigo",
     "RelativePath": "mantenimiento/opciones-modelo/codigo-siguiente",
@@ -1876,6 +1877,8 @@
     "ReturnTypes": []
   },
   {
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     "ContainingType": "pass_siomm_backend.Planeamiento.Controllers.PlaneamientoConroller.AperPerodioOperativoController",
     "Method": "listaEnterosConFecha",
     "RelativePath": "planeamiento/aper-periodo-operativo/lista-enteros-num-semana",
@@ -1979,6 +1982,7 @@
     "ReturnTypes": []
   },
   {
+<<<<<<< HEAD
     "ContainingType": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Controllers.ExplotacionController.ExplotacionController",
     "Method": "ObtenerBlocksYArchivos",
     "RelativePath": "planeamiento/edicion-programa-mensual/blocks-archivos",
@@ -2835,6 +2839,8 @@
     "ReturnTypes": []
   },
   {
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     "ContainingType": "pass_siomm_backend.Rutas.Controller.RoutersController",
     "Method": "GetRutas",
     "RelativePath": "rutas/mostrar-rutas",

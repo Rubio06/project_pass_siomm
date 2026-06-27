@@ -23,6 +23,7 @@
   },
   "private": true,
   "dependencies": {
+<<<<<<< HEAD
     "@angular/animations": "^20.3.7",
     "@angular/cdk": "^20.2.14",
     "@angular/common": "^20.3.7",
@@ -50,13 +51,34 @@
     "tailwindcss": "^4.1.16",
     "tslib": "^2.3.0",
     "xlsx-js-style": "^1.2.0"
+=======
+    "@angular/common": "^20.3.0",
+    "@angular/compiler": "^20.3.0",
+    "@angular/core": "^20.3.0",
+    "@angular/forms": "^20.3.0",
+    "@angular/platform-browser": "^20.3.0",
+    "@angular/platform-server": "^20.3.0",
+    "@angular/router": "^20.3.0",
+    "@angular/ssr": "^20.3.7",
+    "@tailwindcss/postcss": "^4.1.16",
+    "daisyui": "^5.3.10",
+    "express": "^5.1.0",
+    "postcss": "^8.5.6",
+    "rxjs": "~7.8.0",
+    "sweetalert2": "^11.26.4",
+    "tailwindcss": "^4.1.16",
+    "tslib": "^2.3.0"
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
   },
   "devDependencies": {
     "@angular/build": "^20.3.7",
     "@angular/cli": "^20.3.7",
     "@angular/compiler-cli": "^20.3.0",
     "@types/express": "^5.0.1",
+<<<<<<< HEAD
     "@types/file-saver": "^2.0.7",
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     "@types/jasmine": "~5.1.0",
     "@types/node": "^20.17.19",
     "baseline-browser-mapping": "^2.9.11",

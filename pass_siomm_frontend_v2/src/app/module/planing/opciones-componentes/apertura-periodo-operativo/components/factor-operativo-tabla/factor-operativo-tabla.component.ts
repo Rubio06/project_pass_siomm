@@ -131,6 +131,7 @@ export class FactorOperativoTablaComponent {
 
 
 
+<<<<<<< HEAD
     // ngOnInit() {
     //     this.form.valueChanges.subscribe(() => {
 
@@ -171,6 +172,22 @@ export class FactorOperativoTablaComponent {
 
 
 
+=======
+    ngOnInit() {
+        this.form.valueChanges.subscribe(() => {
+
+            const filas = this.factorOperativoDetalle.getRawValue();
+
+            this.planingCompartido.setOperativoDetalle(
+                filas,
+                'factor_operativo'
+            );
+
+        });
+        this.resetearFormulario();
+    }
+
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     bloquearCampo(): boolean {
         return this.planingCompartido.bloqueoFormEditar();
     }

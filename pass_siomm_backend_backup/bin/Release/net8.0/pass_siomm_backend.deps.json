@@ -8,6 +8,7 @@
     ".NETCoreApp,Version=v8.0": {
       "pass_siomm_backend/1.0.0": {
         "dependencies": {
+<<<<<<< HEAD
           "ClosedXML": "0.105.0",
           "Dapper": "2.1.72",
           "EPPlus": "8.5.1",
@@ -16,6 +17,10 @@
           "Microsoft.AspNetCore.Authentication.JwtBearer": "8.0.21",
           "Microsoft.Data.SqlClient": "6.1.2",
           "NPOI": "2.7.6",
+=======
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "8.0.21",
+          "Microsoft.Data.SqlClient": "6.1.2",
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
           "Swashbuckle.AspNetCore": "6.6.2",
           "System.DirectoryServices.AccountManagement": "9.0.10"
         },
@@ -40,7 +45,12 @@
         "dependencies": {
           "Azure.Core": "1.47.1",
           "Microsoft.Identity.Client": "4.73.1",
+<<<<<<< HEAD
           "Microsoft.Identity.Client.Extensions.Msal": "4.73.1"
+=======
+          "Microsoft.Identity.Client.Extensions.Msal": "4.73.1",
+          "System.Memory": "4.5.5"
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
         },
         "runtime": {
           "lib/net8.0/Azure.Identity.dll": {
@@ -49,6 +59,7 @@
           }
         }
       },
+<<<<<<< HEAD
       "BouncyCastle.Cryptography/2.6.2": {
         "runtime": {
           "lib/net6.0/BouncyCastle.Cryptography.dll": {
@@ -184,6 +195,8 @@
           }
         }
       },
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
       "Microsoft.AspNetCore.Authentication.JwtBearer/8.0.21": {
         "dependencies": {
           "Microsoft.IdentityModel.Protocols.OpenIdConnect": "7.7.1"
@@ -225,7 +238,12 @@
           "Microsoft.IdentityModel.Protocols.OpenIdConnect": "7.7.1",
           "Microsoft.SqlServer.Server": "1.0.0",
           "System.Configuration.ConfigurationManager": "9.0.10",
+<<<<<<< HEAD
           "System.Security.Cryptography.Pkcs": "8.0.1"
+=======
+          "System.Security.Cryptography.Pkcs": "8.0.1",
+          "System.Text.Json": "8.0.5"
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
         },
         "runtime": {
           "lib/net8.0/Microsoft.Data.SqlClient.dll": {
@@ -308,11 +326,27 @@
           }
         }
       },
+<<<<<<< HEAD
       "Microsoft.Extensions.Caching.Memory/8.0.1": {
         "dependencies": {
           "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.2",
           "Microsoft.Extensions.Logging.Abstractions": "8.0.3",
           "Microsoft.Extensions.Options": "8.0.2"
+=======
+      "Microsoft.Extensions.ApiDescription.Server/6.0.5": {},
+      "Microsoft.Extensions.Caching.Abstractions/8.0.0": {
+        "dependencies": {
+          "Microsoft.Extensions.Primitives": "8.0.0"
+        }
+      },
+      "Microsoft.Extensions.Caching.Memory/8.0.1": {
+        "dependencies": {
+          "Microsoft.Extensions.Caching.Abstractions": "8.0.0",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.2",
+          "Microsoft.Extensions.Logging.Abstractions": "8.0.3",
+          "Microsoft.Extensions.Options": "8.0.2",
+          "Microsoft.Extensions.Primitives": "8.0.0"
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
         },
         "runtime": {
           "lib/net8.0/Microsoft.Extensions.Caching.Memory.dll": {
@@ -321,6 +355,7 @@
           }
         }
       },
+<<<<<<< HEAD
       "Microsoft.Extensions.Configuration.FileExtensions/8.0.1": {
         "runtime": {
           "lib/net8.0/Microsoft.Extensions.Configuration.FileExtensions.dll": {
@@ -340,6 +375,8 @@
           }
         }
       },
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
       "Microsoft.Extensions.DependencyInjection.Abstractions/8.0.2": {
         "runtime": {
           "lib/net8.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {
@@ -361,7 +398,12 @@
       },
       "Microsoft.Extensions.Options/8.0.2": {
         "dependencies": {
+<<<<<<< HEAD
           "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.2"
+=======
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.2",
+          "Microsoft.Extensions.Primitives": "8.0.0"
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
         },
         "runtime": {
           "lib/net8.0/Microsoft.Extensions.Options.dll": {
@@ -370,9 +412,17 @@
           }
         }
       },
+<<<<<<< HEAD
       "Microsoft.Identity.Client/4.73.1": {
         "dependencies": {
           "Microsoft.IdentityModel.Abstractions": "7.7.1"
+=======
+      "Microsoft.Extensions.Primitives/8.0.0": {},
+      "Microsoft.Identity.Client/4.73.1": {
+        "dependencies": {
+          "Microsoft.IdentityModel.Abstractions": "7.7.1",
+          "System.Diagnostics.DiagnosticSource": "6.0.1"
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
         },
         "runtime": {
           "lib/net8.0/Microsoft.Identity.Client.dll": {
@@ -457,6 +507,7 @@
           }
         }
       },
+<<<<<<< HEAD
       "Microsoft.IO.RecyclableMemoryStream/3.0.1": {
         "runtime": {
           "lib/net6.0/Microsoft.IO.RecyclableMemoryStream.dll": {
@@ -465,6 +516,8 @@
           }
         }
       },
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
       "Microsoft.OpenApi/1.6.14": {
         "runtime": {
           "lib/netstandard2.0/Microsoft.OpenApi.dll": {
@@ -481,6 +534,7 @@
           }
         }
       },
+<<<<<<< HEAD
       "NPOI/2.7.6": {
         "dependencies": {
           "BouncyCastle.Cryptography": "2.6.2",
@@ -556,6 +610,11 @@
       },
       "Swashbuckle.AspNetCore/6.6.2": {
         "dependencies": {
+=======
+      "Swashbuckle.AspNetCore/6.6.2": {
+        "dependencies": {
+          "Microsoft.Extensions.ApiDescription.Server": "6.0.5",
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
           "Swashbuckle.AspNetCore.Swagger": "6.6.2",
           "Swashbuckle.AspNetCore.SwaggerGen": "6.6.2",
           "Swashbuckle.AspNetCore.SwaggerUI": "6.6.2"
@@ -615,6 +674,14 @@
           }
         }
       },
+<<<<<<< HEAD
+=======
+      "System.Diagnostics.DiagnosticSource/6.0.1": {
+        "dependencies": {
+          "System.Runtime.CompilerServices.Unsafe": "6.0.0"
+        }
+      },
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
       "System.Diagnostics.EventLog/9.0.10": {
         "runtime": {
           "lib/net8.0/System.Diagnostics.EventLog.dll": {
@@ -723,6 +790,7 @@
           }
         }
       },
+<<<<<<< HEAD
       "System.IO.Packaging/8.0.1": {
         "runtime": {
           "lib/net8.0/System.IO.Packaging.dll": {
@@ -731,6 +799,9 @@
           }
         }
       },
+=======
+      "System.Memory/4.5.5": {},
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
       "System.Memory.Data/8.0.1": {
         "runtime": {
           "lib/net8.0/System.Memory.Data.dll": {
@@ -739,6 +810,10 @@
           }
         }
       },
+<<<<<<< HEAD
+=======
+      "System.Runtime.CompilerServices.Unsafe/6.0.0": {},
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
       "System.Security.Cryptography.Pkcs/8.0.1": {
         "runtime": {
           "lib/net8.0/System.Security.Cryptography.Pkcs.dll": {
@@ -763,6 +838,7 @@
           }
         }
       },
+<<<<<<< HEAD
       "System.Security.Cryptography.Xml/8.0.2": {
         "dependencies": {
           "System.Security.Cryptography.Pkcs": "8.0.1"
@@ -782,6 +858,9 @@
           }
         }
       }
+=======
+      "System.Text.Json/8.0.5": {}
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     }
   },
   "libraries": {
@@ -804,6 +883,7 @@
       "path": "azure.identity/1.14.2",
       "hashPath": "azure.identity.1.14.2.nupkg.sha512"
     },
+<<<<<<< HEAD
     "BouncyCastle.Cryptography/2.6.2": {
       "type": "package",
       "serviceable": true,
@@ -902,6 +982,8 @@
       "path": "mathnet.numerics.signed/5.0.0",
       "hashPath": "mathnet.numerics.signed.5.0.0.nupkg.sha512"
     },
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     "Microsoft.AspNetCore.Authentication.JwtBearer/8.0.21": {
       "type": "package",
       "serviceable": true,
@@ -937,6 +1019,23 @@
       "path": "microsoft.data.sqlclient.sni.runtime/6.0.2",
       "hashPath": "microsoft.data.sqlclient.sni.runtime.6.0.2.nupkg.sha512"
     },
+<<<<<<< HEAD
+=======
+    "Microsoft.Extensions.ApiDescription.Server/6.0.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Ckb5EDBUNJdFWyajfXzUIMRkhf52fHZOQuuZg/oiu8y7zDCVwD0iHhew6MnThjHmevanpxL3f5ci2TtHQEN6bw==",
+      "path": "microsoft.extensions.apidescription.server/6.0.5",
+      "hashPath": "microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Caching.Abstractions/8.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-3KuSxeHoNYdxVYfg2IRZCThcrlJ1XJqIXkAWikCsbm5C/bCjv7G0WoKDyuR98Q+T607QT2Zl5GsbGRkENcV2yQ==",
+      "path": "microsoft.extensions.caching.abstractions/8.0.0",
+      "hashPath": "microsoft.extensions.caching.abstractions.8.0.0.nupkg.sha512"
+    },
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     "Microsoft.Extensions.Caching.Memory/8.0.1": {
       "type": "package",
       "serviceable": true,
@@ -944,6 +1043,7 @@
       "path": "microsoft.extensions.caching.memory/8.0.1",
       "hashPath": "microsoft.extensions.caching.memory.8.0.1.nupkg.sha512"
     },
+<<<<<<< HEAD
     "Microsoft.Extensions.Configuration.FileExtensions/8.0.1": {
       "type": "package",
       "serviceable": true,
@@ -958,6 +1058,8 @@
       "path": "microsoft.extensions.configuration.json/8.0.1",
       "hashPath": "microsoft.extensions.configuration.json.8.0.1.nupkg.sha512"
     },
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     "Microsoft.Extensions.DependencyInjection.Abstractions/8.0.2": {
       "type": "package",
       "serviceable": true,
@@ -979,6 +1081,16 @@
       "path": "microsoft.extensions.options/8.0.2",
       "hashPath": "microsoft.extensions.options.8.0.2.nupkg.sha512"
     },
+<<<<<<< HEAD
+=======
+    "Microsoft.Extensions.Primitives/8.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-bXJEZrW9ny8vjMF1JV253WeLhpEVzFo1lyaZu1vQ4ZxWUlVvknZ/+ftFgVheLubb4eZPSwwxBeqS1JkCOjxd8g==",
+      "path": "microsoft.extensions.primitives/8.0.0",
+      "hashPath": "microsoft.extensions.primitives.8.0.0.nupkg.sha512"
+    },
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     "Microsoft.Identity.Client/4.73.1": {
       "type": "package",
       "serviceable": true,
@@ -1035,6 +1147,7 @@
       "path": "microsoft.identitymodel.tokens/7.7.1",
       "hashPath": "microsoft.identitymodel.tokens.7.7.1.nupkg.sha512"
     },
+<<<<<<< HEAD
     "Microsoft.IO.RecyclableMemoryStream/3.0.1": {
       "type": "package",
       "serviceable": true,
@@ -1042,6 +1155,8 @@
       "path": "microsoft.io.recyclablememorystream/3.0.1",
       "hashPath": "microsoft.io.recyclablememorystream.3.0.1.nupkg.sha512"
     },
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     "Microsoft.OpenApi/1.6.14": {
       "type": "package",
       "serviceable": true,
@@ -1056,6 +1171,7 @@
       "path": "microsoft.sqlserver.server/1.0.0",
       "hashPath": "microsoft.sqlserver.server.1.0.0.nupkg.sha512"
     },
+<<<<<<< HEAD
     "NPOI/2.7.6": {
       "type": "package",
       "serviceable": true,
@@ -1098,6 +1214,8 @@
       "path": "sixlabors.imagesharp/2.1.11",
       "hashPath": "sixlabors.imagesharp.2.1.11.nupkg.sha512"
     },
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     "Swashbuckle.AspNetCore/6.6.2": {
       "type": "package",
       "serviceable": true,
@@ -1140,6 +1258,16 @@
       "path": "system.configuration.configurationmanager/9.0.10",
       "hashPath": "system.configuration.configurationmanager.9.0.10.nupkg.sha512"
     },
+<<<<<<< HEAD
+=======
+    "System.Diagnostics.DiagnosticSource/6.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-KiLYDu2k2J82Q9BJpWiuQqCkFjRBWVq4jDzKKWawVi9KWzyD0XG3cmfX0vqTQlL14Wi9EufJrbL0+KCLTbqWiQ==",
+      "path": "system.diagnostics.diagnosticsource/6.0.1",
+      "hashPath": "system.diagnostics.diagnosticsource.6.0.1.nupkg.sha512"
+    },
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     "System.Diagnostics.EventLog/9.0.10": {
       "type": "package",
       "serviceable": true,
@@ -1182,12 +1310,21 @@
       "path": "system.identitymodel.tokens.jwt/7.7.1",
       "hashPath": "system.identitymodel.tokens.jwt.7.7.1.nupkg.sha512"
     },
+<<<<<<< HEAD
     "System.IO.Packaging/8.0.1": {
       "type": "package",
       "serviceable": true,
       "sha512": "sha512-KYkIOAvPexQOLDxPO2g0BVoWInnQhPpkFzRqvNrNrMhVT6kqhVr0zEb6KCHlptLFukxnZrjuMVAnxK7pOGUYrw==",
       "path": "system.io.packaging/8.0.1",
       "hashPath": "system.io.packaging.8.0.1.nupkg.sha512"
+=======
+    "System.Memory/4.5.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-XIWiDvKPXaTveaB7HVganDlOCRoj03l+jrwNvcge/t8vhGYKvqV+dMv6G4SAX2NoNmN0wZfVPTAlFwZcZvVOUw==",
+      "path": "system.memory/4.5.5",
+      "hashPath": "system.memory.4.5.5.nupkg.sha512"
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     },
     "System.Memory.Data/8.0.1": {
       "type": "package",
@@ -1196,6 +1333,16 @@
       "path": "system.memory.data/8.0.1",
       "hashPath": "system.memory.data.8.0.1.nupkg.sha512"
     },
+<<<<<<< HEAD
+=======
+    "System.Runtime.CompilerServices.Unsafe/6.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-/iUeP3tq1S0XdNNoMz5C9twLSrM/TH+qElHkXWaPvuNOt+99G75NrV0OS2EqHx5wMN7popYjpc8oTjC1y16DLg==",
+      "path": "system.runtime.compilerservices.unsafe/6.0.0",
+      "hashPath": "system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512"
+    },
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     "System.Security.Cryptography.Pkcs/8.0.1": {
       "type": "package",
       "serviceable": true,
@@ -1210,6 +1357,7 @@
       "path": "system.security.cryptography.protecteddata/9.0.10",
       "hashPath": "system.security.cryptography.protecteddata.9.0.10.nupkg.sha512"
     },
+<<<<<<< HEAD
     "System.Security.Cryptography.Xml/8.0.2": {
       "type": "package",
       "serviceable": true,
@@ -1223,6 +1371,14 @@
       "sha512": "sha512-XE8a+11nZg0LRaf+RGABEWaHIf8yGd5w8v/Ra1iWxMBmAVzwuKbW7G21mS0U7w7sh1lYcgckInWGgnz4qyET8A==",
       "path": "zstring/2.6.0",
       "hashPath": "zstring.2.6.0.nupkg.sha512"
+=======
+    "System.Text.Json/8.0.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-0f1B50Ss7rqxXiaBJyzUu9bWFOO2/zSlifZ/UNMdiIpDYe4cY4LQQicP4nirK1OS31I43rn062UIJ1Q9bpmHpg==",
+      "path": "system.text.json/8.0.5",
+      "hashPath": "system.text.json.8.0.5.nupkg.sha512"
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     }
   }
 }

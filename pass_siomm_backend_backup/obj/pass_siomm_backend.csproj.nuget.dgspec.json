@@ -31,7 +31,10 @@
         },
         "frameworks": {
           "net8.0": {
+<<<<<<< HEAD
             "framework": "net8.0",
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
             "targetAlias": "net8.0",
             "projectReferences": {}
           }
@@ -46,6 +49,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
+<<<<<<< HEAD
         "SdkAnalysisLevel": "10.0.300"
       },
       "frameworks": {
@@ -73,6 +77,14 @@
               "target": "Package",
               "version": "[3.8.0, )"
             },
+=======
+        "SdkAnalysisLevel": "9.0.300"
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
               "version": "[8.0.21, )"
@@ -81,10 +93,13 @@
               "target": "Package",
               "version": "[6.1.2, )"
             },
+<<<<<<< HEAD
             "NPOI": {
               "target": "Package",
               "version": "[2.7.6, )"
             },
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.6.2, )"
@@ -113,7 +128,11 @@
               "privateAssets": "all"
             }
           },
+<<<<<<< HEAD
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.301/PortableRuntimeIdentifierGraph.json"
+=======
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.306/PortableRuntimeIdentifierGraph.json"
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
         }
       }
     }

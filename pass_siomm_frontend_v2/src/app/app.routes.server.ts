@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // import { RenderMode, ServerRoute } from '@angular/ssr';
 
 // export const serverRoutes: ServerRoute[] = [
@@ -26,11 +27,17 @@ export const serverRoutes: ServerRoute[] = [
         renderMode: RenderMode.Server,
     },
     // 3. El resto de la aplicación que sea estático (Login, Dashboards fijos, etc.)
+=======
+import { RenderMode, ServerRoute } from '@angular/ssr';
+
+export const serverRoutes: ServerRoute[] = [
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     {
         path: '**',
         renderMode: RenderMode.Prerender,
     },
 ];
+<<<<<<< HEAD
 
 // import { RenderMode, ServerRoute } from '@angular/ssr';
 
@@ -56,3 +63,5 @@ export const serverRoutes: ServerRoute[] = [
 //         renderMode: RenderMode.Prerender, // <- Cambia todo a Prerender
 //     },
 // ];
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190

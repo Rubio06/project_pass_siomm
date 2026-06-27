@@ -1,4 +1,5 @@
 
+<<<<<<< HEAD
 export interface MaeUsuario {
     cod_empresa: string;
     cod_empresa_unidad: string;
@@ -16,10 +17,13 @@ export interface MaeUsuario {
     ind_usu_ing?: string;
     ind_usu_sis?: string;
 }
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
 
 export interface LogResponse {
     success: boolean;
     message: string;
+<<<<<<< HEAD
     token: string;
     data: MaeUsuario
 }
@@ -43,3 +47,12 @@ export function emptyMaeUsuario(): MaeUsuario {
         ind_usu_sis: ''
     };
 }
+=======
+    data:
+    {
+        username: string;
+        token: string;
+    }
+
+}
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190

@@ -16,12 +16,17 @@ export const aperturaPeriodoOperativoRouter: Routes = [
     {
         path: '',
         component: AperturPeriodoComponent,
+<<<<<<< HEAD
+=======
+        data: { noReuse: true },
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
         children: [
             {
                 path: '',
                 redirectTo: 'factor-operativo',
                 pathMatch: 'full',  // ⚠️ Crucial: Asegura que solo redirija si el path es EXACTAMENTE vacío.
             },
+<<<<<<< HEAD
             { path: 'factor-operativo', component: FactorOperativoMainComponent, canDeactivate: [PendingGeneralGuard] },
             { path: 'estandar-avance', component: EstandarAvanceComponent, canDeactivate: [PendingGeneralGuard] },
             { path: 'estandar-exploracion', component: EstandarExploracionMainComponent, canDeactivate: [PendingGeneralGuard] },
@@ -32,3 +37,15 @@ export const aperturaPeriodoOperativoRouter: Routes = [
     }
 ];
 export default aperturaPeriodoOperativoRouter;
+=======
+            { path: 'factor-operativo', component: FactorOperativoMainComponent, canDeactivate: [PendingGeneralGuard], data: { noReuse: true } },
+            { path: 'estandar-avance', component: EstandarAvanceComponent, canDeactivate: [PendingGeneralGuard], data: { noReuse: true } },
+            { path: 'estandar-exploracion', component: EstandarExploracionMainComponent, canDeactivate: [PendingGeneralGuard], data: { noReuse: true } },
+            { path: 'metodo-minado', component: MetodoMinadoMainComponent, canDeactivate: [PendingGeneralGuard], data: { noReuse: true } },
+            { path: 'semanas-avance', component: SemanasAvanceMainComponent, canDeactivate: [PendingGeneralGuard], data: { noReuse: true } },
+            { path: 'semanas-ciclo', component: SemanasCicloMainComponent, canDeactivate: [PendingGeneralGuard], data: { noReuse: true } },
+        ]
+    }
+];
+export default aperturaPeriodoOperativoRouter;
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190

@@ -69,7 +69,11 @@ export class ValoresComponent {
                 val_con_ag: factorBugetConversion?.val_con_ag || '0.0000',
                 val_pre_ag: factorOperativo?.val_pre_ag || '0.0000',
 
+<<<<<<< HEAD
                 val_pre_cu: factorOperativo?.val_pre_cu || '0.000',
+=======
+                val_pre_cu: factorOperativo?.val_pre_cu || '0.0000',
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
 
 
                 val_fac_cu: factorSobredisolucion?.val_fac_cu || '0.0000',
@@ -86,7 +90,11 @@ export class ValoresComponent {
                 val_pre_zn: factorOperativo?.val_pre_zn || '0.0000',
                 val_fac_zn: factorSobredisolucion?.val_fac_zn || '0.0000',
                 val_fac_bud_zn: factorBugetConversion?.val_fac_bud_zn || '0.0000',
+<<<<<<< HEAD
                 val_con_zn: factorBugetConversion?.val_con_zn || '0.000',
+=======
+                val_con_zn: factorBugetConversion?.val_con_zn || '0.0000',
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
 
                 val_pre_au: factorOperativo?.val_pre_au || '0.0000',
                 val_fac_au: factorSobredisolucion?.val_fac_au || '0.0000',
@@ -96,12 +104,21 @@ export class ValoresComponent {
 
         });
 
+<<<<<<< HEAD
         // effect(() => {
         //     if (this.planingCompartido.resetPeriodo()) return;
 
         //     this.resetearFormulario();
         //     this.planingCompartido.clearResetPeriodo();
         // });
+=======
+        effect(() => {
+            if (this.planingCompartido.resetPeriodo()) return;
+
+            this.resetearFormulario();
+            this.planingCompartido.clearResetPeriodo();
+        });
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     }
 
 
@@ -155,6 +172,7 @@ export class ValoresComponent {
 
     ngOnInit() {
         this.form.valueChanges.subscribe(() => {
+<<<<<<< HEAD
             // const f = this.form.getRawValue();
 
         const f = this.form.getRawValue();
@@ -167,6 +185,9 @@ export class ValoresComponent {
         });
 
 
+=======
+            const f = this.form.getRawValue();
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
 
             const factorOperativo = {
                 val_per: f.val_per,
@@ -211,7 +232,13 @@ export class ValoresComponent {
         });
     }
 
+<<<<<<< HEAD
     bloquearCampo(): boolean {
         return this.planingCompartido.bloqueoFormEditar();
     }
+=======
+    // bloquearCampo(): boolean {
+    //     return this.planingCompartido.bloqueoFormEditar();
+    // }
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
 }

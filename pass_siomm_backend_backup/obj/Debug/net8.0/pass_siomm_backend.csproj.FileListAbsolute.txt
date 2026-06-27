@@ -363,6 +363,7 @@ C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup
 C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\obj\Debug\net8.0\pass_siomm_backend.pdb
 C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\obj\Debug\net8.0\pass_siomm_backend.genruntimeconfig.cache
 C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\obj\Debug\net8.0\ref\pass_siomm_backend.dll
+<<<<<<< HEAD
 C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\obj\Debug\net8.0\swae.build.ex.cache
 C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\bin\Debug\net8.0\Dapper.dll
 C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\bin\Debug\net8.0\EPPlus.dll
@@ -393,3 +394,5 @@ C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup
 C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\bin\Debug\net8.0\ExcelNumberFormat.dll
 C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\bin\Debug\net8.0\RBush.dll
 C:\Users\pract_ir.sist.cmc\Desktop\proyecto_pass_siomm\pass_siomm_backend_backup\bin\Debug\net8.0\System.IO.Packaging.dll
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190

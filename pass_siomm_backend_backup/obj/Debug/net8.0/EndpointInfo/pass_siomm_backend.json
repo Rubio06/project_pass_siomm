@@ -5,6 +5,7 @@
     "version": "1.0"
   },
   "paths": {
+<<<<<<< HEAD
     "/mantenimiento/opciones-modelo/obtener-adm-contrato": {
       "get": {
         "tags": [
@@ -98,6 +99,8 @@
         }
       }
     },
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     "/planeamiento/aper-periodo-operativo/obtener-datos": {
       "get": {
         "tags": [
@@ -263,6 +266,7 @@
         }
       }
     },
+<<<<<<< HEAD
     "/mantenimiento/opciones-modelo/contrata": {
       "get": {
         "tags": [
@@ -1351,6 +1355,8 @@
         }
       }
     },
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     "/fechas-filtros/select-data/meses": {
       "get": {
         "tags": [
@@ -1384,6 +1390,7 @@
         }
       }
     },
+<<<<<<< HEAD
     "/mantenimiento/opciones-modelo/labor-mant": {
       "get": {
         "tags": [
@@ -2391,6 +2398,8 @@
         }
       }
     },
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     "/rutas/mostrar-rutas": {
       "get": {
         "tags": [
@@ -2403,6 +2412,7 @@
         }
       }
     },
+<<<<<<< HEAD
     "/mantenimiento/opciones-modelo/rutas-transporte": {
       "get": {
         "tags": [
@@ -2633,6 +2643,8 @@
         }
       }
     },
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     "/aper-periodo-operativo/semana/semana-avance-eliminar": {
       "post": {
         "tags": [
@@ -2849,6 +2861,7 @@
           }
         }
       }
+<<<<<<< HEAD
     },
     "/mantenimiento/servicio-transporte/listar-contrata": {
       "get": {
@@ -4359,6 +4372,8 @@
           }
         }
       }
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     }
   },
   "components": {
@@ -4408,6 +4423,7 @@
         },
         "additionalProperties": false
       },
+<<<<<<< HEAD
       "BlockReservasDto": {
         "type": "object",
         "properties": {
@@ -4675,6 +4691,8 @@
         },
         "additionalProperties": false
       },
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
       "CopiarPeriodoDto": {
         "type": "object",
         "properties": {
@@ -4709,6 +4727,7 @@
         },
         "additionalProperties": false
       },
+<<<<<<< HEAD
       "CopiarProgramacionDto": {
         "type": "object",
         "properties": {
@@ -4895,6 +4914,8 @@
         },
         "additionalProperties": false
       },
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
       "DatosCompletosGuardarDto": {
         "type": "object",
         "properties": {
@@ -4997,6 +5018,7 @@
         },
         "additionalProperties": false
       },
+<<<<<<< HEAD
       "DetPrgDto": {
         "type": "object",
         "properties": {
@@ -5467,6 +5489,8 @@
         },
         "additionalProperties": false
       },
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
       "LoginRequestDto": {
         "required": [
           "password",
@@ -6489,6 +6513,7 @@
           }
         },
         "additionalProperties": false
+<<<<<<< HEAD
       },
       "NivelDto": {
         "type": "object",
@@ -7975,6 +8000,8 @@
           }
         },
         "additionalProperties": false
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
       }
     },
     "securitySchemes": {

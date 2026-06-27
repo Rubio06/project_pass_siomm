@@ -11,7 +11,10 @@ import { PlaningCompartidoService } from '../../services/planing-compartido.serv
 import { FormUtils } from 'src/app/utils/form-utils';
 import { ModalPeriodo } from "./modal-periodo/modal-periodo";
 import { MostrarDatosFiltrosService } from 'src/app/module/planing/service/mostrar-datos-filtros.service';
+<<<<<<< HEAD
 import Swal from 'sweetalert2';
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
 
 
 export enum ViewMode {
@@ -20,6 +23,16 @@ export enum ViewMode {
     EDITAR = 'EDITAR'
 }
 
+<<<<<<< HEAD
+=======
+interface BotonesState {
+    nuevo: boolean;
+    editar: boolean;
+    copiarPeriodo: boolean;
+    visualizar: boolean;
+    guardar: boolean;
+}
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
 
 
 export interface TabFormulario {
@@ -41,7 +54,11 @@ export class AperturPeriodoComponent {
      * 🔹 INYECCIONES
      * ============================ */
     private planingService = inject(PlanningService);
+<<<<<<< HEAD
     public planingCompartido = inject(PlaningCompartidoService);
+=======
+    private planingCompartido = inject(PlaningCompartidoService);
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     private semanasAvanceService = inject(SemanasAvanceMainService);
     private fb = inject(FormBuilder);
 
@@ -226,7 +243,11 @@ export class AperturPeriodoComponent {
         this.hasError.set(null);
         this.planingCompartido.setData(data);
 
+<<<<<<< HEAD
         this.planingCompartido.setBotonesState({
+=======
+        this.setBotonesState({
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
             nuevo: false,
             editar: false,
             copiarPeriodo: false,
@@ -259,9 +280,12 @@ export class AperturPeriodoComponent {
 
 
     copiarPeriodo(destino: PeriodoDestino): void {
+<<<<<<< HEAD
 
         this.setBoton('Copiar Periodo', 'bg-[gray-500]');   // azul
 
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
         const username = localStorage.getItem('username');
 
         const payload = {
@@ -280,7 +304,11 @@ export class AperturPeriodoComponent {
                     this.child.onReset();
                     modal.close();
 
+<<<<<<< HEAD
                     this.planingCompartido.setBotonesState({
+=======
+                    this.setBotonesState({
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
                         copiarPeriodo: true,
                     });
 
@@ -299,8 +327,11 @@ export class AperturPeriodoComponent {
 
 
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     convertToISO(value: string): string {
         return `${value} 00:00:00.000`;
     }
@@ -316,6 +347,7 @@ export class AperturPeriodoComponent {
     //     return this.planingCompartido.getCambios();
     // }
 
+<<<<<<< HEAD
     // botonesState = signal({
     //     nuevo: true,
     //     editar: true,
@@ -328,11 +360,28 @@ export class AperturPeriodoComponent {
     // setBotonesState(state: Partial<BotonesState>) {
     //     this.botonesState.update(current => ({ ...current, ...state }));
     // }
+=======
+    botonesState = signal({
+        nuevo: false,
+        editar: true,
+        copiarPeriodo: true,
+        visualizar: true,
+        guardar: true
+    });
+
+
+    setBotonesState(state: Partial<BotonesState>) {
+        this.botonesState.update(current => ({ ...current, ...state }));
+    }
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
 
 
     ///FORMULARIOS EDITAR
     onEditar() {
+<<<<<<< HEAD
         this.setBoton('Editar', 'bg-[#455A64]');   // azul
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
 
         this.modoBoton = 'E';
         this.planingCompartido.agregarFila(true);
@@ -347,7 +396,11 @@ export class AperturPeriodoComponent {
 
         this.planingCompartido.setCambios(true); // 👈 IMPORTANTE
 
+<<<<<<< HEAD
         this.planingCompartido.setBotonesState({
+=======
+        this.setBotonesState({
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
             nuevo: true,          // 🔒 se bloquea
             editar: true,         // 🔒
             copiarPeriodo: true,  // 🔒
@@ -357,7 +410,10 @@ export class AperturPeriodoComponent {
     }
 
     onNuevo() {
+<<<<<<< HEAD
         this.setBoton('Nuevo', 'bg-[green]');   // azul
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
 
         this.modoBoton = 'N';
 
@@ -367,13 +423,21 @@ export class AperturPeriodoComponent {
         this.planingCompartido.setTablaBloqueada(true);
 
         this.planingCompartido.limpiezaDataRoutes();
+<<<<<<< HEAD
         this.planingCompartido.bloqueoEditar.set(true);
+=======
+        this.planingCompartido.bloqueoEditar.set(false);
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
 
 
         this.planingCompartido.setCambios(true);
         this.planingCompartido.setAgregarRegistro(false);
 
+<<<<<<< HEAD
         this.planingCompartido.setBotonesState({
+=======
+        this.setBotonesState({
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
             nuevo: true,          // 🔒 se bloquea
             editar: true,         // 🔒
             copiarPeriodo: true,  // 🔒
@@ -383,6 +447,7 @@ export class AperturPeriodoComponent {
 
     }
 
+<<<<<<< HEAD
     botoPresionado = signal<string>('');
     botoColor = signal<string>('');
 
@@ -435,6 +500,9 @@ export class AperturPeriodoComponent {
 
         this.setBoton('Visualizar', 'bg-[#012D96]');   // azul
 
+=======
+    onVisualizar() {
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
         this.planingCompartido.onVisualizarGlobal();
         this.planingCompartido.setFormBloqueadoEditar(true);
         this.planingCompartido.setAgregarRegistro(true);
@@ -448,6 +516,7 @@ export class AperturPeriodoComponent {
         this.planingCompartido.setFormFactorBloqueado(true); // 🔓
         this.planingCompartido.setTablaBloqueada(true);
 
+<<<<<<< HEAD
         this.planingCompartido.setBotonesState({
             nuevo: false,
             editar: false,
@@ -460,6 +529,20 @@ export class AperturPeriodoComponent {
     }
 
 
+=======
+        this.setBotonesState({
+            nuevo: false,
+            editar: false,
+            copiarPeriodo: true,
+            guardar: false,
+            visualizar: true
+        });
+    }
+
+
+
+
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     public async onGuardarGuard() {
         try {
 
@@ -516,8 +599,11 @@ export class AperturPeriodoComponent {
 
 
     public async onGuardar() {
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
         const esValido = this.planingCompartido.validarTabActivo();
 
         if (!esValido) {
@@ -542,12 +628,19 @@ export class AperturPeriodoComponent {
                 this.formsUtils.mostrarExito();
                 this.planingCompartido.setAgregarRegistro(true);
                 this.onVisualizarGuard();
+<<<<<<< HEAD
                 // this.setBoton('Guardar', 'bg-[#002B48]');   // azul
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
 
                 this.planingCompartido.bloqueoEditar.set(false);
 
 
+<<<<<<< HEAD
                 this.planingCompartido.setBotonesState({
+=======
+                this.setBotonesState({
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
                     nuevo: true,
                     editar: true,
                     copiarPeriodo: true,

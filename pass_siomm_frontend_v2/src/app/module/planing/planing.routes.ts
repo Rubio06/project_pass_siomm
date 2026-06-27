@@ -21,6 +21,7 @@ export const planingMainRouter: Routes = [
                 loadChildren: () =>
                     import('./opciones-componentes/programa-mensual-labores/programama-mensua.routes')
                         .then(m => m.default),
+<<<<<<< HEAD
                 data: { noReuse: true }
             },
             // {
@@ -30,6 +31,12 @@ export const planingMainRouter: Routes = [
             //             .then(m => m.default),
             //     data: { noReuse: true }
             // },
+=======
+
+                data: { noReuse: true } // 👈 Esto indica que la ruta general se debe destruir
+
+            },
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
         ]
     }
 ];

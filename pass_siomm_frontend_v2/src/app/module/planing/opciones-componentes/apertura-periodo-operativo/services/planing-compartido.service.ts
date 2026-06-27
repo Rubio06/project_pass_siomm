@@ -11,6 +11,7 @@ export interface Fechas {
     cie_ano: string;  // <- ⭐ Debe ser string
     cie_per: string;
 }
+<<<<<<< HEAD
 
 interface BotonesState {
     nuevo: boolean;
@@ -21,6 +22,8 @@ interface BotonesState {
 }
 
 
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
 @Injectable({
     providedIn: 'root'
 })
@@ -57,6 +60,7 @@ export class PlaningCompartidoService {
     readonly semana_avance = this._semana_avance.asReadonly();
     readonly semana_ciclo = this._semana_ciclo.asReadonly();
 
+<<<<<<< HEAD
     public botonesState = signal({
         nuevo: true,
         editar: true,
@@ -68,6 +72,8 @@ export class PlaningCompartidoService {
     setBotonesState(state: Partial<BotonesState>) {
         this.botonesState.update(current => ({ ...current, ...state }));
     }
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
 
     /// FACTOR OPERATIVO
     setCierrePeriodo(data: AperPeriodo | AperPeriodo[], tab?: string) {
@@ -181,7 +187,10 @@ export class PlaningCompartidoService {
                 throw new Error('Tab no soportado para guardado');
         }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
         return this.http.post(
             `${this.planingUrl}aper-periodo-operativo/semana/guardar-datos`,
             payload
