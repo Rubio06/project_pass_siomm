@@ -1,0 +1,4 @@
+<option [value]="null" disabled>Seleccione un mes</option>
+@for (mes of listaMeses(); track $index) {
+<option [value]="mes">{{ mes | transfornMonth }}</option>
+}

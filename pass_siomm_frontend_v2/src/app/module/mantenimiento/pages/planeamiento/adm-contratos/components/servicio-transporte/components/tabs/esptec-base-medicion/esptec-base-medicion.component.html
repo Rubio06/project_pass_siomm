@@ -1,0 +1,163 @@
+<div class="w-[93%] flex flex-row-reverse mx-auto mb-1">
+
+    <button type="button"
+        class="bg-[#047857] flex items-center justify-center rounded-lg shadow-sm group
+        hover:shadow-md hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed w-8 h-8">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="white"
+            class="w-4 h-4">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+        </svg>
+        <div
+            class="absolute bottom-full hidden mb-3 group-hover:block bg-black text-white text-xs rounded px-2 py-1 whitespace-nowrap">
+            <b>Insertar Fila</b>
+        </div>
+    </button>
+
+</div>
+<div>
+
+    <div class=" min-h-[200px] max-h-[200px] overflow-y-auto border border-base-200 rounded-lg">
+        <table class="table table-zebra table-sm table-fixed w-[150%] min-w-[2000px]">
+            <thead class="sticky top-0 bg-white z-10 text-[12px] border-b border-black/10">
+                <tr class="shadow-[0_2px_0_0_black] text-center">
+                    <th class="w-[12%] py-2 text-[#013B5C]">Valor PV</th>
+                    <th class="w-[20%] py-2 text-[#013B5C]">UM</th>
+                    <th class="w-[40%] py-2 text-[#013B5C]">Potencia Veta</th>
+                    <th class="w-[12%] py-2 text-[#013B5C]">Valor PV</th>
+                    <th class="w-[20%] py-2 text-[#013B5C]">UM</th>
+                    <th class="w-[10%] py-2 text-[#013B5C]">Vacio</th>
+
+                    <th class="w-[35%] py-2 text-[#013B5C]">Ancho Pago</th>
+                    <th class="w-[12%] py-2 text-[#013B5C]">Valor AP.</th>
+                    <th class="w-[12%] py-2 text-[#013B5C]">Caracter</th>
+                    <th class="w-[20%] py-2 text-[#013B5C]">UM</th>
+                    <th class="w-[8%] py-2 text-[#013B5C]">Acción</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @if (isLoading()) {
+                <tr>
+                    <td colspan="11" class="text-center py-8">
+                        <div class="flex justify-center">
+                            <div class="flex flex-col items-center gap-2">
+                                <progress class="progress w-56 text-[#013B5C]"></progress>
+                                <span class="text-xs"><b>Cargando...</b></span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                }
+                @else if (filas.length > 0) {
+                @for (fila of filas; track $index) {
+                <tr [formGroup]="fila"
+                    class="hover:bg-[#17324D]/5 select-none cursor-pointer transition-colors text-center text-[12px]">
+
+                    <td class="p-1">
+                        <input type="number" formControlName="nro_potencia_veta_1" class="input-base w-full text-right" />
+                    </td>
+
+                    <td class="p-1">
+                        <select formControlName="cod_item_um_pv" (change)="onAsignarPG($event, fila)"  class="select-base_cuatro w-full">
+                            @for (item of listParametroGeneral(); track $index) {
+
+                            <option [value]="item.cod_item">{{ item.des_tabladet }}</option>
+                            }
+                        </select>
+                    </td>
+
+                    <td class="p-1">
+                        <select formControlName="cod_parametro_medicion" (change)="onAsignarPM($event, fila)" class="select-base_cuatro w-full">
+
+                            @for (item of listMedicion(); track $index) {
+
+                            <option [value]="item.cod_parametro_medicion">
+                                {{ item.des_potencia_veta }} - {{ item.des_ancho_pago }}
+                            </option>
+
+                            }
+                        </select>
+                    </td>
+
+                    <td class="p-1">
+                        <input type="number" formControlName="nro_potencia_veta_2"
+                            class="input-base w-full text-right" />
+                    </td>
+
+                    <td class="p-1">
+                        <select formControlName="cod_item_um_ap"  (change)="onAsignarCT($event, fila)"  class="select-base_cuatro w-full">
+                            @for (item of listParametroGeneral(); track $index) {
+
+                            <option [value]="item.cod_item">{{ item.des_tabladet }}</option>
+                            }
+                        </select>
+                    </td>
+
+                    <td class="p-1">
+                        <!-- {{ fila.get('cod_parametro_medicion')?.value }} -->
+                    </td>
+
+                    <td class="p-1">
+
+                        <input type="text" formControlName="c_t_ap" class="input-base w-full text-right" />
+
+                    </td>
+
+                    <td class="p-1">
+                        <input type="number" formControlName="nro_ancho_pago_1" class="input-base w-full text-right" />
+                    </td>
+
+                    <!-- <td class="p-1">
+                        <input type="text" formControlName="cod_valor_ap" class="input-base w-full" />
+                    </td> -->
+
+                    <td class="p-1">
+
+                        <select formControlName="cod_valor_ap" class="select-base_cuatro w-full">
+                            <option value="1"> # </option>
+                            <option value="2"> % </option>
+
+                        </select>
+                    </td>
+
+                    <td class="p-1">
+
+                        <select formControlName="cod_item_um_ap" class="select-base_cuatro w-full">
+                            @for (item of listParametroGeneral(); track $index) {
+                            <option [value]="item.cod_item">{{ item.des_tabladet }}</option>
+                            }
+                        </select>
+                    </td>
+
+                    <!-- (click)="eliminarFila($index)" -->
+                    <td class="p-1 flex justify-center items-center">
+                        <button type="button"
+                            class="bg-[#A6200A] flex items-center justify-center rounded-lg shadow-sm group relative hover:bg-red-700 hover:shadow-md hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed w-8 h-8">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
+                                stroke="white" class="w-4 h-4">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                            </svg>
+                        </button>
+                    </td>
+                </tr>
+                }
+                }
+                @else if (!isLoading()) {
+                <tr>
+                    <td colspan="11"
+                        class="border border-red-200 px-2 py-4 text-center bg-red-50 text-red-700 rounded-lg">
+                        <div class="flex items-center justify-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                            </svg>
+                            <b class="text-[12px]">No existen datos para mostrar con los filtros seleccionados.</b>
+                        </div>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

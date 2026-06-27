@@ -1,0 +1,137 @@
+<!-- <div class="w-full flex flex-col md:flex-col md:items-center  lg:flex-col lg:items-center   xl:flex-col xl:items-center xl:justify-between 2xl:flex-row gap-4 "> -->
+
+
+
+
+<form [formGroup]="programaForm" (ngSubmit)="onSudmit()">
+
+    <!-- BLOQUE 1 -->
+    <div class="flex flex-wrap gap-4 mb-4 mt-4 px-5">
+
+        <div class="flex flex-col flex-1 min-w-[200px]">
+            <label style="font-size: 13px;"><b>Unidad Económica:</b></label>
+                        <select class="select-base_dos w-full" formControlName="cod_und_econom">
+
+                @if (modo() === 'nuevo') {
+                <option value="" disabled selected>== Elija una Und. Económica ==</option>
+                }
+
+                @for (econ of unidadesEcon(); track $index) {
+                <option [value]="econ.cod_und_econom">{{ econ.nom_und_econom }}</option>
+                }
+            </select>
+
+            @if (programaForm.get('cod_und_econom')?.errors && programaForm.get('cod_und_econom')?.touched) {
+            <div class="text-[#A6200A] text-xs">
+
+                <b>{{ formUtil.getFieldError(programaForm.get('cod_und_econom')?.errors!) }}</b>
+            </div>
+
+            }
+
+        </div>
+
+        <div class="flex flex-col flex-1 min-w-[300px]">
+            <label style="font-size: 13px;"><b>Contrata:</b></label>
+            <select class="select-base_dos w-full" formControlName="cod_contrata">
+
+                @if (modo() === 'nuevo') {
+                <option value="" disabled selected>== Elija una Contrata ==</option>
+                }
+
+                @for (con of contrata(); track $index) {
+                <option [value]="con.cod_contrata">{{ con.des_contrata }}</option>
+                }
+            </select>
+
+            @if (programaForm.get('cod_contrata')?.errors && programaForm.get('cod_contrata')?.touched) {
+            <div class="text-[#A6200A] text-xs">
+                <b>{{ formUtil.getFieldError(programaForm.get('cod_contrata')?.errors!) }}</b>
+            </div>
+
+            }
+        </div>
+
+        <div class="flex flex-col flex-1 min-w-[180px]">
+            <label style="font-size: 13px;"><b>Zona:</b></label>
+            <select class="select-base_dos w-full" formControlName="cod_zona">
+                @if (modo() === 'nuevo') {
+                <option value="" disabled selected>== Elija una Zona ==</option>
+                }
+                @for (item of zonas(); track $index) {
+                <option [value]="item.cod_zona">{{ item.des_zona }}</option>
+                }
+            </select>
+
+            @if (programaForm.get('cod_zona')?.errors && programaForm.get('cod_zona')?.touched) {
+            <div class="text-[#A6200A] text-xs">
+
+                <b>{{ formUtil.getFieldError(programaForm.get('cod_zona')?.errors!) }}</b>
+            </div>
+            }
+        </div>
+
+        <div class="flex flex-col flex-1 min-w-[100px]">
+            <label style="font-size: 13px;"><b>Cut Off:</b></label>
+            <input type="number" class="input-base w-full" formControlName="prg_cutoff" />
+
+            @if (programaForm.get('cod_zona')?.errors && programaForm.get('prg_cutoff')?.touched) {
+            <div class="text-[#A6200A] text-xs">
+                <b>{{ formUtil.getFieldError(programaForm.get('prg_cutoff')?.errors!) }}</b>
+            </div>
+            }
+        </div>
+
+    </div>
+
+    <!-- BLOQUE 2 -->
+    <div class="flex flex-wrap gap-4 px-5">
+
+        <div class="flex flex-col flex-1 min-w-[180px]">
+            <label style="font-size: 13px;"><b>Nro. Programa:</b></label>
+            <input type="text" class="input-base w-full" formControlName="nro_prog"
+                [ngClass]="{'opacity-60 cursor-not-allowed': modo() === 'ver' ||  modo() === 'nuevo'}" />
+        </div>
+
+        <div class="flex flex-col flex-1 min-w-[120px]">
+            <label style="font-size: 13px;"><b>Año:</b></label>
+            <input type="text" class="input-base w-full" formControlName="cie_ano"
+                [ngClass]="{'opacity-60 cursor-not-allowed': modo() === 'ver'  ||  modo() === 'nuevo'}" />
+        </div>
+
+        <div class="flex flex-col flex-1 min-w-[120px]">
+            <label style="font-size: 13px;"><b>Mes:</b></label>
+            <input type="text" class="input-base w-full" formControlName="cie_per"
+                [ngClass]="{'opacity-60 cursor-not-allowed': modo() === 'ver' ||  modo() === 'nuevo'}" />
+        </div>
+
+        <div class="flex flex-col flex-1 min-w-40">
+            <label style="font-size: 13px;"><b>Fecha Emisión:</b></label>
+            <input type="text" class="input-base w-full" formControlName="fec_emi" [disabled]="modo() === 'nuevo'"
+                [ngClass]="{'opacity-60 cursor-not-allowed': modo() === 'ver'  ||  modo() === 'nuevo'}" />
+        </div>
+
+        <div class="flex flex-col flex-1 min-w-[120px]">
+            <label style="font-size: 13px;"><b>Estado:</b></label>
+            <input type="text" class="input-base w-full" formControlName="prg_est" [disabled]="modo() === 'nuevo'"
+                [ngClass]="{'opacity-60 cursor-not-allowed': modo() === 'ver'  ||  modo() === 'nuevo'}" />
+        </div>
+
+        <!-- <div class="flex flex-col flex-1 min-w-[200px]">
+            <label style="font-size: 13px;"><b>Tipo Cálculo:</b></label>
+
+            <div class="flex items-center border border-gray-200 shadow-sm p-2 rounded gap-4" >
+                <label class="flex items-center gap-1 text-xs" >
+                    <input type="radio" formControlName="ind_calc_dil" value="C" [disabled]="modo() === 'nuevo'" [ngClass]="{'opacity-60 cursor-not-allowed': modo() === 'ver'  ||  modo() === 'nuevo'}"/>
+                    Contrato
+                </label>
+                <label class="flex items-center gap-1 text-xs">
+                    <input type="radio" formControlName="ind_calc_dil" value="O" [disabled]="modo() === 'nuevo'" [ngClass]="{'opacity-60 cursor-not-allowed': modo() === 'ver'  ||  modo() === 'nuevo'}" />
+                    O'Hara
+                </label>
+            </div>
+        </div> -->
+        <!-- <button type="submit">enviar datos</button> -->
+    </div>
+
+</form>

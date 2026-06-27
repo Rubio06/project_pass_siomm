@@ -1,0 +1,23 @@
+.tree ul {
+    margin-left: 20px;
+    border-left: 1px dotted #999;
+    padding-left: 10px;
+}
+
+.tree li {
+    margin: 4px 0;
+}
+
+.folder {
+    font-weight: bold;
+    color: #1e3a8a;
+    cursor: pointer;
+}
+
+
+/* Estilo para ocultar la flecha por defecto de HTML en algunos navegadores */
+details>summary::-webkit-details-marker {
+    display: none;
+}
+
+

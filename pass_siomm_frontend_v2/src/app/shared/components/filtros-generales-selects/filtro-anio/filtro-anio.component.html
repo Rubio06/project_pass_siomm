@@ -1,0 +1,4 @@
+<option disabled value="">Selecciona un año</option>
+@for (anio of listaAnio(); track $index) {
+<option [value]="anio">{{ anio }}</option>
+}

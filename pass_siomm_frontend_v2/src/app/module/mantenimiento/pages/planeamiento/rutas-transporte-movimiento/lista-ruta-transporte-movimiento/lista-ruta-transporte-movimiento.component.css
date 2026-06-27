@@ -1,0 +1,8 @@
+.fila-resaltada {
+  animation: resaltar 1.5s ease-out;
+}
+
+@keyframes resaltar {
+  0%   { background-color: #fef08a; } /* amarillo suave */
+  100% { background-color: transparent; }
+}

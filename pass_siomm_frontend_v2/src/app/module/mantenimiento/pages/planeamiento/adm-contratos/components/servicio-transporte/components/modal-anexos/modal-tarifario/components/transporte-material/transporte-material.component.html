@@ -1,0 +1,229 @@
+<form [formGroup]="form" class="flex gap-4">
+
+
+    <div class="min-h-[250px] max-h-[300px] overflow-y-auto border border-gray-300 rounded" id="scrollContenedor">
+        <table class="table table-sm table-zebra w-full min-w-[2500px]">
+            <thead class="sticky top-0 z-1 shadow-[0_2px_0_0_black] text-center">
+                <tr class="bg-base-200 text-base-content/80 text-center text-xs">
+                    <th class="w-[4%] text-[#013B5C]">Codigo</th>
+                    <th class="w-[12%] text-[#013B5C]">Lugar Origen</th>
+                    <th class="w-[12%] text-[#013B5C]">Punto Intermedio</th>
+                    <th class="w-[12%] text-[#013B5C]">Lugar Destino</th>
+                    <th class="w-[5%] text-[#013B5C]">Zona</th>
+                    <th class="w-[5%] text-[#013B5C]">Distancia (Km)</th>
+                    <th class="w-[5%] text-[#013B5C]">PU S/ TMH x KM</th>
+                    <th class="w-[5%] text-[#013B5C]">Precio Ruta S/.</th>
+                    <th class="w-[10%] text-[#013B5C]">Centro Costo</th>
+                    <th class="w-[12%] text-[#013B5C]">Cuenta Contable</th>
+                    <th class="w-[5%] text-[#013B5C]">Estado</th>
+                    <th class="w-[1%] text-[#013B5C]"></th>
+
+                </tr>
+            </thead>
+
+            <tbody formArrayName="filas">
+
+                @if (isLoading()) {
+                <tr>
+                    <td colspan="5" class="text-center py-8">
+                        <div class="flex flex-col items-center gap-2">
+                            <progress class="progress w-56 text-[#013B5C]"></progress>
+                            <span class="text-xs"><b>Cargando...</b></span>
+                        </div>
+                    </td>
+                </tr>
+                }
+                @else if (filas.length === 0) {
+                <tr>
+                    <td colspan="11"
+                        class="border border-red-200 px-2 py-4 text-center bg-red-50 text-red-700 rounded-lg">
+                        <div class="flex items-center justify-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                            </svg>
+                            <b class="text-[12px]">No existen datos para mostrar.</b>
+                        </div>
+                    </td>
+                </tr>
+                }
+                @else {
+                @for (fila of filas.controls; track fila.get('cod_item_ruta')?.value; let i = $index) {
+                <tr class="text-center text-xs border-b border-base-200"
+                    [class.bg-[#17324D]/10]="fila.get('esNuevo')?.value"
+                    [class.hover:!bg-[#17324D]/10]="fila.get('esNuevo')?.value"
+                    [class.hover:bg-base-300]="!fila.get('esNuevo')?.value" [formGroupName]="$index">
+
+                    <!-- Solo lectura -->
+                    <td class="p-2 border-r border-base-300 font-medium">
+                        {{ fila.get('cod_item_ruta')?.value }}
+                    </td>
+
+                    <!-- SELECT: Lugar Origen -->
+
+
+                    <td class="p-2 border-r border-base-300">
+                        <!-- <ng-select (change)="onRutaOrigenChange(i, $event?.cod_ruta)" [items]="listRutas()"
+                            bindLabel="des_ruta" bindValue="cod_ruta" formControlName="cod_ruta_origen"
+                            [virtualScroll]="true" class="ng-select-custom ng-select-sm w-full"
+                            placeholder="Seleccione ruta origen" [minTermLength]="0" [loading]="false">
+                        </ng-select> -->
+
+                        <select formControlName="cod_ruta_origen" (change)="onRutaOrigenChange(i, $any($event.target).value)" class="select-base_cuatro w-full">
+                            @for (ruta of listRutas(); track $index) {
+                            <option [value]="ruta.cod_ruta">{{ ruta.des_ruta }}</option>
+
+                            }
+                        </select>
+
+                        @if(filas.at(i).errors?.['rutaOrigenDestinoDuplicada']) {
+                        <span class="text-[#C23E32] text-xs"><b>Origen = Destino</b></span>
+                        }
+                    </td>
+                    <td class="p-2 border-r border-base-300">
+                        <!-- <ng-select [items]="listRutas()" bindLabel="des_ruta" bindValue="cod_ruta"
+                            formControlName="cod_ruta_intermedia" [virtualScroll]="true" class="ng-select-custom w-full"
+                            placeholder="Seleccione ruta intermedia" [minTermLength]="0" [loading]="false">
+                        </ng-select> -->
+                        <select formControlName="cod_ruta_intermedia" class="select-base_cuatro w-full">
+                            @for (ruta of listRutas(); track $index) {
+                            <option [value]="ruta.cod_ruta">{{ ruta.des_ruta }}</option>
+
+                            }
+                        </select>
+                        @if(filas.at(i).errors?.['rutaIntermediaDuplicada']) {
+                        <span class="text-[#C23E32] text-xs"><b>Intermedia duplicada</b></span>
+                        }
+                    </td>
+
+                    <td class="p-2 border-r border-base-300">
+                        <!-- <ng-select [items]="listRutas()" bindLabel="des_ruta" bindValue="cod_ruta"
+                            formControlName="cod_ruta_destino" [virtualScroll]="true" class="ng-select-custom w-full"
+                            placeholder="Seleccione ruta destino" [minTermLength]="0" [loading]="false">
+                        </ng-select> -->
+                        <select formControlName="cod_ruta_destino" class="select-base_cuatro w-full">
+                            @for (ruta of listRutas(); track $index) {
+                            <option [value]="ruta.cod_ruta">{{ ruta.des_ruta }}</option>
+
+                            }
+                        </select>
+                        @if(filas.at(i).errors?.['rutaOrigenDestinoDuplicada']) {
+                        <span class="text-[#C23E32] text-xs"><b>Destino = Origen</b></span>
+                        }
+                    </td>
+                    <!-- SELECT: Lugar Destino -->
+                    <!-- <td class="p-2 border-r border-base-300">
+                                <select formControlName="lugarDestino" class="select-base_cuatro w-full"
+                                    [class.border-red-500]="fila.get('lugarDestino')?.invalid && fila.get('lugarDestino')?.touched">
+                                    <option value="">-- Seleccione --</option>
+                                    @for (op of opcionesLugar(); track op.cod) {
+                                        <option [value]="op.cod">{{ op.cod }} - {{ op.des }}</option>
+                                    }
+                                </select>
+                            </td> -->
+
+                    <!-- Solo lectura -->
+                    <td class="p-2 border-r border-base-200 font-medium">
+                        {{ fila.get('c_t_zona')?.value }}
+
+                        @if(formUtils.isValidFieldInArray(filas.at(i),'c_t_zona')) {
+                        <div class="text-[#C23E32] text-xs mt-1">
+                            <span><b>{{ formUtils.getFiledErrorArray(filas.at(i),'c_t_zona') }}</b></span>
+                        </div>
+                        }
+                    </td>
+
+                    <td class="p-2">
+                        <input type="text" formControlName="nro_distancia_km" class="input-base_3" />
+                        @if(formUtils.isValidFieldInArray(filas.at(i),'nro_distancia_km')) {
+                        <div class="text-[#C23E32] text-xs mt-1">
+                            <span><b>{{ formUtils.getFiledErrorArray(filas.at(i),'nro_distancia_km') }}</b></span>
+                        </div>
+                        }
+                    </td>
+
+
+                    <td class="p-2">
+                        <input type="text" formControlName="imp_tmh_km_soles" class="input-base_3" />
+                        @if(formUtils.isValidFieldInArray(filas.at(i),'imp_tmh_km_soles')) {
+                        <div class="text-[#C23E32] text-xs mt-1">
+                            <span><b>{{ formUtils.getFiledErrorArray(filas.at(i),'imp_tmh_km_soles') }}</b></span>
+                        </div>
+                        }
+                    </td>
+
+
+                    <td class="p-2">
+                        <input type="text" formControlName="imp_ruta_pu" class="input-base_3" />
+                        @if(formUtils.isValidFieldInArray(filas.at(i),'imp_ruta_pu')) {
+                        <div class="text-[#C23E32] text-xs mt-1">
+                            <span><b>{{ formUtils.getFiledErrorArray(filas.at(i),'imp_ruta_pu') }}</b></span>
+                        </div>
+                        }
+                    </td>
+
+                    <td class="p-2 border-r border-base-300">
+                        <!-- <ng-select [items]="listCentrosCosto()" bindLabel="cto_des" bindValue="cto_cod"
+                            formControlName="cto_cod" [virtualScroll]="true" class="ng-select-custom w-full"
+                            placeholder="Seleccione cto" [minTermLength]="0" [loading]="false">
+                        </ng-select> -->
+
+                        <select formControlName="cto_cod" class="select-base_cuatro w-full">
+                            @for (cto of listCentrosCosto(); track $index) {
+                            <option [value]="cto.cto_cod">{{ cto.cto_des }}</option>
+
+                            }
+                        </select>
+                    </td>
+                    <td class="p-2 border-r border-base-300">
+                        <!-- <ng-select [items]="listCuentas()" bindLabel="cta_des" bindValue="cta_cod"
+                            formControlName="cta_cod" [virtualScroll]="true" class="ng-select-custom w-full"
+                            placeholder="Seleccione cta" [minTermLength]="0" [loading]="false">
+                        </ng-select> -->
+                        <select formControlName="cta_cod" class="select-base_cuatro w-full">
+                            @for (cta of listCuentas(); track $index) {
+                            <option [value]="cta.cta_cod">{{ cta.cta_des }}</option>
+                            }
+                        </select>
+
+                    </td>
+
+                    <!-- SELECT: Estado -->
+                    <td class="p-2 border-r border-base-300">
+                        <select formControlName="flg_vigencia" class="select-base_cuatro w-full">
+                            <option value="1">Activo</option>
+                            <option value="0">Inactivo</option>
+                        </select>
+                    </td>
+                    <td class="p-1 flex justify-center items-center">
+                        <button type="button" (click)="onEliminar($index, fila)"
+                            class="bg-[#A6200A] flex items-center justify-center rounded-lg hover:bg-red-700 hover:scale-105 transition-all duration-200 w-8 h-8">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
+                                stroke="white" class="w-4 h-4">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                            </svg>
+                        </button>
+                    </td>
+
+
+                </tr>
+                }
+                }
+
+            </tbody>
+        </table>
+    </div>
+
+    <div>
+        <button type="button" (click)="onAgregarFila()"
+            class="bg-[#047857] flex items-center justify-center rounded-lg shadow-sm group
+            hover:shadow-md hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed w-8 h-8">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="white"
+                class="w-4 h-4">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+        </button>
+    </div>
+
+</form>

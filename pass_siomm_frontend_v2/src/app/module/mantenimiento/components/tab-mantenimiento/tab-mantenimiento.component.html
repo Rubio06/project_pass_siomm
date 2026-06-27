@@ -1,0 +1,18 @@
+<div class="flex space-x-2 pb-1">
+    <a [routerLink]="['lista']" routerLinkActive="tab-active"
+        class="tab-style flex items-center gap-1 whitespace-nowrap px-2 py-1">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+            class="w-5 h-5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h18v4H3V3zm0 7h10v4H3v-4zm0 7h18v4H3v-4z" />
+        </svg>
+        <span>Listado de Empesas</span>
+    </a>
+    <a [routerLink]="['detalle']" routerLinkActive="tab-active"
+        class="tab-style flex items-center gap-1 whitespace-nowrap px-2 py-1">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+            class="w-5 h-5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 20V10m6 10V4m6 16v-7" />
+        </svg>
+        <span>Detalle en Formulario</span>
+    </a>
+</div>

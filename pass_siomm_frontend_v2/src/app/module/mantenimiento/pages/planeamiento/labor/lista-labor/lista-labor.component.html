@@ -1,0 +1,141 @@
+<div class="border border-gray-300 rounded overflow-hidden">
+
+
+    <div class="overflow-auto h-[321px] rounded">
+        <table class="table table-zebra ">
+            <thead class="sticky top-0 bg-white z-10 text-center">
+                <tr class="shadow-[0_2px_0_0_black]">
+                    <th class="py-2 text-[#013B5C]">Unidad Económica</th>
+                    <th class="py-2 text-[#013B5C]">Estructura (Veta)</th>
+                    <th class="py-2 text-[#013B5C]">Nivel</th>
+                    <th class="py-2 text-[#013B5C]">Tipo Labor</th>
+                    <th class="py-2 text-[#013B5C]">Tip. Lab Anterior</th>
+                    <th class="py-2 text-[#013B5C]">Código</th>
+                    <th class="py-2 text-[#013B5C]">Cod. Anterior</th>
+                    <th class="py-2 text-[#013B5C]">Nombre</th>
+                    <th class="py-2 text-[#013B5C]">Descripción</th>
+                    <th class="py-2 text-[#013B5C]">Ind. Tip Labor</th>
+                    <th class="py-2 text-[#013B5C]">Org. Transp. x Volquet.</th>
+                    <th class="py-2 text-[#013B5C]">Grupo Control</th>
+                    <th class="py-2 text-[#013B5C]">Estado</th>
+                    <th class="py-2 text-[#013B5C]"></th>
+
+                </tr>
+            </thead>
+
+            <tbody>
+                @if (isLoading()) {
+                <tr>
+                    <td colspan="13" class="text-center py-8">
+                        <div class="flex justify-center">
+                            <div class="flex flex-col items-center gap-2">
+                                <progress class="progress w-56" style="color:#013B5C;"></progress>
+                                <span class="text-xs">
+                                    <b>Cargando...</b>
+                                </span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                }
+                @else if (listLabor().length > 0) {
+                @for (item of listLabor(); track item.cod_labor) {
+                <tr class="hover:bg-[#17324D]/5 select-none cursor-pointer text-center text-xs font-medium"
+                    [id]="'labor-' + item.cod_labor" [class.bg-[#17324D]/10]="idLaborSeleccionada() === item.cod_labor"
+                    [class.text-[#013B5C]]="idLaborSeleccionada() === item.cod_labor"
+                    [class.font-bold]="idLaborSeleccionada() === item.cod_labor" (dblclick)="seleccionarLabor(item)">
+
+                    <td class="py-2 font-medium min-w-[150px]">{{ item.des_und_econom}}</td>
+                    <td class="py-2 font-medium min-w-[170px]"> {{ item.nom_veta }}</td>
+                    <td class="py-2 font-medium min-w-[170px]"> {{ item.nom_nivel }}</td>
+                    <td class="py-2 font-medium min-w-[170px]"> {{ item.nom_labor }}
+                    </td>
+                    <td class="py-2 font-medium min-w-[60px]">{{ item.cod_tipo_labor_ant }}</td>
+                    <td class="py-2 font-medium min-w-[60px]">{{ item.cod_labor }}</td>
+                    <td class="py-2 font-medium min-w-[60px]">{{ item.cod_labor_ant }}</td>
+                    <td class="py-2 font-medium min-w-[60px]">{{ item.nom_labor }}</td>
+                    <td class="py-2 font-medium min-w-[60px]">{{ item.des_labor }}</td>
+                    <td class="py-2 font-medium min-w-[60px]">
+                        @switch (item.ind_tipo_labor) {
+                        @case ('T') { <span
+                            class="px-2 py-0.5 rounded text-[11px] font-bold bg-sky-100 text-sky-800 border border-sky-300">Terminado</span>
+                        }
+
+                        @case ('O') { <span
+                            class="px-2 py-0.5 rounded text-[11px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">Operativo</span>
+                        }
+
+                        @case ('P') { <span
+                            class="px-2 py-0.5 rounded text-[11px] font-bold bg-rose-100 text-rose-800 border border-rose-300">Paralizado</span>
+                        }
+
+                        @default { <span class="text-xs">{{ item.ind_tipo_labor }}</span> }
+                        }
+                    </td>
+                    <td class="py-2 font-medium min-w-[60px]">{{ item.nom_proced_blza}}</td>
+                    <td class="py-2 font-medium min-w-[100px]">{{ item.nom_grupo_control }} </td>
+
+                    <!-- <td class="py-2 font-medium min-w-[60px]">
+                                <span
+                                    [class]="item.est_labor === 'ACT' ? 'text-green-600 font-semibold' : 'text-red-500 font-semibold'">
+                                    {{ item.est_labor === 'ACT' ? 'Activo' : 'Inactivo' }}
+                                </span>
+                            </td> -->
+
+                    <td class="py-2 font-medium min-w-[60px]">
+                        @switch (item.est_labor) {
+                        @case ('ACT') { <span
+                            class="px-2 py-0.5 rounded text-[11px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">Activo</span>
+                        }
+
+                        @case ('INA') { <span
+                            class="px-2 py-0.5 rounded text-[11px] font-bold bg-amber-100 text-amber-800 border border-amber-300">Inactivo</span>
+                        }
+
+                        @default { <span class="text-xs">{{ item.est_labor }}</span> }
+                        }
+                    </td>
+
+                    <td class="py-2 font-medium">
+                        <button type="button" (click)="onEliminar(item)" [ngClass]="{
+                            'bg-[#9F1239] hover:bg-[#881337]': item.est_labor === 'ACT',
+                            'bg-[#0a6e2f] hover:bg-[#075022]': item.est_labor !== 'ACT'
+                            }"
+                            class="flex items-center justify-center z-1 gap-1 w-[95px] py-1 text-[11px] font-semibold text-white rounded hover:shadow-md transition-all duration-200">
+
+                            @if(item.est_labor === 'ACT'){
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                            }
+
+                            @if(item.est_labor !== 'ACT'){
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            }
+
+                            <span>
+                                {{ item.est_labor === 'ACT' ? 'Inactivar' : 'Activar' }}
+                            </span>
+
+                        </button>
+                    </td>
+                </tr>
+                }
+                }
+                @else {
+                <tr>
+                    <td colspan="13" class="border-2 border-gray-400 px-2 py-3 text-center bg-red-50">
+                        <b>No existen datos para mostrar.</b>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

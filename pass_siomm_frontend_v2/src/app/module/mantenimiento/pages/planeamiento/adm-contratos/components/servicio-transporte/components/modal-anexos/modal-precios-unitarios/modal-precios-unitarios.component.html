@@ -1,0 +1,256 @@
+<div class="fixed inset-0 flex items-center justify-center bg-black/40" style="z-index: 9999;">
+    <div
+        class="w-11/12 max-w-4xl bg-base-100 p-5 rounded-xl shadow-xl border border-base-300 overflow-y-auto max-h-[90vh]">
+
+        <!-- HEADER -->
+        <div class="flex justify-between items-center border-b border-base-200 pb-3 mb-4 cursor-grab select-none">
+            <h3 class="text-lg font-bold text-[#013B5C] flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#534AB7]" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <rect width="18" height="18" x="3" y="3" rx="2"></rect>
+                    <line x1="12" y1="8" x2="12" y2="16"></line>
+                    <path d="M16 12H8"></path>
+                </svg>
+                Anexo: Precios Unitarios
+            </h3>
+
+            <!-- <div>
+                <button type="button" class="btn btn-sm btn-circle btn-ghost"
+                    (click)="onCerrarModalPrecUnitario.emit()">✕</button>
+                <div class="w-[93%] flex flex-row-reverse mx-auto mb-1">
+
+                    <button type="button"
+                        class="bg-[#047857] flex items-center justify-center rounded-lg shadow-sm group
+                            hover:shadow-md hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed w-8 h-8">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4"
+                            stroke="white" class="w-4 h-4">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                        </svg>
+                        <div
+                            class="absolute bottom-full hidden mb-3 group-hover:block bg-black text-white text-xs rounded px-2 py-1 whitespace-nowrap">
+                            <b>Insertar Fila</b>
+                        </div>
+                    </button>
+
+                </div>
+            </div> -->
+            <!-- (click)="abrirModalBusqueda.set(true)" -->
+            <div class="flex items-center gap-1.5 shrink-0">
+                <button type="button" (click)="onAbrirlModalParametro.set(true)" class="bg-[#013B5C] flex items-center justify-center rounded-lg shadow-sm group
+                           hover:shadow-md hover:scale-105 transition-all duration-200 w-8 h-8" title="Abrir ventana">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
+                        stroke="white"
+                        class="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                    </svg>
+                </button>
+
+                <button type="button"
+                    class="btn btn-sm btn-circle btn-ghost text-base-content/70 hover:text-error transition-colors"
+                    (click)="onCerrarModalPrecUnitario.emit()">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- TABLA -->
+
+
+
+        <form [formGroup]="formPreciosUnitarios"
+            class="min-h-[250px] max-h-[300px] overflow-y-auto border border-gray-300 rounded">
+            <table class="table table-sm table-zebra w-full min-w-[1500px]">
+                <thead class="sticky top-0 z-10 shadow-[0_2px_0_0_black] text-center w-full">
+                    <tr class="bg-base-200 text-base-content/80 text-xs">
+                        <th class="w-[5%] py-2 text-[#013B5C]">Nro. Partida</th>
+                        <th class="w-[10%] py-2 text-[#013B5C]">Codigo Precio</th>
+                        <th class="w-[24%] py-2 text-[#013B5C]">Descripción Tarea</th>
+                        <th class="w-[15%] py-2 text-[#013B5C]">Sección</th>
+                        <th class="w-[15%] py-2 text-[#013B5C]">Equipo</th>
+                        <th class="w-[15%] py-2 text-[#013B5C]">Unidad Medida</th>
+                        <th class="w-[15%] py-2 text-[#013B5C]">P. Uni. S/.</th>
+
+                        <th class="w-[15%] py-2 text-[#013B5C]">P. Uni. U$$/.</th>
+                        <th class="w-[14%] py-2 text-[#013B5C]">Orden Trabajo</th>
+                        <th class="w-[10%] py-2 text-[#013B5C]">Estado</th>
+                        <th class="w-[5%] py-2 text-[#013B5C]"></th>
+
+                    </tr>
+                </thead>
+
+                <tbody formArrayName="filas">
+                    @if (isLoading()) {
+                    <tr>
+                        <td colspan="10" class="text-center py-8">
+                            <div class="flex justify-center">
+                                <div class="flex flex-col items-center gap-2">
+                                    <progress class="progress w-56 text-[#013B5C]"></progress>
+                                    <span class="text-xs"><b>Cargando...</b></span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    }
+                    @else if (filas.length > 0) {
+                    @for (fila of filas.controls; track $index) {
+                    <tr [formGroupName]="$index" (dblclick)="seleccionarFila(fila.value)"
+                        class="hover:bg-[#17324D]/5 select-none cursor-pointer transition-colors text-center text-[12px]"
+                        [class.bg-[#17324D]/10]="contratoActivo()?.nro_partida === fila.value.nro_partida"
+                        [class.text-[#013B5C]]="contratoActivo()?.nro_partida === fila.value.nro_partida"
+                        [class.font-bold]="contratoActivo()?.nro_partida === fila.value.nro_partida">
+                        <td class="p-1 font-medium">
+
+                            {{ fila.get('nro_partida')?.value }}
+                        </td>
+                        <td class="p-1 font-medium">
+                            {{ fila.get('codigo_precio')?.value }}
+                        </td>
+                        <td class="p-1 font-medium">
+                            {{ fila.get('des_catalogo_tarea')?.value }}
+                        </td>
+
+                        <td class="p-1 font-medium">
+                            <span>
+                                {{ (fila.get('ancho_labor')?.value !== null && fila.get('ancho_labor')?.value !==
+                                undefined && fila.get('altura_labor')?.value !== null &&
+                                fila.get('altura_labor')?.value !== undefined)
+                                ? (fila.get('ancho_labor')?.value | number:'1.2-2') + ' x ' +
+                                (fila.get('altura_labor')?.value | number:'1.2-2')
+                                : '' }}
+                            </span>
+                        </td>
+                        <td class="p-1 font-medium">
+                            {{ fila.get('equipo')?.value }}
+                        </td>
+                        <td class="p-1 font-medium">
+                            <select class="select-base_tres border" formControlName="cod_item_unimed">
+                                @for (item of listMaestro(); track $index) {
+                                <option [value]="item.cod_item">{{ item.des_tabladet_abrev }}</option>
+                                }
+                            </select>
+
+                        </td>
+                        <td class="p-1 font-medium">
+                            {{ fila.get('imp_costo_partida')?.value }}
+                        </td>
+                        <td class="p-1 font-medium">
+                            {{ fila.get('imp_costo_partida_dolar')?.value }}
+                        </td>
+                        <td class="p-1 text-center">
+                            <div class="flex items-center justify-center w-full h-full">
+                                <label class="cursor-pointer select-none shrink-0 flex items-center justify-center">
+                                    <input type="checkbox" formControlName="ind_situacion" class="hidden peer" />
+                                    <span
+                                        class="w-4 h-4 rounded border-2 border-[#002B48] flex items-center justify-center bg-white peer-checked:bg-[#002B48] peer-checked:shadow-[0_0_8px_rgba(0,43,72,0.7)] transition-all duration-300 ease-in-out">
+                                        <svg class="w-3 h-3 text-white scale-0 peer-checked:scale-100 transition-transform duration-300 ease-in-out"
+                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke="currentColor" stroke-width="3">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                    </span>
+                                </label>
+                            </div>
+                        </td>
+                        <td class="py-2 font-medium mx-auto">
+                            @switch (fila.get('ind_estado')?.value) {
+
+                            @case ('A') { <span
+                                class="px-2 py-0.5 rounded text-[11px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">ACTIVA</span>
+                            }
+
+                            @case ('X') { <span
+                                class="px-2 py-0.5 rounded text-[11px] font-bold bg-rose-100 text-rose-800 border border-rose-300">INACTIVO</span>
+                            }
+
+                            @default { <span class="text-xs">{{ fila.get('ind_estado')?.value }}</span> }
+                            }
+                        </td>
+
+                        <td class="p-1 flex justify-center items-center">
+                            <button type="button" (click)="eliminarFila($index, fila.value)"
+                                class="bg-[#A6200A] flex items-center justify-center rounded-lg shadow-sm group relative hover:bg-red-700 hover:shadow-md hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed w-8 h-8">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="2.5" stroke="white" class="w-4 h-4">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                                </svg>
+                            </button>
+                        </td>
+                    </tr>
+                    }
+                    }
+                    @else if(!isLoading()){
+                    <tr>
+                        <td colspan="10"
+                            class="border border-red-200 px-2 py-4 text-center bg-red-50 text-red-700 rounded-lg">
+                            <div class="flex items-center justify-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                </svg>
+                                <b class="text-[12px]">No existen datos para mostrar con los filtros seleccionados.</b>
+                            </div>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </form>
+        <div class="flex items-center justify-between border-t border-base-200 pt-3 mt-4">
+            <span class="text-xs font-semibold text-base-content/70">
+                Nro. {{ filas.controls.length }}
+            </span>
+            <!-- <div class="flex items-center gap-2 text-center">
+
+                    <span class="text-sm text-base-content/70 w-28 bg-[#c6b8e7] font-bold">
+                        S/. 000.00
+                    </span>
+
+                    <span class="text-sm text-base-content/70 w-28 bg-[#c6b8e7] font-bold">
+                        S/. 000.00
+                    </span>
+                </div> -->
+        </div>
+
+        <!-- BOTONES -->
+        <!-- <div class="modal-action border-t border-base-200 pt-3 mt-2 flex justify-end gap-2">
+
+
+            <button type="button" class="btn btn-sm text-white bg-[#013B5C] hover:bg-[#002B48] flex items-center gap-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+                Aceptar
+            </button>
+            <button type="button" class="btn btn-sm btn-outline border-base-300 flex items-center gap-1"
+                (click)="onCerrarModalPrecUnitario.emit()">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+                Cancelar
+            </button>
+        </div> -->
+    </div>
+
+    <!-- FOOTER TOTALES -->
+
+</div>
+
+@if (onAbrirlModalParametro()) {
+
+<app-modal-busqueda-parametro (onCerrarModalParametro)="onAbrirlModalParametro.set(false)"
+    [cod_contrato]="cod_contrato()" (onContratoSeleccionado)="cargarEquiposPorFila()" />
+}
+
+
+@if (onAbrirModalPrecioUnitarioDetalle()) {
+
+<app-detalle-precio-unitario
+    (onCerrarModalPreUnitarioDetalle)="onAbrirModalPrecioUnitarioDetalle.set(false)" [detallePartida]="detallePartida()" (cargarEquiposPorFila)="cargarEquiposPorFila()"/>
+}

@@ -1,0 +1,14 @@
+
+ <!-- [disabled]="bloqueo()" -->
+<button type="button" (click)="accion.emit()" [disabled]="bloqueo()"
+     class="flex group  items-center justify-center p-2 border border-gray-200 rounded-lg shadow-sm hover:shadow-md hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed w-10 h-10"
+    [ngClass]="color()">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="white" class="w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" [attr.d]="icono()" />
+    </svg>
+    
+    <div
+        class="absolute bottom-full hidden mb-3 group-hover:block bg-black text-white text-xs rounded px-2 py-1 whitespace-nowrap">
+        <b>{{texto()}}</b>
+    </div>
+</button>

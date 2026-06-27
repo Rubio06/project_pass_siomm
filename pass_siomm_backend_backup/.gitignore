@@ -1,0 +1,20 @@
+# Node.js
+node_modules/
+dist/
+build/
+
+# Logs
+*.log
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Mac
+.DS_Store
+
+# Angular
+coverage/

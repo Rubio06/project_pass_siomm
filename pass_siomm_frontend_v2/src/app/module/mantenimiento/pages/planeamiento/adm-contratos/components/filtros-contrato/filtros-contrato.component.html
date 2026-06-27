@@ -1,0 +1,141 @@
+<form [formGroup]="form">
+
+    <div class="flex flex-col sm:flex-col md:flex-row w-full  xl:w-[78%]  gap-4 mt-4">
+        <div class="flex-2 flex md:flex-col md:w-[11px] lg:flex-col lg:w-[20%]">
+            <label class="font-bold text-gray-700 shrink-0 gap-2 w-20">Contrata</label>
+
+            <select class="select-base_dos flex-1 disabled:opacity-50 w-full" formControlName="cod_contrata">
+                @for (contrata of listContrata(); track $index) {
+                <option [value]="contrata.cod_contrata">{{ contrata.cod_contrata }} - {{ contrata.des_contrata }}
+                </option>
+                }
+            </select>
+        </div>
+
+        <div class="flex-1 flex md:flex-col lg:flex-col">
+            <label class="w-29 font-bold text-gray-700 shrink-0">Nro. Contrato</label>
+            <input class="input-base disabled:opacity-50" type="text" formControlName="cod_contrato" />
+        </div>
+
+        <div class="flex-1 flex md:flex-col lg:flex-col">
+            <label class="w-16 font-bold text-gray-700 shrink-0">Estado</label>
+            <select class="select-base_dos flex-1 disabled:opacity-50 w-full" formControlName="ind_estado">
+                <option value="%">% - == TODOS ==</option>
+                <option value="G">G - GENERADO</option>
+                <option value="A">A - APROBADO</option>
+                <option value="X">X - ANULADO</option>
+                <option value="H">H - HISTORICO</option>
+
+            </select>
+        </div>
+    </div>
+
+
+    <div class="flex justify-between flex-row md:flex-row md:w-full lg:flex-row lg:w-full xl:w-full xl:flex-row mb-4 gap-6 mt-4">
+
+        <!-- FECHAS -->
+        <div class="flex-7 flex flex-col xl:flex-col items-start xl:items-center w-full ">
+
+            <span class="font-bold text-gray-700
+                   w-full
+                   shrink-0">
+                Fecha Inicio Del
+            </span>
+
+            <div class="flex flex-col sm:flex-row gap-2
+                   w-full
+                   items-start sm:items-center">
+
+                <label class="cursor-pointer select-none shrink-0">
+                    <input type="checkbox" formControlName="fec_all" class="hidden peer" />
+
+                    <span class="w-4 h-4 rounded border-2 border-[#002B48]
+                            flex items-center justify-center bg-white
+                            peer-checked:bg-[#002B48]
+                            peer-checked:shadow-[0_0_8px_rgba(0,43,72,0.7)]
+                            transition-all duration-300 ease-in-out">
+
+                        <svg class="w-3 h-3 text-white scale-0
+                                peer-checked:scale-100
+                                transition-transform duration-300 ease-in-out" xmlns="http://www.w3.org/2000/svg"
+                            fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                    </span>
+                </label>
+
+                <input class="input-base flex-1 min-w-0 text-center disabled:opacity-50" type="date"
+                    formControlName="fec_inicio" />
+
+                <span class="text-xs font-bold text-gray-600 shrink-0">
+                    AL
+                </span>
+
+                <input class="input-base flex-1 min-w-0 text-center disabled:opacity-50" type="date"
+                    formControlName="fec_termino" />
+            </div>
+        </div>
+
+        <!-- DIAS -->
+        <div class="flex-6 flex flex-col xl:flex-col items-start xl:items-center w-full ">
+
+            <span class="font-bold text-gray-700 shrink-0 w-full">
+                Dias
+            </span>
+
+            <div class="flex flex-col sm:flex-row gap-2
+                   w-full items-start sm:items-center">
+
+                <label class="cursor-pointer select-none shrink-0">
+
+                    <input type="checkbox" formControlName="dia_all" class="hidden peer" />
+
+                    <span class="w-4 h-4 rounded border-2 border-[#002B48]
+                            flex items-center justify-center bg-white
+                            peer-checked:bg-[#002B48]
+                            peer-checked:shadow-[0_0_8px_rgba(0,43,72,0.7)]
+                            transition-all duration-300 ease-in-out">
+
+                        <svg class="w-3 h-3 text-white scale-0
+                                peer-checked:scale-100
+                                transition-transform duration-300 ease-in-out" xmlns="http://www.w3.org/2000/svg"
+                            fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                    </span>
+                </label>
+
+                <input class="input-base flex-1 min-w-0 text-center disabled:opacity-50" type="number"
+                    formControlName="dia_ini" />
+
+                <span class="text-xs font-bold text-gray-600 shrink-0">
+                    AL
+                </span>
+
+                <input class="input-base flex-1 min-w-0 text-center disabled:opacity-50" type="number"
+                    formControlName="dia_fin" />
+            </div>
+        </div>
+
+        <div class=" flex-1 relative group inline-block self-end w-full ">
+            <button type="button" class="p-2 bg-gray-200 hover:bg-gray-150 cursor-pointer
+                                    hover:text-white  rounded
+                                    transition duration-200 shadow-sm" (click)="onLimpiarFiltros()">
+
+                <!-- Icono tachito / papelera -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-6 text-gray-700 group-hover:text-black" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 7h12M9 7V4h6v3m-8 0l1 12h6l1-12" />
+                </svg>
+                <div
+                    class="absolute bottom-full hidden mb-3 group-hover:block bg-black text-white text-xs rounded px-2 py-1 whitespace-nowrap">
+                    <b>Limpiar los Filtros</b>
+                </div>
+            </button>
+        </div>
+    </div>
+
+
+</form>

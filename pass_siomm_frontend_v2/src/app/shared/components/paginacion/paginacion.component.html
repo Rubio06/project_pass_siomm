@@ -1,0 +1,50 @@
+<div class="flex justify-between items-center mt-3 border-t border-gray-300 pt-3 pb-3">
+
+    <span class="text-xs opacity-70">
+        <b>Página {{ paginaActual() }} de {{ totalPaginas() }}</b>
+        | <b>Total: {{ totalRegistros() }}</b>
+    </span>
+
+    <div class="flex items-center gap-1">
+
+        <button type="button" class="btn btn-xs btn-ghost" (click)="paginaCambio.emit(1)"
+            [disabled]="paginaActual() === 1">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M11 19l-7-7 7-7M18 19l-7-7 7-7" />
+            </svg>
+        </button>
+
+        <button type="button" class="btn btn-xs btn-ghost" (click)="paginaCambio.emit(paginaActual() - 1)"
+            [disabled]="paginaActual() === 1">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+        </button>
+
+        <select class="select-base_dos bordered mx-1 w-[110px]" [value]="paginaActual()" (change)="irPagina($event)">
+            @for (p of totalPagesArray(); track p) {
+            <option [value]="p">{{ p }} / {{ totalPaginas() }}</option>
+            }
+        </select>
+
+        <button type="button" class="btn btn-xs btn-ghost" (click)="paginaCambio.emit(paginaActual() + 1)"
+            [disabled]="paginaActual() >= totalPaginas()">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+        </button>
+
+        <button type="button" class="btn btn-xs btn-ghost" (click)="paginaCambio.emit(totalPaginas())"
+            [disabled]="paginaActual() >= totalPaginas()">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M6 5l7 7-7 7" />
+            </svg>
+        </button>
+
+    </div>
+</div>

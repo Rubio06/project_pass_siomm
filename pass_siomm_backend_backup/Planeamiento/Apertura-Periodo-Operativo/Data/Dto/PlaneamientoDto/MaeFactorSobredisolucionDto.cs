@@ -1,0 +1,15 @@
+﻿namespace pass_siomm_backend.Planeamiento.Data.Dto.PlaneamientoDto
+{
+    public class MaeFactorSobredisolucionDto
+    {
+
+        public string cie_ano { get; set; }
+        public string cie_per { get; set; }
+
+        public string val_fac_ag { get; set; }
+        public string val_fac_cu { get; set; }
+        public string val_fac_pb { get; set; }
+        public string val_fac_zn { get; set; }
+        public string val_fac_au { get; set; }
+    }
+}

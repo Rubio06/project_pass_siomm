@@ -1,0 +1,164 @@
+<div class="flex flex-col justify-between min-h-[455px] max-h-[455px]">
+
+    <div>
+        <table class="table table-zebra table-sm">
+
+            <thead class="sticky top-0 bg-white z-10">
+                <tr class="shadow-[0_2px_0_0_black] text-center">
+                    <th class="py-2 text-[#013B5C]">Icono</th>
+                    <th class="py-2 text-[#013B5C]">Tipo Contrato</th>
+                    <th class="py-2 text-[#013B5C]">Nro. Contrato</th>
+                    <th class="py-2 text-[#013B5C]">Equipo Alquilado</th>
+                    <th class="py-2 text-[#013B5C]">Contrata</th>
+                    <th class="py-2 text-[#013B5C]">Ruc</th>
+                    <th class="py-2 text-[#013B5C]">Fecha Firma</th>
+                    <th class="py-2 text-[#013B5C]">Fecha Inicio</th>
+                    <th class="py-2 text-[#013B5C]">Fecha Termino</th>
+                    <th class="py-2 text-[#013B5C]">Tipo Cambio</th>
+                    <th class="py-2 text-[#013B5C]">Ult. Adenda</th>
+                    <th class="py-2 text-[#013B5C]">Dias</th>
+                    <th class="py-2 text-[#013B5C]">Estado</th>
+                    <th class="py-2 text-[#013B5C]" colspan="2">Aprobcion Registro</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @if (isLoading()) {
+                <tr>
+
+                    <td colspan="16" class="text-center py-8">
+
+                        <div class="flex justify-center">
+
+                            <div class="flex flex-col items-center gap-2">
+
+                                <progress class="progress w-56" style="color:#013B5C;"></progress>
+
+                                <span class="text-xs">
+                                    <b>Cargando...</b>
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+                }
+                @else if (listContrato().length > 0) {
+                @for (contrato of listContrato(); track $index) {
+                <tr class="hover:bg-[#17324D]/5 select-none cursor-pointer transition-colors text-center"
+                    [class.bg-[#17324D]/10]="contratoActivo()?.cod_contrato === contrato.cod_contrato"
+                    [class.text-[#013B5C]]="contratoActivo()?.cod_contrato === contrato.cod_contrato"
+                    [class.font-bold]="contratoActivo()?.cod_contrato === contrato.cod_contrato" 
+                    (dblclick)="seleccionar(contrato)">
+                    <td class="py-2 font-medium min-w-[60px]">
+                        @switch (contrato.ind_estado) {
+
+                        @case ('H') {
+                        <!-- Triángulo con rayo - morado -->
+                        <svg class="w-6 h-6" viewBox="-44 -48 88 92" fill="none">
+                            <polygon points="0,-44 38,22 -38,22" fill="#6B3FA0" stroke="#9B6FD0" stroke-width="1.5" />
+                            <path d="M4,-18 L-4,2 L2,2 L-4,22 L10,2 L4,2 Z" fill="white" />
+                        </svg>
+                        }
+
+                        @case ('G') {
+                        <!-- Escudo con ! - naranja -->
+                        <svg class="w-6 h-7" viewBox="-38 -48 76 96" fill="none">
+                            <path d="M0,-44 L34,-28 L34,4 Q34,28 0,44 Q-34,28 -34,4 L-34,-28 Z" fill="#013B5C"
+                                stroke="#013B5C" stroke-width="1.5" />
+                            <text y="12" text-anchor="middle" font-size="40" font-weight="700" fill="white">!</text>
+                        </svg>
+                        }
+
+                        @case ('X') {
+                        <!-- Círculo con X - rojo -->
+                        <svg class="w-6 h-6" viewBox="-42 -42 84 84" fill="none">
+                            <circle r="38" fill="#9B1C2E" stroke="#D97B89" stroke-width="1.5" />
+                            <line x1="-14" y1="-14" x2="14" y2="14" stroke="white" stroke-width="4"
+                                stroke-linecap="round" />
+                            <line x1="14" y1="-14" x2="-14" y2="14" stroke="white" stroke-width="4"
+                                stroke-linecap="round" />
+                        </svg>
+                        }
+
+                        @default {
+                        <svg class="w-6 h-6" viewBox="-42 -42 84 84" fill="none">
+                            <circle r="38" fill="#30994E " stroke="#30994E" stroke-width="2" />
+                            <path d="M-14,0 L-4,12 L16,-12" stroke="white" stroke-width="4" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                        }
+
+                        }
+                    </td>
+                    <td class="py-2 font-medium min-w-[150px]">
+                        {{
+                        contrato.ind_tipo_contrato === 'M' ? 'OPERACION MINA' :
+                        contrato.ind_tipo_contrato === 'T' ? 'SERV. TRANSPORTE' :
+                        contrato.ind_tipo_contrato === 'A' ? 'ALQ. EQUIPO PESADO' :
+                        'DESCONOCIDO'
+                        }}
+                    </td>
+                    <td class="py-2 font-medium">
+                        {{ contrato.cod_contrato?.slice(0,4) }} - {{ contrato.cod_contrato?.slice(4) }}
+                    </td>
+                    <td class="py-2 font-medium min-w-[60px]">{{ contrato.c_t_equipo_alq }}</td>
+                    <td class="py-2 font-medium min-w-[270px]">{{ contrato.c_t_contrata }}</td>
+                    <td class="py-2 font-medium min-w-[60px]">{{ contrato.c_t_ruc }}</td>
+                    <td class="py-2 font-medium min-w-[60px]">{{ contrato.fec_firma | date:'dd/MM/yyyy' }}</td>
+                    <td class="py-2 font-medium min-w-[60px]">{{ contrato.fec_inicio | date:'dd/MM/yyyy' }}</td>
+                    <td class="py-2 font-medium min-w-[60px]">{{ contrato.fec_termino | date:'dd/MM/yyyy' }}</td>
+                    <td class="py-2 font-medium min-w-[60px]">{{ contrato.imp_tipo_cambio }}</td>
+                    <td class="py-2 font-medium min-w-[60px]">{{ contrato.nro_adendum }}</td>
+                    <td class="py-2 font-medium" [ngClass]="{
+                                    'bg-yellow-50 text-red-700 font-bold':
+                                    contrato.ind_estado !== 'H' &&
+                                    (contrato.c_n_dias_contrato! - contrato.c_n_dias_curso!) < 0
+                                }">
+                        {{
+                        contrato.ind_estado === 'H'
+                        ? 0
+                        : (
+                        contrato.c_n_dias_contrato! < contrato.c_n_dias_curso! ? contrato.c_n_dias_contrato! -
+                            contrato.c_n_dias_curso! : contrato.c_n_dias_curso ) }} </td>
+                    <td class="py-2 font-medium min-w-[60px]">
+                        {{
+                        contrato.ind_estado === 'G' ? 'GENERADO' :
+                        contrato.ind_estado === 'A' ? 'APROBADO' :
+                        contrato.ind_estado === 'X' ? 'ANULADO' :
+                        contrato.ind_estado === 'H' ? 'HISTORICO' :
+                        'DESCONOCIDO'
+                        }}
+
+                    </td>
+
+                    <td class="py-2 font-medium"> {{ contrato.cod_usuario_creo }} </td>
+                    <td class="py-2 font-medium"> {{ contrato.fec_usuario_creo | date:'dd/MM/yyyy' }} </td>
+                </tr>
+                }
+
+                } @else if(!isLoading()){
+                <tr>
+                    <td colspan="16"
+                        class="border border-red-200 px-2 py-4 text-center bg-red-50 text-red-700 rounded-lg">
+                        <div class="flex items-center justify-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                            </svg>
+                            <b>No existen datos para mostrar con los filtros seleccionados.</b>
+                        </div>
+                    </td>
+                </tr>
+                }
+            </tbody>
+
+        </table>
+    </div>
+    <div class="p-3 bg-base-200 border-t border-base-300 font-bold text-sm text-[#013B5C]">
+        Nº: {{ listContrato().length }}
+    </div>
+</div>

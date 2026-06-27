@@ -1,0 +1,66 @@
+<div class="modal modal-open">
+    <div class="modal-box max-w-md shadow-2xl bg-gradient-to-br from-slate-50 to-slate-100">
+
+        <!-- Header -->
+        <div class="p-4 -m-6 mb-4 rounded-t-lg">
+            <h3 class="font-bold text-xl flex items-center gap-2">
+                Seleccionar el Periodo a donde se Copiará
+            </h3>
+        </div>
+
+        <form [formGroup]="form" (ngSubmit)="aceptar()">
+
+            <!-- Año y Mes -->
+            <div class="flex gap-4 mb-4">
+
+                <!-- Año -->
+                <div class="flex flex-col items-center flex-1">
+                    <label class="font-semibold w-full text-left">Año:</label>
+                    <input type="text" formControlName="cie_anio" class="input-base text-xs w-full" />
+                </div>
+
+                <!-- Mes -->
+                <div class="flex flex-col items-center flex-1">
+                    <label class="font-semibold w-full text-left">Mes:</label>
+                    <select formControlName="cie_per" class="select-base w-full">
+                        @for (mes of meses(); track mes.value) {
+                            <option [value]="mes.value">
+                                {{ mes.label }}
+                            </option>
+                        }
+                    </select>
+                </div>
+
+            </div>
+
+            <!-- Información a mostrar -->
+            @if (listaPrograma().length > 0) {
+                <div class="bg-slate-100 border border-gray-200 rounded p-3 text-sm text-gray-700 mb-4">
+                    <p><strong>Programación a copiar:</strong></p>
+                    <ul class="list-disc list-inside mt-1">
+                        <li><strong>Empresa:</strong> {{ listaPrograma()[0].cod_empresa }}</li>
+                        <li><strong>Número de Programación:</strong> {{ listaPrograma()[0].nro_prog }}</li>
+                        <li><strong>Unidad Económica Administrativa:</strong> {{ listaPrograma()[0].cod_empresa_unidad }}</li>
+                        <li><strong>Zona:</strong> {{ listaPrograma()[0].des }}</li>
+                        <li><strong>Proveedor:</strong> {{ listaPrograma()[0].des_contrata }}</li>
+                        <li><strong>Desde:</strong> Año {{ form.value.cie_anio }}, Mes {{ form.value.cie_per }}</li>
+                    </ul>
+                </div>
+            }
+
+            <!-- Botones -->
+            <div class="modal-action mt-2 border-t border-gray-300 pt-4">
+                <button type="button" (click)="cancelar()"
+                    class="btn bg-slate-500 hover:bg-slate-600 text-white border-none">
+                    Cancelar
+                </button>
+
+                <button type="submit" [disabled]="form.invalid"
+                    class="btn bg-gradient-to-r from-[#013B5C] to-[#033351] text-white border-none">
+                    Aceptar
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>

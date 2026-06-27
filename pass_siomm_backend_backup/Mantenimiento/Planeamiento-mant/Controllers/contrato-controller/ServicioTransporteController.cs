@@ -1,0 +1,202 @@
+﻿using Azure;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using pass_siomm_backend.Autenticacion.Data;
+using pass_siomm_backend.Mantenimiento.Planeamiento_mant.Data;
+using pass_siomm_backend.Mantenimiento.Planeamiento_mant.Services;
+using pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Data.Dto;
+using pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Data.Dto.ExplotacionDto;
+using pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Services;
+using System.Text.Json;
+
+namespace pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers
+{
+    [Route("mantenimiento/servicio-transporte")]
+    [ApiController]
+    public class ServicioTranporteController : ControllerBase
+    {
+        private readonly ServicioTransporteService _servicioTransporte;
+
+        public ServicioTranporteController(ServicioTransporteService servicioTransporte)
+        {
+            _servicioTransporte = servicioTransporte;
+        }
+
+
+
+
+
+        [HttpGet("listar-contrata")]
+        public async Task<IActionResult> ListarContratasActivas()
+        {
+            try
+            {
+
+                var resultado = await _servicioTransporte.ListarContratasActivas();
+
+                if (resultado == null)
+
+                    return NotFound(new { estado = 0, mensaje = "Contrato no encontrado." });
+
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { estado = -1, mensaje = ex.Message });
+            }
+        }
+
+
+        [HttpGet("listar")]
+        public async Task<IActionResult> GetDetalle([FromQuery] ServicioTranporteRequestDto request)
+        {
+            var resultado = await _servicioTransporte.ObtenerServicioTransporte(request);
+
+            if (resultado == null) return NotFound();
+
+            return Ok(resultado); // 👈 Angular recibe { cabecera + parametros[] + mediciones[] }
+        }
+
+        [HttpGet("listar-equipos-contrata")]
+        public async Task<IActionResult> GetEquiposContrata([FromQuery] EquiposContrataRequestDto request)
+        {
+            try
+            {
+                var resultado = await _servicioTransporte.GetEquiposContrataAsync(request);
+
+                if (resultado == null || resultado.Count == 0)
+                    return NotFound(new { estado = 0, mensaje = "No se encontraron equipos." });
+
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { estado = -1, mensaje = ex.Message });
+            }
+        }
+
+        [HttpGet("parametros-contrato")]
+        public async Task<IActionResult> ObtenerParametrosContrato()
+        {
+            var data = await _servicioTransporte.ObtenerParametrosContrato();
+            return Ok(data);
+        }
+
+        [HttpGet("tabla-detalle")]
+        public async Task<IActionResult> ObtenerTablaDetalle([FromQuery] string cod_tabla)
+        {
+            var data = await _servicioTransporte.ObtenerTablaDetalle(cod_tabla);
+            return Ok(data);
+        }
+
+        [HttpGet("medicion")]
+        public async Task<IActionResult> ObtenerParametroMedicion()
+        {
+            var data = await _servicioTransporte.ObtenerParametroMedicion();
+            return Ok(data);
+        }
+
+        [HttpGet("gastos-generales")]
+        public async Task<ActionResult<List<GastosGeneralesDTO>>> ObtenerGastosGenerales(
+            [FromQuery] string cod_empresa,
+            [FromQuery] string cod_empresa_unidad,
+            [FromQuery] string cod_contrato)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(cod_empresa) || string.IsNullOrEmpty(cod_contrato))
+                {
+                    return BadRequest("Los parámetros codEmpresa y codContrato son obligatorios.");
+                }
+
+                // Agregamos await para esperar la respuesta de la base de datos de forma no bloqueante
+                var resultado = await _servicioTransporte.ObtenerGastosGenerales(cod_empresa, cod_empresa_unidad, cod_contrato);
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error interno del servidor: {ex.Message}");
+            }
+        }
+
+        [HttpGet("costos-fijos")]
+        public async Task<ActionResult<List<CostosFijosMaeDto>>> ObtenerCostosFijos()
+        {
+            try
+            {
+                // Agregamos await para la lectura asíncrona del maestro de costos fijos
+                var resultado = await _servicioTransporte.ObtenerCostosFijos();
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error interno del servidor: {ex.Message}");
+            }
+        }
+
+        [HttpGet("costos-fijos-detalle")]
+        public async Task<ActionResult<List<CostosFijosDetalleDto>>> ObtenerCostosFijosDetalle(
+            [FromQuery] string cod_empresa,
+            [FromQuery] string cod_empresa_unidad,
+            [FromQuery] string cod_costo_fijo)
+        {
+            try
+            {
+                // Agregamos await para la lectura asíncrona del maestro de costos fijos
+                var resultado = await _servicioTransporte.ObtenerCostosFijosDetalle(cod_empresa, cod_empresa_unidad, cod_costo_fijo);
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error interno del servidor: {ex.Message}");
+            }
+        }
+
+        [HttpPost("insertar-gastos-generales")]
+        public async Task<IActionResult> InsertarGastosGenerales([FromBody] List<GastosGeneralesDTO> filas)
+        {
+
+            Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(filas));
+
+            if (filas == null || filas.Count == 0)
+                return BadRequest(new GastosGeneralesRequestDTO
+                {
+                    estado = 0,
+                    mensaje = "No se enviaron registros."
+                });
+
+            var resultado = await _servicioTransporte.InsertarGastosGenerales(filas);
+
+            if (resultado.estado == 0)
+                return BadRequest(resultado);
+
+            return Ok(resultado);
+        }
+
+        [HttpDelete("eliminar-fila-costo-detalle")]
+        public IActionResult Eliminar([FromBody] EntradaCostoFijoDto request)
+        {
+            // 1. Pasa el objeto 'request' completo, ya que tu método lo recibe así
+            RespuestCostoFijoDto resultado = _servicioTransporte.EliminarCostoFijoDetalle(request);
+
+            // 2. Evaluamos según los estados numéricos que definiste en tu método (1, 0, -1, -2)
+            switch (resultado.estado)
+            {
+                case 1:
+                    // Éxito: Retorna HTTP 200 OK
+                    return Ok(resultado);
+
+                case 0:
+                    // No encontrado: Retorna HTTP 404 Not Found
+                    return NotFound(resultado);
+
+                case -1:
+                    return StatusCode(500, resultado);
+
+                default:
+                    return StatusCode(500, resultado);
+            }
+        }
+    }
+
+}

@@ -1,0 +1,13 @@
+﻿namespace pass_siomm_backend.Rutas.Data.RutasModels
+{
+    public class RutasTerciarias
+    {
+        public int? cod_ruta_terc { get; set; }
+        public string nom_ruta_terc { get; set; }
+
+        public string est_ruta_terc { get; set; }
+
+        public List<RutasCuartas> rutas_cuartas { get; set; } = new List<RutasCuartas>();
+
+    }
+}

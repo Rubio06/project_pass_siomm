@@ -1,0 +1,21 @@
+<div class="mx-4">
+    <!-- <app-titulo-modulo [titulo]="'Información Programa Mensual de Labores'" /> -->
+
+    <div class="">
+        <div class="flex gap-4">
+            @for (btn of botones(); track $index) {
+                <button type="button" (click)="onAccion(btn.accion)" [disabled]="estadoBotones()[btn.accion]"
+                    [title]="btn.texto"
+                    class="flex items-center gap-2 px-3 py-2 text-white rounded-lg shadow-sm transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                    [ngClass]="btn.color">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                        class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" [attr.d]="btn.icono" />
+                    </svg>
+                </button>
+                
+                <input type="file" #fileInput accept=".xlsx,.xls" (change)="onImportar($event)" hidden>
+            }
+        </div>
+    </div>
+</div>

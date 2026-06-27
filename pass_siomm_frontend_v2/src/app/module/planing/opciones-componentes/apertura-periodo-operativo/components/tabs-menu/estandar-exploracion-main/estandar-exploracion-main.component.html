@@ -1,0 +1,149 @@
+<div class="container mx-auto px-4 gap-10 justify-center">
+    <div class="w-full">
+        <h2 class="text-[20px] font-bold text-[#013B5C] border-b-2 border-gray-300 pb-2">
+            Registro de Labores y Métodos de Explotación
+        </h2>
+        <form [formGroup]="myForm">
+
+            <div class="mt-5">
+                 <div class="p-3 flex flex-col md:flex-row md:justify-between md:items-center gap-2 mb-4 border-l-4 border-[#013B5C] shadow-sm rounded-md">
+                    <h3 class="text-base sm:text-lg font-bold text-[#013B5C]">
+                        Detalle de Labores
+                    </h3>
+                    <div class="bg-gray-200 text-gray-700 font-medium py-1 px-3 rounded-full text-xs w-fit">
+                        <span class="mr-1">
+                            Total de Registros:
+                        </span>
+                        <span class="font-bold text-[#013B5C]">
+                            {{ semanas.length }}
+                        </span>
+                    </div>
+                </div>
+                <div class="relative flex gap-4">
+                    <!-- <div class="flex-11">
+                        <div class="w-full mx-auto rounded-lg overflow-x-auto shadow-md border border-gray-300">
+                            <table class="min-w-full border-collapse text-sm text-gray-800"> -->
+
+                    <div class="flex-11 border mx-auto rounded-lg overflow-x-auto shadow-md border border-gray-300"
+                        style="max-height: 350px; overflow-y: auto;">
+                        <div class="">
+                            <table class="min-w-full border-collapse text-sm text-gray-800">
+
+                                <thead class="bg-gray-100 sticky top-0 z-10">
+                                    <tr class="text-center text-gray-700 font-bold bg-gray-200 uppercase text-xs">
+                                        @for (col of titulo; track $index) {
+                                        <th class="border border-gray-300 px-4 py-2 bg-gray-200"
+                                            [class.md:sticky]="$index === 0"
+                                            [class.md:left-0]="$index === 0"
+                                            [class.md:z-50]="$index === 0">{{ col }}</th>
+                                        }
+                                        <th class="border border-gray-300 px-4 py-2">ACCIÓN</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody formArrayName="semanas">
+                                    @if (semanas.controls.length === 0) {
+                                    <tr class="border-y border-gray-300">
+                                        <td [attr.colspan]="datosColumna().length + 2"
+                                            class="p-4 text-center font-semibold text-red-700 bg-red-50 border border-gray-300">
+                                            No existen datos para mostrar.
+                                        </td>
+                                    </tr>
+
+                                    }@else{
+                                    @for (item of semanas.controls; track $index; let i = $index) {
+                                    <tr [formGroupName]="i"
+                                        class="even:bg-gray-50 odd:bg-white hover:bg-blue-50/70 transition duration-150">
+
+                                        @for (colData of datosColumna(); track $index; let j = $index) {
+                                        <td class="border border-gray-300 p-1.5 align-top bg-white"
+                                            [class.md:sticky]="$index === 0"
+                                            [class.md:left-0]="$index === 0"
+                                            [class.md:z-50]="$index === 0">
+
+                                            @if (colData.type == "select") {
+                                            <select [formControlName]="colData.name" [style.width]="colData.width"
+                                                [class.opacity-40]="planingCompartido.tablaBloqueada() && !item.get('esNuevo')?.value"
+                                                [class.pointer-events-none]="planingCompartido.tablaBloqueada() && !item.get('esNuevo')?.value"
+                                                class="select-xs mx-auto select text-sm font-medium outline-none flex items-center border border-gray-300 rounded-lg px-2 py-1 bg-white shadow-sm hover:shadow-md transition-shadow duration-300 ease-in-out focus:border-[#033351] focus:ring-1 focus:ring-[rgb(3,102,157)] focus:ring-opacity-40 w-full">
+                                                @if (colData.name === 'cod_zona') {
+
+                                                <option value="" disabled> Selecione una opción</option>
+                                                @for (opt of cod_zona(); track $index) {
+                                                <option [value]="opt.cod_zona" [disabled]="cod_zonaBloqueo().includes(opt.cod_zona) ||  valoresSeleccionados(item).includes(opt.cod_zona)">{{ opt.cod_zona }} {{ opt.des_zona }}
+                                                </option>
+                                                }
+                                                } @else {
+                                                <option value="">Seleccione</option>
+                                                }
+                                            </select>
+                                            } @else {
+                                                <div class="flex items-center border border-gray-300 rounded-md px-2 py-1 bg-white shadow-sm
+                                                            hover:shadow-md transition-shadow duration-300 ease-in-out
+                                                            focus-within:border-[#033351] focus-within:ring-1 focus-within:ring-[rgb(3,102,157)]
+                                                            focus-within:ring-opacity-40 focus-within:shadow-md">
+                                                    <input [type]="colData.type" [formControlName]="colData.name"
+                                                        [class.opacity-40]="planingCompartido.tablaBloqueada() && !item.get('esNuevo')?.value"
+                                                        [class.pointer-events-none]="planingCompartido.tablaBloqueada() && !item.get('esNuevo')?.value"
+                                                        [style.width]="colData.width"
+                                                        class="w-full bg-transparent outline-none text-gray-800 placeholder-gray-400 text-xs font-medium" />
+
+                                                    </div>
+
+
+                                                    @if ( formUtils.isValidFieldInArray(item, colData.name) ) {
+
+                                                        <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                                            <span >
+                                                                <b>{{formUtils.getFiledErrorArray(item, colData.name)}}</b>
+                                                            </span>
+                                                        </div>
+                                                    }
+
+                                            }
+                                        </td>
+                                        }
+
+                                        <td class="border-x border-gray-300 p-1.5 w-24 text-center">
+                                            <button type="button" (click)="eliminarFila(item,i)"
+                                                [disabled]="planingCompartido.tablaBloqueada() && !item.get('esNuevo')?.value"
+                                                class="flex disabled:opacity-50 items-center justify-center gap-1 mx-auto bg-[#A3361D] hover:bg-red-700 text-white px-2 py-1.5 rounded-md shadow-sm transition-all duration-200 font-medium text-xs disabled:cursor-not-allowed">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <polyline points="3 6 5 6 21 6"></polyline>
+                                                    <path
+                                                        d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6m5 0V4a2 2 0 0 1 2-2h0a2 2 0 0 1 2 2v2">
+                                                    </path>
+                                                </svg>
+                                                <b>Eliminar</b>
+                                            </button>
+                                        </td>
+
+                                    </tr>
+
+                                    }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+
+                    <button type="button" (click)="agregarFilas()" [disabled]="planingCompartido._agregarRegistro()"
+                        title="Agregar registro" class="
+                            self-start flex-1
+                            sticky top-24
+                            flex items-center justify-center
+                            rounded-full
+                            transition-all duration-300
+                            disabled:opacity-40 disabled:cursor-not-allowed
+                        ">
+                        <img src="icono-agregar.png" class="w-20 h-20 object-contain" alt="Agregar" />
+                    </button>
+
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

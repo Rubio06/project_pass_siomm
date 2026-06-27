@@ -1,0 +1,2847 @@
+[
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Controllers.PlaneamientoConroller.SemanaController",
+    "Method": "CopiarPeriodoOperativo",
+    "RelativePath": "aper-periodo-operativo/semana/copiar-periodo",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "periodo",
+        "Type": "pass_siomm_backend.Planeamiento.Data.Dto.PlaneamientoDto.CopiarPeriodoDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Controllers.PlaneamientoConroller.SemanaController",
+    "Method": "EliminarEstandarAvance",
+    "RelativePath": "aper-periodo-operativo/semana/estandar-avance-eliminar",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "semana",
+        "Type": "pass_siomm_backend.Planeamiento.Data.Dto.PlaneamientoDto.MaeLaboratorioEstandarEliminarDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Controllers.PlaneamientoConroller.SemanaController",
+    "Method": "EliminarEstandarExploracion",
+    "RelativePath": "aper-periodo-operativo/semana/estandar-exploracion-eliminar",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "semana",
+        "Type": "pass_siomm_backend.Planeamiento.Data.Dto.PlaneamientoDto.MaeExploEstandarEliminar",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Controllers.PlaneamientoConroller.SemanaController",
+    "Method": "GuardarDatos",
+    "RelativePath": "aper-periodo-operativo/semana/guardar-datos",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "datos",
+        "Type": "pass_siomm_backend.Planeamiento.Data.Dto.guardar_datos.DatosCompletosGuardarDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Controllers.PlaneamientoConroller.SemanaController",
+    "Method": "EliminarMetodoMinado",
+    "RelativePath": "aper-periodo-operativo/semana/metodo-minado-eliminar",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "semana",
+        "Type": "pass_siomm_backend.Planeamiento.Data.Dto.PlaneamientoDto.MaePerMetExplotacionEliminarDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Controllers.PlaneamientoConroller.SemanaController",
+    "Method": "EliminarSemanaAvance",
+    "RelativePath": "aper-periodo-operativo/semana/semana-avance-eliminar",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "semana",
+        "Type": "pass_siomm_backend.Planeamiento.Data.Dto.PlaneamientoDto.MaeSemanaAvanceEliminarDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Controllers.PlaneamientoConroller.SemanaController",
+    "Method": "EliminarSemanaCiclo",
+    "RelativePath": "aper-periodo-operativo/semana/semana-ciclo-eliminar",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "semana",
+        "Type": "pass_siomm_backend.Planeamiento.Data.Dto.PlaneamientoDto.MaeSemanaAvanceEliminarDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Autenticacion.Controllers.AuthController",
+    "Method": "AutenticatheUser",
+    "RelativePath": "auth/authenticate",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "pass_siomm_backend.Autenticacion.Data.Dto.UsersDto\u002BLoginRequestDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Utilitarios.Fechas_Filtros.Controller.FiltrosFechasController",
+    "Method": "ObtenerAnio",
+    "RelativePath": "fechas-filtros/select-data/anio",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Utilitarios.Fechas_Filtros.Controller.FiltrosFechasController",
+    "Method": "ObtenerMeses",
+    "RelativePath": "fechas-filtros/select-data/meses",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "year",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.ZonaController",
+    "Method": "ObtenerSiguienteCodigo",
+    "RelativePath": "mantenimiento/opciones-modelo/codigo-siguiente",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.ContrataController",
+    "Method": "ObtenerContrata",
+    "RelativePath": "mantenimiento/opciones-modelo/contrata",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_empresa",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "texto_busqueda",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.ContrataController",
+    "Method": "EliminarContrata",
+    "RelativePath": "mantenimiento/opciones-modelo/eliminar-contrata/{cod_contrata}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_contrata",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.LaborController",
+    "Method": "EliminarLabor",
+    "RelativePath": "mantenimiento/opciones-modelo/eliminar-labor",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "data",
+        "Type": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Data.LaborMantDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.NivelController",
+    "Method": "EliminarNivel",
+    "RelativePath": "mantenimiento/opciones-modelo/eliminar-nivel/{cod_nivel}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_nivel",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.RutasTransporteMovimientoController",
+    "Method": "EliminarRutaTransporteMovimiento",
+    "RelativePath": "mantenimiento/opciones-modelo/eliminar-ruta-transporte-movimiento/{cod_ruta_transporte}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_ruta_transporte",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.RutasTransporteController",
+    "Method": "EliminarRutaTramsporte",
+    "RelativePath": "mantenimiento/opciones-modelo/eliminar-ruta-transporte/{cod_ruta}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_ruta",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.TipoLaborController",
+    "Method": "EliminarTipoLabor",
+    "RelativePath": "mantenimiento/opciones-modelo/eliminar-tipo-labor/{cod_tipo_labor}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_tipo_labor",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.UnidadEconomicaMantController",
+    "Method": "EliminarUndEconomica",
+    "RelativePath": "mantenimiento/opciones-modelo/eliminar-unidad-economica",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_empresa",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_empresa_unidad",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_und_economica",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.VetaController",
+    "Method": "EliminarVeta",
+    "RelativePath": "mantenimiento/opciones-modelo/eliminar-veta",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_veta",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_zona",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_und_econom",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.ZonaController",
+    "Method": "EliminarZona",
+    "RelativePath": "mantenimiento/opciones-modelo/eliminar-zona",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_zona",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.UnidadEconomicaMantController",
+    "Method": "ObtenerEmpresa",
+    "RelativePath": "mantenimiento/opciones-modelo/empresas",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.UnidadEconomicaMantController",
+    "Method": "ObtenerEmpresaUnidad",
+    "RelativePath": "mantenimiento/opciones-modelo/empresas-unidad",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.ContrataController",
+    "Method": "Guardar",
+    "RelativePath": "mantenimiento/opciones-modelo/guardar-contrata",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "lista",
+        "Type": "System.Collections.Generic.List\u00601[[pass_siomm_backend.Mantenimiento.Planeamiento_mant.Data.ContrataMantDto, pass_siomm_backend, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.LaborController",
+    "Method": "Guardar",
+    "RelativePath": "mantenimiento/opciones-modelo/guardar-labor",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "lista",
+        "Type": "System.Collections.Generic.List\u00601[[pass_siomm_backend.Mantenimiento.Planeamiento_mant.Data.LaborMantDto, pass_siomm_backend, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.NivelController",
+    "Method": "Guardar",
+    "RelativePath": "mantenimiento/opciones-modelo/guardar-nivel",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "lista",
+        "Type": "System.Collections.Generic.List\u00601[[pass_siomm_backend.Mantenimiento.Planeamiento_mant.Data.NivelDto, pass_siomm_backend, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.RutasTransporteController",
+    "Method": "GuardarRutaTransporte",
+    "RelativePath": "mantenimiento/opciones-modelo/guardar-ruta-transporte",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "lista",
+        "Type": "System.Collections.Generic.List\u00601[[pass_siomm_backend.Mantenimiento.Planeamiento_mant.Data.RutasTransporteDto, pass_siomm_backend, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.RutasTransporteMovimientoController",
+    "Method": "GuardarRutaTransporteMovimiento",
+    "RelativePath": "mantenimiento/opciones-modelo/guardar-ruta-transporte-movimiento",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "lista",
+        "Type": "System.Collections.Generic.List\u00601[[pass_siomm_backend.Mantenimiento.Planeamiento_mant.Data.RutasTransporteMovimientoDto, pass_siomm_backend, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.TipoLaborController",
+    "Method": "Guardar",
+    "RelativePath": "mantenimiento/opciones-modelo/guardar-tipo-labor",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "lista",
+        "Type": "System.Collections.Generic.List\u00601[[pass_siomm_backend.Mantenimiento.Planeamiento_mant.Data.TipoLaborDto, pass_siomm_backend, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.UnidadEconomicaMantController",
+    "Method": "InsertarUnidadEconomica",
+    "RelativePath": "mantenimiento/opciones-modelo/guardar-unidad-economica",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "data",
+        "Type": "System.Collections.Generic.List\u00601[[pass_siomm_backend.Mantenimiento.Planeamiento_mant.Data.InsertarUndEconomDto, pass_siomm_backend, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.VetaController",
+    "Method": "GuardarVeta",
+    "RelativePath": "mantenimiento/opciones-modelo/guardar-veta",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "lista",
+        "Type": "System.Collections.Generic.List\u00601[[pass_siomm_backend.Mantenimiento.Planeamiento_mant.Data.VetaDto, pass_siomm_backend, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.ZonaController",
+    "Method": "GuardarZona",
+    "RelativePath": "mantenimiento/opciones-modelo/guardar-zona",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "lista",
+        "Type": "System.Collections.Generic.List\u00601[[pass_siomm_backend.Mantenimiento.Planeamiento_mant.Data.ZonaDTO, pass_siomm_backend, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.ZonaController",
+    "Method": "ListarUsuario",
+    "RelativePath": "mantenimiento/opciones-modelo/jefes-turno",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.LaborController",
+    "Method": "ObtenerLabor",
+    "RelativePath": "mantenimiento/opciones-modelo/labor-mant",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_empresa",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_empresa_unidad",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_zona",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "texto_busqueda",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "pagina",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "cantidad_reg",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.AdmContratoController",
+    "Method": "ObteneAdmContrata",
+    "RelativePath": "mantenimiento/opciones-modelo/listar-contrata",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.VetaController",
+    "Method": "ObtenerListasSelect",
+    "RelativePath": "mantenimiento/opciones-modelo/listas-select",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_empresa",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_empresa_unidad",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.LaborController",
+    "Method": "ObtenerMaestrosLabor",
+    "RelativePath": "mantenimiento/opciones-modelo/maestros-labores-mant",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_empresa",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_empresa_unidad",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.NivelController",
+    "Method": "ObtenerNivel",
+    "RelativePath": "mantenimiento/opciones-modelo/nivel",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_empresa",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_empresa_unidad",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "texto_busqueda",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.AdmContratoController",
+    "Method": "ListarAdmContrato",
+    "RelativePath": "mantenimiento/opciones-modelo/obtener-adm-contrato",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_empresa",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_empresa_unidad",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_contrata",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_contrato",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "ind_estado",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "fec_inicio",
+        "Type": "System.Nullable\u00601[[System.DateTime, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "fec_termino",
+        "Type": "System.Nullable\u00601[[System.DateTime, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "dia_ini",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "dia_fin",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.ContrataController",
+    "Method": "ObtenerSiguienteCodigo",
+    "RelativePath": "mantenimiento/opciones-modelo/obtener-codigo-contrata",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.RutasTransporteController",
+    "Method": "ObtenerSiguienteCodigo",
+    "RelativePath": "mantenimiento/opciones-modelo/obtener-codigo-ruta-transporte",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.RutasTransporteMovimientoController",
+    "Method": "ObtenerSiguienteCodigo",
+    "RelativePath": "mantenimiento/opciones-modelo/obtener-codigo-ruta-transporte-movimiento",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.RutasTransporteController",
+    "Method": "ObtenerRutasTransporte",
+    "RelativePath": "mantenimiento/opciones-modelo/rutas-transporte",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_empresa",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_empresa_unidad",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "texto_busqueda",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.RutasTransporteMovimientoController",
+    "Method": "ObtenerRutasTransporteMovimiento",
+    "RelativePath": "mantenimiento/opciones-modelo/rutas-transporte-movimiento",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_empresa",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_empresa_unidad",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "texto_busqueda",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.RutasTransporteMovimientoController",
+    "Method": "ListarRutasTransporte",
+    "RelativePath": "mantenimiento/opciones-modelo/rutas-transporte-movimiento-lista",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.UnidadEconomicaMantController",
+    "Method": "ObtenerSiguienteCodigoUnidadEconomica",
+    "RelativePath": "mantenimiento/opciones-modelo/siguiente-codigo-unidad-economica",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.TipoLaborController",
+    "Method": "ObtenerNivel",
+    "RelativePath": "mantenimiento/opciones-modelo/tipo-labor",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_empresa",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_empresa_unidad",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "texto_busqueda",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.UnidadEconomicaMantController",
+    "Method": "ObtenerUndEconomica",
+    "RelativePath": "mantenimiento/opciones-modelo/unidad-economica",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_empresa",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_empresa_unidad",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "texto_busqueda",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.VetaController",
+    "Method": "ObtenerZona",
+    "RelativePath": "mantenimiento/opciones-modelo/veta",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_empresa",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_empresa_unidad",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "texto_busqueda",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.VetaController",
+    "Method": "ObtenerVetaCodigo",
+    "RelativePath": "mantenimiento/opciones-modelo/veta-codigo",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_empresa",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_empresa_unidad",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_veta",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_zona",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_und_econom",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.ZonaController",
+    "Method": "ObtenerZona",
+    "RelativePath": "mantenimiento/opciones-modelo/zona",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_empresa",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_empresa_unidad",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "texto_busqueda",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.ZonaController",
+    "Method": "ObtenerZonaCodigo",
+    "RelativePath": "mantenimiento/opciones-modelo/zona-codigo",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_empresa",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_empresa_unidad",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_zona",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.LaborController",
+    "Method": "ObtenerZonas",
+    "RelativePath": "mantenimiento/opciones-modelo/zonas-mant",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_empresa",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_empresa_unidad",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.ServicioTranporteController",
+    "Method": "ObtenerCostosFijos",
+    "RelativePath": "mantenimiento/servicio-transporte/costos-fijos",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[pass_siomm_backend.Mantenimiento.Planeamiento_mant.Data.CostosFijosMaeDto, pass_siomm_backend, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.ServicioTranporteController",
+    "Method": "ObtenerCostosFijosDetalle",
+    "RelativePath": "mantenimiento/servicio-transporte/costos-fijos-detalle",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_empresa",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_empresa_unidad",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_costo_fijo",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[pass_siomm_backend.Mantenimiento.Planeamiento_mant.Data.CostosFijosDetalleDto, pass_siomm_backend, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.ServicioTranporteController",
+    "Method": "Eliminar",
+    "RelativePath": "mantenimiento/servicio-transporte/eliminar-fila-costo-detalle",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Data.EntradaCostoFijoDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.ServicioTranporteController",
+    "Method": "ObtenerGastosGenerales",
+    "RelativePath": "mantenimiento/servicio-transporte/gastos-generales",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_empresa",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_empresa_unidad",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_contrato",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[pass_siomm_backend.Mantenimiento.Planeamiento_mant.Data.GastosGeneralesDTO, pass_siomm_backend, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.ServicioTranporteController",
+    "Method": "InsertarGastosGenerales",
+    "RelativePath": "mantenimiento/servicio-transporte/insertar-gastos-generales",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "filas",
+        "Type": "System.Collections.Generic.List\u00601[[pass_siomm_backend.Mantenimiento.Planeamiento_mant.Data.GastosGeneralesDTO, pass_siomm_backend, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.ServicioTranporteController",
+    "Method": "GetDetalle",
+    "RelativePath": "mantenimiento/servicio-transporte/listar",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_empresa",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_empresa_unidad",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_contrato",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.ServicioTranporteController",
+    "Method": "ListarContratasActivas",
+    "RelativePath": "mantenimiento/servicio-transporte/listar-contrata",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.ServicioTranporteController",
+    "Method": "GetEquiposContrata",
+    "RelativePath": "mantenimiento/servicio-transporte/listar-equipos-contrata",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_empresa",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_empresa_unidad",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_contrata",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.ServicioTranporteController",
+    "Method": "ObtenerParametroMedicion",
+    "RelativePath": "mantenimiento/servicio-transporte/medicion",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.ServicioTranporteController",
+    "Method": "ObtenerParametrosContrato",
+    "RelativePath": "mantenimiento/servicio-transporte/parametros-contrato",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.PrecioUnitarioController",
+    "Method": "BuscarCatalogoTarea",
+    "RelativePath": "mantenimiento/servicio-transporte/precio-unitario/buscar-catalogo-tarea",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_empresa",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_empresa_unidad",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_actividad",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "des_catalogo_tarea",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.PrecioUnitarioController",
+    "Method": "EliminarPartidaCostoPu",
+    "RelativePath": "mantenimiento/servicio-transporte/precio-unitario/eliminar-det-partida-costo-pu",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_empresa",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_empresa_unidad",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_contrato",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_catalogo_tarea",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_actividad",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "nro_partida",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_parametro_contrato",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.PrecioUnitarioController",
+    "Method": "EliminarPartida",
+    "RelativePath": "mantenimiento/servicio-transporte/precio-unitario/eliminar-partida-pu",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "nro_partida",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.PrecioUnitarioController",
+    "Method": "GuardarPartida",
+    "RelativePath": "mantenimiento/servicio-transporte/precio-unitario/guardar-partida",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Data.PartidaPUDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.PrecioUnitarioController",
+    "Method": "InsertarPartida",
+    "RelativePath": "mantenimiento/servicio-transporte/precio-unitario/insertar-partidas-pu",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "System.Collections.Generic.List\u00601[[pass_siomm_backend.Mantenimiento.Planeamiento_mant.Data.PartidaPuInsertDto, pass_siomm_backend, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.PrecioUnitarioController",
+    "Method": "ListarActividadesVigentes",
+    "RelativePath": "mantenimiento/servicio-transporte/precio-unitario/listar-actividad-tarea",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.PrecioUnitarioController",
+    "Method": "GetParametros",
+    "RelativePath": "mantenimiento/servicio-transporte/precio-unitario/listar-parametros-contrato",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[pass_siomm_backend.Mantenimiento.Planeamiento_mant.Data.ParametrosContratoDto, pass_siomm_backend, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.PrecioUnitarioController",
+    "Method": "ListarPartidasPu",
+    "RelativePath": "mantenimiento/servicio-transporte/precio-unitario/listar-partidas-pu",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_empresa",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_empresa_unidad",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_contrato",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[pass_siomm_backend.Mantenimiento.Planeamiento_mant.Data.PartidaPuDto, pass_siomm_backend, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.PrecioUnitarioController",
+    "Method": "Listar",
+    "RelativePath": "mantenimiento/servicio-transporte/precio-unitario/listar-tabla-detalle",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_empresa",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_empresa_unidad",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.PrecioUnitarioController",
+    "Method": "GetDetalle",
+    "RelativePath": "mantenimiento/servicio-transporte/precio-unitario/listar-tabla-detalle-pu",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_empresa",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_empresa_unidad",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[pass_siomm_backend.Mantenimiento.Planeamiento_mant.Data.TablaDetallePuDto, pass_siomm_backend, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.PrecioUnitarioController",
+    "Method": "ObtenerDetallePrecioUnitario",
+    "RelativePath": "mantenimiento/servicio-transporte/precio-unitario/obtener-detalle-pu-cab-tab",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_empresa",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_empresa_unidad",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_contrato",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_actividad",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_catologo_tarea",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "nro_partida",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.PrecioUnitarioController",
+    "Method": "ObtenerZonas",
+    "RelativePath": "mantenimiento/servicio-transporte/precio-unitario/obtener-pu-zonas",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.PrecioUnitarioController",
+    "Method": "GetUSDtoPEN",
+    "RelativePath": "mantenimiento/servicio-transporte/precio-unitario/usd-pen",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.ServicioTranporteController",
+    "Method": "ObtenerTablaDetalle",
+    "RelativePath": "mantenimiento/servicio-transporte/tabla-detalle",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_tabla",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.TarifarioEscrituraController",
+    "Method": "EliminarTarifarioEquiposAlquiler",
+    "RelativePath": "mantenimiento/servicio-transporte/tarifario-escritura/eliminar-tarifario-equipos-alquiler",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Data.EliminarTarifarioEquiposAlquilerDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.TarifarioEscrituraController",
+    "Method": "EliminarTarifarioDetalle",
+    "RelativePath": "mantenimiento/servicio-transporte/tarifario-escritura/eliminar-tarifario-transporte",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Data.EliminarTarifarioTransporteDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.TarifarioEscrituraController",
+    "Method": "EliminarTarifarioMaterial",
+    "RelativePath": "mantenimiento/servicio-transporte/tarifario-escritura/eliminar-tarifario-transporte-material",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Data.EliminarTarifarioTransporteMaterialDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.TarifarioEscrituraController",
+    "Method": "GuardarDetalle",
+    "RelativePath": "mantenimiento/servicio-transporte/tarifario-escritura/guardar-detalle",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "listaFilas",
+        "Type": "System.Collections.Generic.List\u00601[[pass_siomm_backend.Mantenimiento.Planeamiento_mant.Data.TarifarioDetalleDto, pass_siomm_backend, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.TarifarioEscrituraController",
+    "Method": "GuardarAlquilerEquipo",
+    "RelativePath": "mantenimiento/servicio-transporte/tarifario-escritura/guardar-equipos-alquiler",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "listaFilas",
+        "Type": "System.Collections.Generic.List\u00601[[pass_siomm_backend.Mantenimiento.Planeamiento_mant.Data.TarifarioAlquilerEquiposModel, pass_siomm_backend, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.TarifarioEscrituraController",
+    "Method": "GuardarRutasFijasBalanza",
+    "RelativePath": "mantenimiento/servicio-transporte/tarifario-escritura/guardar-rutas-fijas-balanza",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "listaFilas",
+        "Type": "System.Collections.Generic.List\u00601[[pass_siomm_backend.Mantenimiento.Planeamiento_mant.Data.RutasFijasBalanzaModel, pass_siomm_backend, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.TarifarioController",
+    "Method": "ImprimirTransporteMineral",
+    "RelativePath": "mantenimiento/servicio-transporte/tarifario/imprimir-transporte-mineral",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_empresa",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_empresa_unidad",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_contrato",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "ind_material",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.TarifarioController",
+    "Method": "ObtenerTransporteOtrosReporte",
+    "RelativePath": "mantenimiento/servicio-transporte/tarifario/imprimir-transporte-otros",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_empresa",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_empresa_unidad",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_contrato",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "ind_material",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.TarifarioController",
+    "Method": "ListarCta",
+    "RelativePath": "mantenimiento/servicio-transporte/tarifario/lista-cta",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.TarifarioController",
+    "Method": "ListarCto",
+    "RelativePath": "mantenimiento/servicio-transporte/tarifario/lista-cto",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.TarifarioController",
+    "Method": "GetRutas",
+    "RelativePath": "mantenimiento/servicio-transporte/tarifario/lista-rutas",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.TarifarioController",
+    "Method": "GetEquiposVigentesAsync",
+    "RelativePath": "mantenimiento/servicio-transporte/tarifario/obtener-equipos-vigentes",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.TarifarioController",
+    "Method": "ListaTablaDetalle",
+    "RelativePath": "mantenimiento/servicio-transporte/tarifario/obtener-tabla-detalle",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.TarifarioController",
+    "Method": "ObtenerListaTabla",
+    "RelativePath": "mantenimiento/servicio-transporte/tarifario/obtener-tabla-lista",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_empresa",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_empresa_unidad",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_tabla",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.TarifarioController",
+    "Method": "ObtenerTarifarioDetalle",
+    "RelativePath": "mantenimiento/servicio-transporte/tarifario/obtener-tarifario-detalle",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_empresa",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_empresa_unidad",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_contrato",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "ind_material",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "pagina",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "cantidad_reg",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.TarifarioController",
+    "Method": "ObtenerTarifarioEquipos",
+    "RelativePath": "mantenimiento/servicio-transporte/tarifario/obtener-tarifario-equipos",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_empresa",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_empresa_unidad",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_contrato",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.TarifarioController",
+    "Method": "ObtenerTarifarioLista",
+    "RelativePath": "mantenimiento/servicio-transporte/tarifario/obtener-tarifario-lista",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.TarifarioController",
+    "Method": "ObtenerTarifarioTransporteMaterial",
+    "RelativePath": "mantenimiento/servicio-transporte/tarifario/obtener-tarifario-material",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_empresa",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_empresa_unidad",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_contrato",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.TarifarioController",
+    "Method": "ObtenerSiguienteItem",
+    "RelativePath": "mantenimiento/servicio-transporte/tarifario/siguiente-item-transporte",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_empresa",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_empresa_unidad",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_contrato",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Controllers.PlaneamientoConroller.AperPerodioOperativoController",
+    "Method": "listaEnterosConFecha",
+    "RelativePath": "planeamiento/aper-periodo-operativo/lista-enteros-num-semana",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "anio",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "mes",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "tipoConsulta",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Controllers.PlaneamientoConroller.AperPerodioOperativoController",
+    "Method": "FactorOperativo",
+    "RelativePath": "planeamiento/aper-periodo-operativo/obtener-datos",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "month",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "anio",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Controllers.PlaneamientoConroller.AperPerodioOperativoController",
+    "Method": "SelectExploracion",
+    "RelativePath": "planeamiento/aper-periodo-operativo/select-exploracion",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Controllers.PlaneamientoConroller.AperPerodioOperativoController",
+    "Method": "labEstandarBloqueo",
+    "RelativePath": "planeamiento/aper-periodo-operativo/select-lab-estandar-bloqueo",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "anio",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "mes",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "tipoConsulta",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Controllers.PlaneamientoConroller.AperPerodioOperativoController",
+    "Method": "SelectMetTipoLabor",
+    "RelativePath": "planeamiento/aper-periodo-operativo/select-tipo-labor",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Controllers.PlaneamientoConroller.AperPerodioOperativoController",
+    "Method": "SelectZona",
+    "RelativePath": "planeamiento/aper-periodo-operativo/select-zona",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Controllers.ExplotacionController.ExplotacionController",
+    "Method": "ObtenerBlocksYArchivos",
+    "RelativePath": "planeamiento/edicion-programa-mensual/blocks-archivos",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Controllers.ExplotacionController.ExplotacionController",
+    "Method": "CopiarLabor",
+    "RelativePath": "planeamiento/edicion-programa-mensual/copiar-labor",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cabDeta",
+        "Type": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Data.Dto.CopiarDetalleDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Controllers.ExplotacionController.ExplotacionController",
+    "Method": "Eliminar",
+    "RelativePath": "planeamiento/edicion-programa-mensual/eliminar-det-prg",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "input",
+        "Type": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Data.DetPrgDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Controllers.ExplotacionController.ExplotacionController",
+    "Method": "EliminarDetalle",
+    "RelativePath": "planeamiento/edicion-programa-mensual/eliminar-fila-mensual",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Data.Dto.ModalsDto.BlockReservasDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Controllers.ExplotacionController.ExplotacionController",
+    "Method": "EliminarPlano",
+    "RelativePath": "planeamiento/edicion-programa-mensual/eliminar-plano",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Data.Dto.ExplotacionDto.EliminarPlanoDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Controllers.ExplotacionController.ExplotacionController",
+    "Method": "BuscarLabor",
+    "RelativePath": "planeamiento/edicion-programa-mensual/exploracion-buscar-labor",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Controllers.ExplotacionController.ExplotacionController",
+    "Method": "InfoProgMensual",
+    "RelativePath": "planeamiento/edicion-programa-mensual/exploracion-info-prog",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "nro_prog",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Controllers.ExplotacionController.ExplotacionController",
+    "Method": "ListaAvance",
+    "RelativePath": "planeamiento/edicion-programa-mensual/exploracion-lista-labores",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_und_econom",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_zona",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "page",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Controllers.ExplotacionController.ExplotacionController",
+    "Method": "EvaluacionBloque",
+    "RelativePath": "planeamiento/edicion-programa-mensual/exploracion-mostrar-block-evaluacion",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "nro_prog",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "des_labor",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Controllers.ExplotacionController.ExplotacionController",
+    "Method": "BlockReservas",
+    "RelativePath": "planeamiento/edicion-programa-mensual/exploracion-mostrar-block-reservas",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "nro_prog",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Controllers.ExplotacionController.ExplotacionController",
+    "Method": "MostrarMaeFase",
+    "RelativePath": "planeamiento/edicion-programa-mensual/exploracion-mostrar-fases",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Controllers.ExplotacionController.ExplotacionController",
+    "Method": "MostrarDatosPlanos",
+    "RelativePath": "planeamiento/edicion-programa-mensual/exploracion-mostrar-planos",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "nro_prog",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_und_econom",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_zona",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_veta",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_nivel",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_tipo_labor",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_labor",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_ala",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_fase",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Controllers.ExplotacionController.ExplotacionController",
+    "Method": "GetProgramacionLabor",
+    "RelativePath": "planeamiento/edicion-programa-mensual/exploracion-mostrar-programacion-mensual",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "des_labor",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Controllers.ExplotacionController.ExplotacionController",
+    "Method": "ReservasGeologicas",
+    "RelativePath": "planeamiento/edicion-programa-mensual/exploracion-reserva-geologica",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cie_ano",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_uni_econom",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_zona",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_veta",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_nivel",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Controllers.ExplotacionController.ExplotacionController",
+    "Method": "NomAla",
+    "RelativePath": "planeamiento/edicion-programa-mensual/exploracion-select-ala",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Controllers.ExplotacionController.ExplotacionController",
+    "Method": "CodCta",
+    "RelativePath": "planeamiento/edicion-programa-mensual/exploracion-select-cta",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cie_ano",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Controllers.ExplotacionController.ExplotacionController",
+    "Method": "CodCto",
+    "RelativePath": "planeamiento/edicion-programa-mensual/exploracion-select-cto",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cie_ano",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "prefijoBusqueda",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Controllers.ExplotacionController.ExplotacionController",
+    "Method": "FactGeneralEzperanza",
+    "RelativePath": "planeamiento/edicion-programa-mensual/exploracion-select-fac",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cie_ano",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cie_per",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Controllers.ExplotacionController.ExplotacionController",
+    "Method": "ObtenerMaestros",
+    "RelativePath": "planeamiento/edicion-programa-mensual/exploracion-select-infor-maestro",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Controllers.ExplotacionController.ExplotacionController",
+    "Method": "SubirPlano",
+    "RelativePath": "planeamiento/edicion-programa-mensual/exploracion-subir-plano",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "file",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      },
+      {
+        "Name": "titulo",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "nro_prog",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_und_econom",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_zona",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_veta",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_nivel",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_tipo_labor",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_labor",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_ala",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_fase",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Controllers.ExplotacionController.ExplotacionController",
+    "Method": "ObtenerIndiceRendimiento",
+    "RelativePath": "planeamiento/edicion-programa-mensual/explotacion-indice-rendimiento",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "nro_prog",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_fase",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Controllers.ExplotacionController.ExplotacionController",
+    "Method": "ObtenerListaExplotacion",
+    "RelativePath": "planeamiento/edicion-programa-mensual/explotacion-lista",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "nro_prog",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_fase",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Controllers.ExplotacionController.ExplotacionController",
+    "Method": "ExportarExcel",
+    "RelativePath": "planeamiento/edicion-programa-mensual/exportar-programa-mensual",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Data.Dto.ReporteFiltroDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Controllers.ExplotacionController.ExplotacionController",
+    "Method": "GenerarNroProg",
+    "RelativePath": "planeamiento/edicion-programa-mensual/generar-nro-prog",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Controllers.ExplotacionController.ExplotacionController",
+    "Method": "InsertarCabDet",
+    "RelativePath": "planeamiento/edicion-programa-mensual/insertar-cab-deta",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cabDeta",
+        "Type": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Data.Dto.InsertarCabDetalleDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Controllers.ExplotacionController.ExplotacionController",
+    "Method": "VerPlano",
+    "RelativePath": "planeamiento/edicion-programa-mensual/planos/{nombre_archivo}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "nombre_archivo",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Controllers.ExplotacionController.ExplotacionController",
+    "Method": "ObtenerPrefCtoMina",
+    "RelativePath": "planeamiento/edicion-programa-mensual/pref-cto-mina",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Controllers.ExplotacionController.ExplotacionController",
+    "Method": "ObtenerPrefijoZona",
+    "RelativePath": "planeamiento/edicion-programa-mensual/pref-zona",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_zona",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Controllers.ExplotacionController.ExplotacionController",
+    "Method": "GetReporte",
+    "RelativePath": "planeamiento/edicion-programa-mensual/reporte-resumen",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Data.ResumenProgramaRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Controllers.ExplotacionController.ExplotacionController",
+    "Method": "ObtenerFactor",
+    "RelativePath": "planeamiento/edicion-programa-mensual/validacion-factor",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cie_ano",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cie_per",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Controllers.ExplotacionController.ExplotacionController",
+    "Method": "ObtenerFactoresOperativos",
+    "RelativePath": "planeamiento/edicion-programa-mensual/validacion-factores-operativos",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cie_ano",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cie_per",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "tipoFac",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Controllers.ExplotacionController.ExplotacionController",
+    "Method": "ObtenerMetodoExplotacion",
+    "RelativePath": "planeamiento/edicion-programa-mensual/validacion-metodo-explotacion",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cie_ano",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cie_per",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_metexp",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Controllers.ExplotacionController.ExplotacionController",
+    "Method": "ObtenerDensidadVeta",
+    "RelativePath": "planeamiento/edicion-programa-mensual/validacion-veta",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_und_econom",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_zona",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_veta",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Controllers.ExplotacionController.ExplotacionController",
+    "Method": "ObtenerZona",
+    "RelativePath": "planeamiento/edicion-programa-mensual/validacion-zona",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_zona",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Controllers.ListaMensualController",
+    "Method": "AnularProgramacion",
+    "RelativePath": "planeamiento/lista-mensual/anular-programacion",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "nro_prog",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Controllers.ListaMensualController",
+    "Method": "AprobarProgramacion",
+    "RelativePath": "planeamiento/lista-mensual/aprobar-programacion",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "nro_prog",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_usuario",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Controllers.ListaMensualController",
+    "Method": "CopiarProgramacion",
+    "RelativePath": "planeamiento/lista-mensual/copiar-programacion",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Data.Dto.CopiarProgramacionDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Controllers.ListaMensualController",
+    "Method": "ExportarProgramacion",
+    "RelativePath": "planeamiento/lista-mensual/exporta-lista-programacion",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cie_ano",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cie_per",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "nro_prog",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Controllers.ListaMensualController",
+    "Method": "Generar",
+    "RelativePath": "planeamiento/lista-mensual/generar-nro-prog",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "req",
+        "Type": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Data.Dto.RequestCorrelativo",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Controllers.ListaMensualController",
+    "Method": "ImportarExcel",
+    "RelativePath": "planeamiento/lista-mensual/importar-excel",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "file",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Controllers.ListaMensualController",
+    "Method": "ObtenerListaIncidencia",
+    "RelativePath": "planeamiento/lista-mensual/obtener-lista-incidencias",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "nro_prog",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Controllers.ListaMensualController",
+    "Method": "ObtenerListaMensual",
+    "RelativePath": "planeamiento/lista-mensual/obtener-lista-mensual",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cie_ano",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cie_per",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Controllers.ListaMensualController",
+    "Method": "PreAprobacionProgramacion",
+    "RelativePath": "planeamiento/lista-mensual/pre-aprobacion-programacion",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "nro_prog",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "prg_pre_pr",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Rutas.Controller.RoutersController",
+    "Method": "GetRutas",
+    "RelativePath": "rutas/mostrar-rutas",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  }
+]

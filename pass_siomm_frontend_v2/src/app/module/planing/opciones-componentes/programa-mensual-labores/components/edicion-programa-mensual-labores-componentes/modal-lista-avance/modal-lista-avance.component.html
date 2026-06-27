@@ -1,0 +1,129 @@
+<div class="modal modal-open">
+    <form [formGroup]="formularioLabores" (ngSubmit)="onGuardar()">
+
+        <!-- 🔥 MODAL MÁS COMPACTO -->
+        <div class="modal-box w-[43vw] max-w-none h-[49vh] rounded-2xl shadow-xl flex flex-col">
+
+            <!-- HEADER -->
+            <div class="flex justify-between items-center border-b border-gray-300 pb-2 mb-2">
+                <h1 class="text-lg font-bold text-[#002B48]">  Gestión de Labores</h1>
+
+                <button type="button" class="btn btn-sm btn-circle btn-ghost" (click)="onCerrar()">✕</button>
+            </div>
+
+            <!-- TABLA -->
+            <div class="flex-1 overflow-auto">
+                <table class="table table-zebra table-sm w-full">
+
+                    <thead class="bg-base-300 sticky top-0 z-10">
+                        <tr>
+                            <th class="text-[#002B48]">#</th>
+                            <th class="text-[#002B48]">Cód. Labor</th>
+                            <th class="text-[#002B48]">Descripción</th>
+                            <th class="text-[#002B48]">Veta</th>
+                            <th class="text-[#002B48]">Nivel</th>
+                            <th class="text-[#002B48]">Tipo</th>
+                            <th class="text-[#002B48]">TL. Ant.</th>
+                            <th class="text-[#002B48]">Labor Ant.</th>
+                        </tr>
+                    </thead>
+
+                    <tbody formArrayName="labores">
+                        @for (item of labores.controls; let i = $index; track $index) {
+                            <tr  [formGroupName]="i" (click)="seleccionarFila(item.value)"
+                                [ngClass]="{ 'bg-[#17324D]/10 border-l-2': filaSeleccionada() === item.value }">
+                                <td class="text-xs opacity-60"> <b>{{ i + 1 }}</b> </td>
+                                <td class="text-xs opacity-60"><b>{{ item.get('cod_labor')?.value }}</b></td>
+                                <td class="text-xs opacity-60"><b>{{ item.get('des_labor')?.value }}</b></td>
+                                <td class="text-xs opacity-60"><b>{{ item.get('cod_nom_veta')?.value }}</b></td>
+                                <td class="text-xs opacity-60"><b>{{ item.get('cod_nivel')?.value }}</b></td>
+                                <td class="text-xs opacity-60"><b>{{ item.get('cod_tipo_labor')?.value }}</b></td>
+                                <td class="text-xs opacity-60"><b>{{ item.get('cod_tipo_labor_ant')?.value }}</b></td>
+                                <td class="text-xs opacity-60"><b></b>{{ item.get('cod_labor_ant')?.value }}</td>
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+
+
+            <!-- PAGINACIÓN PRO -->
+            <!-- PAGINACIÓN PRO -->
+            <div class="flex justify-between items-center mt-3 border-t border-gray-300 pt-3 pb-3">
+
+                <!-- Info -->
+                <span class="text-xs opacity-70 ">
+                    <b>{{ getDesde() }} - {{ getHasta() }} de {{ total() }}</b>
+                    
+                </span>
+
+                <!-- Controles -->
+                <div class="flex items-center gap-1">
+
+                    <!-- PRIMERA -->
+                    <button type="button" class="btn btn-xs btn-ghost" [disabled]="page() === 0"
+                        (click)="cambiarPagina(0)">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M11 19l-7-7 7-7M18 19l-7-7 7-7" />
+                        </svg>
+                    </button>
+
+                    <!-- ANTERIOR -->
+                    <button type="button" class="btn btn-xs btn-ghost" [disabled]="page() === 0"
+                        (click)="cambiarPagina(page() - 1)">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                        </svg>
+                    </button>
+
+                    <!-- SELECT -->
+                    <select class="select-base_dos bordered mx-1 w-[110px]" [value]="page()"
+                        (change)="cambiarPagina($any($event.target).value)">
+
+                        @for (p of totalPagesArray(); let i = $index; track $index) {
+                            <option [value]="i">
+                                {{ i + 1 }} / {{ totalPages() }}
+                            </option>
+                        }
+
+                    </select>
+
+                    <!-- SIGUIENTE -->
+                    <button type="button" class="btn btn-xs btn-ghost" [disabled]="page() >= totalPages() - 1"
+                        (click)="cambiarPagina(page() + 1)">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </button>
+
+                    <!-- ÚLTIMA -->
+                    <button type="button" class="btn btn-xs btn-ghost" [disabled]="page() >= totalPages() - 1"
+                        (click)="cambiarPagina(totalPages() - 1)">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13 5l7 7-7 7M6 5l7 7-7 7" />
+                        </svg>
+                    </button>
+
+                </div>
+            </div>
+            <!-- ACCIONES -->
+            <div class="modal-action mt-3">
+                <button type="submit" class="btn px-6 text-white bg-[#002B48] border-none hover:bg-[#001f36]">
+                    Guardar
+                </button>
+
+                <button type="button" class="btn btn-outline" (click)="onCerrar()">
+                    Cancelar
+                </button>
+            </div>
+
+        </div>
+    </form>
+</div>

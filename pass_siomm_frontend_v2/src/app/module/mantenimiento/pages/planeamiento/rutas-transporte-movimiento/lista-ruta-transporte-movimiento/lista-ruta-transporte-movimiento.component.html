@@ -1,0 +1,121 @@
+<div class="border border-gray-300 rounded overflow-hidden">
+
+
+    <div class="overflow-auto h-[321px] rounded">
+        <table class="table table-zebra ">
+            <thead class="sticky top-0 bg-white z-10 text-center">
+                <tr class="shadow-[0_2px_0_0_black]">
+                    <th class="py-2 text-[#013B5C]">Codigo</th>
+                    <th class="py-2 text-[#013B5C]">Ruta Origen</th>
+                    <th class="py-2 text-[#013B5C]">Ruta Destino</th>
+                    <th class="py-2 text-[#013B5C]">Estado</th>
+                    <th class="py-2 text-[#013B5C]"></th>
+
+                </tr>
+            </thead>
+
+            <tbody>
+                @if (isLoading()) {
+                <tr>
+                    <td colspan="13" class="text-center py-8">
+                        <div class="flex justify-center">
+                            <div class="flex flex-col items-center gap-2">
+                                <progress class="progress w-56" style="color:#013B5C;"></progress>
+                                <span class="text-xs">
+                                    <b>Cargando...</b>
+                                </span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                }
+                @else if (listRutaTransporteMovimiento().length > 0) {
+                @for (item of listRutaTransporteMovimiento(); track item.cod_ruta_transporte) {
+                <tr class="hover:bg-[#17324D]/5 select-none cursor-pointer text-center text-xs font-medium"
+                    [id]="'tipo-labor-' + item.cod_ruta_transporte"
+                    [class.bg-[#17324D]/10]="idNivelSeleccionada() === item.cod_ruta_transporte"
+                    [class.text-[#013B5C]]="idNivelSeleccionada() === item.cod_ruta_transporte"
+                    [class.font-bold]="idNivelSeleccionada() === item.cod_ruta_transporte"
+                    (dblclick)="seleccionarRutaTransporte(item)">
+                    <td class="py-2 font-medium min-w-[150px]">{{ item.cod_ruta_transporte}}</td>
+
+                    <td class="py-2 font-medium min-w-[150px]">{{ item.des_ruta_origen}}</td>
+
+                    <td class="py-2 font-medium min-w-[150px]">{{ item.des_ruta_destino}}</td>
+
+                    <td class="py-2 font-medium min-w-[60px]">
+                        @switch (item.est_ruta_transporte) {
+                        @case ('ACT') { <span
+                            class="px-2 py-0.5 rounded text-[11px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">Activo</span>
+                        }
+
+                        @case ('INA') { <span
+                            class="px-2 py-0.5 rounded text-[11px] font-bold bg-amber-100 text-amber-800 border border-amber-300">Inactivo</span>
+                        }
+
+                        @default { <span class="text-xs">{{ item.est_ruta_transporte }}</span> }
+                        }
+                    </td>
+
+
+
+                    <!-- <td class="py-2 font-medium min-w-[60px]">
+
+                        <button type="button" (click)="onEliminar(item)"
+                            class="flex items-center gap-1 px-2 py-1 text-[11px] font-semibold text-white bg-[#9F1239] rounded hover:shadow-md transition-all duration-200">
+
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+
+                            </svg>
+
+                            Inactivar
+                        </button>
+                    </td> -->
+
+                    <td class="py-2 font-medium">
+                        <button type="button" (click)="onEliminar(item)" [ngClass]="{
+                            'bg-[#9F1239] hover:bg-[#881337]': item.est_ruta_transporte === 'ACT',
+                            'bg-[#0a6e2f] hover:bg-[#075022]': item.est_ruta_transporte !== 'ACT'
+                            }"
+                            class="flex items-center justify-center z-1 gap-1 w-[95px] py-1 text-[11px] font-semibold text-white rounded hover:shadow-md transition-all duration-200">
+
+                            @if(item.est_ruta_transporte === 'ACT'){
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                            }
+
+                            @if(item.est_ruta_transporte !== 'ACT'){
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            }
+
+                            <span>
+                                {{ item.est_ruta_transporte === 'ACT' ? 'Inactivar' : 'Activar' }}
+                            </span>
+
+                        </button>
+                    </td>
+                </tr>
+                }
+                }
+                @else {
+                <tr>
+                    <td colspan="13" class="border-2 border-gray-400 px-2 py-3 text-center bg-red-50">
+                        <b>No existen datos para mostrar.</b>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

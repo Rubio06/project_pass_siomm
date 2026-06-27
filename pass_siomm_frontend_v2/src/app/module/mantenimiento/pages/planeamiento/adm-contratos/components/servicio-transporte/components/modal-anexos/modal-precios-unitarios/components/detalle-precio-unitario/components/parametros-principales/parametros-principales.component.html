@@ -1,0 +1,168 @@
+<!-- <div class="w-[93%] flex flex-row-reverse mx-auto mb-1">
+
+    <button
+        class="bg-[#047857] flex items-center justify-center rounded-lg shadow-sm group
+        hover:shadow-md hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed w-8 h-8">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="white"
+            class="w-4 h-4">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+        </svg>
+        <div
+            class="absolute bottom-full hidden mb-3 group-hover:block bg-black text-white text-xs rounded px-2 py-1 whitespace-nowrap">
+            <b>Insertar Fila</b>
+        </div>
+    </button>
+
+</div> -->
+<div>
+
+
+    <form class=" min-h-[200px] max-h-[200px] overflow-y-auto border border-gray-300 rounded">
+
+        <table class="table table-zebra table-sm table-fixed w-[130%] min-w-[1500px]">
+            <thead class="sticky top-0 bg-white z-10 text-[12px] border-b border-black/10">
+                <tr class="shadow-[0_2px_0_0_black] text-center">
+                    <th class="w-[22%] py-2 text-[#013B5C]">C T Parametros</th>
+                    <th class="w-[13%] py-2 text-[#013B5C]">Datos</th>
+                    <th class="w-[10%] py-2 text-[#013B5C]">Valor</th>
+                    <th class="w-[17%] py-2 text-[#013B5C]">Unidad Medida</th>
+                    <th class="w-[10%] py-2 text-[#013B5C]">Valor Calculado</th>
+                    <th class="w-[17%] py-2 text-[#013B5C]">Unida Medida</th>
+
+                    <th class="w-[35%] py-2 text-[#013B5C]">Observación</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @if (isLoading()) {
+                <tr>
+                    <td colspan="11" class="text-center py-8">
+                        <div class="flex justify-center">
+                            <div class="flex flex-col items-center gap-2">
+                                <progress class="progress w-56 text-[#013B5C]"></progress>
+                                <span class="text-xs"><b>Cargando...</b></span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                }
+                @else if (filas.length > 0) {
+
+                @for (fila of filas; track $index) {
+
+                <tr [formGroup]="fila"
+                    class="hover:bg-[#17324D]/5 select-none cursor-pointer transition-colors text-center text-[12px]">
+
+                    <td class="p-1 font-medium text-center">
+                        <!-- <input type="text" class="input-base_tres w-full text-right" /> -->
+                        {{ fila.value.c_t_parametro }}
+
+                    </td>
+
+                    <td class="p-1 font-medium text-center">
+                        {{ (fila.value.des_valor_1 && fila.value.des_valor_1.trim() !== '')
+                        ? fila.value.des_valor_1.trim()
+                        : (fila.value.c_t_equipo ? fila.value.c_t_equipo.trim() : '') }}
+                    </td>
+
+                    <td class="p-1 font-medium text-center">
+                        <input type="text" formControlName="nro_valor_1" maxlength="10" class="input-base_3 w-full text-center" />
+                    </td>
+                    <td class="p-1 font-medium text-center">
+                        <!-- <input type="text" formControlName="cod_item_unimed" class="input-base_3 w-full text-center" /> -->
+
+                        <select formControlName="cod_item_unimed" class="select-base_cuatro w-full">
+
+                            @for(op of listUndMedida(); track $index){
+                            <option [value]="op.cod_item"> {{ op.des_tabladet_abrev }}</option>
+
+                            }
+                        </select>
+                    </td>
+
+                    <td class="p-1 font-medium text-center">
+                        <input type="text" formControlName="nro_valor_calculo"
+                            class="input-base_3 w-full text-center" maxlength="10" />
+                    </td>
+
+
+                    <td class="p-1 font-medium text-center">
+                        <!-- <input type="text" formControlName="cod_item_um_calculo"
+                            class="input-base_3 w-full text-center" /> -->
+
+
+                        <select formControlName="cod_item_um_calculo" class="select-base_cuatro w-full">
+
+                            @for(op of listUndMedida(); track $index){
+                            <option [value]="op.cod_item"> {{ op.des_tabladet_abrev }}</option>
+
+                            }
+                        </select>
+                    </td>
+
+                    <td class="p-1 font-medium text-center">
+                        <input type="text" formControlName="des_valor_3" class="input-base_3 w-full text-center" />
+                    </td>
+
+
+                    <!-- <td class="p-1">
+                        <select formControlName="cod_equipo_pesado" class="select-base_cuatro w-full">
+                            <option> ola</option>
+                        </select>
+                    </td>
+
+
+                    <td class="p-1">
+                        <select formControlName="ind_tarifa" class="select-base_cuatro w-full">
+                            <option value="V">VIAJE</option>
+                            <option value="H">HORAS</option>
+                            <option value="D">DIA</option>
+                            <option value="M">M3</option>
+
+                        </select>
+                    </td>
+
+                    <td class="p-1">
+                        <select formControlName="ind_moneda" class="select-base_cuatro w-full">
+                            <option value="S">S/.</option>
+                            <option value="D">US$</option>
+                        </select>
+                    </td>
+
+                    <td class="p-1">
+                        <input type="text" formControlName="imp_alquiler_equipo" class="input-base w-full text-right" />
+                    </td>
+
+
+                    <td class="p-1">
+                        <select formControlName="flg_vigencia" class="select-base_cuatro w-full">
+                            <option value="1">ACTIVO</option>
+                            <option value="0">INACTIVO</option>
+                        </select>
+                    </td> -->
+
+                    <!-- (click)="eliminarFila($index)" -->
+                </tr>
+
+                }
+
+                }
+
+                @else if (!isLoading()) {
+                <tr>
+                    <td colspan="10"
+                        class="border border-red-200 px-2 py-4 text-center bg-red-50 text-red-700 rounded-lg">
+                        <div class="flex items-center justify-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                            </svg>
+                            <b class="text-[12px]">No existen datos para mostrar con los filtros seleccionados.</b>
+                        </div>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </form>
+</div>

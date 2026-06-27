@@ -1,0 +1,147 @@
+<div class="modal modal-open">
+    <div class="modal-box max-w-5xl shadow-2xl bg-gradient-to-br from-slate-50 to-slate-100">
+        <!-- Header -->
+        <div class=" p-4 -m-6 mb-4 rounded-t-lg">
+            <h3 class="font-bold text-xl flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                </svg>
+                Block Reservas
+            </h3>
+        </div>
+
+        <form [formGroup]="blockForm" (ngSubmit)="saveModalBlock()">
+            <div class="overflow-auto max-h-[500px] border-2 border-slate-200 rounded-lg shadow-inner">
+                <table class="min-w-full text-[12px] border-separate border-spacing-0">
+                    <thead class="sticky top-0 bg-gradient-to-r from-[#F7F0E4] to-[#E8DCC8] z-20">
+                        <tr>
+                            <th class="th border-b-2 border-[#013B5C]">Blocks</th>
+                            <th class="th border-b-2 border-[#013B5C]">TMS</th>
+                            <th class="th border-b-2 border-[#013B5C]">Ag Veta</th>
+                            <th class="th border-b-2 border-[#013B5C]">Au Veta</th>
+                            <th class="th border-b-2 border-[#013B5C]">Cu Veta</th>
+                            <th class="th border-b-2 border-[#013B5C]">Pb Veta</th>
+                            <th class="th border-b-2 border-[#013B5C]">Zn Veta</th>
+                            <th class="th border-b-2 border-[#013B5C]">Ancho Veta</th>
+                            <th class="th border-b-2 border-[#013B5C]">Ancho Minado</th>
+                            <th class="th border-b-2 border-[#013B5C]">Acción</th>
+                        </tr>
+                    </thead>
+
+                    <tbody formArrayName="blocks">
+                        @if (blocks.length > 0) {
+                        @for (item of listBlockReserva(); track $index; let i = $index) {
+                        <tr style="text-align:center;" [formGroupName]="i" class="hover:bg-slate-100 transition-colors">
+                            <td>
+                                <!-- <input type="text" formControlName="prg_blocks" class="w-full border border-slate-300 p-1.5 rounded focus:border-[#013B5C] focus:ring-1 focus:ring-[#013B5C]"> -->
+                                <select class="select-tablas-labores w-33" formControlName="prg_blocks"
+                                    (change)="onBlockChange(i)">
+                                    <option value="">Seleccione Block</option>
+                                    @for (li of listaReservasGeologicas(); track li.num_block) {
+                                    <option [value]="li.num_block">{{ li.num_block }} | {{ li.num_tms_total }} {{
+                                        li.num_potencia }} |
+                                        | {{ li.num_potencia_diluida }} | {{ li.num_ag_diluida }} | {{ li.num_cu_diluida
+                                        }}
+                                        {{ li.num_pb_diluida }}
+
+                                        <!-- tengo que buscar  -->
+                                        <!-- {{ li.det_reserva_geologica_num_zn_diluida }} {{ li.det_reserva_geologica_num_vpt_diluida }} -->
+                                    </option>
+
+                                    }
+                                </select>
+                            </td>
+
+                            <td><input type="number" formControlName="num_tms"
+                                    class="w-full border border-slate-300 p-1.5 rounded focus:border-[#013B5C] focus:ring-1 focus:ring-[#013B5C]">
+                            </td>
+                            <td><input type="number" formControlName="num_ag_veta"
+                                    class="w-full border border-slate-300 p-1.5 rounded focus:border-[#013B5C] focus:ring-1 focus:ring-[#013B5C]">
+                            </td>
+                            <td><input type="number" formControlName="num_au_veta"
+                                    class="w-full border border-slate-300 p-1.5 rounded focus:border-[#013B5C] focus:ring-1 focus:ring-[#013B5C]">
+                            </td>
+                            <td><input type="number" formControlName="num_cu_veta"
+                                    class="w-full border border-slate-300 p-1.5 rounded focus:border-[#013B5C] focus:ring-1 focus:ring-[#013B5C]">
+                            </td>
+                            <td><input type="number" formControlName="num_pb_veta"
+                                    class="w-full border border-slate-300 p-1.5 rounded focus:border-[#013B5C] focus:ring-1 focus:ring-[#013B5C]">
+                            </td>
+                            <td><input type="number" formControlName="num_zn_veta"
+                                    class="w-full border border-slate-300 p-1.5 rounded focus:border-[#013B5C] focus:ring-1 focus:ring-[#013B5C]">
+                            </td>
+                            <td><input type="number" formControlName="num_anc_veta"
+                                    class="w-full border border-slate-300 p-1.5 rounded focus:border-[#013B5C] focus:ring-1 focus:ring-[#013B5C]">
+                            </td>
+                            <td><input type="number" formControlName="num_anc_min"
+                                    class="w-full border border-slate-300 p-1.5 rounded focus:border-[#013B5C] focus:ring-1 focus:ring-[#013B5C]">
+                            </td>
+                            <td>
+                                <button type="button" (click)="eliminarFila($index)"
+                                    class="bg-[#9f1239] text-white p-2 rounded-lg hover:bg-[#7f1d1d] transition-all hover:scale-110 shadow-md">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+                            </td>
+                        </tr>
+                        }
+                        } @else {
+                        <tr>
+                            <td colspan="10" class="px-2 py-8 text-center bg-amber-50">
+                                <div class="flex flex-col items-center gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-amber-600" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                                    </svg>
+                                    <b class="text-amber-800">No existen datos para mostrar.</b>
+                                </div>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <button type="button" (click)="agregarFila()" [disabled]="bloquearFila()" class="mt-4 bg-gradient-to-r from-[#047857] to-[#065f46] text-white px-6 py-2.5 rounded-lg hover:from-[#065f46] hover:to-[#047857] 
+                transition-all shadow-lg hover:shadow-xl flex items-center gap-2 font-semibold
+                bg-blue-700 text-white px-4 py-2 rounded
+                disabled:opacity-50
+                disabled:cursor-not-allowed">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+                Agregar Fila
+            </button>
+
+            <div class="modal-action mt-6 border-t border-gray-300 pt-4" >
+                <button type="button" (click)="closeModalBlock()" 
+                    class="btn bg-slate-500 hover:bg-slate-600 text-white border-none shadow-md">
+                    Cancelar
+                </button>
+                <button type="submit" [disabled]="blocks.length === 0 || blockForm.invalid"
+                    class="btn bg-gradient-to-r from-[#013B5C] to-[#033351]
+                            hover:from-[#033351] hover:to-[#013B5C]
+                            text-white border-none shadow-lg
+                            disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:from-[#013B5C] disabled:hover:to-[#033351]">
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+
+                    </svg>
+
+                    Aceptar
+
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

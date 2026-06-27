@@ -1,0 +1,240 @@
+﻿/* You can add global styles to this file, and also import other style files */
+@import "@ng-select/ng-select/themes/default.theme.css";
+@import 'tailwindcss';
+@plugin "daisyui";
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fadeIn {
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+.swal-encima {
+    z-index: 9999 !important;
+}
+
+.swal2-title {
+    color: black;
+    font-weight: 600;
+}
+
+.swal2-container {
+    z-index: 100000 !important;
+}
+
+.loader-sistema {
+    color: #031520;
+    font-weight: 900;
+}
+
+/* ── ng-select dropdown ── */
+.ng-dropdown-panel .ng-dropdown-panel-items {
+    max-height: 170px !important;
+}
+
+.ng-dropdown-panel .ng-option {
+    padding: 6px 10px;
+    min-height: auto;
+    font-size: 0.85rem;
+}
+
+/* ── ng-select custom theme ── */
+.ng-select.ng-select-custom .ng-select-container {
+    min-height: unset;
+    height: auto;
+    border: 1px solid #d1d5db;
+    border-radius: 0.25rem;
+    background-color: #ffffff;
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    font-size: 12px;
+    font-weight: 500;
+    transition: box-shadow 0.2s;
+}
+
+.ng-select.ng-select-custom .ng-select-container:hover {
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
+.ng-select.ng-select-custom.ng-select-focused .ng-select-container {
+    border-color: #033351;
+    box-shadow: 0 0 0 2px rgba(3, 102, 157, 0.2);
+    outline: none;
+}
+
+.ng-select.ng-select-custom .ng-value-container {
+    padding: 0.125rem 0.3rem;
+}
+
+.ng-select.ng-select-custom .ng-input>input {
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.ng-select.ng-select-custom .ng-arrow-wrapper {
+    padding-right: 5px;
+}
+
+@layer components {
+
+    /* ── inputs ── */
+    .input-base,
+    .input-base_2,
+    .input-base_3,
+    .input-base_date {
+        font-family: inherit;
+        border: 2px solid #D1D5DB;
+        border-radius: 0.3rem;
+        background-color: #FFFFFF;
+        box-shadow: 0 2px 2px rgba(0, 0, 0, 0.05);
+        transition: box-shadow 0.2s ease-in-out, border-color 0.2s ease-in-out;
+        outline: none;
+        width: 100%;
+    }
+
+    .input-base {
+        font-size: 0.75rem;
+        font-weight: 500;
+        padding: 0.25rem 0.5rem;
+    }
+
+    .input-base_2,
+    .input-base_date {
+        font-size: 0.720rem;
+        font-weight: 500;
+        padding: 0.125rem 0.25rem;
+    }
+
+    .input-base_3 {
+        font-size: 0.75rem;
+        font-weight: 500;
+        padding: 0.125rem 0.25rem;
+    }
+
+    .input-base:focus,
+    .input-base_2:focus,
+    .input-base_3:focus,
+    .input-base_date:focus {
+        border-color: #033351;
+        box-shadow: 0 0 0 2px rgba(3, 102, 157, 0.2);
+    }
+
+    .input-base_5 {
+        font-family: inherit;
+        font-size: 0.75rem;
+        font-weight: 500;
+        border: 2px solid #D1D5DB;
+        border-radius: 0.25rem;
+        padding: 0.125rem 0.25rem;
+        outline: none;
+        width: 100%;
+        transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    }
+
+    .input-base_5:focus {
+        border-color: #033351;
+        box-shadow: 0 0 0 2px rgba(3, 102, 157, 0.2);
+    }
+
+    .input-base_5:disabled {
+        background-color: #f8f9fa;
+        color: #9ca3af;
+        border-color: #e5e7eb;
+        box-shadow: none;
+        cursor: not-allowed;
+    }
+
+    /* ── checkbox ── */
+    .checkbox-base {
+        width: 1.25rem;
+        height: 1.25rem;
+        border-radius: 0.25rem;
+        transition: all 0.2s ease-in-out;
+    }
+
+    .checkbox-base:focus {
+        outline: none;
+    }
+
+    .checkbox-base:checked {
+        box-shadow: 0 0 0 2px rgba(3, 102, 157, 0.25);
+    }
+
+    /* ── selects ── */
+    /* .select-base {
+        display: inline-flex;
+        align-items: center;
+        margin: 0 auto;
+        font-size: 0.875rem;
+        font-weight: 500;
+        outline: none;
+        border: 1px solid #D1D5DB;
+        border-radius: 0.5rem;
+        background-color: #F9FAFB;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        transition: box-shadow 0.3s ease-in-out, border-color 0.3s ease-in-out;
+        width: 18.75rem;
+    }
+
+    .select-base:hover {
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .select-base:focus-within {
+        border-color: #033351;
+        box-shadow: 0 0 0 2px rgba(3, 102, 157, 0.2);
+    } */
+
+.select-base {
+        @apply select select-sm mx-auto text-sm font-medium outline-none 
+               flex items-center 
+               border-2 border-gray-300 rounded 
+               px-2 py-1 bg-gray-50 
+               shadow-sm hover:shadow-md 
+               transition-shadow duration-300 ease-in-out 
+               focus-within:border-[#033351] 
+               focus-within:ring-[3px]
+               focus-within:ring-[rgba(3,102,157,0.2)];
+    }
+
+    .select-base_dos,
+    .select-base_cuatro,
+    .select-tablas-labores {
+        @apply select select-xs mx-auto font-medium outline-none 
+               flex items-center 
+               border-2 border-gray-300 rounded 
+               px-2 py-1 bg-gray-50 
+               shadow-xs hover:shadow-xs 
+               transition-shadow duration-300 ease-in-out 
+               focus-within:border-[#033351] 
+               focus-within:ring-[3px]
+               focus-within:ring-[rgba(3,102,157,0.2)]
+               w-full min-w-0;
+    }
+
+    .select-base_tres {
+        @apply select select-xs mx-auto font-medium outline-none 
+               flex items-center 
+               border-2 border-gray-300 rounded 
+               px-2 py-1 bg-gray-50 
+               shadow-xs hover:shadow-md 
+               transition-shadow duration-300 ease-in-out 
+               focus-within:border-[#033351] 
+               focus-within:ring-[3px]
+               focus-within:ring-[rgba(3,102,157,0.2)]
+               w-full min-w-0;
+    }
+
+    .select-tablas-labores { @apply text-xs; }
+    .select-base_dos,
+    .select-base_cuatro    { @apply text-xs; }
+}

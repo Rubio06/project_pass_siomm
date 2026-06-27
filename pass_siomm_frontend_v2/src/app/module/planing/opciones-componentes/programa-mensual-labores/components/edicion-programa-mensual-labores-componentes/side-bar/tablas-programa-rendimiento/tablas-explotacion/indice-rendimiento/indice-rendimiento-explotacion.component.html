@@ -1,0 +1,106 @@
+<div class="h-100 border border-gray-200">
+    <div style="overflow-x:auto; border:1px; width:100%;">
+        <form [formGroup]="programaForm">
+            <table
+                style="border-collapse: separate;  border-spacing: 0; font-family:Arial; font-size:12px; min-width:1400px;">
+
+                <thead style="text-align:center; background:#efefef;">
+                    <tr>
+                        <th class="th" rowspan="2">Veta</th>
+                        <th class="th" rowspan="2">Nivel</th>
+                        <th class="th" rowspan="2">Tipo <br> Lab.</th>
+                        <th class="th" rowspan="2">Labor</th>
+                        <th class="th" rowspan="2">Ala</th>
+                        <th class="th" rowspan="2">Distancia Limpieza</th>
+                        <th class="th" rowspan="2">Tareas</th>
+                        <th class="th" rowspan="2">Tipo Acero</th>
+                        <th class="th" rowspan="2">Nro. <br> Perforadora</th>
+                        <th class="th" rowspan="2">Nro. Winche</th>
+                        <th class="th" rowspan="2">Nro. Pala</th>
+                        <th class="th" rowspan="2">Pie <br> Perforado</th>
+                        <th class="th" rowspan="2">Brocas</th>
+                        <th class="th" rowspan="2">Barra <br> Crónica</th>
+                        <th class="th" rowspan="2">Barreno</th>
+                        <th class="th" rowspan="2">Dinamita</th>
+                        <th class="th" rowspan="2">Fulminante</th>
+                        <th class="th" rowspan="2">Conectores</th>
+                        <th class="th" rowspan="2">Puntal Marchavante</th>
+                        <th class="th" rowspan="2">Tablas</th>
+                        <th class="th" rowspan="2">Pernos</th>
+                        <th class="th" rowspan="2">Mallas</th>
+                        <th class="th" rowspan="2">Cimbras</th>
+                        <th class="th" rowspan="2">Distancia <br> Desde</th>
+                        <th class="th" rowspan="2">Distancia <br> Hasta</th>
+                    </tr>
+                </thead>
+
+                <tbody formArrayName="programas">
+                    @if (listaIndiceRendi().length === 0) {
+                    <tr>
+                        <td colspan="60" class="px-2 py-1 text-center" style="background-color: rgb(255, 238, 238);">
+                            <b>No existen datos para mostrar.</b>
+                        </td>
+                    </tr>
+                    }
+                    @for (programa of programas.controls; track $index) {
+                    <tr [formGroupName]="$index" style="text-align:center;">
+                        <td class="border">{{ programa.get('cod_veta')?.value }}</td>
+                        <td class="border">{{ programa.get('cod_nivel')?.value }}</td>
+                        <td class="border">{{ programa.get('cod_tipo_labor')?.value }}</td>
+                        <td class="border">{{ programa.get('cod_labor')?.value }}</td>
+                        <td class="border">{{ programa.get('cod_ala')?.value }}</td>
+                        <td class="border">{{ programa.get('num_dis_limpieza')?.value }}</td>
+                        <td class="border">{{ programa.get('prg_tareas')?.value }}</td>
+                        <td class="border">{{ programa.get('prg_tipace')?.value }}</td>
+                        <td class="border">{{ programa.get('prg_nroper')?.value }}</td>
+                        <td class="border">{{ programa.get('prg_nrowinche')?.value }}</td>
+                        <td class="border">{{ programa.get('prg_nropala')?.value }}</td>
+                        <td class="border">{{ programa.get('prg_pieper')?.value }}</td>
+                        <td class="border">{{ programa.get('prg_brocas')?.value }}</td>
+                        <td class="border">{{ programa.get('prg_barcon')?.value }}</td>
+                        <td class="border">{{ programa.get('prg_barren')?.value }}</td>
+                        <td class="border">{{ programa.get('prg_dinami')?.value }}</td>
+                        <td class="border">{{ programa.get('prg_fulmin')?.value }}</td>
+                        <td class="border">{{ programa.get('prg_conect')?.value }}</td>
+                        <td class="border">{{ programa.get('prg_punmar')?.value }}</td>
+                        <td class="border">{{ programa.get('prg_tablas')?.value }}</td>
+                        <td class="border">{{ programa.get('prg_pernos')?.value }}</td>
+                        <td class="border">{{ programa.get('prg_mallas')?.value }}</td>
+                        <td class="border">{{ programa.get('prg_cimbras')?.value }}</td>
+                        <td class="border">{{ programa.get('dist_desde')?.value }}</td>
+                        <td class="border">{{ programa.get('dist_hasta')?.value }}</td>
+                    </tr>
+                    }
+                </tbody>
+
+                <!-- <tfoot style="text-align:center; background:#efefef; font-weight:bold;">
+                    <tr>
+                        <td colspan="5" class="border">TOTAL</td>
+                        <td class="border">{{ calcularTotal('num_dis_limpieza') }}</td>
+                        <td class="border">{{ calcularTotal('prg_tareas') }}</td>
+                        <td class="border"></td>
+                        <td class="border">{{ calcularTotal('prg_nroper') }}</td>
+                        <td class="border">{{ calcularTotal('prg_nrowinche') }}</td>
+                        <td class="border">{{ calcularTotal('prg_nropala') }}</td>
+                        <td class="border">{{ calcularTotal('prg_pieper') }}</td>
+                        <td class="border">{{ calcularTotal('prg_brocas') }}</td>
+                        <td class="border">{{ calcularTotal('prg_barcon') }}</td>
+                        <td class="border">{{ calcularTotal('prg_barren') }}</td>
+                        <td class="border">{{ calcularTotal('prg_dinami') }}</td>
+                        <td class="border">{{ calcularTotal('prg_fulmin') }}</td>
+                        <td class="border">{{ calcularTotal('prg_conect') }}</td>
+                        <td class="border">{{ calcularTotal('prg_punmar') }}</td>
+                        <td class="border">{{ calcularTotal('prg_tablas') }}</td>
+                        <td class="border">{{ calcularTotal('prg_pernos') }}</td>
+                        <td class="border">{{ calcularTotal('prg_mallas') }}</td>
+                        <td class="border">{{ calcularTotal('prg_cimbras') }}</td>
+                        <td class="border"></td>
+                        <td class="border"></td>
+                    </tr>
+                </tfoot> -->
+            </table>
+        </form>
+    </div>
+</div>
+
+

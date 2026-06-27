@@ -1,0 +1,21 @@
+<div class="inline-flex items-center gap-3 px-4 py-2 rounded-xl
+                    bg-gray-50
+                    transition-all duration-200">
+
+    <!-- Indicador con check -->
+    <span class="flex items-center justify-center w-7 h-7 rounded-full
+                        text-white text-xs animate-pulse" [ngClass]="colorModo()">
+
+        <!-- Check SVG -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+            stroke-width="3">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+        </svg>
+
+    </span>
+
+    <!-- Texto -->
+    <span class="text-sm font-bold">
+        {{ textoModo() }}
+    </span>
+</div>

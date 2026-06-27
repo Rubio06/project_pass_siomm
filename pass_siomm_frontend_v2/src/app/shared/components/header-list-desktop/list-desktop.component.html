@@ -1,0 +1,108 @@
+<!-- <ul class="menu p-0 m-0 text-base-content w-full">
+
+    @if(routers().length == 0){
+        <div style="color: red; text-align: center; border: 2px solid black;"><b>No existen rutas disponibles</b></div>
+    }
+
+    @for (ruta of routers(); track $index) {
+    <li class="w-full active" routerLinkActive="active">
+
+
+        <button class="flex items-center gap-4 cursor-pointer m-1 w-full" (click)="toggle($index)">
+            <app-iconos [iconos]="ruta.icon"></app-iconos>
+            <span class="font-bold text-sm w-35">
+                {{ ruta.nom_ruta_primer | replaceUnderscore }}
+            </span>
+        </button>
+
+
+        <ul class="submenu ml-8 pl-2 border-l-2 border-[#033351]/30
+                                       bg-[#E6F2ED] rounded w-55
+                                       overflow-hidden
+                                       transition-all duration-300 ease-in-out" [ngClass]="{
+                                  'max-h-0 opacity-0 translate-x-[-4px]': !isOpen($index),
+                                  'max-h-96 opacity-100 translate-x-0': isOpen($index)}">
+
+
+            @for (subRuta of ruta.rutas_secundarias; track $index) {
+                <li routerLinkActive="router-link" (click)="closeDrawer()" [routerLinkActiveOptions]="{ exact: false }"
+                    [routerLink]="['planeamiento', toUrl(subRuta.nom_ruta_secun)]" class="flex gap-2 p-1 text-xs font-bold transition-colors duration-200 cursor-pointer text-gray-700 hover:text-white hover:bg-[#03335169] rounded">
+                    {{ subRuta.nom_ruta_secun | replaceUnderscore }}
+                </li>
+            }
+        </ul>
+
+    </li>
+    }
+</ul> -->
+
+
+
+
+
+<ul class="menu p-0 m-0 text-base-content w-full">
+
+    @if(routers().length == 0){
+    <div style="color: red; text-align: center; border: 2px solid black;"><b>No existen rutas disponibles</b></div>
+    }
+
+    @for (ruta of routers(); track $index) {
+    <li class="w-full active" routerLinkActive="active">
+
+        <!-- BOTÓN PADRE -->
+        <button class="flex items-center gap-4 cursor-pointer m-1 w-full" (click)="toggle(ruta.cod_ruta_primer)">
+            <app-iconos [iconos]="ruta.icon"></app-iconos>
+            <span class="font-bold text-sm w-35">
+                {{ ruta.nom_ruta_primer | replaceUnderscore }}
+            </span>
+        </button>
+
+        <!-- para que funcione en las rutas deben de ser iguales a lo que viene de la bd -->
+        <!-- SUBMENÚ INDENTADO -->
+        <ul class="submenu ml-8 pl-2 border-l-2 border-[#033351]/30 bg-[#E6F2ED] rounded w-55 overflow-y-auto
+                transition-all duration-300 ease-in-out" [ngClass]="{
+                'max-h-0 opacity-0 translate-x-[-4px] overflow-hidden': !isOpen(ruta.cod_ruta_primer),
+                'max-h-[60vh] opacity-100 translate-x-0': isOpen(ruta.cod_ruta_primer)}">
+
+
+            @for (subRuta of ruta.rutas_secundarias; track $index) {
+            <li class="flex flex-col text-xs font-bold transition-colors duration-200 cursor-pointer text-gray-700 rounded">
+
+                <span class="flex items-center justify-between hover:text-white hover:bg-[#03335169] rounded p-1"
+                    (click)="toggleSub(subRuta.cod_ruta_secun); $event.stopPropagation()" routerLinkActive="router-link active" [routerLinkActiveOptions]="{ exact: false }"
+                    [routerLink]="subRuta.rutas_terciarias.length ? null : [toUrl(ruta.nom_ruta_primer), toUrl(subRuta.nom_ruta_secun)]">
+                    {{ subRuta.nom_ruta_secun | replaceUnderscore }}
+
+
+                    @if (subRuta.rutas_terciarias.length) {
+                        <svg class="w-3 h-3 ml-1 transition-transform" 
+                        [class.rotate-90]="isSubOpen(subRuta.cod_ruta_secun)" 
+                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    }
+                </span>
+
+                <!-- RUTAS TERCIARIAS -->
+                @if (subRuta.rutas_terciarias.length) {
+                <ul class="ml-2 border-l-2 border-[#033351]/30 pl-2 overflow-hidden transition-all duration-300 ease-in-out"
+                    [ngClass]="{
+                        'max-h-0 opacity-0': !isSubOpen(subRuta.cod_ruta_secun),
+                        'max-h-40 overflow-y-auto  opacity-100': isSubOpen(subRuta.cod_ruta_secun)}">
+                    @for (item of subRuta.rutas_terciarias; track $index) {
+                    <li [routerLink]="[toUrl(ruta.nom_ruta_primer), toUrl(subRuta.nom_ruta_secun), toUrl(item.nom_ruta_terc)]"
+                        routerLinkActive="router-link active" [routerLinkActiveOptions]="{ exact: false }"
+                        (click)="closeDrawer(); $event.stopPropagation()"
+                        class="text-xs font-medium cursor-pointer text-gray-600 hover:text-white hover:bg-[#03335169] rounded p-1">
+                        {{ item.nom_ruta_terc | replaceUnderscore }}
+                    </li>
+                    }
+                </ul>
+                }
+            </li>
+            }
+        </ul>
+
+    </li>
+    }
+</ul>

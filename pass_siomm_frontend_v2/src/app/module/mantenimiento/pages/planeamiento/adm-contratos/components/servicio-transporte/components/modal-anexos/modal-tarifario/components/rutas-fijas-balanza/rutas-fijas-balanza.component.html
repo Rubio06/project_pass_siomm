@@ -1,0 +1,147 @@
+<!-- <div class="flex justify-end gap-2 mb-4">
+    <button type="button" class="btn btn-sm btn-outline" (click)="cambiarModo(!esModoLectura())">
+        {{ esModoLectura() ? 'Activar Edición' : 'Pasar a Lectura' }}
+    </button>
+    @if (!esModoLectura()) {
+        <button type="button" class="btn btn-sm btn-primary bg-[#013B5C] text-white" (click)="guardarCambios()">
+            Guardar
+        </button>
+    }
+</div> -->
+<form [formGroup]="formularioTablas" class="flex gap-4">
+
+    <div class="min-h-[250px] max-h-[400px] overflow-y-auto border border-gray-300 rounded shadow-sm"
+        id="scrollContenedor">
+        <table class="table table-sm table-zebra w-full min-w-[1700px]">
+            <thead class="sticky top-0 z-10 shadow-[0_2px_0_0_black] text-center">
+                <tr class="bg-base-200 text-base-content/80 text-center text-xs ">
+                    <th class="sticky top-0 z-30 bg-base-200 w-[34%] text-[#013B5C] shadow-[0_2px_0_0_black]">Código
+                        Ruta
+                    </th>
+                    <th class="sticky top-0 z-30 bg-base-200 w-[14%] text-[#013B5C] shadow-[0_2px_0_0_black]">Zona</th>
+                    <th class="sticky top-0 z-30 bg-base-200 w-[14%] text-[#013B5C] shadow-[0_2px_0_0_black]">Punto
+                        Origen
+                    </th>
+                    <th class="sticky top-0 z-30 bg-base-200 w-[14%] text-[#013B5C] shadow-[0_2px_0_0_black]">Punto
+                        Destino
+                    </th>
+                    <th class="sticky top-0 z-30 bg-base-200 w-[17%] text-[#013B5C] shadow-[0_2px_0_0_black]">Material
+                    </th>
+                    <th class="sticky top-0 z-30 bg-base-200 w-[10%] text-[#013B5C] shadow-[0_2px_0_0_black]">Estado
+                    </th>
+                    <th class="w-[12%] text-[#013B5C]"></th>
+
+                </tr>
+            </thead>
+
+            <tbody formArrayName="filasMaterial">
+                @if (isLoading()) {
+                <tr>
+                    <td colspan="5" class="text-center py-8">
+                        <div class="flex justify-center">
+                            <div class="flex flex-col items-center gap-2">
+                                <progress class="progress w-56 text-[#013B5C]"></progress>
+                                <span class="text-xs"><b>Cargando...</b></span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                }
+
+                @if (filas.controls.length > 0 && !isLoading()) {
+                @for (fila of filas.controls; track fila.get('codigo')?.value; let i = $index) {
+                <tr [formGroupName]="i" class="text-center text-xs border-b border-base-200"
+                    [class.bg-[#17324D]/10]="filas.at($index).get('esNuevo')?.value"
+                    [class.hover:!bg-[#17324D]/10]="filas.at($index).get('esNuevo')?.value"
+                    [class.hover:bg-base-300]="!filas.at($index).get('esNuevo')?.value">
+
+                    <td class="text-left p-2 border-r border-base-300 font-medium bg-base-200/20">
+
+                        <select formControlName="cod_item_ruta" class="select-base_cuatro w-full"
+                            (change)="onItemRutaChange(i, $any($event.target).value)">
+                            @for (tra of listTransporteVal(); track $index) {
+                            <option [value]="tra.cod_item_ruta">{{ tra.cod_item_ruta }} - {{ tra.c_t_origen }} - {{
+                                tra.c_t_destino }}</option>
+                            }
+                        </select>
+
+                        @if(formUtils.isValidFieldInArray(filas.at(i),'cod_item_ruta')) {
+                        <div class="text-[#C23E32] text-xs mt-1">
+                            <span><b>{{ formUtils.getFiledErrorArray(filas.at(i),'cod_item_ruta') }}</b></span>
+                        </div>
+                        }
+                    </td>
+
+                    <td class="text-center p-2 border-r border-base-300 font-medium bg-base-200/20">
+                        {{ fila.get('c_t_zona')?.value }}
+                    </td>
+
+                    <td class="text-center p-2 border-r border-base-300 font-medium bg-base-200/20">
+                        {{ fila.get('c_t_origen')?.value }}
+
+                    </td>
+                    <td class="text-center p-2 border-r border-base-300 font-medium bg-base-200/20">
+                        {{ fila.get('c_t_destino')?.value }}
+                    </td>
+
+                    <td class="text-left p-2 border-r border-base-300 font-medium bg-base-200/20">
+
+                        <select formControlName="cod_item" class="select-base_cuatro w-full">
+                            @for (it of listSvalTablaDetalle(); track $index) {
+
+                            <option [value]="it.cod_item">{{ it.des_tabladet }}</option>
+
+                            }
+                        </select>
+                    </td>
+
+                    <td class="p-2 border-r border-base-300">
+                        <select formControlName="flg_vigente" class="select-base_cuatro w-full">
+                            <option value="1">Activo</option>
+                            <option value="0">Inactivo</option>
+                        </select>
+                    </td>
+
+                    <td class="p-1 flex justify-center items-center">
+                        <button type="button" (click)="onEliminar($index, fila)"
+                            class="bg-[#A6200A] flex items-center justify-center rounded-lg hover:bg-red-700 hover:scale-105 transition-all duration-200 w-8 h-8">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
+                                stroke="white" class="w-4 h-4">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                            </svg>
+                        </button>
+                    </td>
+
+                </tr>
+                }
+                } @else if (!isLoading()) {
+                <tr>
+                    <td colspan="6" class="border border-red-200 px-2 py-4 text-center bg-red-50 text-red-700">
+                        <div class="flex items-center justify-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                            </svg>
+                            <b class="text-xs">No existen datos para mostrar con los filtros seleccionados.</b>
+                        </div>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div>
+        <button type="button" (click)="onAgregarFila()"
+            class="bg-[#047857] flex items-center justify-center rounded-lg shadow-sm group
+            hover:shadow-md hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed w-8 h-8">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="white"
+                class="w-4 h-4">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+        </button>
+
+    </div>
+
+</form>

@@ -1,0 +1,1 @@
+import{N as o,Zb as t,fa as i}from"./chunk-UIYRAJ3L.js";var a=class e{#e=i(!1);isLoading=t(()=>this.#e());show(){this.#e.set(!0)}hide(){this.#e.set(!1)}static \u0275fac=function(s){return new(s||e)};static \u0275prov=o({token:e,factory:e.\u0275fac,providedIn:"root"})};export{a};

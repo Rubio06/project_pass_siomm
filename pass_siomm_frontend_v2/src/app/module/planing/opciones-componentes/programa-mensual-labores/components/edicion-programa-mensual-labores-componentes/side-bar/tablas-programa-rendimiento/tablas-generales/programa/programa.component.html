@@ -1,0 +1,1447 @@
+<div class="flex gap-5">
+    <!-- [style.pointer-events]="modo() === 'ver' ? 'none' : 'auto'" -->
+    <form [formGroup]="programaForm"
+        class="grid grid-cols-[291px_1fr] h-[321px] border border-gray-300 overflow-hidden gap-1">
+
+        <!-- ========================= -->
+        <!-- PANEL IZQUIERDO (FIJO)  -->
+        <!-- ========================= -->
+        <div class="overflow-auto border-r-3 border-gray-400">
+
+            <table class="min-w-[70%] text-[11px] border-separate border-spacing-0" >
+
+                <!-- HEADER -->
+                <thead class="sticky top-0 bg-gray-200 z-20">
+                    <tr>
+                        <th class=" th" rowspan="2">Veta</th>
+                        <th class=" th" rowspan="2">Nivel</th>
+                        <th class=" th" rowspan="2">Tipo <br> Lab.</th>
+                        <th class=" th" rowspan="2">Labor</th>
+                        <th class=" th" rowspan="2">Ala</th>
+                        <th rowspan="2" class="th">Cod. Cto</th>
+                        <th rowspan="2" class="th">Cod. Cta</th>
+                        <th rowspan="2" class="th">Blocks</th>
+                        <th rowspan="2" class="th">Icono Mensaje</th>
+                        <th rowspan="2" class="th">Tipo <br> Sostenimiento</th>
+                        <th rowspan="2" class="th">Avance <br>MTS</th>
+                        <th rowspan="2" class="th">Sección <br>Ancho</th>
+                        <th rowspan="2" class="th">Sección <br>Altura</th>
+                        <th rowspan="2" class="th">TMS <br>Desmonte</th>
+                        <th rowspan="2" class="th">TMS <br>Mineral</th>
+                        <th rowspan="2" class="th">TMS <br>Total</th>
+                        <th rowspan="2" class="th">Evaluación <br>Bloque</th>
+                        <th rowspan="2" class="th">Asocia <br> Labor</th>
+                        <th rowspan="2" class="th">RMR <br>Piso</th>
+                        <th rowspan="2" class="th">RMR <br>Veta</th>
+                        <th rowspan="2" class="th">RMR <br>Techo</th>
+                        <th rowspan="2" class="th">Ancho <br>Minado</th>
+                        <th rowspan="2" class="th">Tipo <br>Factor</th>
+                        <th rowspan="2" class="th">Fecha <br>Muestreo</th>
+                        <th colspan="5" class="th-group">Leyes Geológicas</th>
+                        <th rowspan="2" class="th">VTP <br>US$</th>
+                        <th rowspan="2" class="th">Método Minado</th>
+                        <th rowspan="2" class="th">Factor <br>X</th>
+                        <th rowspan="2" class="th">Buzamiento</th>
+                        <th rowspan="2" class="th">Rentabilidad</th>
+                        <th rowspan="2" class="th">Hombres X <br> Labor </th>
+                        <th rowspan="2" class="th">Ind. <br> Verif</th>
+                        <th rowspan="2" class="th">Planos</th>
+                        <th rowspan="2" class="th"></th>
+                    </tr>
+                    <tr>
+                        <th class="th-sub min-w-[60px]">Ag (gr)</th>
+                        <th class="th-sub min-w-[60px]">Cu (%)</th>
+                        <th class="th-sub min-w-[60px]">Pb (%)</th>
+                        <th class="th-sub min-w-[60px]">Zn (%)</th>
+                        <th class="th-sub min-w-[60px]">Au (gr)</th>
+                    </tr>
+                </thead>
+
+                <!-- BODY -->
+                <tbody formArrayName="labores">
+                    @if (isLoading()) {
+                    <tr>
+                        <td colspan="12" class="px-2 py-1 text-center">
+                            <div class="flex justify-center items-center py-8 ">
+                                <div class="flex flex-col justify-center ">
+                                    <progress class="progress w-56 " style="color:#013B5C;"></progress>
+                                    <span style="font-size: 13px;"><b>Cargando...</b></span>
+                                </div>
+
+                            </div>
+                        </td>
+                    </tr>
+                    }
+                    @else if (labores.length > 0) {
+                    @for (labor of labores.controls; let i = $index; track $index) {
+                    <tr style="text-align:center;" [formGroupName]="$index" (dblclick)="copiarLabor(i)"
+                        class="font-medium text-lg whitespace-nowrap " [ngClass]="{
+                            'bg-[#EAEAEA] border-x-4 border-[#002B48]': i === selecionarIndice() }">
+
+                        <td> <input class="hidden" formControlName="cod_veta" />
+                            <input class=" w-40 input-base pointer-events-none " type="text" readonly [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }"
+                                [value]="labor.get('cod_veta')?.value ? labor.get('cod_veta')?.value + ' - ' + (labor.get('nom_veta')?.value || labor.get('cod_nom_veta')?.value || '') : ''" />
+
+                            @if(formUtils.isValidFieldInArray(labor, "cod_veta")) {
+                            <div class=" text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "cod_veta")}}</b>
+                                </span>
+                            </div>
+                            }
+                        </td>
+                        <td>
+                            <input class="w-40 input-base pointer-events-none" type="text" formControlName="cod_nivel"
+                                [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" readonly />
+                            @if(formUtils.isValidFieldInArray(labor, "cod_nivel")) {
+                            <div class=" text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "cod_nivel")}}</b>
+                                </span>
+                            </div>
+                            }
+                        </td>
+                        <td>
+                            <input class=" w-40 input-base pointer-events-none" type="text"
+                                formControlName="cod_tipo_labor" [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" readonly />
+                            @if(formUtils.isValidFieldInArray(labor, "cod_tipo_labor")) {
+                            <div class=" text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "cod_tipo_labor")}}</b>
+                                </span>
+                            </div>
+                            }
+
+
+                        </td>
+
+                        <td>
+
+                            <input class=" w-40 input-base  pointer-events-none" type="text" formControlName="cod_labor"
+                                readonly [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" />
+                            @if(formUtils.isValidFieldInArray(labor, "cod_labor")) {
+                            <div class=" text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "cod_labor")}}</b>
+                                </span>
+                            </div>
+                            }
+
+                        </td>
+                        <!-- [attr.disabled]="labor.get('cod_ala')?.disabled ? true : null" -->
+                        <td>
+                            <!-- [attr.disabled]="labor.get('cod_ala')?.disabled ? true : null" -->
+                            <select formControlName="cod_ala" readonly [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" class="select-base_dos w-34">
+                                @for (item of utilidades.listaAla(); track $index) {
+                                <option [value]="item.cod_ala"> {{ item.cod_ala }} {{
+                                    item.nom_ala
+                                    }} </option>
+                                }
+                            </select>
+                            @if ( formUtils.isValidFieldInArray(labor, "cod_ala") ) {
+                            <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "cod_ala")}}</b>
+                                </span>
+
+                            </div>
+                            }
+
+                        </td>
+
+                        <td>
+                            <select formControlName="cod_cto" [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" class="select-base_dos w-65">
+                                @for (item of utilidades.listaCto(); track $index) {
+                                <option [value]="item.cod_centro_costo" [selected]="$index === 0"> {{
+                                    item.cod_centro_costo
+                                    }} {{
+                                    item.des_centro_costo }} </option>
+                                }
+                            </select>
+                        </td>
+
+                        <td>
+                            <select formControlName="cod_cta" [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" class="select-base_dos w-65">
+                                @for (item of utilidades.listaCta(); track $index) {
+                                <option [value]="item.cod_cuenta_contable" [selected]="$index === 0"> {{
+                                    item.cod_cuenta_contable }} {{
+                                    item.des_cuenta_contable }} </option>
+                                }
+                            </select>
+                        </td>
+
+                        <td><input class="border-none bg-transparent w-30 text-center input-base" type="number"
+                                [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" formControlName="prg_blocks" />
+                            @if ( formUtils.isValidFieldInArray(labor, "prg_blocks") ) {
+                            <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "prg_blocks")}}</b>
+                                </span>
+
+                            </div>
+                            }
+                        </td>
+
+
+                        <td>
+                            <button type="button" class="btn btn-sm gap-1 flex items-center w-fit"
+                                [disabled]="modo() === 'nuevo'" (click)="openModalBlock($index)">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                                <span class="text-xs">Agregar</span>
+                            </button>
+                        </td>
+
+                        <td>
+                            <select formControlName="ind_clasificacion_sos" [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" class="select-base_dos w-28">
+                                @for (item of utilidades.listTipoSostenimiento(); track $index) {
+                                <option [value]="item.cod_sos" [selected]="$index === 0"> {{ item.tipo_sosten }}
+                                </option>
+                                }
+                            </select>
+
+                            @if ( formUtils.isValidFieldInArray(labor, "ind_clasificacion_sos") ) {
+                            <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "ind_clasificacion_sos")}}</b>
+                                </span>
+
+                            </div>
+                            }
+                        </td>
+
+                        <td>
+                            <input class="border-none bg-transparent w-30 text-center input-base" type="number"
+                                [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" formControlName="prg_avamts" />
+
+                            @if ( formUtils.isValidFieldInArray(labor, "prg_avamts") ) {
+                            <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "prg_avamts")}}</b>
+                                </span>
+
+                            </div>
+                            }
+
+                        </td>
+                        <td><input class="border-none bg-transparent w-30 text-center input-base" type="number"
+                                [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" formControlName="prg_secancho" />
+                            @if ( formUtils.isValidFieldInArray(labor, "prg_secancho") ) {
+                            <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "prg_secancho")}}</b>
+                                </span>
+
+                            </div>
+                            }
+
+                        </td>
+                        <td><input class="border-none bg-transparent w-30 text-center input-base" type="number"
+                                [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" formControlName="prg_secaltu" />
+                            @if ( formUtils.isValidFieldInArray(labor, "prg_secaltu") ) {
+                            <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "prg_secaltu")}}</b>
+                                </span>
+
+                            </div>
+                            }
+                        </td>
+                        <td><input class="border-none bg-transparent w-30 text-center input-base" type="number"
+                                [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" formControlName="prg_tmsdes" />
+                            @if ( formUtils.isValidFieldInArray(labor, "prg_tmsdes") ) {
+                            <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "prg_tmsdes")}}</b>
+                                </span>
+
+                            </div>
+                            }
+                        </td>
+                        <td><input class="border-none bg-transparent w-30 text-center input-base" type="number"
+                                [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" formControlName="prg_tmsmin" />
+                            @if ( formUtils.isValidFieldInArray(labor, "prg_tmsmin") ) {
+                            <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "prg_tmsmin")}}</b>
+                                </span>
+
+                            </div>
+                            }
+                        </td>
+                        <td><input class="border-none bg-transparent w-30 text-center input-base" type="number"
+                                [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" formControlName="tms_total" />
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-sm gap-1 flex items-center w-fit"
+                                [disabled]="modo() === 'nuevo'" (click)="openModalReserva($index)">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+                                </svg>
+                                <span class="text-xs">Agregar</span>
+                            </button>
+                        </td>
+
+                        <td>
+                            <select class=" select-base_dos w-15" [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }">
+                                @for (item of listAsociaLabor(); track $index) {
+                                <option [value]="item.cod_aso_labor" [selected]="$index === 0"> {{ item.aso_labor }}
+                                </option>
+                                }
+
+                            </select>
+                        </td>
+
+                        <td><input class="border-none bg-transparent w-30 text-center input-base" type="number"
+                                [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" formControlName="ind_tip_roca_piso" />
+                            @if ( formUtils.isValidFieldInArray(labor, "ind_tip_roca_piso") ) {
+                            <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "ind_tip_roca_piso")}}</b>
+                                </span>
+
+                            </div>
+                            }
+
+                        </td>
+                        <td><input class="border-none bg-transparent w-30 text-center input-base" type="number"
+                                [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }"  formControlName="ind_tip_roca"/>
+                            @if ( formUtils.isValidFieldInArray(labor, "ind_tip_roca") ) {
+                            <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "ind_tip_roca")}}</b>
+                                </span>
+
+                            </div>
+                            }
+                        </td>
+                        <td><input class="border-none bg-transparent w-30 text-center input-base" type="number"
+                                [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" formControlName="ind_tip_roca_techo" />
+                            @if ( formUtils.isValidFieldInArray(labor, "ind_tip_roca_techo") ) {
+                            <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "ind_tip_roca_techo")}}</b>
+                                </span>
+
+                            </div>
+                            }
+                        </td>
+                        <td><input class="border-none bg-transparent w-30 text-center input-base" type="number"
+                                [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" formControlName="prg_ancmin" />
+                            @if ( formUtils.isValidFieldInArray(labor, "prg_ancmin") ) {
+                            <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "prg_ancmin")}}</b>
+                                </span>
+
+                            </div>
+                            }
+                        </td>
+
+                        <td class="font-medium">
+                            <select formControlName="val_tipo_fac" [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }"
+                                class="select-xs mx-auto select font-medium outline-none flex items-center border border-gray-300 rounded-lg
+                                                    bg-gray-50 shadow-sm hover:shadow-md transition-shadow duration-300 ease-in-out focus-within:border-[#033351] focus-within:ring-1
+                                                    focus-within:ring-[rgb(3,102,157)] focus-within:ring-opacity-40 w-28">
+                                @for (item of utilidades.listValOperativo(); track $index) {
+                                <option [value]="item.val_tipo_fac"> {{ item.val_des_tipo_fac }} </option>
+                                }
+                            </select>
+                            @if ( formUtils.isValidFieldInArray(labor, "val_tipo_fac") ) {
+                            <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "val_tipo_fac")}}</b>
+                                </span>
+
+                            </div>
+                            }
+                        </td>
+                        <td><input class="border-none bg-transparent w-24 text-center input-base" [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" style="font-size: 11px;" type="date" formControlName="prg_fecmuestreo" />
+
+                            @if ( formUtils.isValidFieldInArray(labor, "prg_fecmuestreo") ) {
+                            <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "prg_fecmuestreo")}}</b>
+                                </span>
+
+                            </div>
+                            }
+                        </td>
+
+                        <td><input class="border-none bg-transparent w-30 text-center input-base" type="number"
+                                [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" formControlName="prg_leyag" />
+                            @if ( formUtils.isValidFieldInArray(labor, "prg_leyag") ) {
+                            <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "prg_leyag")}}</b>
+                                </span>
+
+                            </div>
+                            }
+                        </td>
+                        <td><input class="border-none bg-transparent w-30 text-center input-base" type="number"
+                                [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" formControlName="prg_leycu" />
+                            @if ( formUtils.isValidFieldInArray(labor, "prg_leycu") ) {
+                            <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "prg_leycu")}}</b>
+                                </span>
+
+                            </div>
+                            }
+                        </td>
+                        <td><input class="border-none bg-transparent w-30 text-center input-base" type="number"
+                                [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" formControlName="prg_leypb" />
+                            @if ( formUtils.isValidFieldInArray(labor, "prg_leypb") ) {
+                            <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "prg_leypb")}}</b>
+                                </span>
+
+                            </div>
+                            }
+                        </td>
+                        <td><input class="border-none bg-transparent w-30 text-center input-base" type="number"
+                                [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" formControlName="prg_leyzn" />
+
+                            @if ( formUtils.isValidFieldInArray(labor, "prg_leyzn") ) {
+                            <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "prg_leyzn")}}</b>
+                                </span>
+
+                            </div>
+                            }
+                        </td>
+                        <td><input class="border-none bg-transparent w-30 text-center input-base" type="number"
+                                [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" formControlName="prg_leyau" />
+                            @if ( formUtils.isValidFieldInArray(labor, "prg_leyau") ) {
+                            <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "prg_leyau")}}</b>
+                                </span>
+
+                            </div>
+                            }
+                        </td>
+
+                        <td><input class="border-none bg-transparent w-30 text-center input-base" type="number"
+                                [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" formControlName="prg_vptmin" />
+                            @if ( formUtils.isValidFieldInArray(labor, "prg_vptmin") ) {
+                            <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "prg_vptmin")}}</b>
+                                </span>
+
+                            </div>
+                            }
+                        </td>
+                        <td>
+
+                            <!-- <input class="border-none bg-transparent w-14 text-center" type="text"
+                                formControlName="metexp_cod" /> -->
+                            <select formControlName="cod_metexp" [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }"
+                                class="select-xs mx-auto select font-medium outline-none flex items-center border border-gray-300 rounded-lg
+                                                        bg-gray-50 shadow-sm hover:shadow-md transition-shadow duration-300 ease-in-out focus-within:border-[#033351] focus-within:ring-1
+                                                        focus-within:ring-[rgb(3,102,157)] focus-within:ring-opacity-40 w-55">
+                                @for (item of listMetExplotacion(); track $index) {
+                                <option [value]="item.cod_metexp"> {{ item.nom_metexp }} </option>
+                                }
+                            </select>
+
+                            @if ( formUtils.isValidFieldInArray(labor, "cod_metexp") ) {
+                            <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "cod_metexp")}}</b>
+                                </span>
+
+                            </div>
+                            }
+                        </td>
+                        <td><input class="border-none bg-transparent w-30 text-center input-base" type="number"
+                                [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" formControlName="num_factor_x" />
+                            @if ( formUtils.isValidFieldInArray(labor, "num_factor_x") ) {
+                            <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "num_factor_x")}}</b>
+                                </span>
+
+                            </div>
+                            }
+                        </td>
+                        <td><input class="border-none bg-transparent w-30 text-center input-base" type="number"
+                                [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" formControlName="num_buzamiento" />
+
+                            @if ( formUtils.isValidFieldInArray(labor, "num_buzamiento") ) {
+                            <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "num_buzamiento")}}</b>
+                                </span>
+
+                            </div>
+                            }
+                        </td>
+                        <td><input class="border-none bg-transparent w-30 text-center input-base" type="number"
+                                [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" formControlName="prg_cutoff" />
+
+                            @if ( formUtils.isValidFieldInArray(labor, "prg_cutoff") ) {
+                            <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "prg_cutoff")}}</b>
+                                </span>
+
+                            </div>
+                            }
+                        </td>
+                        <td>
+                            <input class="border-none bg-transparent w-30 text-center input-base" type="number"
+                                [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" formControlName="prg_homlab" />
+
+                            @if ( formUtils.isValidFieldInArray(labor, "prg_homlab") ) {
+                            <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "prg_homlab")}}</b>
+                                </span>
+
+                            </div>
+                            }
+                        </td>
+
+                        <td><input type="checkbox" formControlName="ind_verificacion" class="w-4 h-4" [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" /></td>
+
+                        <td>
+                            <button type="button" class="btn btn-sm flex items-center w-fit px-2 py-1"
+                                [disabled]="modo() === 'nuevo'" (click)="openModalPlano($index)">
+                                <span class="text-xs">Planos</span>
+                            </button>
+                        </td>
+
+                        <td>
+                            <button type="button" (click)="eliminarFila(i, labor.value)"
+                                class="flex bg-[#9f1239] items-center justify-center rounded shadow-sm hover:scale-110 transition-all w-6 h-6">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="white"
+                                    class="w-4 h-4">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                        d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </td>
+                    </tr>
+                    }
+                    }@else {
+                    <tr>
+                        <td colspan="60" class="px-2 py-1 text-center" style="background-color: rgb(255, 238, 238);">
+                            <b>No existen datos para mostrar.</b>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+
+                <tfoot style="position: sticky; bottom: 0; background: rgb(247, 240, 228); z-index: 10;">
+                    <tr>
+                        <td colspan="2" style="border:none; background: rgb(247, 240, 228); font-weight: bold;">
+                            <div class="align-top">
+                                Total Producción: {{ _totalProduccion() }}
+                            </div>
+                        </td>
+                        <td style="border:none;"></td>
+                        <td style="border:none;"></td>
+                        <td style="border:none;"></td>
+                        <td style="border:none;"></td>
+                        <td style="border:none;"></td>
+                        <td style="border:none;"></td>
+                        <td style="border:none;"></td>
+                        <td style="border:none;"></td>
+                        <td style="border:none; font-weight: bold; text-align: center;">{{ _totalPrgAvamts() |
+                            number:'1.2-2' }}</td>
+                        <td style="border:none;"></td>
+                        <td style="border:none;"></td>
+                        <td style="border:none; font-weight: bold; text-align: center;">{{ _totalTmsDes() |
+                            number:'1.2-2' }}
+                        </td>
+                        <td style="border:none; font-weight: bold; text-align: center;">{{ _totalTmsMin() |
+                            number:'1.2-2' }}
+                        </td>
+                        <td style="border:none; font-weight: bold; text-align: center;">{{ _totalTmsToal() |
+                            number:'1.2-2' }}</td>
+                        <td style="border:none;"></td>
+                        <td style="border:none;"></td>
+                        <td style="border:none;"></td>
+                        <td style="border:none;"></td>
+                        <td style="border:none;"></td>
+                        <td style="border:none;"></td>
+                        <td style="border:none;"></td>
+                        <td style="border:none;"></td>
+                        <td style="border:none; font-weight: bold; text-align: center;">{{_promedioLeyAg() |
+                            number:'1.2-2'}}</td>
+                        <td style="border:none; font-weight: bold; text-align: center;">{{_promedioLeyCu() |
+                            number:'1.2-2'}}</td>
+                        <td style="border:none; font-weight: bold; text-align: center;">{{_promedioLeyPb() |
+                            number:'1.2-2'}}</td>
+                        <td style="border:none; font-weight: bold; text-align: center;">{{_promedioLeyZn() |
+                            number:'1.2-2'}}</td>
+                        <td style="border:none; font-weight: bold; text-align: center;">{{_promedioLeyAu() |
+                            number:'1.2-2'}}</td>
+                        <td style="border:none; font-weight: bold; text-align: center;">{{_promedioVptMin() |
+                            number:'1.2-2'}}</td>
+                        <td style="border:none;"></td>
+                        <td style="border:none;"></td>
+                        <td style="border:none;"></td>
+                        <td style="border:none;"></td>
+                        <td style="border:none;"></td>
+                        <td style="border:none;"></td>
+                        <td style="border:none;"></td>
+                        <td style="border:none;"></td>
+
+                    </tr>
+                </tfoot>
+            </table>
+
+        </div>
+
+
+        <!-- ========================= -->
+        <!-- PANEL DERECHO (SCROLL)  -->
+        <!-- ========================= -->
+        <div class="overflow-auto border-r-3 border-gray-400">
+            <table class="min-w-[70%] text-[11px] border-separate border-spacing-0">
+
+                <!-- HEADER -->
+                <thead class="sticky top-0 bg-gray-200 z-20">
+                    <tr>
+                        <th class=" th" rowspan="2">Veta</th>
+                        <th class=" th" rowspan="2">Nivel</th>
+                        <th class=" th" rowspan="2">Tipo <br> Lab.</th>
+                        <th class=" th" rowspan="2">Labor</th>
+                        <th class=" th" rowspan="2">Ala</th>
+                        <th rowspan="2" class="th">Cod. Cto</th>
+                        <th rowspan="2" class="th">Cod. Cta</th>
+                        <th rowspan="2" class="th">Blocks</th>
+                        <th rowspan="2" class="th">Icono Mensaje</th>
+                        <th rowspan="2" class="th">Tipo <br> Sostenimiento</th>
+                        <th rowspan="2" class="th">Avance <br>MTS</th>
+                        <th rowspan="2" class="th">Sección <br>Ancho</th>
+                        <th rowspan="2" class="th">Sección <br>Altura</th>
+                        <th rowspan="2" class="th">TMS <br>Desmonte</th>
+                        <th rowspan="2" class="th">TMS <br>Mineral</th>
+                        <th rowspan="2" class="th">TMS <br>Total</th>
+                        <th rowspan="2" class="th">Evaluación <br>Bloque</th>
+                        <th rowspan="2" class="th">Asocia <br> Labor</th>
+                        <th rowspan="2" class="th">RMR <br>Piso</th>
+                        <th rowspan="2" class="th">RMR <br>Veta</th>
+                        <th rowspan="2" class="th">RMR <br>Techo</th>
+                        <th rowspan="2" class="th">Ancho <br>Minado</th>
+                        <th rowspan="2" class="th">Tipo <br>Factor</th>
+                        <th rowspan="2" class="th">Fecha <br>Muestreo</th>
+                        <th colspan="5" class="th-group">Leyes Geológicas</th>
+                        <th rowspan="2" class="th">VTP <br>US$</th>
+                        <th rowspan="2" class="th">Método Minado</th>
+                        <th rowspan="2" class="th">Factor <br>X</th>
+                        <th rowspan="2" class="th">Buzamiento</th>
+                        <th rowspan="2" class="th">Rentabilidad</th>
+                        <th rowspan="2" class="th">Hombres X <br> Labor </th>
+                        <th rowspan="2" class="th">Ind. <br> Verif</th>
+                        <th rowspan="2" class="th">Planos</th>
+                        <th rowspan="2" class="th"></th>
+                    </tr>
+                    <tr>
+                        <th class="th-sub min-w-[60px]">Ag (gr)</th>
+                        <th class="th-sub min-w-[60px]">Cu (%)</th>
+                        <th class="th-sub min-w-[60px]">Pb (%)</th>
+                        <th class="th-sub min-w-[60px]">Zn (%)</th>
+                        <th class="th-sub min-w-[60px]">Au (gr)</th>
+                    </tr>
+                </thead>
+
+                <!-- BODY -->
+                <tbody formArrayName="labores">
+                    @if (isLoading()) {
+                    <tr>
+                        <td colspan="12" class="px-2 py-1 text-center">
+                            <div class="flex justify-center items-center py-8 ">
+                                <div class="flex flex-col justify-center ">
+                                    <progress class="progress w-56 " style="color:#013B5C;"></progress>
+                                    <span style="font-size: 13px;"><b>Cargando...</b></span>
+                                </div>
+
+                            </div>
+                        </td>
+                    </tr>
+                    }
+                    @else if (labores.length > 0) {
+                    @for (labor of labores.controls; let i = $index; track $index) {
+                    <tr style="text-align:center;" [formGroupName]="$index" (dblclick)="copiarLabor(i)"
+                        class="font-medium text-lg whitespace-nowrap " [ngClass]="{
+                            'bg-[#EAEAEA] border-x-4 border-[#002B48]': i === selecionarIndice() }">
+
+                        <td> <input class="hidden" formControlName="cod_veta" />
+                            <input class=" w-40 input-base pointer-events-none " type="text" readonly [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }"
+                                [value]="labor.get('cod_veta')?.value ? labor.get('cod_veta')?.value + ' - ' + (labor.get('nom_veta')?.value || labor.get('cod_nom_veta')?.value || '') : ''" />
+
+                            @if(formUtils.isValidFieldInArray(labor, "cod_veta")) {
+                            <div class=" text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "cod_veta")}}</b>
+                                </span>
+                            </div>
+                            }
+                        </td>
+                        <td>
+                            <input class="w-40 input-base pointer-events-none" type="text" formControlName="cod_nivel"
+                                [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" readonly />
+                            @if(formUtils.isValidFieldInArray(labor, "cod_nivel")) {
+                            <div class=" text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "cod_nivel")}}</b>
+                                </span>
+                            </div>
+                            }
+                        </td>
+                        <td>
+                            <input class=" w-40 input-base pointer-events-none" type="text"
+                                formControlName="cod_tipo_labor" [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" readonly />
+                            @if(formUtils.isValidFieldInArray(labor, "cod_tipo_labor")) {
+                            <div class=" text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "cod_tipo_labor")}}</b>
+                                </span>
+                            </div>
+                            }
+
+
+                        </td>
+
+                        <td>
+
+                            <input class=" w-40 input-base  pointer-events-none" type="text" formControlName="cod_labor"
+                                readonly [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" />
+                            @if(formUtils.isValidFieldInArray(labor, "cod_labor")) {
+                            <div class=" text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "cod_labor")}}</b>
+                                </span>
+                            </div>
+                            }
+
+                        </td>
+                        <!-- [attr.disabled]="labor.get('cod_ala')?.disabled ? true : null" -->
+                        <td>
+                            <!-- [attr.disabled]="labor.get('cod_ala')?.disabled ? true : null" -->
+                            <select formControlName="cod_ala" readonly [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" class="select-base_dos w-34">
+                                @for (item of utilidades.listaAla(); track $index) {
+                                <option [value]="item.cod_ala"> {{ item.cod_ala }} {{
+                                    item.nom_ala
+                                    }} </option>
+                                }
+                            </select>
+                            @if ( formUtils.isValidFieldInArray(labor, "cod_ala") ) {
+                            <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "cod_ala")}}</b>
+                                </span>
+
+                            </div>
+                            }
+
+                        </td>
+
+                        <td>
+                            <select formControlName="cod_cto" [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" class="select-base_dos w-65">
+                                @for (item of utilidades.listaCto(); track $index) {
+                                <option [value]="item.cod_centro_costo" [selected]="$index === 0"> {{
+                                    item.cod_centro_costo
+                                    }} {{
+                                    item.des_centro_costo }} </option>
+                                }
+                            </select>
+                        </td>
+
+                        <td>
+                            <select formControlName="cod_cta" [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" class="select-base_dos w-65">
+                                @for (item of utilidades.listaCta(); track $index) {
+                                <option [value]="item.cod_cuenta_contable" [selected]="$index === 0"> {{
+                                    item.cod_cuenta_contable }} {{
+                                    item.des_cuenta_contable }} </option>
+                                }
+                            </select>
+                        </td>
+
+                        <td><input class="border-none bg-transparent w-30 text-center input-base" type="number"
+                                [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" formControlName="prg_blocks" />
+                            @if ( formUtils.isValidFieldInArray(labor, "prg_blocks") ) {
+                            <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "prg_blocks")}}</b>
+                                </span>
+
+                            </div>
+                            }
+                        </td>
+
+
+                        <td>
+                            <button type="button" class="btn btn-sm gap-1 flex items-center w-fit"
+                                [disabled]="modo() === 'nuevo'" (click)="openModalBlock($index)">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                                <span class="text-xs">Agregar</span>
+                            </button>
+                        </td>
+
+                        <td>
+                            <select formControlName="ind_clasificacion_sos" [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" class="select-base_dos w-28">
+                                @for (item of utilidades.listTipoSostenimiento(); track $index) {
+                                <option [value]="item.cod_sos" [selected]="$index === 0"> {{ item.tipo_sosten }}
+                                </option>
+                                }
+                            </select>
+
+                            @if ( formUtils.isValidFieldInArray(labor, "ind_clasificacion_sos") ) {
+                            <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "ind_clasificacion_sos")}}</b>
+                                </span>
+
+                            </div>
+                            }
+                        </td>
+
+                        <td>
+                            <input class="border-none bg-transparent w-30 text-center input-base" type="number"
+                                [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" formControlName="prg_avamts" />
+
+                            @if ( formUtils.isValidFieldInArray(labor, "prg_avamts") ) {
+                            <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "prg_avamts")}}</b>
+                                </span>
+
+                            </div>
+                            }
+
+                        </td>
+                        <td><input class="border-none bg-transparent w-30 text-center input-base" type="number"
+                                [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" formControlName="prg_secancho" />
+                            @if ( formUtils.isValidFieldInArray(labor, "prg_secancho") ) {
+                            <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "prg_secancho")}}</b>
+                                </span>
+
+                            </div>
+                            }
+
+                        </td>
+                        <td><input class="border-none bg-transparent w-30 text-center input-base" type="number"
+                                [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" formControlName="prg_secaltu" />
+                            @if ( formUtils.isValidFieldInArray(labor, "prg_secaltu") ) {
+                            <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "prg_secaltu")}}</b>
+                                </span>
+
+                            </div>
+                            }
+                        </td>
+                        <td><input class="border-none bg-transparent w-30 text-center input-base" type="number"
+                                [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" formControlName="prg_tmsdes" />
+                            @if ( formUtils.isValidFieldInArray(labor, "prg_tmsdes") ) {
+                            <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "prg_tmsdes")}}</b>
+                                </span>
+
+                            </div>
+                            }
+                        </td>
+                        <td><input class="border-none bg-transparent w-30 text-center input-base" type="number"
+                                [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" formControlName="prg_tmsmin" />
+                            @if ( formUtils.isValidFieldInArray(labor, "prg_tmsmin") ) {
+                            <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "prg_tmsmin")}}</b>
+                                </span>
+
+                            </div>
+                            }
+                        </td>
+                        <td><input class="border-none bg-transparent w-30 text-center input-base" type="number"
+                                [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" formControlName="tms_total" />
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-sm gap-1 flex items-center w-fit"
+                                [disabled]="modo() === 'nuevo'" (click)="openModalReserva($index)">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+                                </svg>
+                                <span class="text-xs">Agregar</span>
+                            </button>
+                        </td>
+
+                        <td>
+                            <select class=" select-base_dos w-15" [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }">
+                                @for (item of listAsociaLabor(); track $index) {
+                                <option [value]="item.cod_aso_labor" [selected]="$index === 0"> {{ item.aso_labor }}
+                                </option>
+                                }
+
+                            </select>
+                        </td>
+
+                        <td><input class="border-none bg-transparent w-30 text-center input-base" type="number"
+                                [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" formControlName="ind_tip_roca_piso" />
+                            @if ( formUtils.isValidFieldInArray(labor, "ind_tip_roca_piso") ) {
+                            <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "ind_tip_roca_piso")}}</b>
+                                </span>
+
+                            </div>
+                            }
+
+                        </td>
+                        <td><input class="border-none bg-transparent w-30 text-center input-base" type="number"
+                                [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }"  formControlName="ind_tip_roca"/>
+                            @if ( formUtils.isValidFieldInArray(labor, "ind_tip_roca") ) {
+                            <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "ind_tip_roca")}}</b>
+                                </span>
+
+                            </div>
+                            }
+                        </td>
+                        <td><input class="border-none bg-transparent w-30 text-center input-base" type="number"
+                                [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" formControlName="ind_tip_roca_techo" />
+                            @if ( formUtils.isValidFieldInArray(labor, "ind_tip_roca_techo") ) {
+                            <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "ind_tip_roca_techo")}}</b>
+                                </span>
+
+                            </div>
+                            }
+                        </td>
+                        <td><input class="border-none bg-transparent w-30 text-center input-base" type="number"
+                                [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" formControlName="prg_ancmin" />
+                            @if ( formUtils.isValidFieldInArray(labor, "prg_ancmin") ) {
+                            <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "prg_ancmin")}}</b>
+                                </span>
+
+                            </div>
+                            }
+                        </td>
+
+                        <td class="font-medium">
+                            <select formControlName="val_tipo_fac" [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }"
+                                class="select-xs mx-auto select font-medium outline-none flex items-center border border-gray-300 rounded-lg
+                                                    bg-gray-50 shadow-sm hover:shadow-md transition-shadow duration-300 ease-in-out focus-within:border-[#033351] focus-within:ring-1
+                                                    focus-within:ring-[rgb(3,102,157)] focus-within:ring-opacity-40 w-28">
+                                @for (item of utilidades.listValOperativo(); track $index) {
+                                <option [value]="item.val_tipo_fac"> {{ item.val_des_tipo_fac }} </option>
+                                }
+                            </select>
+                            @if ( formUtils.isValidFieldInArray(labor, "val_tipo_fac") ) {
+                            <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "val_tipo_fac")}}</b>
+                                </span>
+
+                            </div>
+                            }
+                        </td>
+                        <td><input class="border-none bg-transparent w-24 text-center input-base" [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" style="font-size: 11px;" type="date" formControlName="prg_fecmuestreo" />
+
+                            @if ( formUtils.isValidFieldInArray(labor, "prg_fecmuestreo") ) {
+                            <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "prg_fecmuestreo")}}</b>
+                                </span>
+
+                            </div>
+                            }
+                        </td>
+
+                        <td><input class="border-none bg-transparent w-30 text-center input-base" type="number"
+                                [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" formControlName="prg_leyag" />
+                            @if ( formUtils.isValidFieldInArray(labor, "prg_leyag") ) {
+                            <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "prg_leyag")}}</b>
+                                </span>
+
+                            </div>
+                            }
+                        </td>
+                        <td><input class="border-none bg-transparent w-30 text-center input-base" type="number"
+                                [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" formControlName="prg_leycu" />
+                            @if ( formUtils.isValidFieldInArray(labor, "prg_leycu") ) {
+                            <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "prg_leycu")}}</b>
+                                </span>
+
+                            </div>
+                            }
+                        </td>
+                        <td><input class="border-none bg-transparent w-30 text-center input-base" type="number"
+                                [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" formControlName="prg_leypb" />
+                            @if ( formUtils.isValidFieldInArray(labor, "prg_leypb") ) {
+                            <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "prg_leypb")}}</b>
+                                </span>
+
+                            </div>
+                            }
+                        </td>
+                        <td><input class="border-none bg-transparent w-30 text-center input-base" type="number"
+                                [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" formControlName="prg_leyzn" />
+
+                            @if ( formUtils.isValidFieldInArray(labor, "prg_leyzn") ) {
+                            <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "prg_leyzn")}}</b>
+                                </span>
+
+                            </div>
+                            }
+                        </td>
+                        <td><input class="border-none bg-transparent w-30 text-center input-base" type="number"
+                                [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" formControlName="prg_leyau" />
+                            @if ( formUtils.isValidFieldInArray(labor, "prg_leyau") ) {
+                            <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "prg_leyau")}}</b>
+                                </span>
+
+                            </div>
+                            }
+                        </td>
+
+                        <td><input class="border-none bg-transparent w-30 text-center input-base" type="number"
+                                [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" formControlName="prg_vptmin" />
+                            @if ( formUtils.isValidFieldInArray(labor, "prg_vptmin") ) {
+                            <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "prg_vptmin")}}</b>
+                                </span>
+
+                            </div>
+                            }
+                        </td>
+                        <td>
+
+                            <!-- <input class="border-none bg-transparent w-14 text-center" type="text"
+                                formControlName="metexp_cod" /> -->
+                            <select formControlName="cod_metexp" [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }"
+                                class="select-xs mx-auto select font-medium outline-none flex items-center border border-gray-300 rounded-lg
+                                                        bg-gray-50 shadow-sm hover:shadow-md transition-shadow duration-300 ease-in-out focus-within:border-[#033351] focus-within:ring-1
+                                                        focus-within:ring-[rgb(3,102,157)] focus-within:ring-opacity-40 w-55">
+                                @for (item of listMetExplotacion(); track $index) {
+                                <option [value]="item.cod_metexp"> {{ item.nom_metexp }} </option>
+                                }
+                            </select>
+
+                            @if ( formUtils.isValidFieldInArray(labor, "cod_metexp") ) {
+                            <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "cod_metexp")}}</b>
+                                </span>
+
+                            </div>
+                            }
+                        </td>
+                        <td><input class="border-none bg-transparent w-30 text-center input-base" type="number"
+                                [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" formControlName="num_factor_x" />
+                            @if ( formUtils.isValidFieldInArray(labor, "num_factor_x") ) {
+                            <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "num_factor_x")}}</b>
+                                </span>
+
+                            </div>
+                            }
+                        </td>
+                        <td><input class="border-none bg-transparent w-30 text-center input-base" type="number"
+                                [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" formControlName="num_buzamiento" />
+
+                            @if ( formUtils.isValidFieldInArray(labor, "num_buzamiento") ) {
+                            <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "num_buzamiento")}}</b>
+                                </span>
+
+                            </div>
+                            }
+                        </td>
+                        <td><input class="border-none bg-transparent w-30 text-center input-base" type="number"
+                                [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" formControlName="prg_cutoff" />
+
+                            @if ( formUtils.isValidFieldInArray(labor, "prg_cutoff") ) {
+                            <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "prg_cutoff")}}</b>
+                                </span>
+
+                            </div>
+                            }
+                        </td>
+                        <td>
+                            <input class="border-none bg-transparent w-30 text-center input-base" type="number"
+                                [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" formControlName="prg_homlab" />
+
+                            @if ( formUtils.isValidFieldInArray(labor, "prg_homlab") ) {
+                            <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
+                                <span>
+                                    <b>{{formUtils.getFiledErrorArray(labor, "prg_homlab")}}</b>
+                                </span>
+
+                            </div>
+                            }
+                        </td>
+
+                        <td><input type="checkbox" formControlName="ind_verificacion" class="w-4 h-4" [ngClass]="{
+                                    'text-red-500': labor.get('prg_progra')?.value === 'N',
+                                    'opacity-50 bg-gray-100 cursor-not-allowed': modo() === 'ver' && !labor.get('isNew')?.value
+                                }" /></td>
+
+                        <td>
+                            <button type="button" class="btn btn-sm flex items-center w-fit px-2 py-1"
+                                [disabled]="modo() === 'nuevo'" (click)="openModalPlano($index)">
+                                <span class="text-xs">Planos</span>
+                            </button>
+                        </td>
+
+                        <td>
+                            <button type="button" (click)="eliminarFila(i, labor.value)"
+                                class="flex bg-[#9f1239] items-center justify-center rounded shadow-sm hover:scale-110 transition-all w-6 h-6">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="white"
+                                    class="w-4 h-4">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                        d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </td>
+                    </tr>
+                    }
+                    }@else {
+                    <tr>
+                        <td colspan="60" class="px-2 py-1 text-center" style="background-color: rgb(255, 238, 238);">
+                            <b>No existen datos para mostrar.</b>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+
+                <tfoot style="position: sticky; bottom: 0; background: rgb(247, 240, 228); z-index: 10;">
+                    <tr>
+                        <td colspan="2" style="border:none; background: rgb(247, 240, 228); font-weight: bold;">
+                            <div class="align-top">
+                                Total Producción: {{ _totalProduccion() }}
+                            </div>
+                        </td>
+                        <td style="border:none;"></td>
+                        <td style="border:none;"></td>
+                        <td style="border:none;"></td>
+                        <td style="border:none;"></td>
+                        <td style="border:none;"></td>
+                        <td style="border:none;"></td>
+                        <td style="border:none;"></td>
+                        <td style="border:none;"></td>
+                        <td style="border:none; font-weight: bold; text-align: center;">{{ _totalPrgAvamts() |
+                            number:'1.2-2' }}</td>
+                        <td style="border:none;"></td>
+                        <td style="border:none;"></td>
+                        <td style="border:none; font-weight: bold; text-align: center;">{{ _totalTmsDes() |
+                            number:'1.2-2' }}
+                        </td>
+                        <td style="border:none; font-weight: bold; text-align: center;">{{ _totalTmsMin() |
+                            number:'1.2-2' }}
+                        </td>
+                        <td style="border:none; font-weight: bold; text-align: center;">{{ _totalTmsToal() |
+                            number:'1.2-2' }}</td>
+                        <td style="border:none;"></td>
+                        <td style="border:none;"></td>
+                        <td style="border:none;"></td>
+                        <td style="border:none;"></td>
+                        <td style="border:none;"></td>
+                        <td style="border:none;"></td>
+                        <td style="border:none;"></td>
+                        <td style="border:none;"></td>
+                        <td style="border:none; font-weight: bold; text-align: center;">{{_promedioLeyAg() |
+                            number:'1.2-2'}}</td>
+                        <td style="border:none; font-weight: bold; text-align: center;">{{_promedioLeyCu() |
+                            number:'1.2-2'}}</td>
+                        <td style="border:none; font-weight: bold; text-align: center;">{{_promedioLeyPb() |
+                            number:'1.2-2'}}</td>
+                        <td style="border:none; font-weight: bold; text-align: center;">{{_promedioLeyZn() |
+                            number:'1.2-2'}}</td>
+                        <td style="border:none; font-weight: bold; text-align: center;">{{_promedioLeyAu() |
+                            number:'1.2-2'}}</td>
+                        <td style="border:none; font-weight: bold; text-align: center;">{{_promedioVptMin() |
+                            number:'1.2-2'}}</td>
+                        <td style="border:none;"></td>
+                        <td style="border:none;"></td>
+                        <td style="border:none;"></td>
+                        <td style="border:none;"></td>
+                        <td style="border:none;"></td>
+                        <td style="border:none;"></td>
+                        <td style="border:none;"></td>
+                        <td style="border:none;"></td>
+
+                    </tr>
+                </tfoot>
+            </table>
+
+        </div>
+
+        <!-- <button type="submit">Guardar</button> -->
+    </form>
+
+    <!-- [disabled]="!botonAccionService.formularioCabValido()" -->
+    <button type="button" (click)="onAgregarFila()"
+        class="flex mr-1 bg-[#047857] items-center justify-center p-2 border border-gray-200 rounded-lg
+        shadow-sm hover:shadow-md hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed w-10 h-10">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="white" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
+        </svg>
+    </button>
+</div>
+
+<!-- <button (click)="abrirModal()">BriModal</button> -->
+@if (showModalBlock) {
+<app-block-reservas [cie_anio]="cie_anio()" [listaEdicionPrograma]="selectedPrograma()"
+    (enviarResultado)="recibirBlocks($event)" (cerrar)="closeModalBlock()" />
+}
+
+
+@if (selectedIndexReserva !== null) {
+<app-evaluacion-bloque [_listBlockReserva]="selectedPrograma()" (cerrarReserva)="closeModalReserva()"
+    (enviarEvaluacion)="recibirEvaluacion($event)" [laboresEvaluacionBloque]="laboresEvaluacionBloque()" />
+}
+
+
+@if (selectedIndexPlano !== null) {
+<app-planos [_listMostrarPlanos]="listaEdicionPrograma()" (cerrarPlano)="closeModalPlano()"
+    [laboresEvaluacionBloque]="laboresEvaluacionBloque()" />
+}
+
+
+<!-- (cerrarModal)="cerrarModal()" -->
+@if (mostrarModalLabores()) {
+<app-modal-lista-avance (enviarLabor)="recibirLabor($event)" />
+}
