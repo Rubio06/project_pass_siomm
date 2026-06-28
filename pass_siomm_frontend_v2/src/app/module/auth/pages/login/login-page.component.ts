@@ -5,11 +5,8 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { SpinnerComponent } from 'src/app/shared/components/spinner/spinner.component';
 import { SpinnerService } from 'src/app/shared/components/spinner/service/spinner.service';
-<<<<<<< HEAD
 import { LogResponse } from '../../interfaces/auth.interface';
 import { DatosLoginCompartidoService } from 'src/app/module/planing/service/datos-login-compartido.service';
-=======
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
 
 @Component({
     selector: 'app-login',
@@ -22,20 +19,13 @@ export class LoginPageComponent {
     fb = inject(FormBuilder);
     hasError = signal(false);
     router = inject(Router);
-<<<<<<< HEAD
+    
     private datosLoginCompartidoService = inject(DatosLoginCompartidoService);
-=======
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
-
     spinnerService = inject(SpinnerService);
 
     loginForm = this.fb.group({
         username: ['pract_ir.sist.cmc', [Validators.required]],
-<<<<<<< HEAD
         password: ['cemuz351U', [Validators.required]]
-=======
-        password: ['camuz351U', [Validators.required]]
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     });
 
     onSubmit() {
@@ -47,22 +37,16 @@ export class LoginPageComponent {
 
         const { username, password } = this.loginForm.value;
 
-<<<<<<< HEAD
-        this.authServices.login(username!, password!).subscribe({
-            next: (res: LogResponse) => {
-                if (res) {
-                    this.datosLoginCompartidoService.setUsuario(res.data);
-=======
-        // Mostrar spinner antes de la petición
+        // Descomentar si deseas activar el Spinner visual durante la carga
         // this.spinnerService.show();
 
         this.authServices.login(username!, password!).subscribe({
-            next: (res: boolean) => {
-                // Ocultar spinner cuando termine
+            next: (res: LogResponse) => {
                 // this.spinnerService.hide();
 
-                if (res) {
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
+                if (res && res.success) {
+                    // Guardamos la información compartida del usuario que viene de la respuesta
+                    this.datosLoginCompartidoService.setUsuario(res.data);
                     this.router.navigate(['/menu-principal']);
                 } else {
                     this.hasError.set(true);
@@ -70,17 +54,17 @@ export class LoginPageComponent {
                 }
             },
             error: (err) => {
-<<<<<<< HEAD
-=======
                 // this.spinnerService.hide();
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
                 console.error('Error al autenticar', err);
+                this.hasError.set(true);
+                setTimeout(() => this.hasError.set(false), 3000);
             }
         });
     }
 
     @HostListener('window:beforeunload', ['$event'])
     beforeUnloadHandler(event: Event) {
-        sessionStorage.removeItem('token'); // elimina token de localStorage
+        // Limpieza de seguridad al cerrar o recargar la ventana
+        sessionStorage.removeItem('token'); 
     }
 }

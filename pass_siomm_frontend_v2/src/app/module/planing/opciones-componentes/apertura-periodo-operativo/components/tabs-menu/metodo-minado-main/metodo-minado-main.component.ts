@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, effect, inject, signal } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ChangeDetectorRef, Component, effect, inject, signal, OnInit } from '@angular/core';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DATOS_METODO_MINADO, MaePerMetExplotacion, SelectExploracion, TH_METODOLO_MINADO, thTitulos } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/interface/aper-per-oper.interface';
 import { PlanningService } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/services/planning.service';
 import { PlaningCompartidoService } from '../../../services/planing-compartido.service';
@@ -13,22 +13,20 @@ import { FormUtils } from 'src/app/utils/form-utils';
     templateUrl: './metodo-minado-main.component.html',
     styleUrl: './metodo-minado-main.component.css',
 })
-export class MetodoMinadoMainComponent {
+export class MetodoMinadoMainComponent implements OnInit {
 
     columnas = signal<thTitulos[]>(TH_METODOLO_MINADO);
     titulo = this.columnas().map(t => t.titulo);
-
     datosColumna = signal<any[]>(DATOS_METODO_MINADO);
 
     planingCompartido = inject(PlaningCompartidoService);
-
-    formUtils = FormUtils;
-
     semanasAvanceMainService = inject(SemanasAvanceMainService);
-    private utils = FormUtils;
     planingService = inject(PlanningService);
-
     fb = inject(FormBuilder);
+    private cd = inject(ChangeDetectorRef);
+    
+    formUtils = FormUtils;
+    private utils = FormUtils;
 
     // ========================================
     //   FORMULARIO PRINCIPAL
@@ -41,15 +39,12 @@ export class MetodoMinadoMainComponent {
         return this.myForm.get('semanas') as FormArray;
     }
 
-
     // ========================================
     //   SIGNALS
     // ========================================
     loading = signal(false);
     message = signal<string>('');
-
     modoVisualizar = signal<boolean>(false);
-
     cod_metexp = signal<SelectExploracion[]>([]);
     cod_metexpBloqueo = signal<string[]>([]);
 
@@ -68,21 +63,15 @@ export class MetodoMinadoMainComponent {
         { value: 'N', label: 'No' }
     ]);
 
-    private cd = inject(ChangeDetectorRef);
-
     constructor() {
         effect(() => {
             const data = this.planingCompartido.dataRoutes();
             const semanas = data?.data?.metodo_minado || [];
-
             this.loadSemanas(semanas);
-            // this.cd.detectChanges();
-
         });
 
         this.loadSelectExploracion();
     }
-
 
     trackByIndex(index: number) {
         return index;
@@ -120,29 +109,23 @@ export class MetodoMinadoMainComponent {
     // =====================================================
     //   AGREGAR FILA NUEVA (EDITABLE)
     // =====================================================
-
-
     agregarFilas() {
-<<<<<<< HEAD
         this.planingCompartido.setBotonesState({
             ...this.planingCompartido.botonesState(),
             editar: true
         });
-=======
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
+
         this.bloqueoSelect();
         const periodo = this.planingCompartido.periodo();
-
 
         if (!periodo?.anio || !periodo?.mes) {
             return;
         }
 
-
         const nuevoGrupo = this.fb.group({
             cie_ano: [periodo?.anio, Validators.required],
             cie_per: [periodo?.mes, Validators.required],
-            cod_metexp: ['', Validators.required], // 👈 CLAVE
+            cod_metexp: ['', Validators.required],
             nom_metexp: ['', [Validators.pattern(/^\d+(\.\d+)?$/)]],
             ind_calculo_dilucion: ['', Validators.required],
             ind_calculo_leyes_min: ['', Validators.required],
@@ -155,18 +138,15 @@ export class MetodoMinadoMainComponent {
 
     valoresSeleccionados(excluirItem: AbstractControl): string[] {
         return this.semanas.controls
-            .filter(ctrl => ctrl !== excluirItem)                   // Excluimos la fila actual
-            .map(ctrl => ctrl.get('cod_metexp')?.value)        // Tomamos el valor
-            .filter(val => !!val);                                  // Quitamos nulos/vacíos
+            .filter(ctrl => ctrl !== excluirItem)
+            .map(ctrl => ctrl.get('cod_metexp')?.value)
+            .filter(val => !!val);
     }
-
-
 
     // =====================================================
     //   ELIMINAR FILA
     // =====================================================
     async eliminarFila(data: any, index: number) {
-
         const periodo = this.planingCompartido.periodo();
 
         if (!periodo?.anio || !periodo?.mes) {
@@ -177,11 +157,7 @@ export class MetodoMinadoMainComponent {
         const esNuevo = semana.esNuevo;
 
         if (esNuevo) {
-<<<<<<< HEAD
-
             this.semanas.removeAt(index);
-=======
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
             return;
         }
 
@@ -201,12 +177,11 @@ export class MetodoMinadoMainComponent {
             next: (res: any) => {
                 if (res.success) {
                     this.utils.alertaEliminado(res.message);
+                    this.semanas.removeAt(index);
                     this.refrescarDatos();
-
                 } else {
                     this.utils.alertaEliminado(res.message);
                     this.refrescarDatos();
-
                 }
             },
             error: (err) => this.utils.mensajeError(err.message)
@@ -214,39 +189,27 @@ export class MetodoMinadoMainComponent {
     }
 
     private refrescarDatos() {
-        this.planingCompartido.setFormFactorBloqueado(true); // 🔓
+        this.planingCompartido.setFormFactorBloqueado(true);
         this.planingCompartido.setTablaBloqueada(true);
         this.planingCompartido.ejecutarVisualizar();
     }
-
 
     bloquearCampo(row: AbstractControl): boolean {
         return !row.get('esNuevo')?.value;
     }
 
-
     // =====================================================
-    //   SUBMIT SOLO DE LA ÚLTIMA FILA
+    //   LÓGICA EN EL CICLO DE VIDA
     // =====================================================
     ngOnInit() {
         this.planingCompartido.setLastTab('metodo_minado');
-
         this.planingCompartido.registrarFormulario('metodo_minado', this.myForm);
 
-
-        // this.myForm.valueChanges.subscribe(val => {
-        //     const filas = this.semanas.getRawValue();
-        //     this.planingCompartido.setMetodoMinado(filas, 'metodo_minado');
-        // });
-
-
         this.myForm.valueChanges.subscribe(() => {
-            // Tomamos los valores actuales
             const filas = this.semanas.getRawValue().map((fila: any) => {
                 const filaProcesada: any = {};
 
                 Object.keys(fila).forEach(key => {
-                    // Reemplazamos nulos, undefined o strings vacíos por '00.00'
                     filaProcesada[key] = fila[key] === null || fila[key] === undefined || fila[key] === ''
                         ? '00.00'
                         : fila[key];
@@ -255,46 +218,9 @@ export class MetodoMinadoMainComponent {
                 return filaProcesada;
             });
 
-            // Enviamos filas ya procesadas
             this.planingCompartido.setMetodoMinado(filas, 'metodo_minado');
         });
-
     }
-
-
-
-
-    // ngOnInit() {
-
-    //     this.planingCompartido.setLastTab('exploracion_estandar');
-
-    //     this.planingCompartido.registrarFormulario('exploracion_estandar', this.myForm);
-
-
-
-    //     this.myForm.valueChanges.subscribe(() => {
-    //         // Tomamos los valores actuales
-    //         const filas = this.semanas.getRawValue().map((fila: any) => {
-    //             const filaProcesada: any = {};
-
-    //             Object.keys(fila).forEach(key => {
-    //                 // Reemplazamos nulos, undefined o strings vacíos por '00.00'
-    //                 filaProcesada[key] = fila[key] === null || fila[key] === undefined || fila[key] === ''
-    //                     ? '00.00'
-    //                     : fila[key];
-    //             });
-
-    //             return filaProcesada;
-    //         });
-
-    //         // Enviamos filas ya procesadas
-    //         this.planingCompartido.setExploracionExtandar(filas, 'exploracion_estandar');
-    //     });
-
-
-
-    // }
-
 
     // =====================================================
     //   LOOKUP SELECT EXPLORACIÓN
@@ -318,5 +244,4 @@ export class MetodoMinadoMainComponent {
             error: (err) => console.error('Error al cargar tipos de labor:', err),
         });
     }
-
 }

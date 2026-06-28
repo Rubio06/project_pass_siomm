@@ -1,12 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, effect, inject, signal } from '@angular/core';
+import { Component, effect, inject, signal, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CanchasComponent } from './canchas/canchas.component';
 import { PlanningService } from '../../services/planning.service';
 import { PlaningCompartidoService } from '../../services/planing-compartido.service';
 import { FormUtils } from 'src/app/utils/form-utils';
-
-
 
 @Component({
     selector: 'app-valores',
@@ -14,18 +12,16 @@ import { FormUtils } from 'src/app/utils/form-utils';
     templateUrl: './valores.component.html',
     styleUrl: './valores.component.css',
 })
-export class ValoresComponent {
+export class ValoresComponent implements OnInit {
     private planingService = inject(PlanningService);
-
     planingCompartido = inject(PlaningCompartidoService);
     private fb = inject(FormBuilder);
+    
     rutas = this.planingCompartido.dataRoutes;
     formUtils = FormUtils;
-
-
     form!: FormGroup;
-    // bloqueo = inject(PlaningCompartido).bloqueo;
-    headers = ['Precio', 'Sobredilución', 'Recuperación Budget', 'Factor Conversión'];
+
+    headers = ['Precio', 'Sobredilución', 'Recuperación Budget', 'Factor Conversion'];
 
     elements = [
         { label: 'Ag (gr)', fields: ['val_pre_ag', 'val_fac_ag', 'val_fac_bud_ag', 'val_con_ag'] },
@@ -36,10 +32,9 @@ export class ValoresComponent {
     ];
 
     constructor() {
-
         const controls: any = {};
 
-        // campos dinámicos
+        // Generar campos dinámicos iniciales
         this.elements.forEach(item => {
             item.fields.forEach(field => {
                 controls[field] = [
@@ -49,150 +44,69 @@ export class ValoresComponent {
             });
         });
 
-
-        // crear el form UNA SOLA VEZ
+        // Crear el formulario reactivo
         this.form = this.fb.group(controls);
 
+        // Efecto para cargar datos del estado compartido global
         effect(() => {
             const response = this.planingCompartido.dataRoutes();
-
             if (!response) return;
 
             const factorOperativo = response.data?.factorOperativo?.[0];
-            const factorSobredisolucion = response.data?.factorSobredisolucion?.[0]; // LISTO
-            const factorBugetConversion = response.data?.recuperacionBudget?.[0];  //listo
+            const factorSobredisolucion = response.data?.factorSobredisolucion?.[0];
+            const factorBugetConversion = response.data?.recuperacionBudget?.[0];
 
             this.form.patchValue({
-
                 val_fac_ag: factorSobredisolucion?.val_fac_ag || '0.0000',
                 val_fac_bud_ag: factorBugetConversion?.val_fac_bud_ag || '0.0000',
                 val_con_ag: factorBugetConversion?.val_con_ag || '0.0000',
                 val_pre_ag: factorOperativo?.val_pre_ag || '0.0000',
 
-<<<<<<< HEAD
-                val_pre_cu: factorOperativo?.val_pre_cu || '0.000',
-=======
                 val_pre_cu: factorOperativo?.val_pre_cu || '0.0000',
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
-
-
                 val_fac_cu: factorSobredisolucion?.val_fac_cu || '0.0000',
                 val_fac_bud_cu: factorBugetConversion?.val_fac_bud_cu || '0.0000',
                 val_con_cu: factorBugetConversion?.val_con_cu || '0.0000',
 
                 val_pre_pb: factorOperativo?.val_pre_pb || '0.0000',
                 val_fac_pb: factorSobredisolucion?.val_fac_pb || '0.0000',
-
-
                 val_fac_bud_pb: factorBugetConversion?.val_fac_bud_pb || '0.0000',
                 val_con_pb: factorBugetConversion?.val_con_pb || '0.0000',
 
                 val_pre_zn: factorOperativo?.val_pre_zn || '0.0000',
                 val_fac_zn: factorSobredisolucion?.val_fac_zn || '0.0000',
                 val_fac_bud_zn: factorBugetConversion?.val_fac_bud_zn || '0.0000',
-<<<<<<< HEAD
-                val_con_zn: factorBugetConversion?.val_con_zn || '0.000',
-=======
                 val_con_zn: factorBugetConversion?.val_con_zn || '0.0000',
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
 
                 val_pre_au: factorOperativo?.val_pre_au || '0.0000',
                 val_fac_au: factorSobredisolucion?.val_fac_au || '0.0000',
                 val_fac_bud_au: factorBugetConversion?.val_fac_bud_au || '0.0000',
                 val_con_au: factorBugetConversion?.val_con_au || '0.0000'
             });
-
         });
 
-<<<<<<< HEAD
-        // effect(() => {
-        //     if (this.planingCompartido.resetPeriodo()) return;
-
-        //     this.resetearFormulario();
-        //     this.planingCompartido.clearResetPeriodo();
-        // });
-=======
+        // Efecto para escuchar la orden de resetear el periodo
         effect(() => {
             if (this.planingCompartido.resetPeriodo()) return;
 
             this.resetearFormulario();
             this.planingCompartido.clearResetPeriodo();
         });
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     }
-
-
-    resetearFormulario() {
-        this.form.reset({
-
-            // val_ano: '',
-            // val_per: '',
-            val_pre_ag: "0.000", //ste
-
-            //MaeFactorSobredisolucion
-            val_fac_ag: "0.000",
-
-            // MaeFactorRecuperacion
-            val_fac_bud_ag: "0.000",
-
-
-            val_con_ag: "0.000",
-
-            val_pre_cu: "0.000", //ste
-            val_fac_cu: "0.000",
-
-
-            val_fac_bud_cu: "0.000",
-            val_con_cu: "0.000",
-
-            val_pre_pb: "0.000", //ste
-            val_fac_pb: "0.000",
-            val_fac_bud_pb: "0.000",
-            val_con_pb: "0.000",
-
-            //
-            val_pre_zn: "0.000", //ste
-            val_fac_zn: "0.000",
-            val_fac_bud_zn: "0.000",
-            val_con_zn: "0.000",
-
-            val_pre_au: "0.000", //ste
-            val_fac_au: "0.000",
-            val_fac_bud_au: "0.000",
-            val_con_au: "0.000"
-        });
-    }
-
-    // const factorOperativo = response.data?.factorOperativo?.[0];
-
-
-    // const factorSobredisolucion = response.data?.factorSobredisolucion?.[0]; // LISTO
-
-    // const factorBugetConversion = response.data?.recuperacionBudget?.[0];  //listo
 
     ngOnInit() {
         this.form.valueChanges.subscribe(() => {
-<<<<<<< HEAD
-            // const f = this.form.getRawValue();
-
-        const f = this.form.getRawValue();
-
-        // Reemplazar vacíos por 0.000
-        Object.keys(f).forEach(key => {
-            if (f[key] === '' || f[key] === null || f[key] === undefined) {
-                f[key] = '0.000';
-            }
-        });
-
-
-=======
             const f = this.form.getRawValue();
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
+
+            // Reemplazar campos vacíos o nulos por valor por defecto '0.000'
+            Object.keys(f).forEach(key => {
+                if (f[key] === '' || f[key] === null || f[key] === undefined) {
+                    f[key] = '0.000';
+                }
+            });
 
             const factorOperativo = {
                 val_per: f.val_per,
                 val_ano: f.val_ano,
-
                 val_pre_ag: f.val_pre_ag,
                 val_pre_cu: f.val_pre_cu,
                 val_pre_pb: f.val_pre_pb,
@@ -213,7 +127,6 @@ export class ValoresComponent {
             const recuperacionBudget = {
                 cie_ano: f.cie_ano,
                 cie_per: f.cie_per,
-
                 val_fac_bud_ag: f.val_fac_bud_ag,
                 val_con_ag: f.val_con_ag,
                 val_fac_bud_cu: f.val_fac_bud_cu,
@@ -226,19 +139,43 @@ export class ValoresComponent {
                 val_con_au: f.val_con_au
             };
 
+            // Notificar los cambios en tiempo real al estado central del flujo
             this.planingCompartido.setFactorOperativo(factorOperativo, 'factor_operativo');
             this.planingCompartido.setFactorSobredisolucion(factorSobredisolucion, 'factor_operativo');
             this.planingCompartido.setRecuperacionBudget(recuperacionBudget, 'factor_operativo');
         });
     }
 
-<<<<<<< HEAD
+    resetearFormulario() {
+        this.form.reset({
+            val_pre_ag: "0.000",
+            val_fac_ag: "0.000",
+            val_fac_bud_ag: "0.000",
+            val_con_ag: "0.000",
+
+            val_pre_cu: "0.000",
+            val_fac_cu: "0.000",
+            val_fac_bud_cu: "0.000",
+            val_con_cu: "0.000",
+
+            val_pre_pb: "0.000",
+            val_fac_pb: "0.000",
+            val_fac_bud_pb: "0.000",
+            val_con_pb: "0.000",
+
+            val_pre_zn: "0.000",
+            val_fac_zn: "0.000",
+            val_fac_bud_zn: "0.000",
+            val_con_zn: "0.000",
+
+            val_pre_au: "0.000",
+            val_fac_au: "0.000",
+            val_fac_bud_au: "0.000",
+            val_con_au: "0.000"
+        });
+    }
+
     bloquearCampo(): boolean {
         return this.planingCompartido.bloqueoFormEditar();
     }
-=======
-    // bloquearCampo(): boolean {
-    //     return this.planingCompartido.bloqueoFormEditar();
-    // }
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
 }

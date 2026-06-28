@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 // /* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
 // /* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
 // {
@@ -15,18 +15,14 @@
 // }
 
 
-=======
-/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
-/* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
+
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./out-tsc/spec",
-<<<<<<< HEAD
+
     "rootDir": "./src", // <- AGREGA ESTA LÍNEA AQUÍ
-=======
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
+
     "types": [
       "jasmine"
     ]

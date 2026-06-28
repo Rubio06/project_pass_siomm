@@ -1,13 +1,12 @@
 import { PlaningCompartidoService } from './../module/planing/opciones-componentes/apertura-periodo-operativo/services/planing-compartido.service';
 import { effect, inject } from '@angular/core';
 import { AbstractControl, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
-import Swal from 'sweetalert2'
-<<<<<<< HEAD
+import Swal from 'sweetalert2';
+// import 'sweetalert2/dist/sweetalert2.min.css';
 
 import { ExportarProgramacion } from '../module/planing/opciones-componentes/programa-mensual-labores/interface/programa-mensual.interface';
 
 export class FormUtils {
-
 
     static meses: Record<string, string> = {
         '01': 'Enero',
@@ -24,11 +23,6 @@ export class FormUtils {
         '12': 'Diciembre'
     };
 
-=======
-import 'sweetalert2/dist/sweetalert2.min.css';
-
-export class FormUtils {
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     static formatDate(dateStr: string | Date | null | undefined): string {
         if (!dateStr) return '';
 
@@ -44,7 +38,6 @@ export class FormUtils {
         const [day, month, year] = dateStr.split('/');
         return new Date(Number(year), Number(month) - 1, Number(day)).toISOString();
     }
-
 
     static mensajeError(error: any) {
         Swal.fire({
@@ -64,16 +57,11 @@ export class FormUtils {
             color: "#333",
             confirmButtonText: "Entendido",
             confirmButtonColor: "#d33",
-            showClass: {
-                popup: 'animate__animated animate__fadeInDown'
-            },
-            hideClass: {
-                popup: 'animate__animated animate__fadeOutUp'
-            }
+            showClass: { popup: 'animate__animated animate__fadeInDown' },
+            hideClass: { popup: 'animate__animated animate__fadeOutUp' }
         });
     }
 
-<<<<<<< HEAD
     static mensajeErrorClase(error: any) {
         Swal.fire({
             icon: "error",
@@ -92,41 +80,21 @@ export class FormUtils {
             color: "#333",
             confirmButtonText: "Entendido",
             confirmButtonColor: "#d33",
-            showClass: {
-                popup: 'animate__animated animate__fadeInDown'
-            },
-            hideClass: {
-                popup: 'animate__animated animate__fadeOutUp'
-            },
-            customClass: {
-                container: 'swal-encima'
-            }
+            showClass: { popup: 'animate__animated animate__fadeInDown' },
+            hideClass: { popup: 'animate__animated animate__fadeOutUp' },
+            customClass: { container: 'swal-encima' }
         });
     }
-
-
-=======
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
-
-
 
     static confirmarEliminacion(): Promise<boolean> {
         return Swal.fire({
             title: "Eliminar registro",
             html: `
-<<<<<<< HEAD
-            <p style="font-size:14px;">
-                Esta acción <strong>no se puede deshacer</strong>.<br>
-                ¿Deseas eliminar el registro definitivamente?
-            </p>
+                <p style="font-size:14px;">
+                    Esta acción <strong>no se puede deshacer</strong>.<br>
+                    ¿Deseas eliminar el registro definitivamente?
+                </p>
             `,
-=======
-      <p style="font-size:14px;">
-        Esta acción <strong>no se puede deshacer</strong>.<br>
-        ¿Deseas eliminar el registro definitivamente?
-      </p>
-    `,
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#00426F",
@@ -135,7 +103,6 @@ export class FormUtils {
             cancelButtonText: "Cancelar"
         }).then(result => result.isConfirmed);
     }
-
 
     static guardarCambios() {
         return Swal.fire({
@@ -161,42 +128,30 @@ export class FormUtils {
         return Swal.fire({
             title: "Registro eliminado",
             html: `
-<<<<<<< HEAD
-                    <p style="font-size:14px;">
-                        ${message}<br>
-                        <span style="color:#4caf50;font-weight:600;">
+                <p style="font-size:14px;">
+                    ${message}<br>
+                    <span style="color:#4caf50;font-weight:600;">
                         La acción se realizó correctamente.
-                        </span>
-                    </p>
-                    `,
-=======
-      <p style="font-size:14px;">
-        ${message}<br>
-        <span style="color:#4caf50;font-weight:600;">
-          La acción se realizó correctamente.
-        </span>
-      </p>
-    `,
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
+                    </span>
+                </p>
+            `,
             icon: "success",
             confirmButtonColor: "#00426F",
             confirmButtonText: "Aceptar"
         });
     }
 
-<<<<<<< HEAD
-    
     static alertaInactivo(titulo: string, message: string) {
         return Swal.fire({
             title: titulo,
             html: `
-                    <p style="font-size:14px;">
-                        ${message}<br>
-                        <span style="color:#4caf50;font-weight:600;">
+                <p style="font-size:14px;">
+                    ${message}<br>
+                    <span style="color:#4caf50;font-weight:600;">
                         La acción se realizó correctamente.
-                        </span>
-                    </p>
-                    `,
+                    </span>
+                </p>
+            `,
             icon: "success",
             confirmButtonColor: "#00426F",
             confirmButtonText: "Aceptar"
@@ -207,19 +162,17 @@ export class FormUtils {
         return Swal.fire({
             title: "Registro eliminado",
             html: `
-                    <p style="font-size:14px;">
-                        ${message}<br>
-                        <span style="color:#4caf50;font-weight:600;">
+                <p style="font-size:14px;">
+                    ${message}<br>
+                    <span style="color:#4caf50;font-weight:600;">
                         La acción se realizó correctamente.
-                        </span>
-                    </p>
-                    `,
+                    </span>
+                </p>
+            `,
             icon: "success",
             confirmButtonColor: "#00426F",
             confirmButtonText: "Aceptar",
-            customClass: {
-                container: 'swal-encima'
-            }
+            customClass: { container: 'swal-encima' }
         });
     }
 
@@ -227,10 +180,10 @@ export class FormUtils {
         return Swal.fire({
             title: "Acción cancelada",
             html: `
-            <p style="font-size:14px;">
-                El registro ${mensaje} <strong>no fue eliminado</strong>.<br>
-                Puedes revisarlo nuevamente si lo necesitas.
-            </p>
+                <p style="font-size:14px;">
+                    El registro ${mensaje} <strong>no fue eliminado</strong>.<br>
+                    Puedes revisarlo nuevamente si lo necesitas.
+                </p>
             `,
             icon: "info",
             confirmButtonColor: "#00426F",
@@ -238,83 +191,56 @@ export class FormUtils {
         });
     }
 
-
     static alertaNoEliminadoMensajeClase(mensaje: string) {
         return Swal.fire({
             title: "Acción cancelada",
             html: `
-            <p style="font-size:14px;">
-                El registro ${mensaje} <strong>no fue eliminado</strong>.<br>
-                Puedes revisarlo nuevamente si lo necesitas.
-            </p>
+                <p style="font-size:14px;">
+                    El registro ${mensaje} <strong>no fue eliminado</strong>.<br>
+                    Puedes revisarlo nuevamente si lo necesitas.
+                </p>
             `,
             icon: "info",
             confirmButtonColor: "#00426F",
             confirmButtonText: "Entendido",
-            customClass: {
-                container: 'swal-encima'
-            }
+            customClass: { container: 'swal-encima' }
         });
     }
 
-
-=======
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     static errorCopiado(message: string) {
         const modal = document.getElementById('my_modal_3');
-
         return Swal.fire({
-            target: modal!,   // 👈 CLAVE
+            target: modal!,
             title: "Error al copiar periodo",
             html: `
-      <p style="font-size:14px;">
-        ${message}<br>
-        <span style="color:red;font-weight:600;">
-          No se pudo copiar el periodo.
-        </span>
-      </p>
-    `,
+                <p style="font-size:14px;">
+                    ${message}<br>
+                    <span style="color:red;font-weight:600;">
+                        No se pudo copiar el periodo.
+                    </span>
+                </p>
+            `,
             icon: "error",
             confirmButtonColor: "#00426F",
             confirmButtonText: "Aceptar"
         });
     }
 
-    // static alertaEliminado(message: string) {
-    //     return Swal.fire({
-    //         title: "Eliminado",
-    //         text: message,
-    //         icon: "success"
-    //     });
-    // }
-
     static alertaNoEliminado() {
         return Swal.fire({
             title: "Acción cancelada",
             html: `
-<<<<<<< HEAD
-            <p style="font-size:14px;">
-                El registro <strong>no fue eliminado</strong>.<br>
-                Puedes revisarlo nuevamente si lo necesitas.
-            </p>
+                <p style="font-size:14px;">
+                    El registro <strong>no fue eliminado</strong>.<br>
+                    Puedes revisarlo nuevamente si lo necesitas.
+                </p>
             `,
-=======
-      <p style="font-size:14px;">
-        El registro <strong>no fue eliminado</strong>.<br>
-        Puedes revisarlo nuevamente si lo necesitas.
-      </p>
-    `,
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
             icon: "info",
             confirmButtonColor: "#00426F",
             confirmButtonText: "Entendido"
         });
     }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     static async confirmarGuardado(): Promise<boolean> {
         const result = await Swal.fire({
             title: '¿Desea guardar los datos?',
@@ -326,8 +252,8 @@ export class FormUtils {
             cancelButtonColor: '#9E9E9E',
             reverseButtons: true,
             focusCancel: true,
-            allowOutsideClick: false,   // 🚫 click fuera
-            allowEscapeKey: false,     // 🚫 ESC
+            allowOutsideClick: false,
+            allowEscapeKey: false,
             allowEnterKey: false,
             backdrop: 'rgba(0,0,0,0.4)',
             customClass: {
@@ -337,7 +263,6 @@ export class FormUtils {
                 cancelButton: 'px-6 py-2 rounded-lg font-semibold'
             }
         });
-
         return result.isConfirmed;
     }
 
@@ -350,7 +275,6 @@ export class FormUtils {
         });
     }
 
-
     static exitoPeriodo(message: string) {
         Swal.fire({
             icon: 'success',
@@ -358,11 +282,8 @@ export class FormUtils {
             text: message,
             confirmButtonText: 'Aceptar',
             confirmButtonColor: '#013B5C'
-
         });
     }
-
-
 
     static mostrarError() {
         Swal.fire({
@@ -382,35 +303,33 @@ export class FormUtils {
         });
     }
 
-
     static errorGuardar(message: string) {
         return Swal.fire({
             title: "Error al guardar",
             html: `
-            <p style="font-size:15px; line-height:1.5; margin:0;">
-                ${message}
-            </p>
-        `,
+                <p style="font-size:15px; line-height:1.5; margin:0;">
+                    ${message}
+                </p>
+            `,
             icon: "error",
             confirmButtonColor: "#C62828",
             confirmButtonText: "Aceptar"
         });
     }
-<<<<<<< HEAD
+
     static mensajeNroProg() {
         return Swal.fire({
             icon: 'info',
             title: 'Programación aprobada',
             html: `
-                      <b>La programación ya se encuentra aprobada.</b><br>
-                      Solo podrá registrar <b>labores no programadas</b>.
-                    `,
+                <b>La programación ya se encuentra aprobada.</b><br>
+                Solo podrá registrar <b>labores no programadas</b>.
+            `,
             confirmButtonText: 'Continuar',
             confirmButtonColor: '#013B5C',
             backdrop: true
         });
     }
-
 
     static planosMensajeTabla(title: string, texto: string) {
         return Swal.fire({
@@ -447,7 +366,7 @@ export class FormUtils {
         });
     }
 
-    static confirmarInactivar(titulo: string, mensaje: string = '',textoBoton: string = 'Sí, Inactivar', html: string = '') {
+    static confirmarInactivar(titulo: string, mensaje: string = '', textoBoton: string = 'Sí, Inactivar', html: string = '') {
         return Swal.fire({
             title: titulo,
             text: mensaje,
@@ -461,9 +380,7 @@ export class FormUtils {
         });
     }
 
-
     static async pedirTituloPlano() {
-
         const { value } = await Swal.fire({
             title: 'Ingrese título del plano',
             input: 'text',
@@ -477,14 +394,8 @@ export class FormUtils {
                 return null;
             }
         });
-
         return value;
     }
-=======
-
-
-
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
 
     static confirmarDescartarCambios(): Promise<boolean> {
         return Swal.fire({
@@ -496,13 +407,12 @@ export class FormUtils {
             cancelButtonText: 'No, descartar',
             confirmButtonColor: '#033351',
             cancelButtonColor: '#d33',
-            allowOutsideClick: false,   // 🚫 click fuera
-            allowEscapeKey: false,     // 🚫 ESC
+            allowOutsideClick: false,
+            allowEscapeKey: false,
             allowEnterKey: false
         }).then(result => result.isConfirmed);
     }
 
-<<<<<<< HEAD
     static confirmarSalirSinGuardar(): Promise<boolean> {
         return Swal.fire({
             title: 'Cambios pendientes',
@@ -523,7 +433,7 @@ export class FormUtils {
         return Swal.fire({
             icon: 'warning',
             title: title,
-            html: `<b>${message}</b>`, // ✅ aquí sí funciona
+            html: `<b>${message}</b>`,
             confirmButtonText: 'Entendido',
             confirmButtonColor: '#033351'
         });
@@ -533,18 +443,12 @@ export class FormUtils {
         return Swal.fire({
             icon: 'warning',
             title: title,
-            html: `<b>${message}</b>`, // ✅ aquí sí funciona
+            html: `<b>${message}</b>`,
             confirmButtonText: 'Entendido',
             confirmButtonColor: '#033351',
-            customClass: {
-                container: 'swal-encima'
-            }
+            customClass: { container: 'swal-encima' }
         });
     }
-
-
-=======
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
 
     static isValidField(form: FormGroup, fildName: string): boolean | null {
         return (
@@ -553,46 +457,27 @@ export class FormUtils {
         );
     }
 
-
     static getFiledError(form: FormGroup, fildName: string): string | null {
         if (!form.controls[fildName]) return null;
         const errors = form.controls[fildName].errors ?? {};
-
         return FormUtils.getFieldError(errors);
     }
 
-
     static getFieldError(error: ValidationErrors) {
-<<<<<<< HEAD
-
-=======
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
         for (const key of Object.keys(error)) {
             switch (key) {
                 case 'required':
                     return 'Este campo es requerido';
-
                 case 'minlength':
                     return `Minimo de ${error['minlength'].requiredLength} caracteres`;
-
-<<<<<<< HEAD
                 case 'maxlength':
                     return `El formato permitido es hasta ${error['maxlength'].requiredLength} caracteres`;
-
                 case 'min':
-                    return `Valor minimo de caracteres permitidos es ${error['min'].min}`;
-
+                    return `Valor minimo de ${error['min'].min}`;
                 case 'max':
                     return `Valor maximo de caracteres pertimidos es ${error['max'].max}`;
-=======
-                case 'min':
-                    return `Valor minimo de  ${error['min'].min}`;
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
-
                 case 'pattern':
-                    return this.getPatternErrorMessage(
-                        error['pattern'].requiredPattern
-                    );
+                    return this.getPatternErrorMessage(error['pattern'].requiredPattern);
             }
         }
         return null;
@@ -604,7 +489,6 @@ export class FormUtils {
             '/^(19\\d{2}|20\\d{2}|2100)$/': 'Debe ingresar un año válido ejem.(2025)',
             '/^(0[1-9]|[12]\\d|3[01])\\/(0[1-9]|1[0-2])\\/(19\\d{2}|20\\d{2}|2100)$/': 'Debe ingresar fecha valida ejem.(22/12/2025)',
             '/^\\d+(\\.\\d+)?$/': 'El campo solo acepta numeros o decimales',
-<<<<<<< HEAD
             '/^[A-Z0-9]$/': 'Debe colocar una sola letra en mayuscula o un solo numero.',
             '/^\\d{11}$/': 'El RUC debe contener exactamente 11 digitos',
             '/^\\d{1,20}$/': 'El Nro. telefono debe de contener 20 digitos',
@@ -612,17 +496,11 @@ export class FormUtils {
             '/^\\d{60}$/': 'El nombre de labor debe ser menor a 60 digitos',
             '/^(?!\\+?-?\\d{6}\\.00$)[+-]?\\d+(\\.\\d+)?$/': 'Formato de cota no válido o fuera de rango.',
             '/^\\d{1,6}(\\.\\d{1,4})?$/': 'El campo solo acepta hasta 6 dígitos enteros y 4 decimales',
-
             '/^\\d{1,10}(\\.\\d{1,3})?$/': 'El campo solo acepta hasta 10 dígitos enteros y 3 decimales',
-
-=======
             '/^[A-Z]$/': 'Debe colocar una sola letra en mayuscula.'
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
         };
         return patterns[pattern] ?? 'Formato inválido';
     }
-
-
 
     static isValidFieldInArray(formGroup: AbstractControl, field: string): boolean {
         const control = formGroup.get(field);
@@ -632,28 +510,20 @@ export class FormUtils {
     static getFiledErrorArray(formGroup: AbstractControl, field: string): string | null {
         const control = formGroup.get(field);
         if (!control || !control.errors) return null;
-
-        const errors = control.errors;
-        return FormUtils.getFieldError(errors);
+        return FormUtils.getFieldError(control.errors);
     }
 
-<<<<<<< HEAD
     static isValidFieldDisabled(formGroup: AbstractControl, field: string, filasIncompletas: number[], index: number): boolean {
         const control = formGroup.get(field);
         return !!(control && !control.value && filasIncompletas.includes(index));
     }
-
-=======
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
 
     static rangoFechasValidator(): ValidatorFn {
         return (group: AbstractControl): ValidationErrors | null => {
             const fecIni = group.get('fec_ini')?.value;
             const fecFin = group.get('fec_fin')?.value;
 
-            if (!fecIni || !fecFin) {
-                return null;
-            }
+            if (!fecIni || !fecFin) return null;
 
             const [d1, m1, y1] = fecIni.split('/');
             const [d2, m2, y2] = fecFin.split('/');
@@ -661,31 +531,16 @@ export class FormUtils {
             const fechaIni = new Date(+y1, +m1 - 1, +d1);
             const fechaFin = new Date(+y2, +m2 - 1, +d2);
 
-            if (fechaIni.getTime() === fechaFin.getTime()) {
-                return { fechasIguales: true };
-            }
+            if (fechaIni.getTime() === fechaFin.getTime()) return { fechasIguales: true };
+            if (fechaFin < fechaIni) return { rangoInvalido: true };
 
-            if (fechaFin < fechaIni) {
-                return { rangoInvalido: true };
-            }
+            const diffDias = (fechaFin.getTime() - fechaIni.getTime()) / (1000 * 60 * 60 * 24);
+            if (diffDias > 7) return { rangoMayorA7Dias: true };
 
-<<<<<<< HEAD
-            const diffMs = fechaFin.getTime() - fechaIni.getTime();
-            const diffDias = diffMs / (1000 * 60 * 60 * 24);
-
-            // ❌ Mayor a 7 días
-            if (diffDias > 7) {
-                return { rangoMayorA7Dias: true };
-            }
-
-=======
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
             return null;
         };
     }
 
-<<<<<<< HEAD
-    // Helper para estructurar cada fila con sus validaciones tranpsorte-mineral
     static rutasDistintasValidator(group: AbstractControl) {
         if (!group.get('esNuevo')?.value) return null;
 
@@ -702,8 +557,6 @@ export class FormUtils {
         return null;
     }
 
-
-    //ALETAS LISTA-PROGAMA-MENSUAL-LABORES
     static alertaProgAprobada(title: string, text: string) {
         return Swal.fire({
             icon: 'warning',
@@ -736,9 +589,7 @@ export class FormUtils {
             html: html,
             icon: 'question',
             showCancelButton: true,
-            // confirmButtonText: 'Sí, anular',
             confirmButtonText: confirm,
-
             cancelButtonText: cancelar,
             confirmButtonColor: '#17324D',
             cancelButtonColor: '#6b7280',
@@ -754,36 +605,16 @@ export class FormUtils {
             html: html,
             icon: 'question',
             showCancelButton: true,
-            // confirmButtonText: 'Sí, anular',
             confirmButtonText: confirm,
-
             cancelButtonText: cancelar,
             confirmButtonColor: '#17324D',
             cancelButtonColor: '#6b7280',
             background: '#ffffff',
             color: '#1e293b',
             iconColor: '#17324D',
-            customClass: {
-                container: 'swal-encima'
-            }
+            customClass: { container: 'swal-encima' }
         });
     }
-
-    // static confirmarAnulacionImportar(title: string, html: string, confirm: string) {
-    //     return Swal.fire({
-    //         title: title,
-    //         html: html,
-    //         icon: 'question',
-    //         showCancelButton: true,
-    //         confirmButtonText: confirm,
-    //         cancelButtonText: 'Cancelar',
-    //         confirmButtonColor: '#17324D',
-    //         cancelButtonColor: '#6b7280',
-    //         background: '#ffffff',
-    //         color: '#1e293b',
-    //         iconColor: '#17324D'
-    //     });
-    // }
 
     static alertaExitoAnulacion(title: string, html: string) {
         return Swal.fire({
@@ -820,7 +651,7 @@ export class FormUtils {
             confirmButtonColor: '#17324D',
             background: '#fff7ed',
             color: '#7c2d12',
-            iconColor: '#ea580c',
+            iconColor: '#ea580c'
         });
     }
 
@@ -834,77 +665,29 @@ export class FormUtils {
             background: '#fff7ed',
             color: '#7c2d12',
             iconColor: '#ea580c',
-            customClass: {
-                container: 'swal-encima'
-            }
+            customClass: { container: 'swal-encima' }
         });
     }
 
-
-
-
-
-    // ESTILOS ARCHIVOS EXCEL
-
-
     static buildRows(data: ExportarProgramacion[]) {
         return data.map(x => [
-            x.cie_ano,
-            x.cie_per,
-            x.nro_prog,
-            x.fec_emi,
-            x.prg_est,
-            x.tratamiento,
-            x.nom_und_econom,
-            x.des_zona,
-            x.des_contrata,
-            x.nom_fase,
-            x.des_veta,
-            x.cod_nivel,
-            x.cod_labor,
-            x.cod_tipo_labor,
-            x.cod_ala,
-            x.cod_cto,
-            x.cod_cta,
-            x.prg_blocks,
-            x.ind_tip_roca_piso,
-            x.ind_tip_roca,
-            x.ind_tip_roca_techo,
-            x.prg_avamts,
-            x.prg_secancho,
-            x.prg_secaltu,
-            x.prg_tmsdes,
-            x.prg_tmsmin,
+            x.cie_ano, x.cie_per, x.nro_prog, x.fec_emi, x.prg_est,
+            x.tratamiento, x.nom_und_econom, x.des_zona, x.des_contrata,
+            x.nom_fase, x.des_veta, x.cod_nivel, x.cod_labor, x.cod_tipo_labor,
+            x.cod_ala, x.cod_cto, x.cod_cta, x.prg_blocks,
+            x.ind_tip_roca_piso, x.ind_tip_roca, x.ind_tip_roca_techo,
+            x.prg_avamts, x.prg_secancho, x.prg_secaltu,
+            x.prg_tmsdes, x.prg_tmsmin,
             (x.prg_tmsdes ?? 0) + (x.prg_tmsmin ?? 0),
-            x.prg_ancmin,
-            x.prg_ancvet,
-            x.prg_secancho,
-            x.prg_secaltu,
-            x.prg_num_tramin,
-            x.prg_loncor,
-            x.prg_altcor,
-            x.prg_tmsrotvet,
-            x.prg_tmsrotdil,
-            x.prg_tmsextraid,
-            x.prg_fecmuestreo,
-            x.prg_leyag,
-            x.prg_leycu,
-            x.prg_leypb,
-            x.prg_leyzn,
-            // x.val_vpt,
-            x.prg_leyagdil,
-            x.prg_leycudil,
-            x.prg_leypbdil,
-            x.prg_leyzndil,
-            x.prg_vptmin,
-            x.prg_leyagdil,
-            x.nom_metexp,
-            x.prg_homlab,
-            x.des_proyecto,
-            x.nom_proyecto
+            x.prg_ancmin, x.prg_ancvet, x.prg_secancho, x.prg_secaltu,
+            x.prg_num_tramin, x.prg_loncor, x.prg_altcor,
+            x.prg_tmsrotvet, x.prg_tmsrotdil, x.prg_tmsextraid,
+            x.prg_fecmuestreo, x.prg_leyag, x.prg_leycu, x.prg_leypb, x.prg_leyzn,
+            x.prg_leyagdil, x.prg_leycudil, x.prg_leypbdil, x.prg_leyzndil,
+            x.prg_vptmin, x.prg_leyagdil, x.nom_metexp,
+            x.prg_homlab, x.des_proyecto, x.nom_proyecto
         ]);
     }
-
 
     static headerStyle() {
         return {
@@ -945,19 +728,14 @@ export class FormUtils {
             allowOutsideClick: false,
             allowEscapeKey: false,
             showConfirmButton: false,
-            customClass: {
-                popup: 'loader-sistema'
-            },
-            didOpen: () => {
-                Swal.showLoading();
-            }
+            customClass: { popup: 'loader-sistema' },
+            didOpen: () => { Swal.showLoading(); }
         });
     }
 
     static cerrarCargando() {
         Swal.close();
     }
-
 
     static deseaGuardarCambios(title: string, text: string): Promise<boolean> {
         return Swal.fire({
@@ -974,13 +752,10 @@ export class FormUtils {
         }).then(result => result.isConfirmed);
     }
 
-
     static formatFecha(fecha?: string | Date | null): string {
         if (!fecha) return '';
         return new Date(fecha).toISOString().split('T')[0];
     }
-
-
 
     static limitarDigitos(event: Event, max: number) {
         const input = event.target as HTMLInputElement;
@@ -988,9 +763,4 @@ export class FormUtils {
             input.value = input.value.slice(0, max);
         }
     }
-=======
-
-
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
-
 }

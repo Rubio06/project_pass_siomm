@@ -1,9 +1,6 @@
-<<<<<<< HEAD
-﻿/* You can add global styles to this file, and also import other style files */
+
 @import "@ng-select/ng-select/themes/default.theme.css";
-=======
-/* You can add global styles to this file, and also import other style files */
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
+
 @import 'tailwindcss';
 @plugin "daisyui";
 
@@ -12,10 +9,6 @@
         opacity: 0;
         transform: translateY(15px);
     }
-<<<<<<< HEAD
-
-=======
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     to {
         opacity: 1;
         transform: translateY(0);
@@ -26,7 +19,6 @@
     animation: fadeIn 0.4s ease-in-out;
 }
 
-<<<<<<< HEAD
 .swal-encima {
     z-index: 9999 !important;
 }
@@ -246,20 +238,3 @@
     .select-base_dos,
     .select-base_cuatro    { @apply text-xs; }
 }
-=======
-
-@layer components {
-    .select-base {
-        @apply  select-sm mx-auto select text-sm font-medium outline-none flex items-center border border-gray-300
-                rounded-lg px-2 py-1 bg-gray-50 shadow-sm hover:shadow-md transition-shadow duration-300 ease-in-out focus-within:border-[#033351]
-                focus-within:ring-2 focus-within:ring-[rgb(3,102,157)] w-75;
-    }
-}
-
-/* select-sm mx-auto select text-sm font-medium outline-none flex items-center border border-gray-300
-rounded-lg px-2 py-1 bg-gray-50 shadow-sm hover:shadow-md transition-shadow duration-300 ease-in-out focus-within:border-[#033351]
-focus-within:ring-1 focus-within:ring-[rgb(3,102,157)] focus-within:ring-opacity-40 w-75 */
-
-
-
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190

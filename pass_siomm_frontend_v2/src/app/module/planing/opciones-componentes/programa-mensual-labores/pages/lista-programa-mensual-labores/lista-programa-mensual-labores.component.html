@@ -1,26 +1,25 @@
 <div class="container mx-auto">
 
-    <!-- Filtros Generales  -->
+    <!-- Filtros Generales -->
     <form [formGroup]="myForm">
-<<<<<<< HEAD
         <div class="m-0 p-5 rounded-xl border border-gray-200 shadow-sm">
 
             <div class="flex items-start borde justify-between">
                 <app-titulo-modulo [titulo]="'Filtro Periodo Programa Mensual'" />
                 <app-titulo-botones [botonActivo]="botonActivo()" />
-
             </div>
 
-            <div class="w-full flex flex-col md:flex-col md:items-center  lg:flex-col lg:items-center   xl:flex-col xl:items-center xl:justify-between 2xl:flex-row gap-4 ">
+            <div class="w-full flex flex-col md:flex-col md:items-center lg:flex-col lg:items-center xl:flex-col xl:items-center xl:justify-between 2xl:flex-row gap-4">
                 <div class="flex flex-wrap items-end gap-3">
 
-                    <div class="flex flex-col gap-1 w-70"> <app-label-filtro [filtroLabel]="'Seleccione el Anio'" />
+                    <div class="flex flex-col gap-1 w-70">
+                        <app-label-filtro [filtroLabel]="'Seleccione el Anio'" />
                         <select formControlName="cie_anio" class="select-base w-full cursor-pointer">
                             <app-filtro-anio [listaAnio]="listaAnio()" />
                         </select>
                     </div>
 
-                    <div class="flex flex-col gap-1 w-70"> 
+                    <div class="flex flex-col gap-1 w-70">
                         <app-label-filtro [filtroLabel]="'Seleccione el Mes'" />
                         <select formControlName="cie_per" class="select-base w-full cursor-pointer">
                             <app-filtro-mes [listaMeses]="listaMeses()" />
@@ -31,101 +30,44 @@
                         <button [disabled]="esDisabled()" [ngClass]="{ 'opacity-50 cursor-not-allowed': esDisabled() }"
                             type="button" (click)="limpiarMes()"
                             class="p-2 bg-gray-100 hover:bg-gray-200 cursor-pointer rounded border border-gray-300 transition duration-200 shadow-sm flex items-center justify-center h-[38px] w-[38px]">
-
                             <svg xmlns="http://www.w3.org/2000/svg"
                                 class="w-5 h-5 text-gray-500 group-hover:text-red-600 transition-colors" fill="none"
                                 viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                             </svg>
-
-                            <div
-                                class="absolute bottom-full hidden mb-2 left-1/2 -translate-x-1/2 group-hover:block bg-gray-800 text-white text-[10px] rounded px-2 py-1 whitespace-nowrap z-10 shadow-md">
+                            <div class="absolute bottom-full hidden mb-2 left-1/2 -translate-x-1/2 group-hover:block bg-gray-800 text-white text-[10px] rounded px-2 py-1 whitespace-nowrap z-10 shadow-md">
                                 <span>Limpieza filtro mes</span>
                             </div>
                         </button>
                     </div>
 
                 </div>
-                <app-nav-bar-botones (botonSeleccionado)="setBoton($event) " [botonesBloqueados]="estadoBotones()"
-                    (abrirModalCopiar)="abrirModal($event)" [listaPrograma]="listaPrograma()" [cie_anio]="cie_anio()"
-                    [cie_per]="cie_per()" (cargarListaMensual)="cargarListaMensual($event.anio, $event.mes)" />
+
+                <app-nav-bar-botones
+                    (botonSeleccionado)="setBoton($event)"
+                    [botonesBloqueados]="estadoBotones()"
+                    (abrirModalCopiar)="abrirModal($event)"
+                    [listaPrograma]="listaPrograma()"
+                    [cie_anio]="cie_anio()"
+                    [cie_per]="cie_per()"
+                    (cargarListaMensual)="cargarListaMensual($event.anio, $event.mes)" />
             </div>
-        </div>
-
-
-        <!-- Lista tabla programa mensual -->
-        <div class=" flex justify-between">
-            <h3 class="text-lg font-bold mb-2 mt-4 pb-2
-=======
-        <div class="m-5 p-5 rounded-xl border border-gray-200 shadow-sm">
-            <app-titulo-modulo [titulo]="'Filtro Periodo Programa Mensual'" />
-            <div class="w-75 flex gap-4">
-                <div class="flex flex-col gap-1">
-                    <app-label-filtro [filtroLabel]="'Seleccione el Anio'" />
-                    <select formControlName="anio" class="select-base">
-                        <app-filtro-anio [listaAnio]="listaAnio()" />
-                    </select>
-                </div>
-                <div class="flex flex-col gap-1">
-                    <app-label-filtro [filtroLabel]="'Seleccione el Mes'" />
-                    <select formControlName="mes" class="select-base">
-                        <app-filtro-mes [listaMeses]="listaMeses()" />
-                    </select>
-
-                </div>
-            </div>
-        </div>
-        <!-- Lista programa mensual de labores -->
-
-
-        <div class="m-5 p-5 rounded-xl">
-            <h3 class="text-lg font-bold mb-4 pb-2 border-b border-gray-300
-                flex items-center gap-2 text-[#013B5C]">
-
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                    stroke="currentColor" class="w-6 h-6 text-[#013B5C]">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M12 3c2.757 0 5.23 1.107 7.071 2.949A10.437 10.437 0 0 1 21 12c0 2.757-1.107 5.23-2.949 7.071A10.437 10.437 0 0 1 12 21c-2.757 0-5.23-1.107-7.071-2.949A10.437 10.437 0 0 1 3 12c0-2.757 1.107-5.23 2.949-7.071A10.437 10.437 0 0 1 12 3Z" />
-                </svg>
-                Acciones – Programa Mensual
-            </h3>
-
-
-            <div class="flex justify-between items-center">
-                <div class="flex flex-wrap items-center gap-4">
-                    @for (btn of botones(); track $index) {
-                        <app-botones [texto]="btn.texto" (accion)="onAccion(btn.accion)" [variant]="btn.variant" />
-                    }
-                </div>
-
-                <div class="flex items-center gap-2 font-medium text-gray-700">
-                    <span class="w-4 h-4 rounded-full" [ngClass]="botoColor()"></span>
-                    <span>{{ botoPresionado() }}</span>
-                </div>
-            </div>
-
         </div>
 
         <!-- Lista tabla programa mensual -->
-
-        <div class="m-5 flex justify-between">
-            <h3 class="text-lg font-bold mb-4 pb-2
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
-                flex items-center gap-2 text-[#013B5C]">
+        <div class="flex justify-between">
+            <h3 class="text-lg font-bold mb-2 mt-4 pb-2 flex items-center gap-2 text-[#013B5C]">
                 <span class="w-1 h-5"></span>
                 Lista de Labores Programa Mensual
             </h3>
-
-<<<<<<< HEAD
-            <h3 class="font-semibold pb-2
-                flex items-center gap-2 text-[#013B5C]">
+            <h3 class="font-semibold pb-2 flex items-center gap-2 text-[#013B5C]">
                 Lista de Programa Mensual: {{ _cargarListaMensual().length }}
             </h3>
         </div>
 
-        <div class=" overflow-x-auto overflow-y-auto min-h-[400px] max-h-[400px] border border-gray-300 rounded">
-            <table class="table table-zebra  table-auto border-collapse w-auto p-0 ">
+        <div class="overflow-x-auto overflow-y-auto min-h-[400px] max-h-[400px] border border-gray-300 rounded">
+            <table class="table table-zebra table-auto border-collapse w-auto p-0">
                 <thead class="sticky top-0 bg-white z-1 mx-auto">
                     <tr class="text-center shadow-[0_2px_0_0_black]">
                         <th class="w-12 py-0 text-[#013B5C]">Icono</th>
@@ -134,92 +76,69 @@
                         <th class="w-40 py-0 text-[#013B5C]">Nro. Prog</th>
                         <th class="w-40 py-0 text-[#013B5C]">Fecha Emisión</th>
                         <th class="w-40 py-0 text-[#013B5C]">Unidad Económica</th>
-                        <th class="w-50  py-0 text-[#013B5C]">Zona</th>
-                        <th class="w-70  py-0 text-[#013B5C] ">Contrata</th>
-                        <th class="w-40  py-0 text-[#013B5C]">Estado</th>
-                        <th class="w-40  py-0 text-[#013B5C]">Fecha <br> Aprobación</th>
-                        <!-- <th class="px-4 py-2 text-[#013B5C]">Estado <br> Pre - Aprobación</th>
-                        <th class="px-4 py-2 text-[#013B5C]">Aprob. <br> Geo.</th>
-                        <th class="px-4 py-2 text-[#013B5C]">Fecha <br> Aprob. Mina</th>
-                        <th class="px-4 py-2 text-[#013B5C]">Aprob. <br> Mina.</th>
-                        <th class="px-4 py-2 text-[#013B5C]">Fecha Aprob. <br>Mina</th> -->
+                        <th class="w-50 py-0 text-[#013B5C]">Zona</th>
+                        <th class="w-70 py-0 text-[#013B5C]">Contrata</th>
+                        <th class="w-40 py-0 text-[#013B5C]">Estado</th>
+                        <th class="w-40 py-0 text-[#013B5C]">Fecha <br> Aprobación</th>
                     </tr>
                 </thead>
-
                 <tbody>
                     @if (_cargarListaMensual().length > 0) {
-                    @for (item of _cargarListaMensual(); track $index) {
-                    <tr (dblclick)="onPasarNroProg(item)" (click)="onPasarDatos(item)"
-                        [ngClass]="{ 'bg-[#17324D]/10 border-l-2': filaSeleccionada() === item.nro_prog }"
-                        class="cursor-pointer select-none transition-all duration-200 p-0">
-                        <td class="text-center">
-                            <button (click)="mostrarIndicencias(item)">
-                                @if (item.tipo_incidencia === 'C, C, C, C, C, C, C' ||
-                                item.tipo_incidencia === 'C, C, C, C, C, C, C, C, C, C, C, C' ||
-                                item.tipo_incidencia === 'C, C, C, C, C, C, C, C' ||
-                                item.tipo_incidencia === 'C, C, C') {
-
-                                <!-- CRÍTICO -->
-                                <div class="relative group inline-block">
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                        class="w-6 h-6 text-[#013B5C] cursor-pointer" viewBox="0 0 24 24"
-                                        fill="currentColor">
-                                        <circle cx="12" cy="12" r="10" />
-                                        <rect x="11" y="6" width="3" height="8" fill="white" />
-                                        <rect x="11" y="16" width="3" height="2" fill="white" />
-                                    </svg>
-                                    <div
-                                        class="absolute bottom-full hidden group-hover:block bg-black text-white text-xs rounded px-2 py-1 whitespace-nowrap">
-                                        <b>CRÍTICO</b>
-                                    </div>
-                                </div>
-
-                                } @else {
-
-                                <!-- OK -->
-                                <div class="relative group inline-block">
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                        class="w-6 h-6 text-[#289A48] cursor-pointer" viewBox="0 0 24 24"
-                                        fill="currentColor">
-                                        <circle cx="12" cy="12" r="10" />
-                                        <path fill="white" d="M10 14.5l-2.5-2.5-1.5 1.5L10 17.5l8-8-1.5-1.5z" />
-                                    </svg>
-                                    <!-- Tooltip -->
-                                    <div
-                                        class="absolute bottom-full hidden group-hover:block bg-black text-white text-xs rounded px-2 py-1 whitespace-nowrap">
-                                        <b>OK</b>
-                                    </div>
-                                </div>
-
-                                }
-                            </button>
-                        </td>
-                        <td class="font-medium text-center py-0">{{ item.cie_ano }}</td>
-                        <td class="font-medium text-center py-0">{{ item.cie_per | transfornMonth }}</td>
-                        <td class="font-medium text-center py-0">{{ item.nro_prog }}</td>
-                        <td class="font-medium text-center py-0">{{ item.fec_emi | date:'dd/MM/yyyy' }}</td>
-                        <td class="font-medium text-center  py-0">{{ item.nom_und_econom }}</td>
-                        <td class="font-medium text-center py-0">{{ item.des_zona }}</td>
-                        <td class="font-medium text-center  py-0 ">{{ item.des_contrata }}</td>
-                        <td class="font-medium text-center">{{
-                            item.prg_est === 'B' ? 'APROBADO' :
-                            item.prg_est === 'A' ? 'ANULADO' :
-                            item.prg_est === 'G' ? 'GENERADO' :
-                            'DESCONOCIDO' }}
-                        </td>
-                        <td class="font-medium text-center py-0">{{ item.fec_usuario_apr | date:'dd/MM/yyyy' }}</td>
-                        <!-- <td class="font-medium">{{ item.prg_pre_apr }}</td>
-                                    <td>
-                                        <input type="checkbox" class="checkbox-base" />
-                                    </td>
-                                    <td>{{ item.fec_usuario_apr_geo | date:'dd/MM/yyyy' }}</td>
-                                    <td>
-
-                                        <input type="checkbox" class="checkbox-base" />
-                                    </td>
-                                    <td>{{ item.fec_usuario_apr_min | date:'dd/MM/yyyy' }}</td> -->
-                    </tr>
-                    }
+                        @for (item of _cargarListaMensual(); track $index) {
+                        <tr (dblclick)="onPasarNroProg(item)" (click)="onPasarDatos(item)"
+                            [ngClass]="{ 'bg-[#17324D]/10 border-l-2': filaSeleccionada() === item.nro_prog }"
+                            class="cursor-pointer select-none transition-all duration-200 p-0">
+                            <td class="text-center">
+                                <button (click)="mostrarIndicencias(item)">
+                                    @if (item.tipo_incidencia === 'C, C, C, C, C, C, C' ||
+                                        item.tipo_incidencia === 'C, C, C, C, C, C, C, C, C, C, C, C' ||
+                                        item.tipo_incidencia === 'C, C, C, C, C, C, C, C' ||
+                                        item.tipo_incidencia === 'C, C, C') {
+                                        <!-- CRÍTICO -->
+                                        <div class="relative group inline-block">
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                class="w-6 h-6 text-[#013B5C] cursor-pointer" viewBox="0 0 24 24"
+                                                fill="currentColor">
+                                                <circle cx="12" cy="12" r="10" />
+                                                <rect x="11" y="6" width="3" height="8" fill="white" />
+                                                <rect x="11" y="16" width="3" height="2" fill="white" />
+                                            </svg>
+                                            <div class="absolute bottom-full hidden group-hover:block bg-black text-white text-xs rounded px-2 py-1 whitespace-nowrap">
+                                                <b>CRÍTICO</b>
+                                            </div>
+                                        </div>
+                                    } @else {
+                                        <!-- OK -->
+                                        <div class="relative group inline-block">
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                class="w-6 h-6 text-[#289A48] cursor-pointer" viewBox="0 0 24 24"
+                                                fill="currentColor">
+                                                <circle cx="12" cy="12" r="10" />
+                                                <path fill="white" d="M10 14.5l-2.5-2.5-1.5 1.5L10 17.5l8-8-1.5-1.5z" />
+                                            </svg>
+                                            <div class="absolute bottom-full hidden group-hover:block bg-black text-white text-xs rounded px-2 py-1 whitespace-nowrap">
+                                                <b>OK</b>
+                                            </div>
+                                        </div>
+                                    }
+                                </button>
+                            </td>
+                            <td class="font-medium text-center py-0">{{ item.cie_ano }}</td>
+                            <td class="font-medium text-center py-0">{{ item.cie_per | transfornMonth }}</td>
+                            <td class="font-medium text-center py-0">{{ item.nro_prog }}</td>
+                            <td class="font-medium text-center py-0">{{ item.fec_emi | date:'dd/MM/yyyy' }}</td>
+                            <td class="font-medium text-center py-0">{{ item.nom_und_econom }}</td>
+                            <td class="font-medium text-center py-0">{{ item.des_zona }}</td>
+                            <td class="font-medium text-center py-0">{{ item.des_contrata }}</td>
+                            <td class="font-medium text-center">
+                                {{ item.prg_est === 'B' ? 'APROBADO' :
+                                   item.prg_est === 'A' ? 'ANULADO' :
+                                   item.prg_est === 'G' ? 'GENERADO' :
+                                   'DESCONOCIDO' }}
+                            </td>
+                            <td class="font-medium text-center py-0">{{ item.fec_usuario_apr | date:'dd/MM/yyyy' }}</td>
+                        </tr>
+                        }
                     } @else {
                     <tr>
                         <td colspan="15" class="border-2 border-gray-400 px-2 py-1 text-center"
@@ -232,22 +151,20 @@
             </table>
         </div>
 
-        <div class=" flex justify-between">
-            <h3 class="text-lg font-bold mb-2 mt-3 pb-2
-                flex items-center gap-2 text-[#013B5C]">
+        <!-- Lista de Incidencias -->
+        <div class="flex justify-between">
+            <h3 class="text-lg font-bold mb-2 mt-3 pb-2 flex items-center gap-2 text-[#013B5C]">
                 <span class="w-1 h-5"></span>
                 Lista de Incidencias
             </h3>
-
-            <h3 class="font-semibold pb-2
-                flex items-center gap-2 text-[#013B5C]">
+            <h3 class="font-semibold pb-2 flex items-center gap-2 text-[#013B5C]">
                 Lista de Incidencias: {{ _cargarListaMensualIncidencias().length }}
             </h3>
         </div>
 
-        <div class="w-full overflow-x-auto overflow-y-auto max-h-[161px] min-h-[161px]  border border-gray-300 rounded">
+        <div class="w-full overflow-x-auto overflow-y-auto max-h-[161px] min-h-[161px] border border-gray-300 rounded">
             <table class="table table-zebra">
-                <thead class="sticky top-0 bg-white  z-1 w-full mx-auto">
+                <thead class="sticky top-0 bg-white z-1 w-full mx-auto">
                     <tr class="shadow-[0_2px_0_0_black]">
                         <th class="py-1 text-[#013B5C]">Veta</th>
                         <th class="py-2 text-[#013B5C]">Nivel</th>
@@ -257,20 +174,18 @@
                         <th class="py-2 text-[#013B5C]">Descripción de las incidencias</th>
                     </tr>
                 </thead>
-
                 <tbody>
                     @if (_cargarListaMensualIncidencias().length > 0) {
-                    @for (item of _cargarListaMensualIncidencias(); track $index) {
-                    <tr>
-                        <td class="font-medium">{{ item.cod_veta }} - {{ item.nom_veta }}</td>
-                        <td class="font-medium">{{ item.cod_nivel }}</td>
-                        <td class="font-medium">{{ item.cod_tipo_labor }}</td>
-                        <td class="font-medium">{{ item.cod_labor }}</td>
-                        <td class="font-medium">{{ item.cod_ala }}</td>
-                        <td class="font-medium">{{ item.descripcion }}</td>
-
-                    </tr>
-                    }
+                        @for (item of _cargarListaMensualIncidencias(); track $index) {
+                        <tr>
+                            <td class="font-medium">{{ item.cod_veta }} - {{ item.nom_veta }}</td>
+                            <td class="font-medium">{{ item.cod_nivel }}</td>
+                            <td class="font-medium">{{ item.cod_tipo_labor }}</td>
+                            <td class="font-medium">{{ item.cod_labor }}</td>
+                            <td class="font-medium">{{ item.cod_ala }}</td>
+                            <td class="font-medium">{{ item.descripcion }}</td>
+                        </tr>
+                        }
                     } @else {
                     <tr>
                         <td colspan="15" class="border-2 border-gray-400 px-2 py-1 text-center"
@@ -279,53 +194,16 @@
                         </td>
                     </tr>
                     }
-=======
-            <h3 class="font-semibold mb-4 pb-2
-                flex items-center gap-2 text-[#013B5C]">
-                Lista de Programa Mensual: 01
-            </h3>
-        </div>
-
-        <div class="overflow-x-auto">
-            <table class="table table-zebra w-full">
-                <thead>
-                    <tr>
-                        <th class="border-b-2 border-black px-4 py-2 text-[#013B5C]">Icono</th>
-                        <th class="border-b-2 border-black px-4 py-2 text-[#013B5C]">Mes</th>
-                        <th class="border-b-2 border-black px-4 py-2 text-[#013B5C]">Nro. Prog</th>
-                        <th class="border-b-2 border-black px-4 py-2 text-[#013B5C]">Fecha Emisión</th>
-                        <th class="border-b-2 border-black px-4 py-2 text-[#013B5C]">Zona</th>
-                        <th class="border-b-2 border-black px-4 py-2 text-[#013B5C]">Contrata</th>
-                        <th class="border-b-2 border-black px-4 py-2 text-[#013B5C]">Estado</th>
-                        <th class="border-b-2 border-black px-4 py-2 text-[#013B5C]">Fecha Aprobación</th>
-                        <th class="border-b-2 border-black px-4 py-2 text-[#013B5C]">Estado Pre-Aprobación</th>
-                        <th class="border-b-2 border-black px-4 py-2 text-[#013B5C]">Fecha Aprob. Mina</th>
-                        <th class="border-b-2 border-black px-4 py-2 text-[#013B5C]">Aprob. Mina</th>
-                        <th class="border-b-2 border-black px-4 py-2 text-[#013B5C]">Fecha Aprob. Mina</th>
-                    </tr>
-                </thead>
-                <tbody>
-
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
                 </tbody>
             </table>
         </div>
 
     </form>
-<<<<<<< HEAD
 
     <router-outlet />
 
-
-
-
-
     @if (isModalOpen) {
-    <app-copiar-periodo (cerrar)="cerrarModal()" [listaPrograma]="listaPrograma()" />
+        <app-copiar-periodo (cerrar)="cerrarModal()" [listaPrograma]="listaPrograma()" />
     }
 
-
 </div>
-=======
-</div>
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190

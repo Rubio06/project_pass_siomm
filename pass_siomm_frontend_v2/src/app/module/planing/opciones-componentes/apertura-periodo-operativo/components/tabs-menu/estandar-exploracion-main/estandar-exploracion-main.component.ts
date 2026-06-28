@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, effect, inject, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, effect, inject, signal, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DATOS_METODO_EXPLORACION, EstructuraDatosOtros, MaeExploEstandar, SelectZona, TH_ESTANDAR_EXPLORACION, thTitulos } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/interface/aper-per-oper.interface';
 import { PlanningService } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/services/planning.service';
@@ -12,29 +12,31 @@ import { SemanasAvanceMainService } from '../../../services/semanas-avance-main/
     templateUrl: './estandar-exploracion-main.component.html',
     styleUrl: './estandar-exploracion-main.component.css',
 })
-export class EstandarExploracionMainComponent {
+export class EstandarExploracionMainComponent implements OnInit {
 
     // ===============================
-    //   IMPORTS
+    //   IMPORTS / INJECTIONS
     // ===============================
     private fb = inject(FormBuilder);
     private planingService = inject(PlanningService);
-    formUtils = FormUtils;
     planingCompartido = inject(PlaningCompartidoService);
     semanasAvanceMainService = inject(SemanasAvanceMainService);
+    private cd = inject(ChangeDetectorRef);
+    
+    formUtils = FormUtils;
+    private utils = FormUtils;
 
     // ===============================
     //   CONFIGURACIÓN DE TABLA
     // ===============================
     columnas = signal<any[]>(TH_ESTANDAR_EXPLORACION);
     titulo = this.columnas().map(t => t.titulo);
-
     datosColumna = signal<EstructuraDatosOtros[]>(DATOS_METODO_EXPLORACION);
 
     cod_zona = signal<SelectZona[]>([]);
     cod_metexp = signal<any[]>([]);
-
-    private utils = FormUtils;
+    cod_zonaBloqueo = signal<string[]>([]);
+    bloqueoBotonNuevo = signal<boolean>(true);
 
     // ===============================
     //   FORMULARIO PRINCIPAL
@@ -54,31 +56,18 @@ export class EstandarExploracionMainComponent {
     message = signal<string>('');
     estaBloqueado = signal<boolean>(false);
 
-    private cd = inject(ChangeDetectorRef);
-
     // ===============================
     //   CONSTRUCTOR
     // ===============================
-    bloqueoBotonNuevo = signal<boolean>(true);
-    cod_zonaBloqueo = signal<string[]>([]);
-
     constructor() {
-
-
         effect(() => {
             const data = this.planingCompartido.dataRoutes();
             const semanas = data?.data?.exploracion_extandar || [];
             this.loadSemanas(semanas);
         });
+        
         this.loadZonas();
-
-
     }
-
-    // hasPendingChanges(): boolean {
-    //     return this.planingCompartido.getCambios(); // revisa los cambios pendientes
-    // }
-
 
     trackByIndex(index: number) {
         return index;
@@ -109,11 +98,7 @@ export class EstandarExploracionMainComponent {
                     lab_conect: [item.lab_conect, [Validators.pattern(/^\d+(\.\d+)?$/)]],
                     lab_punmar: [item.lab_punmar, [Validators.pattern(/^\d+(\.\d+)?$/)]],
                     lab_tabla: [item.lab_tabla, [Validators.pattern(/^\d+(\.\d+)?$/)]],
-<<<<<<< HEAD
                     lab_apr: [item.lab_apr, [Validators.pattern(/^[A-Z0-9]$/)]],
-=======
-                    lab_apr: [item.lab_apr, [Validators.pattern(/^[A-Z]$/)]],
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
                     accion: [''],
                     esNuevo: [false]
                 })
@@ -123,28 +108,26 @@ export class EstandarExploracionMainComponent {
         this.myForm.setControl('semanas', formArray);
     }
 
-
+    /**
+     * Agrega una fila nueva editable al FormArray
+     */
     agregarFilas() {
-<<<<<<< HEAD
         this.planingCompartido.setBotonesState({
             ...this.planingCompartido.botonesState(),
             editar: true
         });
 
-=======
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
-        this.bloqueoSelect()
+        this.bloqueoSelect();
         const periodo = this.planingCompartido.periodo();
 
         if (!periodo?.anio || !periodo?.mes) {
             return;
         }
 
-
         const nuevoGrupo = this.fb.group({
             cie_ano: [periodo?.anio],
             cie_per: [periodo?.mes],
-            cod_zona: ['', [Validators.pattern(/^\d+(\.\d+)?$/)]],
+            cod_zona: ['', [Validators.required]],
             lab_pieper: ['', [Validators.pattern(/^\d+(\.\d+)?$/)]],
             lab_broca: ['', [Validators.pattern(/^\d+(\.\d+)?$/)]],
             lab_barcon: ['', [Validators.pattern(/^\d+(\.\d+)?$/)]],
@@ -154,46 +137,33 @@ export class EstandarExploracionMainComponent {
             lab_conect: ['', [Validators.pattern(/^\d+(\.\d+)?$/)]],
             lab_punmar: ['', [Validators.pattern(/^\d+(\.\d+)?$/)]],
             lab_tabla: ['', [Validators.pattern(/^\d+(\.\d+)?$/)]],
-<<<<<<< HEAD
             lab_apr: ['', [Validators.pattern(/^[A-Z0-9]$/)]],
-=======
-            lab_apr: ['', [Validators.pattern(/^\d+(\.\d+)?$/)]],
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
             esNuevo: [true]
         });
 
         this.semanas.push(nuevoGrupo);
-
-
     }
 
     valoresSeleccionados(excluirItem: AbstractControl): string[] {
         return this.semanas.controls
-            .filter(ctrl => ctrl !== excluirItem)                   // Excluimos la fila actual
-            .map(ctrl => ctrl.get('cod_zona')?.value)        // Tomamos el valor
-            .filter(val => !!val);                                  // Quitamos nulos/vacíos
+            .filter(ctrl => ctrl !== excluirItem)
+            .map(ctrl => ctrl.get('cod_zona')?.value)
+            .filter(val => !!val);
     }
 
     bloquearCampo(row: AbstractControl): boolean {
         return this.planingCompartido.bloqueoFormEditar() && !row.get('esNuevo')?.value;
     }
 
-
     ngOnInit() {
-
         this.planingCompartido.setLastTab('exploracion_estandar');
-
         this.planingCompartido.registrarFormulario('exploracion_estandar', this.myForm);
 
-
-
         this.myForm.valueChanges.subscribe(() => {
-            // Tomamos los valores actuales
             const filas = this.semanas.getRawValue().map((fila: any) => {
                 const filaProcesada: any = {};
 
                 Object.keys(fila).forEach(key => {
-                    // Reemplazamos nulos, undefined o strings vacíos por '00.00'
                     filaProcesada[key] = fila[key] === null || fila[key] === undefined || fila[key] === ''
                         ? '00.00'
                         : fila[key];
@@ -202,18 +172,15 @@ export class EstandarExploracionMainComponent {
                 return filaProcesada;
             });
 
-            // Enviamos filas ya procesadas
             this.planingCompartido.setExploracionExtandar(filas, 'exploracion_estandar');
         });
-
-
-
     }
 
+    /**
+     * Elimina una fila del FormArray (local o remota)
+     */
     async eliminarFila(data: any, index: number) {
         const semana = data.getRawValue ? data.getRawValue() : data.value;
-
-
         const periodo = this.planingCompartido.periodo();
 
         if (!periodo?.anio || !periodo?.mes) {
@@ -223,14 +190,9 @@ export class EstandarExploracionMainComponent {
         const esNuevo = semana.esNuevo;
 
         if (esNuevo) {
-<<<<<<< HEAD
-
             this.semanas.removeAt(index);
-=======
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
             return;
         }
-
 
         const payload = {
             cod_zona: semana.cod_zona,
@@ -248,12 +210,11 @@ export class EstandarExploracionMainComponent {
             next: (res: any) => {
                 if (res.success) {
                     this.utils.alertaEliminado(res.message);
+                    this.semanas.removeAt(index);
                     this.refrescarDatos();
-
                 } else {
                     this.utils.alertaEliminado(res.message);
                     this.refrescarDatos();
-
                 }
             },
             error: (err) => this.utils.mensajeError(err.message)
@@ -261,7 +222,7 @@ export class EstandarExploracionMainComponent {
     }
 
     private refrescarDatos() {
-        this.planingCompartido.setFormFactorBloqueado(true); // 🔓
+        this.planingCompartido.setFormFactorBloqueado(true);
         this.planingCompartido.setTablaBloqueada(true);
         this.planingCompartido.ejecutarVisualizar();
     }
@@ -276,20 +237,16 @@ export class EstandarExploracionMainComponent {
         });
     }
 
-
     private bloqueoSelect() {
         const periodo = this.planingCompartido.periodo();
 
         if (!periodo?.anio || !periodo?.mes) {
             return;
         }
+        
         this.planingService.bloqueoSelect(periodo?.anio, periodo?.mes, 'bloqueo-estandar-exploracion').subscribe({
             next: (data: any) => this.cod_zonaBloqueo.set(data),
             error: (err) => console.error('Error al cargar tipos de labor:', err),
         });
     }
-
-
 }
-
-

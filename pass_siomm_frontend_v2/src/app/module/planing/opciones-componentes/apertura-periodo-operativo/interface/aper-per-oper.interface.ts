@@ -17,7 +17,6 @@ export interface MaeValCanchas {
     val_vpt: string;
 }
 
-
 export interface MaeFactorSobredisolucion {
     cie_per: string;
     cie_ano: string;
@@ -46,7 +45,6 @@ export interface MaeFactorRecuperacion {
     val_con_au: string;
 }
 
-
 export interface MaeValOperativo {
     // val_per: string;
     // val_ano: string;
@@ -56,7 +54,6 @@ export interface MaeValOperativo {
     val_pre_pb: string;
     val_pre_zn: string;
 }
-
 
 export interface MaeFactor {
     // cie_ano: string;
@@ -70,8 +67,6 @@ export interface MaeFactor {
     fac_porhum: string;
     fac_tms_dif: string;
 }
-
-
 
 export interface MaeValOperativoDetalle {
     // val_ano: string;
@@ -106,7 +101,6 @@ export interface PlanningData {
     recuperacionBudget: MaeFactorRecuperacion[];
     factor: MaeFactor[];
 
-
     operativo_detalle: MaeValOperativoDetalle[];
     laboratorio_estandar: MaeTipLabEstandar[];
     metodo_minado: MaePerMetExplotacion[];
@@ -114,7 +108,6 @@ export interface PlanningData {
     semana_avance: MaeSemanaAvance[];
     exploracion_extandar: MaeExploEstandar[];
 }
-
 
 export interface MaeExploEstandar {
     cie_ano: string;
@@ -142,7 +135,6 @@ export interface MaePerMetExplotacion {
     ind_act: string;
 }
 
-
 export interface MaeSemanaCiclo {
     num_semana: number;
     fec_ini: string;
@@ -151,7 +143,6 @@ export interface MaeSemanaCiclo {
     cie_ano: string;
     cie_per: string;
 }
-
 
 export interface MaeSemanaAvance {
     num_semana: number;
@@ -182,20 +173,6 @@ export interface MaeTipLabEstandar {
     nro_lab_tabla: string;
 }
 
-export interface MaeExploEstandar {
-    cod_zona: string;
-    lab_pieper: string;
-    lab_broca: string;
-    lab_barcon: string;
-    lab_barren: string;
-    lab_facpot: string;
-    lab_fulmin: string;
-    lab_conect: string;
-    lab_punmar: string;
-    lab_tabla: string;
-    lab_apr: string;
-}
-
 export interface SelectExploracion {
     cod_metexp: string;
     nom_metexp: string;
@@ -220,8 +197,6 @@ export interface TableField {
     name: string;
     readonly: boolean;
 }
-
-
 
 export const TH_CAMPOS_TABLE: TableHeader[] = [
     { label: "Ag /Gr" },
@@ -250,8 +225,6 @@ export const TD_CAMPOS_TABLE: TableField[] = [
     { type: "text", name: "val_fac_rec_au", readonly: false },
 ]
 
-
-
 export interface EstructuraDatos {
     type: string;
     name: string;
@@ -267,7 +240,6 @@ export interface EstructuraDatosOtros {
 export interface thTitulos {
     titulo: string;
 }
-
 
 /***** SEMANA CICLO DATA ****/
 export const DATOS_COLUMNA_SEMANA_CICLO_MINADO: EstructuraDatos[] = [
@@ -285,7 +257,6 @@ export const TH_SEMANA_CICLO_MINADO: thTitulos[] = [
 ]
 
 /**SEMANA AVANCE**/
-
 export const TH_SEMANA_AVANCE: thTitulos[] = [
     { titulo: 'Num.' },
     { titulo: 'Fec. Inicio' },
@@ -299,8 +270,6 @@ export const DATOS_SEMANA_AVANCE: EstructuraDatos[] = [
     { type: 'text', name: 'fec_fin', placeholder: '' },
     { type: 'text', name: 'desc_semana', placeholder: '' },
 ]
-
-
 
 /**METODO MINADO**/
 export const TH_METODOLO_MINADO: thTitulos[] = [
@@ -335,11 +304,7 @@ export const TH_ESTANDAR_EXPLORACION: thTitulos[] = [
 ]
 
 export const DATOS_METODO_EXPLORACION: EstructuraDatosOtros[] = [
-<<<<<<< HEAD
-    { type: 'select', name: 'cod_zona', width: '284px' },
-=======
-    { type: 'select', name: 'cod_zona', width: '210px' },
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
+    { type: 'select', name: 'cod_zona', width: '284px' }, // Conservado el width de HEAD
     { type: 'text', name: 'lab_pieper', width: '80px' },
     { type: 'text', name: 'lab_broca', width: '80px' },
     { type: 'text', name: 'lab_barcon', width: '80px' },
@@ -351,7 +316,6 @@ export const DATOS_METODO_EXPLORACION: EstructuraDatosOtros[] = [
     { type: 'text', name: 'lab_tabla', width: '80px' },
     { type: 'text', name: 'lab_apr', width: '80px' },
 ]
-
 
 /**ESTANDAR AVANCE**/
 export const TH_ESTANDAR_AVANCE = [
@@ -365,18 +329,13 @@ export const TH_ESTANDAR_AVANCE = [
     { titulo: 'Potencia kg/mts' },
     { titulo: 'Fulminante Und/mts' },
     { titulo: 'Conectores Und/mts' },
-    { titulo: 'Puntal /Marchavante' }, // cambiar el nombre en el formGroup
+    { titulo: 'Puntal /Marchavante' },
     { titulo: 'Nro Tabla' }
 ]
 
 export const DATOS_ESTANDER_AVANCE: EstructuraDatosOtros[] = [
-<<<<<<< HEAD
-    { type: 'select', name: 'cod_tiplab', width: '247px' },
-    { type: 'number', name: 'nro_lab_ancho', width: '80px' },
-=======
-    { type: 'select', name: 'cod_tiplab', width: '200px' },
-    { type: 'number', name: 'nro_lab_ancho', width: '60px' },
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
+    { type: 'select', name: 'cod_tiplab', width: '247px' }, // Conservado el width de HEAD
+    { type: 'number', name: 'nro_lab_ancho', width: '80px' }, // Conservado el width de HEAD
     { type: 'number', name: 'nro_lab_altura', width: '90px' },
     { type: 'number', name: 'nro_lab_pieper', width: '90px' },
     { type: 'number', name: 'nro_lab_broca', width: '60px' },
@@ -389,7 +348,6 @@ export const DATOS_ESTANDER_AVANCE: EstructuraDatosOtros[] = [
     { type: 'number', name: 'nro_lab_tabla', width: '60px' },
 ]
 
-
 // MODAL COPIAR PERIODO
 export interface PeriodoDestino {
     anioDestino: string;
@@ -401,33 +359,13 @@ export interface PeriodoDestino {
     username: string;
 }
 
-
 export interface ApiResponse {
     success: boolean;
     message: string;
     data?: PeriodoDestino;
 }
 
-
 export interface ListNumSemanaResponse {
     num_semana: number;
     fec_fin: string;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

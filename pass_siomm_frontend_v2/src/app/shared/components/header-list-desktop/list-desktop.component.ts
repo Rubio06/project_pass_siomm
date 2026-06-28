@@ -17,49 +17,29 @@ import { PlanningService } from 'src/app/module/planing/opciones-componentes/ape
 export class ListDesktopComponent {
     authService = inject(AuthService);
     routesService = inject(MainPageService);
+    dataService = inject(PlanningService);
+    router = inject(Router);
+
     hasError = signal<string | null>(null);
-    dataService = inject(PlanningService); // 👈 4. Inyectar tu DataService (Signal)
-    router = inject(Router)
     iconos = signal<string>('');
-<<<<<<< HEAD
     routers = signal<MainPagePrimer[]>([]);
 
     openIndex: number | null = null;
+    subOpenIndex: number | null = null;
+    thirdOpenIndex: number | null = null;
 
-
-    asignarIcono(nombre: string) {
+    asignarIcono(nombre: string): string {
         const icons: Record<string, string> = {
             Mantenimiento: 'wrench',
-            Geología: 'globe-alt',
-            Planeamiento: 'map',
-            Mina: 'cube-transparent',
-            Laboratorio: 'test-tube',
-            Planta: 'cog-6-tooth'
-        };
-
-        return icons[nombre] || 'test-tube';
-    }
-
-=======
-
-    asignarIcono(nombre: string) {
-        const icons: Record<string, string> = {
             Geología: 'globe-alt',
             Planeamiento: 'map',
             Mina: 'cube-transparent',
             Laboratorio: 'beaker',
             Planta: 'cog-6-tooth'
         };
-
         return icons[nombre] || 'square-3-stack-3d';
     }
 
-
-
-
-    routers = signal<MainPagePrimer[]>([]);
-
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     ngOnInit(): void {
         this.routesService.getRoutes().subscribe({
             next: (data) => {
@@ -68,25 +48,12 @@ export class ListDesktopComponent {
                     icon: this.asignarIcono(r.nom_ruta_primer)
                 }));
                 this.routers.set(dataConIconos);
-<<<<<<< HEAD
-=======
-
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
             },
             error: () => this.hasError.set('Error al cargar las rutas.')
         });
     }
 
     getChildren(item: any) {
-
-<<<<<<< HEAD
-=======
-        // this.planingService.setBloqueoForm(true);  // ← SIEMPRE desbloquear
-        // this.planingService.setData([]);
-        // console.log("toke la ruta")
-
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
-
         return item.rutas_secundarias
             || item.rutas_terciarias
             || item.rutas_cuartas
@@ -95,9 +62,6 @@ export class ListDesktopComponent {
     }
 
     getName(item: any) {
-
-        // console.log("toke la ruta")
-
         return item.nom_ruta_primer
             || item.nom_ruta_secun
             || item.nom_ruta_terc
@@ -106,66 +70,23 @@ export class ListDesktopComponent {
     }
 
     irRuta(path: string) {
-
         this.router.navigate(['/menu-principal', path]);
     }
 
     toUrl(text: string): string {
-<<<<<<< HEAD
-
         return text
             .toLowerCase()
             .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-            .replace(/\s+/g, '_');
-            
+            .replace(/\s+/g, '-');
     }
-
-
-    //RUTAS RPIMER
-    toggle(index: number) {
-
-        this.openIndex = this.openIndex === index ? null : index;
-    }
-
-
-    //RUTAS SECUNDARIAS
-=======
-        // this.planingService.setBloqueoForm(true);  // ← SIEMPRE desbloquear
-        // this.planingService.setData([]);
-        // console.log("toke la ruta")
-
-        return text
-            .toLowerCase()
-            .normalize("NFD").replace(/[\u0300-\u036f]/g, "")  // quita acentos
-            .replace(/\s+/g, '-');                              // espacios → guiones
-    }
-
-
-
-    openIndex: number | null = null;
 
     toggle(index: number) {
         this.openIndex = this.openIndex === index ? null : index;
     }
 
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     isOpen(index: number): boolean {
         return this.openIndex === index;
     }
-
-<<<<<<< HEAD
-    //RUTAS TERCIARIAS
-    // isSubOpen(index: number): boolean {
-
-    //     console.log(index);
-    //     return this.subOpenIndex === index;
-    // }
-
-
-
-    //RUTAS SECUN Y TERC
-    subOpenIndex: number | null = null;
-    thirdOpenIndex: number | null = null;
 
     toggleSub(index: number) {
         this.subOpenIndex = this.subOpenIndex === index ? null : index;
@@ -183,20 +104,10 @@ export class ListDesktopComponent {
         return this.thirdOpenIndex === index;
     }
 
-
-=======
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
-
     closeDrawer() {
         const drawer = document.getElementById('my-drawer-4') as HTMLInputElement;
         if (drawer) {
             drawer.checked = false;
         }
-
     }
-
-<<<<<<< HEAD
-
-=======
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
 }

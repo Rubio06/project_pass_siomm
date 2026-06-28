@@ -4,11 +4,7 @@ import { environment } from '@environments/environments';
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { isPlatformBrowser } from '@angular/common';
-<<<<<<< HEAD
-import { emptyMaeUsuario, LogResponse, MaeUsuario } from '../interfaces/auth.interface';
-=======
-import { LogResponse } from '../interfaces/auth.interface';
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
+import { emptyMaeUsuario, LogResponse } from '../interfaces/auth.interface';
 import { Router } from '@angular/router';
 
 @Injectable({ providedIn: 'root' })
@@ -18,7 +14,6 @@ export class AuthService {
     public loggedIn = signal(false);
     public hasError = signal('');
 
-
     constructor(@Inject(PLATFORM_ID) private platformId: Object, private router: Router) {
         if (isPlatformBrowser(this.platformId)) {
             const token = sessionStorage.getItem('token');
@@ -26,12 +21,9 @@ export class AuthService {
                 this.loggedIn.set(true);
             }
         }
-
         // this.startInactivityWatcher();
-
     }
 
-<<<<<<< HEAD
     login(username: string, password: string): Observable<LogResponse> {
         return this.http
             .post<LogResponse>(`${this.authUrl}auth/authenticate`, { username, password })
@@ -44,57 +36,25 @@ export class AuthService {
                     } else {
                         this.loggedIn.set(false);
                     }
-                    return resp; // <-- siempre devuelve un objeto LogResponse
+                    return resp; // Siempre devuelve el objeto LogResponse estructurado
                 }),
                 catchError((error) => {
                     this.hasError.set(error.error?.message || 'Error en autenticación');
                     setTimeout(() => this.hasError.set(''), 5000);
                     this.loggedIn.set(false);
 
-                    // devuelve un objeto LogResponse de "fallback" para mantener el tipo
+                    // Devuelve un objeto LogResponse de "fallback" para mantener la consistencia del tipado
                     const fallback: LogResponse = {
                         success: false,
-                        message: '',
+                        message: error.error?.message || 'Error en autenticación',
                         token: '',
                         data: emptyMaeUsuario()
                     };
                     return of(fallback);
-=======
-    login(username: string, password: string): Observable<boolean> {
-        return this.http
-            .post<LogResponse>(`${this.authUrl}auth/authenticate`, { username, password })
-            .pipe(
-                map((resp) => {
-
-                    if (resp.success && isPlatformBrowser(this.platformId)) {
-                        sessionStorage.setItem('token', resp.data.token);
-                        sessionStorage.setItem('username', resp.data.username);
-                        this.loggedIn.set(true);
-                        return true;
-                    }
-
-                    this.loggedIn.set(false);
-
-                    return false;
-                }),
-                catchError((error) => {
-                    this.hasError.set(error.error?.message || 'Error en autenticación');
-                    setTimeout(() => {
-                        this.hasError.set('');
-                    }, 5000);
-
-                    this.loggedIn.set(false);
-                    return of(false);
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
                 })
             );
     }
 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     isAuthenticated(): boolean {
         return this.loggedIn();
     }
@@ -107,27 +67,21 @@ export class AuthService {
 
         this.router.navigate(['/auth/login']);
         this.loggedIn.set(false);
-
         // this.clearInactivityTimer();
-
     }
-    // 🔹 Nuevo: revisar token expirado periódicamente
+
+    // 🔹 Opcional: monitoreo de inactividad de sesión comentado listo para su uso
     // private startInactivityWatcher() {
     //     if (!isPlatformBrowser(this.platformId)) return;
-
     //     const resetTimer = () => {
     //         this.clearInactivityTimer();
     //         this.inactivityTimer = setTimeout(() => {
     //             this.logout();
     //         }, this.TIMEOUT);
     //     };
-
-    //     // Eventos que cuentan como “actividad”
     //     ['click', 'keydown', 'mousemove', 'scroll'].forEach(event =>
     //         document.addEventListener(event, resetTimer)
     //     );
-
-    //     // Iniciamos el timer por primera vez
     //     resetTimer();
     // }
 

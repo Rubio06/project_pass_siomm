@@ -1,43 +1,39 @@
-<<<<<<< HEAD
-// import { RenderMode, ServerRoute } from '@angular/ssr';
-
-// export const serverRoutes: ServerRoute[] = [
-//     {
-//         path: 'menu-principal/planeamiento/programa_mensual_de_labores/detalle-programacion/**',
-//         renderMode: RenderMode.Server,
-//     },
-//     {
-//         path: '**',
-//         renderMode: RenderMode.Prerender,
-//     },
-// ];
-
-
 import { RenderMode, ServerRoute } from '@angular/ssr';
 
 export const serverRoutes: ServerRoute[] = [
-    // 1. Rutas específicas con parámetros complejos (SSR)
     {
         path: 'menu-principal/planeamiento/programa_mensual_de_labores/detalle-programacion/**',
         renderMode: RenderMode.Server,
     },
-    // 2. Mantenimiento y otras rutas con parámetros (SSR)
-    {
-        path: 'menu-principal/mantenimiento/**',
-        renderMode: RenderMode.Server,
-    },
-    // 3. El resto de la aplicación que sea estático (Login, Dashboards fijos, etc.)
-=======
-import { RenderMode, ServerRoute } from '@angular/ssr';
-
-export const serverRoutes: ServerRoute[] = [
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     {
         path: '**',
         renderMode: RenderMode.Prerender,
     },
 ];
-<<<<<<< HEAD
+
+
+// import { RenderMode, ServerRoute } from '@angular/ssr';
+
+// export const serverRoutes: ServerRoute[] = [
+//     // 1. Rutas específicas con parámetros complejos (SSR)
+//     {
+//         path: 'menu-principal/planeamiento/programa_mensual_de_labores/detalle-programacion/**',
+//         renderMode: RenderMode.Server,
+//     },
+//     // 2. Mantenimiento y otras rutas con parámetros (SSR)
+//     {
+//         path: 'menu-principal/mantenimiento/**',
+//         renderMode: RenderMode.Server,
+//     },
+//     // 3. El resto de la aplicación que sea estático (Login, Dashboards fijos, etc.)
+// import { RenderMode, ServerRoute } from '@angular/ssr';
+
+// export const serverRoutes: ServerRoute[] = [
+//     {
+//         path: '**',
+//         renderMode: RenderMode.Prerender,
+//     },
+// ];
 
 // import { RenderMode, ServerRoute } from '@angular/ssr';
 
@@ -63,5 +59,3 @@ export const serverRoutes: ServerRoute[] = [
 //         renderMode: RenderMode.Prerender, // <- Cambia todo a Prerender
 //     },
 // ];
-=======
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190

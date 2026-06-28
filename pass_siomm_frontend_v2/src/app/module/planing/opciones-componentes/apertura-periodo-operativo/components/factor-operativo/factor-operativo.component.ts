@@ -77,19 +77,19 @@ export class FactorOperativoComonent {
 
         });
 
-<<<<<<< HEAD
+ 
         // effect(() => {
         //     if (this.planingCompartido.resetPeriodo()) return;
         //     this.resetearFormulario();
         //     this.planingCompartido.clearResetPeriodo();
         // });
-=======
+
         effect(() => {
             if (this.planingCompartido.resetPeriodo()) return;
             this.resetearFormulario();
             this.planingCompartido.clearResetPeriodo();
         });
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
+ 
     }
 
     blockForm() {
@@ -114,7 +114,7 @@ export class FactorOperativoComonent {
         this.form.valueChanges.subscribe(val => {
             const filas = this.form.getRawValue();
 
-<<<<<<< HEAD
+ 
 
             Object.keys(filas).forEach(key => {
                 if (filas[key] === '' || filas[key] === null || filas[key] === undefined) {
@@ -123,8 +123,8 @@ export class FactorOperativoComonent {
             });
 
 
-=======
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
+
+ 
             this.planingCompartido.setFactor(filas, 'factor_operativo');
         });
 

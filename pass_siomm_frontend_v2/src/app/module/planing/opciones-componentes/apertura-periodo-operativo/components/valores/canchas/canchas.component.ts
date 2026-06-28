@@ -1,4 +1,4 @@
-import { Component, effect, inject, signal } from '@angular/core';
+import { Component, effect, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PlanningService } from 'src/app/module/planing/opciones-componentes/apertura-periodo-operativo/services/planning.service';
 import { PlaningCompartidoService } from '../../../services/planing-compartido.service';
@@ -10,18 +10,14 @@ import { FormUtils } from 'src/app/utils/form-utils';
     templateUrl: './canchas.component.html',
     styleUrl: './canchas.component.css',
 })
-export class CanchasComponent {
+export class CanchasComponent implements OnInit {
     private planingService = inject(PlanningService);
     planingCompartido = inject(PlaningCompartidoService);
     private fb = inject(FormBuilder);
-    // rutas = this.planingCompartido.data;
+    
     formUtils = FormUtils;
 
-    // bloqueo = inject(PlaningCompartido).bloqueo;
-
     form: FormGroup = this.fb.group({
-        // cie_ano: [''],
-        // cie_per: [''],
         val_tms: ['0.000', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
         val_ag: ['0.000', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
         val_cu: ['0.000', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
@@ -31,7 +27,7 @@ export class CanchasComponent {
     });
 
     constructor() {
-
+        // Efecto para cargar datos desde el estado compartido global
         effect(() => {
             const response = this.planingCompartido.dataRoutes();
             const canchas = response.data?.canchas?.[0];
@@ -44,28 +40,36 @@ export class CanchasComponent {
                 val_zn: canchas?.val_zn || '0.000',
                 val_vpt: canchas?.val_vpt || '0.000'
             });
-
         });
 
-<<<<<<< HEAD
-        // effect(() => {
-        //     if (this.planingCompartido.resetPeriodo()) return;
-        //     this.resetearFormulario();
-        //     this.planingCompartido.clearResetPeriodo();
-        // });
-=======
+        // Efecto activo para escuchar la orden de resetear el periodo
         effect(() => {
             if (this.planingCompartido.resetPeriodo()) return;
+            
             this.resetearFormulario();
             this.planingCompartido.clearResetPeriodo();
         });
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
+    }
+
+    ngOnInit() {
+        this.form.valueChanges.subscribe(() => {
+            const filas = this.form.getRawValue();
+
+            // Reemplazar vacíos, null o undefined por '0.000' de manera preventiva
+            Object.keys(filas).forEach(key => {
+                if (filas[key] === '' || filas[key] === null || filas[key] === undefined) {
+                    filas[key] = '0.000';
+                }
+            });
+
+            // Notificar los cambios en tiempo real al estado central
+            this.planingCompartido.setCanchas(filas, 'factor_operativo');
+        });
     }
 
     blockForm() {
         this.form.disable();
     }
-
 
     resetearFormulario() {
         this.form.reset({
@@ -75,36 +79,10 @@ export class CanchasComponent {
             val_pb: '0.000',
             val_zn: '0.000',
             val_vpt: '0.000'
-        })
-
-    }
-
-    ngOnInit() {
-        this.form.valueChanges.subscribe(() => {
-<<<<<<< HEAD
-            // const filas = this.form.getRawValue();
-
-
-            const filas = this.form.getRawValue();
-
-            Object.keys(filas).forEach(key => {
-                if (filas[key] === '' || filas[key] === null || filas[key] === undefined) {
-                    filas[key] = '0.000';
-                }
-            });
-
-
-=======
-            const filas = this.form.getRawValue();
-
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
-            this.planingCompartido.setCanchas(filas, 'factor_operativo');
         });
     }
-
 
     bloquearCampo(): boolean {
         return this.planingCompartido.bloqueoFormEditar();
     }
-
 }
