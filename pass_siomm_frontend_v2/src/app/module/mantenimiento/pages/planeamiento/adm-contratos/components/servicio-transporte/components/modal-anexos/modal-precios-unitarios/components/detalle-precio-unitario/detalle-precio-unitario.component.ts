@@ -1,11 +1,11 @@
-import { ChangeDetectionStrategy, Component, inject, input, OnInit, output, signal, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, OnInit, output, signal, viewChild, ViewChild } from '@angular/core';
 import { TabPrecioUnitarioComponent } from './components/tab-precio-unitario/tab-precio-unitario.component';
 import { FormUtils } from 'src/app/utils/form-utils';
 import { CostoPartidaComponent } from './components/costo-partida/costo-partida.component';
 import { ParametrosPrincipalesComponent } from './components/parametros-principales/parametros-principales.component';
 import { SubParametrosComponent } from './components/sub-parametros/sub-parametros.component';
 import { CostoPartidaModel, DetParametrosPartidaPuDto, DetPartidaCostosPuDto, DetSubpartidasPuDto, EntradaPuCabTab, ParametroPrincipalModel, PartidaPuListarDto, PartidaPUModel, ResultadoDatosDto, SubParametroModel, ZonaPu } from '../../../../../interfaces/servicio-transporte.interface';
-import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ServioTransporteService } from '../../../../../services/servico-transporte.service';
 
 @Component({
@@ -38,26 +38,6 @@ export class DetallePrecioUnitarioComponent implements OnInit {
         this.servioTransporteService.getUSDtoPEN().subscribe(rate => {
             this.tipoCambioDolares.set(rate);
         })
-
-    }
-
-    onSubtotalChange(subtotal: number): void {
-        this.miFormulario.patchValue({
-            imp_costo_directo: subtotal.toFixed(3), // 👈 "1234.000"
-        });
-    }
-
-    onTotalPuSol(subtotal: number): void {
-        this.miFormulario.patchValue({
-            imp_costo_partida_dolar: subtotal.toFixed(3), // 👈 "1234.000"
-        });
-
-    }
-    onTotalGeneral(total: number): void {
-
-        this.miFormulario.patchValue({
-            imp_costo_partida: total.toFixed(3), // 👈 "1234.000"
-        });
 
     }
 
@@ -146,6 +126,11 @@ export class DetallePrecioUnitarioComponent implements OnInit {
                 this.llenarCostoPartida(data.costoPartida);
                 this.llenarParametrosPrincipales(data.parametrosPrincipales);
                 this.llenarSubParametros(data.subParametros);
+
+                // "Considera que este formulario no ha sido modificado."
+                this.miFormulario.markAsPristine();
+                // "Considera que el usuario nunca tocó ningún control."
+                this.miFormulario.markAsUntouched();
             },
             error: (err) => console.error(err),
         });
@@ -190,7 +175,9 @@ export class DetallePrecioUnitarioComponent implements OnInit {
                 imp_precio_soles: [
                     item && item.imp_precio_soles != null
                         ? (Number(item.imp_precio_soles) || 0).toFixed(3)
-                        : '0.000'
+                        : '0.000',
+                    [Validators.required,
+                    Validators.pattern(/^\d{1,10}(\.\d{1,3})?$/)],
                 ],
                 accion: [accion],
                 esNueva: [esNueva]
@@ -255,34 +242,19 @@ export class DetallePrecioUnitarioComponent implements OnInit {
         if (nuevaTab === this.tabActivo()) {
             return;
         }
+        this.tabActivo.set(nuevaTab);
+    }
 
-        if (this.onTabPendiente()) {
+
+    public async onCerrarModal(): Promise<void> {
+        if (this.miFormulario.dirty) {
+            console.log("LA ACCION DEL FORMULARIO ES " + this.miFormulario.dirty)
             const confirmar = await this.formUtils.confirmarSalirSinGuardar();
             if (!confirmar) {
                 return;
             }
         }
-
-        this.tabActivo.set(nuevaTab);
-    }
-
-    private onTabPendiente(): boolean {
-        if (this.tabActivo() === 'costo-partida') {
-            // const hijoMineral = this.transporteMineral();
-            // return !!hijoMineral?.miFormulario?.dirty;
-        }
-
-        if (this.tabActivo() === 'parametros-principales') {
-            // const hijoMaterial = this.transporteMaterial();
-            // return !!hijoMaterial?.form?.dirty;
-        }
-
-        if (this.tabActivo() === 'sub-parametros') {
-            // const hijoRutaBalanza = this.rutasFijasBalanza();
-            // return !!hijoRutaBalanza?.formularioTablas?.dirty;
-        }
-
-        return false;
+        this.onCerrarModalPreUnitarioDetalle.emit(false);
     }
 
     public onGuardar() {
@@ -334,7 +306,7 @@ export class DetallePrecioUnitarioComponent implements OnInit {
                 ...item,
                 cod_empresa_unidad: '01', // del login/sesión
                 cod_contrato: this.detallePartida()?.cod_contrato.toString(),
-                cod_catalogo_tarea:data.cod_catalogo_tarea,
+                cod_catalogo_tarea: data.cod_catalogo_tarea,
                 cod_actividad: data.cod_actividad,
                 nro_partida: this.detallePartida()?.nro_partida.toString(),
                 nro_valor_1: Number(item.nro_valor_1),
@@ -383,6 +355,26 @@ export class DetallePrecioUnitarioComponent implements OnInit {
                 }
             });
         })
+
+    }
+
+    onSubtotalChange(subtotal: number): void {
+        this.miFormulario.patchValue({
+            imp_costo_directo: subtotal.toFixed(3), // 👈 "1234.000"
+        });
+    }
+
+    onTotalPuSol(subtotal: number): void {
+        this.miFormulario.patchValue({
+            imp_costo_partida_dolar: subtotal.toFixed(3), // 👈 "1234.000"
+        });
+
+    }
+    onTotalGeneral(total: number): void {
+
+        this.miFormulario.patchValue({
+            imp_costo_partida: total.toFixed(3), // 👈 "1234.000"
+        });
 
     }
 

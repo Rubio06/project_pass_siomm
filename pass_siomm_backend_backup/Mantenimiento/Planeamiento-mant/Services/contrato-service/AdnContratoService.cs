@@ -189,22 +189,6 @@ namespace pass_siomm_backend.Mantenimiento.Planeamiento_mant.Services
         }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         public async Task<List<MaeRutaTransporteList>> ListarRutasTransporte()
         {
             var listaRutas = new List<MaeRutaTransporteList>();
@@ -434,6 +418,24 @@ namespace pass_siomm_backend.Mantenimiento.Planeamiento_mant.Services
             }
 
             return response;
+        }
+
+        public async Task<int> ContarTarifarioAsync(string cod_contrato)
+        {
+            await using var conn = new SqlConnection(_connectionString);
+            await using var cmd = new SqlCommand(@"
+                SELECT COALESCE(COUNT(cod_cargo), 0)
+                FROM sval_det_tarifario_personal
+                WHERE cod_empresa = @cod_empresa
+                  AND cod_empresa_unidad = @cod_empresa_unidad
+                  AND cod_contrato = @cod_contrato", conn);
+
+            cmd.Parameters.AddWithValue("@cod_empresa", "03");
+            cmd.Parameters.AddWithValue("@cod_empresa_unidad", "01");
+            cmd.Parameters.AddWithValue("@cod_contrato", cod_contrato);
+
+            await conn.OpenAsync();
+            return (int)await cmd.ExecuteScalarAsync();
         }
 
 

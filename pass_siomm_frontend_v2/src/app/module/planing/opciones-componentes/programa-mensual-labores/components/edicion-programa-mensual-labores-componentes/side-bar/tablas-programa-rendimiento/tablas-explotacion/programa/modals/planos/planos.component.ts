@@ -134,7 +134,6 @@ export class PlanosExplotacionComponent implements OnInit {
             cod_fase: fase || '01',
         };
 
-        console.log("los datos son" + datos)
         this.edicionProgrmaMensualService.mostrarPlanos(datos).subscribe({
             next: plano => {
                 this.listMostrarPlanos.set(plano);

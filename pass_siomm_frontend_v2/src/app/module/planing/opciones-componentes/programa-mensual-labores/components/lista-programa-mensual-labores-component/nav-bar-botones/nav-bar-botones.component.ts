@@ -530,9 +530,6 @@ export class NavBarBotonesComponent {
         const cie_per = this.cie_per() || filtros?.mes || null;
         const nro_prog = this.listaPrograma()?.[0]?.nro_prog || nroProgState || null;
 
-        console.log("🚀 ~ file: nav-bar-botones.component.ts:257 ~ cie_anio:", cie_anio,
-            "🚀 ~ file: nav-bar-botones.component.ts:257 ~ cie_per:", cie_per,
-            "🚀 ~ file: nav-bar-botones.component.ts:257 ~ nro_prog:", nro_prog)
 
         const soloAnio = cie_anio && !cie_per && !nro_prog;
         const periodoConPrograma = cie_per && nro_prog && cie_anio;

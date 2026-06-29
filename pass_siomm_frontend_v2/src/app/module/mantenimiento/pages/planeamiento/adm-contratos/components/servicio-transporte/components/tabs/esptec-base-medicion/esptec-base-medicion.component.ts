@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, input, signal, effect, OnInit, inject } from '@angular/core';
-import { AbstractControl, FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ParametroMedicionDto, TablaDetalle } from '../../../interfaces/servicio-transporte.interface';
 import { ServioTransporteService } from '../../../services/servico-transporte.service';
+import { FormUtils } from 'src/app/utils/form-utils';
 
 @Component({
     selector: 'app-esptec-base-medicion',
@@ -15,6 +16,9 @@ export class EsptecBaseMedicionComponent implements OnInit {
     public mediciones = input<FormArray<FormGroup>>(new FormArray<FormGroup>([]));
     public listParametroGeneral = signal<TablaDetalle[]>([]);
     public listMedicion = signal<ParametroMedicionDto[]>([]);
+    private fb = inject(FormBuilder);
+    public formUtils = FormUtils;
+    public cod_contrato = input<string>('');
 
     ngOnInit(): void {
         this.cargarEquiposPorFila();
@@ -31,7 +35,10 @@ export class EsptecBaseMedicionComponent implements OnInit {
         this.isLoading.set(true);
 
         this.servioTransporteService.obtenerTabla('002').subscribe({
-            next: (data) => this.listParametroGeneral.set(data),
+            next: (data) => {
+                console.log("la data es " + JSON.stringify(data, null, 2))
+                this.listParametroGeneral.set(data)
+            },
             error: (err) => console.error(err),
             complete: () => this.isLoading.set(false)
         });
@@ -97,8 +104,72 @@ export class EsptecBaseMedicionComponent implements OnInit {
 
     }
 
+    public onAgregarFila(): void {
+        this.mediciones().push(this.crearFila());
+    }
+
+
+    private crearFila(): FormGroup {
+        return this.fb.group({
+            cod_parametro_medicion: [''],
+            cod_tabla_um_pv: [''],
+            cod_item_um_pv: [''],
+            cod_tabla_um_ap: [''],
+            cod_item_um_ap: [''],
+            nro_potencia_veta_1: ['0.00'],
+            nro_potencia_veta_2: ['0.00'],
+            nro_ancho_pago_1: ['0.00'],
+            cod_valor_ap: [''],
+            cod_valor_pv: [''],
+            c_t_pv: [''],
+            c_t_ap: [''],
+            accion: ['I']
+        });
+    }
+
+    public onEliminarFila(index: number, fila: FormGroup): void {
+        const esNueva = this.mediciones().at(index).get('accion')?.value === 'I';
+
+        if (esNueva) {
+            this.mediciones().removeAt(index);
+            return;
+        }
+
+        this.formUtils.confirmarAnulacionClase(
+            'Eliminar Fila',
+            `¿Desea eliminar esta medición?`,
+            'Sí, Eliminar',
+            'No, Cancelar'
+        ).then(result => {
+            if (!result.isConfirmed) return;
+
+            const dto = {
+                cod_empresa: '03',
+                cod_empresa_unidad: '01',
+                cod_contrato: this.cod_contrato(),
+                cod_parametro_medicion: fila.get('cod_parametro_medicion')?.value
+            };
+
+            this.servioTransporteService.eliminarDetContratoMedicion(dto).subscribe({
+                next: (respuesta) => {
+                    if (respuesta.estado === 1) {
+                        this.formUtils.mensajeEliminarLaborClase('Eliminación Exitosa', respuesta.mensaje);
+                        this.mediciones().removeAt(index);
+                    } else {
+                        this.formUtils.alertaNoPermitidoClase('Error', respuesta.mensaje);
+                    }
+                },
+                error: (err) => {
+                    const msg = err.error?.mensaje || 'Error al eliminar.';
+                    alert(`Error: ${msg}`);
+                }
+            });
+        });
+    }
+
 
 
 
 
 }
+// 

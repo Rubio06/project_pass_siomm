@@ -1,6 +1,6 @@
 import { DecimalPipe, CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, inject, input, OnInit, Output, output, signal } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FiltrosCostoPartidaComponent } from './components/filtros-costo-partida/filtros-costo-partida.component';
 import { DetPartidaCostosPuDto, EliminarPartidaDto, ParametrosContratoDto, RespuestaApiDto } from '../../../../../../../interfaces/servicio-transporte.interface';
 import { FormUtils } from 'src/app/utils/form-utils';
@@ -20,6 +20,7 @@ export class CostoPartidaComponent implements OnInit {
     abrirModalCostoPartida = signal<boolean>(false);
     public servioTransporteService = inject(ServioTransporteService);
     public costoPartidaArray = input.required<FormArray<FormGroup>>();
+    public parametrosSeleccionados = signal<ParametrosContratoDto[]>([]);
     public formUtils = FormUtils;
     cargarPrecioUnitarioCabTab = output<void>()
     public tipoCambioDolares = signal<number>(0)
@@ -45,16 +46,52 @@ export class CostoPartidaComponent implements OnInit {
         this.servioTransporteService.getUSDtoPEN().subscribe(rate => {
             this.tipoCambioDolares.set(rate);
         });
+
+        this.sincronizarParametrosSeleccionados();
     }
 
+    private sincronizarParametrosSeleccionados(): void {
+        const seleccionados = this.filas.reduce<ParametrosContratoDto[]>((acc, fila) => {
+            const codParametro = fila.get('cod_parametro_contrato')?.value;
 
+            if (!codParametro) return acc;
+
+            const yaExiste = acc.some(item => item.cod_parametro_contrato === codParametro);
+
+            if (!yaExiste) {
+                acc.push({
+                    cod_parametro_contrato: codParametro,
+                    des_parametro_contrato: fila.get('c_t_parametro')?.value ?? '',
+                    nro_orden: 0,
+                    cod_operador: '',
+                    cod_valor: fila.get('c_n_valor')?.value ?? '',
+                    cod_anexo: '',
+                    des_observacion: '',
+                    ind_obligatorio: '',
+                    flg_vigente: '',
+                    bloqueado: true,
+                    c_fl: '',
+                    esNueva: false
+                });
+            }
+
+            return acc;
+        }, []);
+
+        this.parametrosSeleccionados.set(seleccionados);
+    }
 
     public onDataAceptada(data: ParametrosContratoDto[]): void {
         if (!data || data.length === 0) return;
 
         const array = this.costoPartidaArray();
+        const codigosExistentes = new Set(
+            array.controls.map(control => control.get('cod_parametro_contrato')?.value)
+        );
 
         data.forEach(item => {
+            if (codigosExistentes.has(item.cod_parametro_contrato)) return;
+
             array.push(this.fb.group({
                 cod_parametro_contrato: [item.cod_parametro_contrato],
                 c_t_parametro: [item.des_parametro_contrato],
@@ -69,7 +106,11 @@ export class CostoPartidaComponent implements OnInit {
                 accion: ['I']
 
             }));
+
+            codigosExistentes.add(item.cod_parametro_contrato);
         });
+
+        this.sincronizarParametrosSeleccionados();
     }
 
 
@@ -78,6 +119,7 @@ export class CostoPartidaComponent implements OnInit {
         const nuevo = array.at(index).get('esNueva')?.value
         if (!nuevo) {
             array.removeAt(index);
+            this.sincronizarParametrosSeleccionados();
             return;
         }
 
@@ -121,6 +163,34 @@ export class CostoPartidaComponent implements OnInit {
 
 
     }
+
+    // [disabled]="isEquipoDuplicado(eq.cod_equipo, i)"
+
+
+    // @for (eq of listEquiposVal(); track eq.cod_equipo) {
+    // <option [value]="eq.cod_equipo" [disabled]="isEquipoDuplicado(eq.cod_equipo, i)">
+    //     {{ eq.des_equipo }}
+    // </option>
+    // }
+
+
+    //                                 public isEquipoDuplicado(codEquipo: string, indexActual: number): boolean {
+    //     // Si el valor está vacío, no bloqueamos nada
+    //     if (!codEquipo) return false;
+
+    //     // Recorremos los controles del FormArray
+    //     return this.filas.controls.some((control, index) => {
+    //         // Saltamos la fila actual (un equipo sí puede estar seleccionado en SU propia fila)
+    //         if (index === indexActual) return false;
+
+    //         // Obtenemos el valor seleccionado de la fila competidora
+    //         const equipoSeleccionado = control.get('cod_equipo')?.value;
+
+    //         // Si coincide con el código que estamos evaluando en el bucle del <option>, devolvemos true
+    //         return equipoSeleccionado === codEquipo;
+    //     });
+    // }
+
 
     get subTotalPartida(): number {
         return this.filas.reduce((suma, fila) => {

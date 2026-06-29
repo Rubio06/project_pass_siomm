@@ -1,6 +1,6 @@
 <div class="w-[93%] flex flex-row-reverse mx-auto mb-1">
 
-    <button type="button"
+    <button type="button" (click)="onAgregarFila()"
         class="bg-[#047857] flex items-center justify-center rounded-lg shadow-sm group
         hover:shadow-md hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed w-8 h-8">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="white"
@@ -82,7 +82,7 @@
                     <!-- (click)="eliminarFila($index)" -->
 
                     <td class="p-1 flex justify-center items-center">
-                        <button type="button" class="bg-[#A6200A] flex items-center justify-center rounded-lg shadow-sm group relative
+                        <button type="button" (click)="onEliminarFila($index, fila)" class="bg-[#A6200A] flex items-center justify-center rounded-lg shadow-sm group relative
                         hover:bg-red-700 hover:shadow-md hover:scale-105 transition-all duration-200 
                         disabled:opacity-50 disabled:cursor-not-allowed w-8 h-8">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"

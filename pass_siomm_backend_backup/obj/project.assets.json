@@ -1,9 +1,5 @@
 {
-<<<<<<< HEAD
   "version": 4,
-=======
-  "version": 3,
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
   "targets": {
     "net8.0": {
       "Azure.Core/1.47.1": {
@@ -43,7 +39,6 @@
           }
         }
       },
-<<<<<<< HEAD
       "BouncyCastle.Cryptography/2.6.2": {
         "type": "package",
         "compile": {
@@ -245,8 +240,6 @@
           }
         }
       },
-=======
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
       "Microsoft.AspNetCore.Authentication.JwtBearer/8.0.21": {
         "type": "package",
         "dependencies": {
@@ -445,7 +438,6 @@
           "buildTransitive/net6.0/_._": {}
         }
       },
-<<<<<<< HEAD
       "Microsoft.Extensions.Configuration/8.0.0": {
         "type": "package",
         "dependencies": {
@@ -530,8 +522,6 @@
           "buildTransitive/net6.0/_._": {}
         }
       },
-=======
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
       "Microsoft.Extensions.DependencyInjection.Abstractions/8.0.2": {
         "type": "package",
         "compile": {
@@ -548,7 +538,6 @@
           "buildTransitive/net6.0/_._": {}
         }
       },
-<<<<<<< HEAD
       "Microsoft.Extensions.FileProviders.Abstractions/8.0.0": {
         "type": "package",
         "dependencies": {
@@ -605,8 +594,6 @@
           "buildTransitive/net6.0/_._": {}
         }
       },
-=======
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
       "Microsoft.Extensions.Logging.Abstractions/8.0.3": {
         "type": "package",
         "dependencies": {
@@ -649,11 +636,7 @@
       "Microsoft.Extensions.Primitives/8.0.0": {
         "type": "package",
         "compile": {
-<<<<<<< HEAD
           "lib/net8.0/Microsoft.Extensions.Primitives.dll": {
-=======
-          "lib/net8.0/_._": {
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
             "related": ".xml"
           }
         },
@@ -794,7 +777,6 @@
           }
         }
       },
-<<<<<<< HEAD
       "Microsoft.IO.RecyclableMemoryStream/3.0.1": {
         "type": "package",
         "compile": {
@@ -817,8 +799,6 @@
           "lib/netstandard1.0/_._": {}
         }
       },
-=======
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
       "Microsoft.OpenApi/1.6.14": {
         "type": "package",
         "compile": {
@@ -845,7 +825,6 @@
           }
         }
       },
-<<<<<<< HEAD
       "NPOI/2.7.6": {
         "type": "package",
         "dependencies": {
@@ -955,8 +934,6 @@
           }
         }
       },
-=======
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
       "Swashbuckle.AspNetCore/6.6.2": {
         "type": "package",
         "dependencies": {
@@ -1215,7 +1192,6 @@
           }
         }
       },
-<<<<<<< HEAD
       "System.IO.Packaging/8.0.1": {
         "type": "package",
         "compile": {
@@ -1232,8 +1208,6 @@
           "buildTransitive/net6.0/_._": {}
         }
       },
-=======
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
       "System.Memory/4.5.5": {
         "type": "package",
         "compile": {
@@ -1313,7 +1287,6 @@
           "buildTransitive/net8.0/_._": {}
         }
       },
-<<<<<<< HEAD
       "System.Security.Cryptography.Xml/8.0.2": {
         "type": "package",
         "dependencies": {
@@ -1355,8 +1328,6 @@
           }
         }
       },
-=======
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
       "System.Text.Json/8.0.5": {
         "type": "package",
         "compile": {
@@ -1372,7 +1343,6 @@
         "build": {
           "buildTransitive/net6.0/System.Text.Json.targets": {}
         }
-<<<<<<< HEAD
       },
       "ZString/2.6.0": {
         "type": "package",
@@ -1386,8 +1356,6 @@
             "related": ".xml"
           }
         }
-=======
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
       }
     }
   },
@@ -1432,7 +1400,6 @@
         "lib/netstandard2.0/Azure.Identity.xml"
       ]
     },
-<<<<<<< HEAD
     "BouncyCastle.Cryptography/2.6.2": {
       "sha512": "7oWOcvnntmMKNzDLsdxAYqApt+AjpRpP2CShjMfIa3umZ42UQMvH0tl1qAliYPNYO6vTdcGMqnRrCPmsfzTI1w==",
       "type": "package",
@@ -1756,8 +1723,6 @@
         "mathnet.numerics.signed.nuspec"
       ]
     },
-=======
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     "Microsoft.AspNetCore.Authentication.JwtBearer/8.0.21": {
       "sha512": "ZuUpJ4DvmVArmTlyGGg+b9IdKgd8Kw0SmEzhjy4dQw8R6rxfNqCXfGvGm3ld7xlrgthJFou/le9tadsSyjFLuw==",
       "type": "package",
@@ -2205,7 +2170,6 @@
         "useSharedDesignerContext.txt"
       ]
     },
-<<<<<<< HEAD
     "Microsoft.Extensions.Configuration/8.0.0": {
       "sha512": "0J/9YNXTMWSZP2p2+nvl8p71zpSwokZXZuJW+VjdErkegAnFdO1XlqtA62SJtgVYHdKu3uPxJHcMR/r35HwFBA==",
       "type": "package",
@@ -2328,8 +2292,6 @@
         "useSharedDesignerContext.txt"
       ]
     },
-=======
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     "Microsoft.Extensions.DependencyInjection.Abstractions/8.0.2": {
       "sha512": "3iE7UF7MQkCv1cxzCahz+Y/guQbTqieyxyaWKhrRO91itI9cOKO76OHeQDahqG4MmW5umr3CcCvGmK92lWNlbg==",
       "type": "package",
@@ -2362,7 +2324,6 @@
         "useSharedDesignerContext.txt"
       ]
     },
-<<<<<<< HEAD
     "Microsoft.Extensions.FileProviders.Abstractions/8.0.0": {
       "sha512": "ZbaMlhJlpisjuWbvXr4LdAst/1XxH3vZ6A0BsgTphZ2L4PGuxRLz7Jr/S7mkAAnOn78Vu0fKhEgNF5JO3zfjqQ==",
       "type": "package",
@@ -2451,8 +2412,6 @@
         "useSharedDesignerContext.txt"
       ]
     },
-=======
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     "Microsoft.Extensions.Logging.Abstractions/8.0.3": {
       "sha512": "dL0QGToTxggRLMYY4ZYX5AMwBb+byQBd/5dMiZE07Nv73o6I5Are3C7eQTh7K2+A4ct0PVISSr7TZANbiNb2yQ==",
       "type": "package",
@@ -2782,7 +2741,6 @@
         "microsoft.identitymodel.tokens.nuspec"
       ]
     },
-<<<<<<< HEAD
     "Microsoft.IO.RecyclableMemoryStream/3.0.1": {
       "sha512": "s/s20YTVY9r9TPfTrN5g8zPF1YhwxyqO6PxUkrYTGI2B+OGPe9AdajWZrLhFqXIvqIW23fnUE4+ztrUWNU1+9g==",
       "type": "package",
@@ -2819,8 +2777,6 @@
         "version.txt"
       ]
     },
-=======
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     "Microsoft.OpenApi/1.6.14": {
       "sha512": "tTaBT8qjk3xINfESyOPE2rIellPvB7qpVqiWiyA/lACVvz+xOGiXhFUfohcx82NLbi5avzLW0lx+s6oAqQijfw==",
       "type": "package",
@@ -2854,7 +2810,6 @@
         "microsoft.sqlserver.server.nuspec"
       ]
     },
-<<<<<<< HEAD
     "NPOI/2.7.6": {
       "sha512": "itLDt6M2VFcWjTGpzeRNy7Axmp2cVjHpTtf4zVLm6XQvuINlkHFBabBd4s8iCRAupx/NBSzqPxqe7+5fJOY8NQ==",
       "type": "package",
@@ -3015,8 +2970,6 @@
         "sixlabors.imagesharp.nuspec"
       ]
     },
-=======
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     "Swashbuckle.AspNetCore/6.6.2": {
       "sha512": "+NB4UYVYN6AhDSjW0IJAd1AGD8V33gemFNLPaxKTtPkHB+HaKAKf9MGAEUPivEWvqeQfcKIw8lJaHq6LHljRuw==",
       "type": "package",
@@ -3371,7 +3324,6 @@
         "system.identitymodel.tokens.jwt.nuspec"
       ]
     },
-<<<<<<< HEAD
     "System.IO.Packaging/8.0.1": {
       "sha512": "KYkIOAvPexQOLDxPO2g0BVoWInnQhPpkFzRqvNrNrMhVT6kqhVr0zEb6KCHlptLFukxnZrjuMVAnxK7pOGUYrw==",
       "type": "package",
@@ -3401,8 +3353,6 @@
         "useSharedDesignerContext.txt"
       ]
     },
-=======
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     "System.Memory/4.5.5": {
       "sha512": "XIWiDvKPXaTveaB7HVganDlOCRoj03l+jrwNvcge/t8vhGYKvqV+dMv6G4SAX2NoNmN0wZfVPTAlFwZcZvVOUw==",
       "type": "package",
@@ -3552,7 +3502,6 @@
         "useSharedDesignerContext.txt"
       ]
     },
-<<<<<<< HEAD
     "System.Security.Cryptography.Xml/8.0.2": {
       "sha512": "aDM/wm0ZGEZ6ZYJLzgqjp2FZdHbDHh6/OmpGfb7AdZ105zYmPn/83JRU2xLIbwgoNz9U1SLUTJN0v5th3qmvjA==",
       "type": "package",
@@ -3623,8 +3572,6 @@
         "version.txt"
       ]
     },
-=======
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     "System.Text.Json/8.0.5": {
       "sha512": "0f1B50Ss7rqxXiaBJyzUu9bWFOO2/zSlifZ/UNMdiIpDYe4cY4LQQicP4nirK1OS31I43rn062UIJ1Q9bpmHpg==",
       "type": "package",
@@ -3697,7 +3644,6 @@
         "system.text.json.nuspec",
         "useSharedDesignerContext.txt"
       ]
-<<<<<<< HEAD
     },
     "ZString/2.6.0": {
       "sha512": "XE8a+11nZg0LRaf+RGABEWaHIf8yGd5w8v/Ra1iWxMBmAVzwuKbW7G21mS0U7w7sh1lYcgckInWGgnz4qyET8A==",
@@ -3718,13 +3664,10 @@
         "zstring.2.6.0.nupkg.sha512",
         "zstring.nuspec"
       ]
-=======
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     }
   },
   "projectFileDependencyGroups": {
     "net8.0": [
-<<<<<<< HEAD
       "ClosedXML >= 0.105.0",
       "Dapper >= 2.1.72",
       "EPPlus >= 8.5.1",
@@ -3733,11 +3676,8 @@
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 8.0.21",
       "Microsoft.Data.SqlClient >= 6.1.2",
       "NPOI >= 2.7.6",
-=======
-      "Microsoft.AspNetCore.Authentication.JwtBearer >= 8.0.21",
-      "Microsoft.Data.SqlClient >= 6.1.2",
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
       "Swashbuckle.AspNetCore >= 6.6.2",
+      "System.DirectoryServices >= 9.0.10",
       "System.DirectoryServices.AccountManagement >= 9.0.10"
     ]
   },
@@ -3772,10 +3712,7 @@
       },
       "frameworks": {
         "net8.0": {
-<<<<<<< HEAD
           "framework": "net8.0",
-=======
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
           "targetAlias": "net8.0",
           "projectReferences": {}
         }
@@ -3790,7 +3727,6 @@
         "auditLevel": "low",
         "auditMode": "direct"
       },
-<<<<<<< HEAD
       "SdkAnalysisLevel": "10.0.300"
     },
     "frameworks": {
@@ -3818,14 +3754,6 @@
             "target": "Package",
             "version": "[3.8.0, )"
           },
-=======
-      "SdkAnalysisLevel": "9.0.300"
-    },
-    "frameworks": {
-      "net8.0": {
-        "targetAlias": "net8.0",
-        "dependencies": {
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
           "Microsoft.AspNetCore.Authentication.JwtBearer": {
             "target": "Package",
             "version": "[8.0.21, )"
@@ -3834,16 +3762,17 @@
             "target": "Package",
             "version": "[6.1.2, )"
           },
-<<<<<<< HEAD
           "NPOI": {
             "target": "Package",
             "version": "[2.7.6, )"
           },
-=======
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
           "Swashbuckle.AspNetCore": {
             "target": "Package",
             "version": "[6.6.2, )"
+          },
+          "System.DirectoryServices": {
+            "target": "Package",
+            "version": "[9.0.10, )"
           },
           "System.DirectoryServices.AccountManagement": {
             "target": "Package",
@@ -3869,11 +3798,7 @@
             "privateAssets": "all"
           }
         },
-<<<<<<< HEAD
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.301/PortableRuntimeIdentifierGraph.json"
-=======
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.306/PortableRuntimeIdentifierGraph.json"
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
       }
     }
   }

@@ -257,9 +257,9 @@
         public string mensaje { get; set; }  // El texto descriptivo para el usuario o frontend
     }
 
-    public class EntradaCostoFijoDto 
+    public class EntradaCostoFijoDto
     {
-    
+
         public string cod_empresa { get; set; }      // Ejemplo: 200 para éxito, 404 para no encontrado, 500 para error
         public string cod_empresa_unidad { get; set; }      // Ejemplo: 200 para éxito, 404 para no encontrado, 500 para error
         public string cod_contrato { get; set; }      // Ejemplo: 200 para éxito, 404 para no encontrado, 500 para error
@@ -269,6 +269,36 @@
         public string cod_item_det { get; set; }      // Ejemplo: 200 para éxito, 404 para no encontrado, 500 para error
 
     }
+
+    public class EliminarDetContratoMedicionDto
+    {
+        public string cod_empresa { get; set; }
+        public string cod_empresa_unidad { get; set; }
+        public string cod_contrato { get; set; }
+        public string cod_parametro_medicion { get; set; }
+    }
+
+    public class EliminarParametroContratoDto
+    {
+        public string cod_empresa { get; set; }
+        public string cod_empresa_unidad { get; set; }
+        public string cod_contrato { get; set; }
+        public string cod_parametro_contrato { get; set; }
+    }
+
+    public class EntradaTarifarioDto
+    {
+        public string cod_empresa { get; set; }
+
+
+        public string cod_empresa_unidad { get; set; }
+
+        public string cod_contrato { get; set; }
+
+        public string cod_equipo_pesado { get; set; }
+
+    }
+
 }
 
 

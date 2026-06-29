@@ -156,8 +156,6 @@ export class BlockReservaExplotacionComponent implements OnInit {
 
         const cie_ano = this.edicionProgrmaMensualService.programa();
 
-        // console.log("la lista es " + JSON.stringify(lista, null, 2))
-        // console.log("la lista es " + cie_ano);
 
         const filtro: ReservaGeologicaFiltro = {
             cie_ano: cie_ano.cie_ano,

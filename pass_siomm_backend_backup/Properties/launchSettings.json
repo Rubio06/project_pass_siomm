@@ -12,12 +12,9 @@
   //PUERTO ALEJANDO
   //8061
   //44334
-<<<<<<< HEAD
   //http://10.120.124.200:8060
 
 
-=======
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",

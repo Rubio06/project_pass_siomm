@@ -4,6 +4,7 @@ import { catchError, map, Observable, shareReplay, throwError } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '@environments/environments';
 import { ActividadTareaMant, CatalogoTarea, CatalogoTareaFiltro, CentroCosto, ContratoEquipoVehiculo, ContratoEquipoVehiculoRequest, CostosFijosDetalle, CostosFijosMae, CuentaContable, DetallePuResultado, DetTarifarioTransporteMaterial, EliminarPartidaDto, EliminarRespuestaDto, EliminarTarifarioEquiposAlquiler, EliminarTarifarioTransporte, EliminarTarifarioTransporteMaterial, EntradaCostoFijo, EntradaEliminarPrecioUnitario, EntradaPuCabTab, EntradaTablaDetalle, EntradaTarifarioDetalle, EntradaTarifarioDetalleReporte, EntradaTarifarioMaterial, GastosGenerales, GastosGeneralesInsertarDTO, GastosGeneralesRequest, GastosGneralesRequest, MaeContrataAdmDto, MaeTablaDetalleDto, MaeTablaDetalleRequest, PaginacionTarifarioDetalle, ParametroContrato, ParametroMedicionDto, ParametrosContratoDto, PartidaPuInsertDto, PartidaPuListarDto, PartidaPUModel, ProcesarResult, ReporteTransporteOtrosResponse, RespuestaApiDto, RespuestaSpDto, RespuestaTarifario, RespuestCostoFijo, ResultadoDatosDto, RutasFijasBalanza, RutaTransporte, SvalDetTarifarioEquiposAlquiler, SvalDetTarifarioTransporte, SvalMaeEquipo, SvalMaeTablaDetalle, SvalTablaDetalle, TablaDetalle, TablaDetalleDto, TablaDetalleRequest, TarifarioTransporteDetalle, ZonaPu } from '../interfaces/servicio-transporte.interface';
+import { ContratoEquipoPesado, ContratoMedicion, ContratoParametro } from '../../../interfaces/adm-contrato.interface';
 
 @Injectable({
     providedIn: 'root',
@@ -688,14 +689,61 @@ export class ServioTransporteService {
     public guardarPartida(dto: PartidaPUModel): Observable<ResultadoDatosDto> {
         return this.http.post<ResultadoDatosDto>(`${this.routeshUrl}mantenimiento/servicio-transporte/precio-unitario/guardar-partida`, dto)
             .pipe(
-            catchError(error => {
-                // Mantiene tu manejador centralizado de alertas si cuentas con él
-                if (this.formUtils) {
-                    this.formUtils.mensajeErrorClase(error);
-                }
-                return throwError(() => error);
-            })
-        );
+                catchError(error => {
+                    // Mantiene tu manejador centralizado de alertas si cuentas con él
+                    if (this.formUtils) {
+                        this.formUtils.mensajeErrorClase(error);
+                    }
+                    return throwError(() => error);
+                })
+            );
     }
+
+
+    verificarTarifario(cod_contrato: string): Observable<number> {
+        return this.http.get<number>(`${this.routeshUrl}mantenimiento/opciones-modelo/verificar-tarifario/${cod_contrato}`);
+    }
+
+
+    public eliminarParametroContrato(dto: ContratoParametro): Observable<RespuestCostoFijo> {
+        return this.http.delete<RespuestCostoFijo>(
+            `${this.routeshUrl}mantenimiento/servicio-transporte/eliminar-parametro-contrato`, { body: dto })
+            .pipe(
+                catchError(error => {
+                    // Mantiene tu manejador centralizado de alertas si cuentas con él
+                    if (this.formUtils) {
+                        this.formUtils.mensajeErrorClase(error);
+                    }
+                    return throwError(() => error);
+                })
+            );
+    }
+
+    public eliminarDetContratoMedicion(dto: ContratoMedicion): Observable<RespuestCostoFijo> {
+        return this.http.delete<RespuestCostoFijo>(`${this.routeshUrl}mantenimiento/servicio-transporte/eliminar-det-contrato-medicion`, { body: dto })
+            .pipe(
+                catchError(error => {
+                    // Mantiene tu manejador centralizado de alertas si cuentas con él
+                    if (this.formUtils) {
+                        this.formUtils.mensajeErrorClase(error);
+                    }
+                    return throwError(() => error);
+                })
+            );
+    }
+
+    public eliminarTarifarioEquipoPesado(dto: ContratoEquipoPesado): Observable<RespuestCostoFijo> {
+        return this.http.delete<RespuestCostoFijo>(`${this.routeshUrl}mantenimiento/servicio-transporte/eliminar-equipo-pesado`, { body: dto })
+            .pipe(
+                catchError(error => {
+                    // Mantiene tu manejador centralizado de alertas si cuentas con él
+                    if (this.formUtils) {
+                        this.formUtils.mensajeErrorClase(error);
+                    }
+                    return throwError(() => error);
+                })
+            );;
+    }
+
 
 }

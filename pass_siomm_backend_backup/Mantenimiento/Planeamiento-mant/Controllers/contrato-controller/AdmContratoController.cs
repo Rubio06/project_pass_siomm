@@ -55,6 +55,13 @@ namespace pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers
                 });
             }
         }
+
+        [HttpGet("verificar-tarifario/{cod_contrato}")]
+        public async Task<IActionResult> VerificarTarifario(string cod_contrato)
+        {
+            var count = await _admContratoService.ContarTarifarioAsync(cod_contrato);
+            return Ok(count);
+        }
     }
 
 }

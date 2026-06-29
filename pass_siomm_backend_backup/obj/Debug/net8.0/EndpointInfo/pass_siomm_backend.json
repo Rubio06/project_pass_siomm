@@ -5,7 +5,6 @@
     "version": "1.0"
   },
   "paths": {
-<<<<<<< HEAD
     "/mantenimiento/opciones-modelo/obtener-adm-contrato": {
       "get": {
         "tags": [
@@ -99,8 +98,28 @@
         }
       }
     },
-=======
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
+    "/mantenimiento/opciones-modelo/verificar-tarifario/{cod_contrato}": {
+      "get": {
+        "tags": [
+          "AdmContrato"
+        ],
+        "parameters": [
+          {
+            "name": "cod_contrato",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/planeamiento/aper-periodo-operativo/obtener-datos": {
       "get": {
         "tags": [
@@ -266,7 +285,6 @@
         }
       }
     },
-<<<<<<< HEAD
     "/mantenimiento/opciones-modelo/contrata": {
       "get": {
         "tags": [
@@ -1355,8 +1373,6 @@
         }
       }
     },
-=======
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     "/fechas-filtros/select-data/meses": {
       "get": {
         "tags": [
@@ -1390,7 +1406,6 @@
         }
       }
     },
-<<<<<<< HEAD
     "/mantenimiento/opciones-modelo/labor-mant": {
       "get": {
         "tags": [
@@ -2398,8 +2413,6 @@
         }
       }
     },
-=======
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     "/rutas/mostrar-rutas": {
       "get": {
         "tags": [
@@ -2412,7 +2425,6 @@
         }
       }
     },
-<<<<<<< HEAD
     "/mantenimiento/opciones-modelo/rutas-transporte": {
       "get": {
         "tags": [
@@ -2643,8 +2655,6 @@
         }
       }
     },
-=======
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     "/aper-periodo-operativo/semana/semana-avance-eliminar": {
       "post": {
         "tags": [
@@ -2861,7 +2871,6 @@
           }
         }
       }
-<<<<<<< HEAD
     },
     "/mantenimiento/servicio-transporte/listar-contrata": {
       "get": {
@@ -3210,6 +3219,99 @@
             "application/*+json": {
               "schema": {
                 "$ref": "#/components/schemas/EntradaCostoFijoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/mantenimiento/servicio-transporte/eliminar-equipo-pesado": {
+      "delete": {
+        "tags": [
+          "ServicioTranporte"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EntradaTarifarioDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EntradaTarifarioDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/EntradaTarifarioDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/mantenimiento/servicio-transporte/eliminar-parametro-contrato": {
+      "delete": {
+        "tags": [
+          "ServicioTranporte"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EliminarParametroContratoDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EliminarParametroContratoDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/EliminarParametroContratoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/mantenimiento/servicio-transporte/eliminar-det-contrato-medicion": {
+      "delete": {
+        "tags": [
+          "ServicioTranporte"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EliminarDetContratoMedicionDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EliminarDetContratoMedicionDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/EliminarDetContratoMedicionDto"
               }
             }
           }
@@ -4372,8 +4474,6 @@
           }
         }
       }
-=======
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
     }
   },
   "components": {
@@ -4423,7 +4523,6 @@
         },
         "additionalProperties": false
       },
-<<<<<<< HEAD
       "BlockReservasDto": {
         "type": "object",
         "properties": {
@@ -4691,8 +4790,6 @@
         },
         "additionalProperties": false
       },
-=======
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
       "CopiarPeriodoDto": {
         "type": "object",
         "properties": {
@@ -4727,7 +4824,6 @@
         },
         "additionalProperties": false
       },
-<<<<<<< HEAD
       "CopiarProgramacionDto": {
         "type": "object",
         "properties": {
@@ -4914,8 +5010,6 @@
         },
         "additionalProperties": false
       },
-=======
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
       "DatosCompletosGuardarDto": {
         "type": "object",
         "properties": {
@@ -5018,7 +5112,6 @@
         },
         "additionalProperties": false
       },
-<<<<<<< HEAD
       "DetPrgDto": {
         "type": "object",
         "properties": {
@@ -5031,6 +5124,50 @@
             "nullable": true
           },
           "nro_prog": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "EliminarDetContratoMedicionDto": {
+        "type": "object",
+        "properties": {
+          "cod_empresa": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_empresa_unidad": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_contrato": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_parametro_medicion": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "EliminarParametroContratoDto": {
+        "type": "object",
+        "properties": {
+          "cod_empresa": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_empresa_unidad": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_contrato": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_parametro_contrato": {
             "type": "string",
             "nullable": true
           }
@@ -5197,6 +5334,28 @@
             "nullable": true
           },
           "cod_item_det": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "EntradaTarifarioDto": {
+        "type": "object",
+        "properties": {
+          "cod_empresa": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_empresa_unidad": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_contrato": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_equipo_pesado": {
             "type": "string",
             "nullable": true
           }
@@ -5489,8 +5648,6 @@
         },
         "additionalProperties": false
       },
-=======
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
       "LoginRequestDto": {
         "required": [
           "password",
@@ -6513,7 +6670,6 @@
           }
         },
         "additionalProperties": false
-<<<<<<< HEAD
       },
       "NivelDto": {
         "type": "object",
@@ -8000,8 +8156,6 @@
           }
         },
         "additionalProperties": false
-=======
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
       }
     },
     "securitySchemes": {

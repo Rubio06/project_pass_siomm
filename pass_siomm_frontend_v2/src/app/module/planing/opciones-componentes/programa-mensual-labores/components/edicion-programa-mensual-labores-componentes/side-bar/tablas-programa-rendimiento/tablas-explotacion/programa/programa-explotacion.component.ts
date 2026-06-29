@@ -201,7 +201,6 @@ export class ProgramaExplotacionComponent implements OnDestroy {
 
         effect(() => {
             const recargar = this.programaState.recargar();
-            console.log("Entrnado a programa explotacion ")
             if (recargar > 0) {
                 this.edicionProgramaMensual(); // 🔥 recarga la data
             }
@@ -620,8 +619,6 @@ export class ProgramaExplotacionComponent implements OnDestroy {
         const cabecera = this.programaForm.get('programas')?.value;
 
         // codFase: cabecera?.cod_fase
-
-        console.log("cabecera en el padre: " + JSON.stringify(cabecera, null, 2));
 
         this.showModalPlano = true;
     }

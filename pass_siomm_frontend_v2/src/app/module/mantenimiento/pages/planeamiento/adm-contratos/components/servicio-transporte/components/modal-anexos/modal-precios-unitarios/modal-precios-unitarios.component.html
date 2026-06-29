@@ -142,10 +142,14 @@
                         </td>
                         <td class="p-1 text-center">
                             <div class="flex items-center justify-center w-full h-full">
-                                <label class="cursor-pointer select-none shrink-0 flex items-center justify-center">
-                                    <input type="checkbox" formControlName="ind_situacion" class="hidden peer" />
+                                <label class="select-none shrink-0 flex items-center justify-center"
+                                    [class.opacity-40]="formPreciosUnitarios.get('ind_situacion')?.disabled"
+                                    [class.pointer-events-none]="formPreciosUnitarios.get('ind_situacion')?.disabled">
+                                    <input type="checkbox" formControlName="ind_situacion"
+                                        class="hidden peer pointer-events-none opacity-60" />
                                     <span
-                                        class="w-4 h-4 rounded border-2 border-[#002B48] flex items-center justify-center bg-white peer-checked:bg-[#002B48] peer-checked:shadow-[0_0_8px_rgba(0,43,72,0.7)] transition-all duration-300 ease-in-out">
+                                        class="w-4 h-4 rounded border-2 border-[#002B48] flex items-center justify-center bg-white peer-checked:bg-[#002B48] peer-checked:shadow-[0_0_8px_rgba(0,43,72,0.7)] transition-all duration-300 ease-in-out"
+                                        [class.opacity-60]="formPreciosUnitarios.get('ind_situacion')?.disabled">
                                         <svg class="w-3 h-3 text-white scale-0 peer-checked:scale-100 transition-transform duration-300 ease-in-out"
                                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                             stroke="currentColor" stroke-width="3">
@@ -251,6 +255,6 @@
 
 @if (onAbrirModalPrecioUnitarioDetalle()) {
 
-<app-detalle-precio-unitario
-    (onCerrarModalPreUnitarioDetalle)="onAbrirModalPrecioUnitarioDetalle.set(false)" [detallePartida]="detallePartida()" (cargarEquiposPorFila)="cargarEquiposPorFila()"/>
+<app-detalle-precio-unitario (onCerrarModalPreUnitarioDetalle)="onAbrirModalPrecioUnitarioDetalle.set(false)"
+    [detallePartida]="detallePartida()" (cargarEquiposPorFila)="cargarEquiposPorFila()" />
 }

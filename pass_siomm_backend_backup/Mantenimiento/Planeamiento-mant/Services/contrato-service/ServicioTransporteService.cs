@@ -660,6 +660,92 @@ namespace pass_siomm_backend.Mantenimiento.Planeamiento_mant.Services
             }
         }
 
+        public async Task<RespuestaDto> EliminarTarifarioEquipoPesadoAsync(EntradaTarifarioDto entrada)
+        {
+            await using var conn = new SqlConnection(_connectionString);
+            await using var cmd = new SqlCommand("SP_ELIMINAR_DET_TARIFARIO_EQUIPOS_PESADOS", conn);
+
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@cod_empresa", entrada.cod_empresa);
+            cmd.Parameters.AddWithValue("@cod_empresa_unidad", entrada.cod_empresa_unidad);
+            cmd.Parameters.AddWithValue("@cod_contrato", entrada.cod_contrato);
+            cmd.Parameters.AddWithValue("@cod_equipo_pesado", entrada.cod_equipo_pesado);
+
+            await conn.OpenAsync();
+            await using var reader = await cmd.ExecuteReaderAsync();
+
+            if (await reader.ReadAsync())
+            {
+                return new RespuestaDto
+                {
+                    estado = reader.GetInt32(reader.GetOrdinal("estado")),
+                    mensaje = reader.GetString(reader.GetOrdinal("mensaje"))
+                };
+            }
+
+            return new RespuestaDto { estado = 0, mensaje = "Sin respuesta del servidor." };
+        }
+
+
+        public async Task<RespuestaDto> EliminarParametroContratoAsync(EliminarParametroContratoDto dto)
+        {
+            await using var conn = new SqlConnection(_connectionString);
+            await using var cmd = new SqlCommand("SP_ELIMINAR_PARAMETRO_CONTRATO", conn);
+
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@cod_empresa", dto.cod_empresa);
+            cmd.Parameters.AddWithValue("@cod_empresa_unidad", dto.cod_empresa_unidad);
+            cmd.Parameters.AddWithValue("@cod_contrato", dto.cod_contrato);
+
+            cmd.Parameters.AddWithValue("@cod_parametro_contrato", dto.cod_parametro_contrato);
+
+            await conn.OpenAsync();
+            await using var reader = await cmd.ExecuteReaderAsync();
+
+            if (await reader.ReadAsync())
+            {
+                return new RespuestaDto
+                {
+                    estado = reader.GetInt32(reader.GetOrdinal("estado")),
+                    mensaje = reader.GetString(reader.GetOrdinal("mensaje"))
+                };
+            }
+
+            return new RespuestaDto { estado = 0, mensaje = "Sin respuesta del servidor." };
+        }
+
+        public async Task<RespuestaDto> EliminarDetContratoMedicionAsync(EliminarDetContratoMedicionDto dto)
+        {
+            await using var conn = new SqlConnection(_connectionString);
+            await using var cmd = new SqlCommand("SP_ELIMINAR_DET_CONTRATO_MEDICION", conn);
+
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@cod_empresa", dto.cod_empresa);
+            cmd.Parameters.AddWithValue("@cod_empresa_unidad", dto.cod_empresa_unidad);
+            cmd.Parameters.AddWithValue("@cod_contrato", dto.cod_contrato);
+            cmd.Parameters.AddWithValue("@cod_parametro_medicion", dto.cod_parametro_medicion);
+
+            await conn.OpenAsync();
+            await using var reader = await cmd.ExecuteReaderAsync();
+
+            if (await reader.ReadAsync())
+            {
+                return new RespuestaDto
+                {
+                    estado = reader.GetInt32(reader.GetOrdinal("estado")),
+                    mensaje = reader.GetString(reader.GetOrdinal("mensaje"))
+                };
+            }
+
+            return new RespuestaDto { estado = 0, mensaje = "Sin respuesta del servidor." };
+        }
+
+
+
+
+
+
+
     }
 }
 

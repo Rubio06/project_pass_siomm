@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, input, signal, effect, inject, OnIn
 import { AbstractControl, FormArray, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ServioTransporteService } from '../../../services/servico-transporte.service';
 import { ContratoEquipoVehiculo, ContratoEquipoVehiculoRequest } from '../../../interfaces/servicio-transporte.interface';
+import { FormUtils } from 'src/app/utils/form-utils';
 
 @Component({
     selector: 'app-equipos-alquilados',
@@ -18,14 +19,12 @@ export class EquiposAlquiladosComponent implements OnInit {
     public cod_contrata = input<string>('');
     // 📥 Recibes el FormArray enviado desde el componente Padre como un Input de tipo Signal
     public equipos = input.required<FormArray<FormGroup>>();
-
+    public formUtils = FormUtils
     ngOnInit(): void {
         this.cargarEquiposPorFila();
     }
 
-    /**
-     * 📐 Getter corregido para tu HTML: Extrae los controles resolviendo la señal del input con ()
-     */
+
     get filas(): FormGroup[] {
         return this.equipos().controls as FormGroup[];
     }
@@ -40,14 +39,12 @@ export class EquiposAlquiladosComponent implements OnInit {
             ind_moneda: [''],
             imp_alquiler_equipo: [''],
             flg_vigencia: [''],
+            accion: ['I']
 
             // ... agrega los campos que necesites
         });
     }
 
-    /**
-     * 📥 Obtiene la lista de equipos autorizados/disponibles para la contrata
-     */
     public cargarEquiposPorFila(): void {
 
         this.isLoading.set(true);
@@ -70,17 +67,52 @@ export class EquiposAlquiladosComponent implements OnInit {
 
     onEquipoChange(event: Event, fila: FormGroup): void {
         const codigo = (event.target as HTMLSelectElement).value;
-        
+
         fila.patchValue({
             cod_equipo_pesado_1: codigo
         });
     }
 
-    public onEliminarFila(index: number) {
-        this.equipos().removeAt(index);
+    public onEliminarFila(index: number, fila: FormGroup): void {
+        const esNueva = this.equipos().at(index).get('accion')?.value === 'I';
+
+        if (esNueva) {
+            this.equipos().removeAt(index);
+            return;
+        }
+
+        this.formUtils.confirmarAnulacionClase(
+            'Eliminar Fila',
+            `¿Desea eliminar este equipo?`,
+            'Sí, Eliminar',
+            'No, Cancelar'
+        ).then(result => {
+            if (!result.isConfirmed) return;
+
+            const dto = {
+                cod_empresa: '03',
+                cod_empresa_unidad: '01',
+                cod_contrato: this.cod_contrata(),
+                cod_equipo_pesado: fila.get('cod_equipo_pesado')?.value
+            };
+
+            this.servioTransporteService.eliminarTarifarioEquipoPesado(dto).subscribe({
+                next: (respuesta) => {
+                    if (respuesta.estado === 1) {
+                        this.formUtils.mensajeEliminarLaborClase('Eliminación Exitosa', respuesta.mensaje);
+                        this.equipos().removeAt(index);
+                    } else {
+                        this.formUtils.alertaNoPermitidoClase('Error', respuesta.mensaje);
+                    }
+                },
+                error: (err) => {
+                    const msg = err.error?.mensaje || 'Error al eliminar.';
+                    alert(`Error: ${msg}`);
+                }
+            });
+        });
     }
 
-    // ✅ Agregar fila al FormArray del padre (modifica directamente la referencia)
     public onAgregarFila(): void {
         this.equipos().push(this.crearFila());
     }

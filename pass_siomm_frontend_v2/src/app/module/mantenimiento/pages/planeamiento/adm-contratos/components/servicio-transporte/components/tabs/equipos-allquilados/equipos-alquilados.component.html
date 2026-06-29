@@ -53,7 +53,7 @@
                     class="hover:bg-[#17324D]/5 select-none cursor-pointer transition-colors text-center text-[12px]">
 
                     <td class="p-1">
-                        <input type="text" class="input-base w-full text-right" />
+                        <input type="text" class="input-base_3 w-full text-right" />
                     </td>
 
                     <!-- <td class="p-1">
@@ -70,7 +70,7 @@
                         </select>
                     </td>
                     <td class="p-1">
-                        <input type="text" formControlName="cod_equipo_pesado_1" class="input-base w-full text-right" />
+                        <input type="text" formControlName="cod_equipo_pesado_1" class="input-base_3 w-full text-right" />
                     </td>
 
 
@@ -92,7 +92,7 @@
                     </td>
 
                     <td class="p-1">
-                        <input type="text" formControlName="imp_alquiler_equipo" class="input-base w-full text-right" />
+                        <input type="text" formControlName="imp_alquiler_equipo" class="input-base_3 w-full text-right" />
                     </td>
 
 
@@ -105,7 +105,7 @@
 
                     <!-- (click)="eliminarFila($index)" -->
                     <td class="p-1 flex justify-center items-center" >
-                        <button type="button" (click)="onEliminarFila($index)"
+                        <button type="button" (click)="onEliminarFila($index, fila)"
                             class="bg-[#A6200A] flex items-center justify-center rounded-lg shadow-sm group relative hover:bg-red-700 hover:shadow-md hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed w-8 h-8">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
                                 stroke="white" class="w-4 h-4">

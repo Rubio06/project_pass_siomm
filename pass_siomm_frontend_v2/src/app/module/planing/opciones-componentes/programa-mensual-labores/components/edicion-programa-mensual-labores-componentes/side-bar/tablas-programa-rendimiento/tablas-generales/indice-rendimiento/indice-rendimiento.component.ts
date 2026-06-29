@@ -51,7 +51,6 @@ export class IndiceRendimientoComponent implements OnInit {
             const cod = params['codigo_fase']; // <--- Accede al nombre exacto del path
             if (cod) {
                 this.codigo_fase.set(cod);
-                console.log('Código capturado en el hijo:', cod);
 
             }
         });

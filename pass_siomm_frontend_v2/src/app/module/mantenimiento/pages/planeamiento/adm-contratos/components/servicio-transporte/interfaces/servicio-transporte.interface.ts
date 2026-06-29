@@ -828,6 +828,8 @@ export interface ParametrosContratoDto {
     des_observacion: string;
     ind_obligatorio: string;
     flg_vigente: string;
+    bloqueado?: boolean;
+
     c_fl: string; // Recibe el valor 'N' enviado por el backend
     esNueva: boolean;
 }

@@ -176,18 +176,14 @@ namespace pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers
         [HttpDelete("eliminar-fila-costo-detalle")]
         public IActionResult Eliminar([FromBody] EntradaCostoFijoDto request)
         {
-            // 1. Pasa el objeto 'request' completo, ya que tu método lo recibe así
             RespuestCostoFijoDto resultado = _servicioTransporte.EliminarCostoFijoDetalle(request);
 
-            // 2. Evaluamos según los estados numéricos que definiste en tu método (1, 0, -1, -2)
             switch (resultado.estado)
             {
                 case 1:
-                    // Éxito: Retorna HTTP 200 OK
                     return Ok(resultado);
 
                 case 0:
-                    // No encontrado: Retorna HTTP 404 Not Found
                     return NotFound(resultado);
 
                 case -1:
@@ -196,6 +192,27 @@ namespace pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers
                 default:
                     return StatusCode(500, resultado);
             }
+        }
+
+        [HttpDelete("eliminar-equipo-pesado")]
+        public async Task<IActionResult> EliminarEquipoPesado([FromBody] EntradaTarifarioDto dto)
+        {
+            var respuesta = await _servicioTransporte.EliminarTarifarioEquipoPesadoAsync(dto);
+            return Ok(respuesta);
+        }
+
+        [HttpDelete("eliminar-parametro-contrato")]
+        public async Task<IActionResult> EliminarParametroContrato([FromBody] EliminarParametroContratoDto dto)
+        {
+            var respuesta = await _servicioTransporte.EliminarParametroContratoAsync(dto);
+            return Ok(respuesta);
+        }
+
+        [HttpDelete("eliminar-det-contrato-medicion")]
+        public async Task<IActionResult> EliminarDetContratoMedicion([FromBody] EliminarDetContratoMedicionDto dto)
+        {
+            var respuesta = await _servicioTransporte.EliminarDetContratoMedicionAsync(dto);
+            return Ok(respuesta);
         }
     }
 

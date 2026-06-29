@@ -504,6 +504,7 @@ export class FormUtils {
 
     static isValidFieldInArray(formGroup: AbstractControl, field: string): boolean {
         const control = formGroup.get(field);
+        console.log(field)
         return !!(control && control.invalid && (control.touched || control.dirty));
     }
 

@@ -1,8 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using pass_siomm_backend.Planeamiento.Data;
-using pass_siomm_backend.Rutas.Data;
 using pass_siomm_backend.Rutas.Data.RutasModels;
-using System.Configuration;
 
 namespace pass_siomm_backend.Rutas.Service
 {
@@ -13,8 +11,8 @@ namespace pass_siomm_backend.Rutas.Service
         public RoutesService(IConfiguration configuration)
         {
             _connectionString = configuration.GetConnectionString("SqlConnection");
-
         }
+
         public async Task<List<RutasPrimarias>> ObtenerRutas()
         {
             var rutas = new List<RutasPrimarias>();
@@ -85,13 +83,7 @@ namespace pass_siomm_backend.Rutas.Service
                 int codRutaTerc = reader.GetInt32(4);
                 string nomRutaTerc = reader.GetString(5);
 
-<<<<<<< HEAD
-                var rutaTerc = rutaSec.rutas_terciarias
-                    .FirstOrDefault(rt => rt.cod_ruta_terc == codRutaTerc);
-
-=======
-                var rutaTerc = rutaSec.rutas_terciarias.FirstOrDefault(rt => rt.cod_ruta_terc == codRutaTerc);
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
+                var rutaTerc = rutaSec.rutas_terciarias.FirstOrDefault(rt => rt.cod_ruta_terc == codRutaTerc); 
                 if (rutaTerc == null)
                 {
                     rutaTerc = new RutasTerciarias
@@ -100,11 +92,10 @@ namespace pass_siomm_backend.Rutas.Service
                         nom_ruta_terc = nomRutaTerc,
                         rutas_cuartas = new List<RutasCuartas>()
                     };
-<<<<<<< HEAD
 
                     rutaSec.rutas_terciarias.Add(rutaTerc);
 
-                    // mover Tipo_de_Labor debajo de Nivel
+                    // Mover Tipo_de_Labor debajo de Nivel
                     var nivelIndex = rutaSec.rutas_terciarias
                         .FindIndex(x => x.nom_ruta_terc == "Nivel");
 
@@ -116,9 +107,6 @@ namespace pass_siomm_backend.Rutas.Service
                         rutaSec.rutas_terciarias.Remove(tipoLabor);
                         rutaSec.rutas_terciarias.Insert(nivelIndex + 1, tipoLabor);
                     }
-=======
-                    rutaSec.rutas_terciarias.Add(rutaTerc);
->>>>>>> c45079df0e0a1b70654d02127f049dfe2b624190
                 }
 
                 AgregarRutaCuaternaria(rutaTerc, reader);
@@ -138,13 +126,12 @@ namespace pass_siomm_backend.Rutas.Service
                     rutaCuar = new RutasCuartas
                     {
                         cod_ruta_cuar = codRutaCuar,
-                        nom_ruta_cuar = nomRutaCuar,    
+                        nom_ruta_cuar = nomRutaCuar,
                         opciones = new List<RutasOpciones>()
                     };
                     rutaTerc.rutas_cuartas.Add(rutaCuar);
                 }
 
-                // Agregar opciones si existen
                 if (!reader.IsDBNull(14))
                 {
                     rutaCuar.opciones.Add(new RutasOpciones
@@ -155,17 +142,5 @@ namespace pass_siomm_backend.Rutas.Service
                 }
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
     }
 }

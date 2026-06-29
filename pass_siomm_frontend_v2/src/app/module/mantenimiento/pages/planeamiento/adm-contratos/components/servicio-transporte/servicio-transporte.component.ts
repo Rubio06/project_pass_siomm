@@ -1,4 +1,4 @@
-import { Component, effect, inject, input, OnInit, output, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, OnInit, output, signal } from '@angular/core';
 import { EsptecBaseMedicionComponent } from './components/tabs/esptec-base-medicion/esptec-base-medicion.component';
 import { CommonModule } from '@angular/common';
 import { ModalGastosGeneralesComponent } from './components/modal-anexos/modal-gastos-generales/modal-gastos-generales.component';
@@ -45,6 +45,7 @@ export class ServicioTransporteComponent implements OnInit {
     abrirSubModalTarifario = signal<boolean>(false);
     abrirSubModalPrecUnitario = signal<boolean>(false);
     listContrataAdm = signal<MaeContrataAdmDto[]>([]);
+    tipoContrato = signal<string>('');
     formsUtils = FormUtils;
 
     // ─── Formulario ────────────────────────────────────────────
@@ -99,13 +100,17 @@ export class ServicioTransporteComponent implements OnInit {
             if (!data) return;
             this.cargarCabecera(data);
             this.cargarArrays(data);
+
+
         });
 
         // Aplica modo nuevo/visualizar
         effect(() => {
             this.asignarModo(this.modo());
         });
+
     }
+    // 1. Declara el signal
 
     // ─── Lifecycle ─────────────────────────────────────────────
     ngOnInit(): void {
@@ -275,8 +280,8 @@ export class ServicioTransporteComponent implements OnInit {
     // ─── APIs ──────────────────────────────────────────────────
     private obtenerListaContrata(): void {
         this.servicioTransporte.obtenerServicioTransporte().subscribe({
-            next: (resp: MaeContrataAdmDto[]) =>  {
-                this.listContrataAdm.set(resp) 
+            next: (resp: MaeContrataAdmDto[]) => {
+                this.listContrataAdm.set(resp)
             },
             error: (err) => console.error('Error al obtener contratas:', err)
         });
@@ -308,6 +313,23 @@ export class ServicioTransporteComponent implements OnInit {
 
         });
     }
+
+    public abrirTarifario(): void {
+        const cod_contrato = this.obServicioTransporte()?.cod_contrato;
+        if (!cod_contrato) return;
+
+        this.servicioTransporte.verificarTarifario(cod_contrato).subscribe({
+            next: (count) => {
+                if (count === 0) {
+                    this.formsUtils.alertaNoPermitido('Mano de Obra','Ingrese el tarifario de Mano de Obra...!')
+                    return;
+                }
+                this.abrirSubModalTarifario.set(true);
+            },
+            error: (err) => console.error(err)
+        });
+    }
+
 
     public onGuardar(): void {
         if (this.miFormulario.invalid) return;
