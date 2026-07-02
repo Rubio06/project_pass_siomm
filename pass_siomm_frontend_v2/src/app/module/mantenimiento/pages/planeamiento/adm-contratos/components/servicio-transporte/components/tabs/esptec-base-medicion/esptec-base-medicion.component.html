@@ -1,10 +1,9 @@
 <div class="w-[93%] flex flex-row-reverse mx-auto mb-1">
 
-    <button type="button" 
+    <button type="button"
         class="bg-[#047857] flex items-center justify-center rounded-lg shadow-sm group
         hover:shadow-md hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed w-8 h-8"
-        (click)="onAgregarFila()"
-        >
+        (click)="onAgregarFila()">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="white"
             class="w-4 h-4">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -51,48 +50,80 @@
                 </tr>
                 }
                 @else if (filas.length > 0) {
-                @for (fila of filas; track $index) {
+                @for (fila of filas; track fila.get('cod_parametro_medicion')?.value; let indexFila = $index) {
                 <tr [formGroup]="fila"
                     class="hover:bg-[#17324D]/5 select-none cursor-pointer transition-colors text-center text-[12px]">
 
                     <td class="p-1">
-                        <input type="number" formControlName="nro_potencia_veta_1" class="input-base_3 w-full text-right" />
+                        <input type="text" formControlName="nro_potencia_veta_1" class="input-base_3 w-full text-center"
+                            maxlength="10" />
+                        @if(formUtils.isValidFieldInArray(fila,'nro_potencia_veta_1')) {
+                        <div class="text-[#C23E32] text-xs mt-1">
+                            <span><b>{{ formUtils.getFiledErrorArray(fila,'nro_potencia_veta_1') }}</b></span>
+                        </div>
+                        }
                     </td>
 
                     <td class="p-1">
-                        <select formControlName="cod_item_um_pv" (change)="onAsignarPG($event, fila)"  class="select-base_cuatro w-full">
+                        <select formControlName="cod_item_um_pv" (change)="onAsignarPG($event, fila)"
+                            class="select-base_cuatro w-full">
                             @for (item of listParametroGeneral(); track $index) {
 
                             <option [value]="item.cod_item">{{ item.des_tabladet }}</option>
                             }
                         </select>
+                        @if(formUtils.isValidFieldInArray(fila,'cod_item_um_pv')) {
+                        <div class="text-[#C23E32] text-xs mt-1">
+                            <span><b>{{ formUtils.getFiledErrorArray(fila,'cod_item_um_pv') }}</b></span>
+                        </div>
+                        }
                     </td>
 
                     <td class="p-1">
-                        <select formControlName="cod_parametro_medicion" (change)="onAsignarPM($event, fila)" class="select-base_cuatro w-full">
+                        <select formControlName="cod_parametro_medicion" (change)="onAsignarPM($event, fila)"
+                            class="select-base_cuatro w-full">
 
                             @for (item of listMedicion(); track $index) {
 
-                            <option [value]="item.cod_parametro_medicion">
+                            <option [value]="item.cod_parametro_medicion" [disabled]="isOptionUsada(item.cod_parametro_medicion, indexFila)">
                                 {{ item.des_potencia_veta }} - {{ item.des_ancho_pago }}
                             </option>
 
                             }
                         </select>
+
+                        @if(formUtils.isValidFieldInArray(fila,'cod_parametro_medicion')) {
+                        <div class="text-[#C23E32] text-xs mt-1">
+                            <span><b>{{ formUtils.getFiledErrorArray(fila,'cod_parametro_medicion') }}</b></span>
+                        </div>
+                        }
                     </td>
 
                     <td class="p-1">
-                        <input type="number" formControlName="nro_potencia_veta_2"
-                            class="input-base_3 w-full text-right" />
+                        <input type="text" formControlName="nro_potencia_veta_2" class="input-base_3 w-full text-center"
+                            maxlength="10" />
+                        @if(formUtils.isValidFieldInArray(fila,'nro_potencia_veta_2')) {
+                        <div class="text-[#C23E32] text-xs mt-1">
+                            <span><b>{{ formUtils.getFiledErrorArray(fila,'nro_potencia_veta_2') }}</b></span>
+                        </div>
+                        }
+
                     </td>
 
                     <td class="p-1">
-                        <select formControlName="cod_item_um_ap"  (change)="onAsignarCT($event, fila)"  class="select-base_cuatro w-full">
+                        <select formControlName="cod_item_um_ap" (change)="onAsignarCT($event, fila)"
+                            class="select-base_cuatro w-full">
                             @for (item of listParametroGeneral(); track $index) {
 
                             <option [value]="item.cod_item">{{ item.des_tabladet }}</option>
                             }
                         </select>
+                        @if(formUtils.isValidFieldInArray(fila,'cod_item_um_ap')) {
+                        <div class="text-[#C23E32] text-xs mt-1">
+                            <span><b>{{ formUtils.getFiledErrorArray(fila,'cod_item_um_ap') }}</b></span>
+                        </div>
+                        }
+
                     </td>
 
                     <td class="p-1">
@@ -101,12 +132,25 @@
 
                     <td class="p-1">
 
-                        <input type="text" formControlName="c_t_ap" class="input-base_3 w-full text-right" />
+                        <input type="text" formControlName="c_t_ap" class="input-base_3 w-full text-center"
+                            maxlength="50" />
+
+                        @if(formUtils.isValidFieldInArray(fila,'c_t_ap')) {
+                        <div class="text-[#C23E32] text-xs mt-1">
+                            <span><b>{{ formUtils.getFiledErrorArray(fila,'c_t_ap') }}</b></span>
+                        </div>
+                        }
 
                     </td>
 
                     <td class="p-1">
-                        <input type="number" formControlName="nro_ancho_pago_1" class="input-base_3 w-full text-right" />
+                        <input type="text" formControlName="nro_ancho_pago_1" maxlength="10"
+                            class="input-base_3 w-full text-center" />
+                        @if(formUtils.isValidFieldInArray(fila,'nro_ancho_pago_1')) {
+                        <div class="text-[#C23E32] text-xs mt-1">
+                            <span><b>{{ formUtils.getFiledErrorArray(fila,'nro_ancho_pago_1') }}</b></span>
+                        </div>
+                        }
                     </td>
 
                     <!-- <td class="p-1">
@@ -120,6 +164,12 @@
                             <option value="2"> % </option>
 
                         </select>
+
+                        @if(formUtils.isValidFieldInArray(fila,'cod_valor_ap')) {
+                        <div class="text-[#C23E32] text-xs mt-1">
+                            <span><b>{{ formUtils.getFiledErrorArray(fila,'cod_valor_ap') }}</b></span>
+                        </div>
+                        }
                     </td>
 
                     <td class="p-1">
@@ -129,6 +179,11 @@
                             <option [value]="item.cod_item">{{ item.des_tabladet }}</option>
                             }
                         </select>
+                        @if(formUtils.isValidFieldInArray(fila,'cod_item_um_ap')) {
+                        <div class="text-[#C23E32] text-xs mt-1">
+                            <span><b>{{ formUtils.getFiledErrorArray(fila,'cod_item_um_ap') }}</b></span>
+                        </div>
+                        }
                     </td>
 
                     <!-- (click)="eliminarFila($index)" -->

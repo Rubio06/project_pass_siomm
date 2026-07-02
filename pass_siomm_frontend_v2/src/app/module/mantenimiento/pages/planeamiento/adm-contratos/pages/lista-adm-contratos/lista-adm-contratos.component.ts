@@ -7,9 +7,10 @@ import { BotonesComponent } from 'src/app/shared/components/botones/botones.comp
 import { TituloModuloComponent } from 'src/app/shared/components/filtros-generales-selects/titulo-modulo/titulo-modulo.component';
 import { CommonModule } from '@angular/common';
 import { MantenimientoService } from '../../../../../services/mantenimiento.service';
-import { ContratoDetalleResponse, ServicoTransporte } from '../../interfaces/adm-contrato.interface';
+import { ContratoDetalleResponse, RespuestaCodigo, ServicoTransporte } from '../../interfaces/adm-contrato.interface';
 import { AdmContratosServvice } from '../../services/adm-contratos.service';
 import { ServicioTransporteComponent } from '../../components/servicio-transporte/servicio-transporte.component';
+import { FormUtils } from 'src/app/utils/form-utils';
 
 @Component({
     selector: 'app-adm-contratos',
@@ -22,7 +23,7 @@ export class AdmContratosComponent implements OnInit, AfterViewInit {
 
     // ─── Injects ───────────────────────────────────────────────
     public accionService = inject(AccionPlaneamientoService);
-    private mantService   = inject(AdmContratosServvice);
+    private mantService = inject(AdmContratosServvice);
 
     // ─── ViewChilds ────────────────────────────────────────────
     @ViewChild(FiltrosContratoComponent)
@@ -30,13 +31,15 @@ export class AdmContratosComponent implements OnInit, AfterViewInit {
     hijoTablaContrato = viewChild(TablaContratoComponent);
 
     // ─── Signals ───────────────────────────────────────────────
-    isLoading            = signal<boolean>(false);
-    botoPresionado       = signal<string>('');
-    botoColor            = signal<string>('');
-    listContrato         = signal<ContratoDetalleResponse[]>([]);
-    abrirModal           = signal<boolean>(false);
-    modo                 = signal<'nuevo' | 'visualizar' | null>(null);
+    isLoading = signal<boolean>(false);
+    botoPresionado = signal<string>('');
+    botoColor = signal<string>('');
+    listContrato = signal<ContratoDetalleResponse[]>([]);
+    abrirModal = signal<boolean>(false);
+    modo = signal<'nuevo' | 'visualizar' | null>(null);
     obServicioTransporte = signal<ContratoDetalleResponse | null>(null);
+    contratoSiguiente = signal<string>('');
+    private formUtils = FormUtils;
 
     // ─── Lifecycle ─────────────────────────────────────────────
     ngOnInit(): void { }
@@ -102,16 +105,16 @@ export class AdmContratosComponent implements OnInit, AfterViewInit {
     public onAbrirContrato(contrato: ContratoDetalleResponse): void {
         this.modo.set('visualizar');
         this.abrirModal.set(true);
-
         this.mantService.obtenerServicioTransporte({
-            cod_empresa:        '03',
+            cod_empresa: '03',
             cod_empresa_unidad: '01',
-            cod_contrato:       contrato.cod_contrato ?? ''
+            cod_contrato: contrato.cod_contrato ?? ''
         }).subscribe({
-            next:  (resp) => this.obServicioTransporte.set(resp),
-            error: (err)  => console.error('Error al obtener contrato:', err)
+            next: (resp) => this.obServicioTransporte.set(resp),
+            error: (err) => console.error('Error al obtener contrato:', err)
         });
     }
+
 
     // ─── Listar contratos ──────────────────────────────────────
     public listarAdmContrato(): void {
@@ -125,15 +128,33 @@ export class AdmContratosComponent implements OnInit, AfterViewInit {
         }
 
         this.mantService.listarAdmContrato(filtros).subscribe({
-            next:  (contratos) => {
+            next: (contratos) => {
                 this.listContrato.set(contratos);
                 this.isLoading.set(false);
+                this.obtenerCorrelativoContrato()
             },
             error: (err) => {
                 this.isLoading.set(false);
                 console.error('Error al listar contratos:', err);
             }
         });
+    }
+
+    public obtenerCorrelativoContrato() {
+
+        const anioActual = new Date().getFullYear().toString();
+        this.mantService.obtenerCorrelativoContrato(anioActual).subscribe({
+            next: (resp: RespuestaCodigo) => {
+                if (resp.estado === 1) {
+
+                    this.contratoSiguiente.set(resp.codigoGenerado)
+
+                } else {
+                    this.formUtils.alertaNoPermitido('Error', resp.mensaje)
+                }
+            },
+            error: (err) => console.error(err)
+        })
     }
 
 }

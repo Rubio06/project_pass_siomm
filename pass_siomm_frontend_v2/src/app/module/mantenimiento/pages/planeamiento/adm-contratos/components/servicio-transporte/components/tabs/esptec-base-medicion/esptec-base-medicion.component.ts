@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, input, signal, effect, OnInit, inject } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, input, signal, effect, OnInit, inject, output } from '@angular/core';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ParametroMedicionDto, TablaDetalle } from '../../../interfaces/servicio-transporte.interface';
 import { ServioTransporteService } from '../../../services/servico-transporte.service';
 import { FormUtils } from 'src/app/utils/form-utils';
@@ -19,6 +19,7 @@ export class EsptecBaseMedicionComponent implements OnInit {
     private fb = inject(FormBuilder);
     public formUtils = FormUtils;
     public cod_contrato = input<string>('');
+    public onRegistroEliminado = output<string>();
 
     ngOnInit(): void {
         this.cargarEquiposPorFila();
@@ -36,7 +37,6 @@ export class EsptecBaseMedicionComponent implements OnInit {
 
         this.servioTransporteService.obtenerTabla('002').subscribe({
             next: (data) => {
-                console.log("la data es " + JSON.stringify(data, null, 2))
                 this.listParametroGeneral.set(data)
             },
             error: (err) => console.error(err),
@@ -106,26 +106,51 @@ export class EsptecBaseMedicionComponent implements OnInit {
 
     public onAgregarFila(): void {
         this.mediciones().push(this.crearFila());
+        this.mediciones().markAsDirty();
     }
 
 
     private crearFila(): FormGroup {
         return this.fb.group({
-            cod_parametro_medicion: [''],
+            nro_potencia_veta_1: ['0.00', [Validators.required,
+            Validators.pattern(/^\d{1,10}(\.\d{1,3})?$/)]],
+            cod_item_um_pv: ['', [Validators.required]],
+            cod_parametro_medicion: ['', [Validators.required]],
+            nro_potencia_veta_2: ['0.00', [Validators.required,
+            Validators.pattern(/^\d{1,10}(\.\d{1,3})?$/)]],
+            cod_item_um_ap: ['', [Validators.required]],
+            c_t_ap: ['', [Validators.required]],
+            nro_ancho_pago_1: ['0.00', [Validators.required,
+            Validators.pattern(/^\d{1,10}(\.\d{1,3})?$/)]],
+            cod_valor_ap: ['', [Validators.required]],
+
+
+
+
+
             cod_tabla_um_pv: [''],
-            cod_item_um_pv: [''],
             cod_tabla_um_ap: [''],
-            cod_item_um_ap: [''],
-            nro_potencia_veta_1: ['0.00'],
-            nro_potencia_veta_2: ['0.00'],
-            nro_ancho_pago_1: ['0.00'],
-            cod_valor_ap: [''],
+
             cod_valor_pv: [''],
             c_t_pv: [''],
-            c_t_ap: [''],
             accion: ['I']
         });
     }
+
+
+
+
+    isOptionUsada(codParametro: string, indiceFilaActual: number): boolean {
+        return this.filas.some((fila, index) => {
+            // Ignoramos la fila actual para que el select no se bloquee a sí mismo al desplegarse
+            if (index === indiceFilaActual) return false;
+
+            const valorSeleccionado = fila.get('cod_parametro_medicion')?.value;
+            return valorSeleccionado === codParametro;
+        });
+    }
+
+
 
     public onEliminarFila(index: number, fila: FormGroup): void {
         const esNueva = this.mediciones().at(index).get('accion')?.value === 'I';
@@ -155,6 +180,9 @@ export class EsptecBaseMedicionComponent implements OnInit {
                     if (respuesta.estado === 1) {
                         this.formUtils.mensajeEliminarLaborClase('Eliminación Exitosa', respuesta.mensaje);
                         this.mediciones().removeAt(index);
+
+
+                        this.cargarEquiposPorFila();
                     } else {
                         this.formUtils.alertaNoPermitidoClase('Error', respuesta.mensaje);
                     }

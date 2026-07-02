@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, input, signal, effect, inject, OnInit } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, input, signal, effect, inject, OnInit, output } from '@angular/core';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ServioTransporteService } from '../../../services/servico-transporte.service';
 import { ContratoEquipoVehiculo, ContratoEquipoVehiculoRequest } from '../../../interfaces/servicio-transporte.interface';
 import { FormUtils } from 'src/app/utils/form-utils';
@@ -19,7 +19,10 @@ export class EquiposAlquiladosComponent implements OnInit {
     public cod_contrata = input<string>('');
     // 📥 Recibes el FormArray enviado desde el componente Padre como un Input de tipo Signal
     public equipos = input.required<FormArray<FormGroup>>();
-    public formUtils = FormUtils
+    public formUtils = FormUtils;
+    public onRegistroEliminado = output<string>();
+    public cod_contrato = input<string>('')
+
     ngOnInit(): void {
         this.cargarEquiposPorFila();
     }
@@ -31,17 +34,27 @@ export class EquiposAlquiladosComponent implements OnInit {
 
     private crearFila(): FormGroup {
         return this.fb.group({
-            cod_equipo_pesado: [''],
-            cod_equipo_pesado_1: [''],
+            cod_equipo_pesado: ['', [Validators.required]],
+            cod_equipo_pesado_1: [{ value: '', disabled: true }, [Validators.required]],
 
-            des_descripcion: [''],
-            ind_tarifa: [''],
-            ind_moneda: [''],
-            imp_alquiler_equipo: [''],
-            flg_vigencia: [''],
+            // des_descripcion: ['', [Validators.required]],
+            ind_tarifa: ['', [Validators.required]],
+            ind_moneda: ['', [Validators.required]],
+            imp_alquiler_equipo: ['', [Validators.required,
+            Validators.pattern(/^\d{1,10}(\.\d{1,3})?$/)]],
+            flg_vigencia: [{ value: '1', disabled: true }, [Validators.required]],
             accion: ['I']
 
             // ... agrega los campos que necesites
+        });
+    }
+    isOptionUsada(codParametro: string, indiceFilaActual: number): boolean {
+        return this.filas.some((fila, index) => {
+            // Ignoramos la fila actual para que el select no se bloquee a sí mismo al desplegarse
+            if (index === indiceFilaActual) return false;
+
+            const valorSeleccionado = fila.get('cod_equipo_pesado')?.value;
+            return valorSeleccionado === codParametro;
         });
     }
 
@@ -73,6 +86,14 @@ export class EquiposAlquiladosComponent implements OnInit {
         });
     }
 
+    formatearCorrelativo(index: number): string {
+        // index + 1 convierte el 0 en 1, el 1 en 2, etc.
+        const numeroFila = index + 1;
+
+        // padStart(3, '0') asegura que el texto tenga un largo de 3 caracteres rellenando con '0'
+        return numeroFila.toString().padStart(3, '0');
+    }
+
     public onEliminarFila(index: number, fila: FormGroup): void {
         const esNueva = this.equipos().at(index).get('accion')?.value === 'I';
 
@@ -92,7 +113,7 @@ export class EquiposAlquiladosComponent implements OnInit {
             const dto = {
                 cod_empresa: '03',
                 cod_empresa_unidad: '01',
-                cod_contrato: this.cod_contrata(),
+                cod_contrato: this.cod_contrato(),
                 cod_equipo_pesado: fila.get('cod_equipo_pesado')?.value
             };
 
@@ -101,6 +122,8 @@ export class EquiposAlquiladosComponent implements OnInit {
                     if (respuesta.estado === 1) {
                         this.formUtils.mensajeEliminarLaborClase('Eliminación Exitosa', respuesta.mensaje);
                         this.equipos().removeAt(index);
+                        this.cargarEquiposPorFila();
+
                     } else {
                         this.formUtils.alertaNoPermitidoClase('Error', respuesta.mensaje);
                     }
@@ -115,6 +138,7 @@ export class EquiposAlquiladosComponent implements OnInit {
 
     public onAgregarFila(): void {
         this.equipos().push(this.crearFila());
+        this.equipos().markAsDirty();
     }
 
 

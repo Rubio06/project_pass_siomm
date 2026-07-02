@@ -57,7 +57,6 @@ export class AlquilerTransporteComponent {
                 });
             },
             error: (err) => {
-                console.log(err)
                 this.isLoading.set(false)
             },
             complete: () => this.isLoading.set(false)

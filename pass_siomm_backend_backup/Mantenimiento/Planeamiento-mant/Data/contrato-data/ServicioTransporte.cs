@@ -211,6 +211,7 @@
         // Columnas calculadas/unidas en el SP
         public string c_t_gastos { get; set; } = string.Empty;
         public string c_t_gastos_det { get; set; } = string.Empty;
+        public string accion { get; set; }
     }
     public class GastosGeneralesRequestDTO
     {
@@ -297,6 +298,92 @@
 
         public string cod_equipo_pesado { get; set; }
 
+    }
+
+
+    public class ContratoDTO
+    {
+
+        public string accion { get; set; }
+        public string cod_empresa { get; set; }
+        public string cod_empresa_unidad { get; set; }
+        public string cod_contrato { get; set; }
+        public string cod_contrata { get; set; }
+        public string fec_registro { get; set; }
+        public string fec_inicio { get; set; }
+        public string fec_termino { get; set; }
+        public string des_contacto_contrata { get; set; }
+        public string imp_tipo_cambio { get; set; }
+        public string nro_adendum { get; set; }
+        public string des_observacion { get; set; }
+        public string ind_situacion { get; set; }
+        public string ind_estado { get; set; }
+        public string flg_vigente { get; set; }
+        public string fec_firma { get; set; }
+        public string ind_tipo_contrato { get; set; }
+        public string cod_usuario_creo { get; set; }
+        public string cod_usuario_modi { get; set; }
+        public string ind_moneda { get; set; }
+        public string fec_usuario_modi { get; set; }
+        public string fec_usuario_creo {  get; set; }
+        public string ind_tipocambio { get; set; }
+        public string ind_valorizacion { get; set; }
+        public string c_t_ruc { get; set; }
+        public string c_t_representante { get; set; }
+        // Arreglos hijos
+        public List<ParametroDTO> parametros { get; set; } = new List<ParametroDTO>();
+        public List<MedicionDTO> mediciones { get; set; } = new List<MedicionDTO>();
+        public List<EquipoDTO> equipos { get; set; } = new List<EquipoDTO>();
+    }
+
+    public class ParametroDTO
+    {
+        public string accion { get; set; } // El comodín ('I', 'U', 'D')
+        public string cod_parametro_contrato { get; set; }
+        public string cod_moneda { get; set; }
+        public decimal? imp_porcentaje { get; set; }
+        public decimal? imp_monto { get; set; }
+        public string des_observacion { get; set; }
+        public string flg_vigente { get; set; }
+        public string c_t_anexo { get; set; }
+        public string cod_valor { get; set; }
+        public string cod_tabla_anexo { get; set; }
+        public string cod_item_anexo { get; set; }
+        public string? cod_usuario_creo { get; set; }
+        public string? cod_usuario_modi { get; set; }
+    }
+
+    public class MedicionDTO
+    {
+        public string accion { get; set; } // El comodín ('I', 'U', 'D')
+        public string cod_parametro_medicion { get; set; }
+        public decimal nro_potencia_veta_1 { get; set; }
+        public string cod_item_um_pv { get; set; }
+        public decimal nro_potencia_veta_2 { get; set; }
+        public string cod_item_um_ap { get; set; }
+        public string c_t_ap { get; set; }
+        public decimal nro_ancho_pago_1 { get; set; }
+        public string cod_valor_ap { get; set; }
+        public string cod_tabla_um_pv { get; set; }
+        public string cod_tabla_um_ap { get; set; }
+        public string cod_valor_pv { get; set; }
+        public string c_t_pv { get; set; }
+        public string? cod_usuario_creo { get; set; }
+        public string? cod_usuario_modi { get; set; }
+    }
+
+    public class EquipoDTO
+    {
+        public string accion { get; set; } // El comodín ('I', 'U', 'D')
+        public string cod_equipo_pesado { get; set; }
+        public string cod_equipo_pesado_1 { get; set; }
+        public string ind_tarifa { get; set; }
+        public string ind_moneda { get; set; }
+        public string imp_alquiler_equipo { get; set; }
+        public string flg_vigencia { get; set; }
+        public string cod_usuario_creo { get; set; }
+
+        public string cod_usuario_modi { get; set; }
     }
 
 }

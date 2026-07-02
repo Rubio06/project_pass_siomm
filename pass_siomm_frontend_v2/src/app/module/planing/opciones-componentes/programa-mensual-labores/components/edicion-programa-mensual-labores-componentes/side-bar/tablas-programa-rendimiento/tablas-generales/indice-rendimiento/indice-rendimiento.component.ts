@@ -127,7 +127,6 @@ export class IndiceRendimientoComponent implements OnInit {
                 dist_desde: programa.dist_desde ? Number(programa.dist_desde).toFixed(2) : null,
                 dist_hasta: programa.dist_hasta ? Number(programa.dist_hasta).toFixed(2) : null
             }));
-            console.log('Datos a guardar:', formData);
         }
     }
 

@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { FormUtils } from 'src/app/utils/form-utils';
-import { ContratoDetalleResponse, FiltrosAdmContrato, ServicioTransporteEntrada, ServicoTransporte } from '../interfaces/adm-contrato.interface';
+import { ContratoDetalleResponse, FiltrosAdmContrato, RespuestaCodigo, ServicioTransporteEntrada, ServicoTransporte } from '../interfaces/adm-contrato.interface';
 import { catchError, Observable, throwError } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '@environments/environments';
@@ -59,6 +59,16 @@ export class AdmContratosServvice {
                 return throwError(() => error);
             })
         );
+    }
+
+    public obtenerCorrelativoContrato(cod_contrato_anio : string): Observable<RespuestaCodigo> {
+        return this.http.get<RespuestaCodigo>(`${this.routeshUrl}mantenimiento/servicio-transporte/siguiente-codigo/${cod_contrato_anio}`)
+            .pipe(
+            catchError(error => {
+                this.formUtils.mensajeError(error);
+                return throwError(() => error);
+            })
+        );;
     }
 
 

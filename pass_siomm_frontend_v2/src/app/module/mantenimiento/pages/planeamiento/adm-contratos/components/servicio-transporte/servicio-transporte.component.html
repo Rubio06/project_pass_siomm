@@ -13,7 +13,7 @@
                 </svg>
                 Contrato de Servicios de Transporte
             </h3>
-            <button type="button" class="btn btn-sm btn-circle btn-ghost" (click)="cerrarModal.emit()">✕</button>
+            <button type="button" class="btn btn-sm btn-circle btn-ghost" (click)="onCerrarConConfirmacion()">✕</button>
         </div>
 
         <form class="flex flex-col" [formGroup]="miFormulario" (ngSubmit)="onGuardar()">
@@ -24,7 +24,15 @@
                     <div class="flex flex-col md:flex-row lg:flex-row xl:flex-row gap-2">
                         <div class="form-control flex-1">
                             <label class="label font-semibold text-xs text-base-content/70">N° Contrato</label>
-                            <input type="text" formControlName="cod_contrato" class="input-base_5" readonly />
+                            <div class="flex flex-col w-full">
+                                <input type="text" formControlName="cod_contrato"
+                                    class="input-base_5 disabled:opacity-90 disabled:bg-gray-100 disabled:cursor-not-allowed" />
+                                @if(formsUtils.isValidField(miFormulario,'cod_contrato')) {
+                                <div class="text-[#C23E32] text-xs mt-1">
+                                    <span><b>{{ formsUtils.getFiledError(miFormulario,'cod_contrato') }}</b></span>
+                                </div>
+                                }
+                            </div>
                         </div>
 
                         <div class="form-control flex-3">
@@ -32,26 +40,35 @@
                                 <span class="label-text font-semibold text-xs text-base-content/70">Tipo de
                                     Contrato</span>
                             </label>
-                            <div
-                                class="flex flex-5 items-center gap-4 bg-base-100 px-3 py-1 rounded-lg border border-base-300">
-                                <label class="flex items-center gap-2 cursor-pointer">
-                                    <input type="radio" formControlName="ind_tipo_contrato" value="O"
-                                        (change)="tipoContrato.set('O')" class="radio text-[#013B5C]"
-                                        style="width: 16px; height: 16px; min-height: 16px;" />
-                                    <span class="text-xs">Operación Mina</span>
-                                </label>
-                                <label class="flex items-center gap-2 cursor-pointer">
-                                    <input type="radio" formControlName="ind_tipo_contrato" value="T"
-                                        (change)="tipoContrato.set('T')" class="radio text-[#013B5C]"
-                                        style="width: 16px; height: 16px; min-height: 16px;" />
-                                    <span class="text-xs">Transporte</span>
-                                </label>
-                                <label class="flex items-center gap-2 cursor-pointer">
-                                    <input type="radio" formControlName="ind_tipo_contrato" value="A"
-                                        (change)="tipoContrato.set('A')" class="radio text-[#013B5C]"
-                                        style="width: 16px; height: 16px; min-height: 16px;" />
-                                    <span class="text-xs">Alq. Equipo</span>
-                                </label>
+                            <div class="flex flex-col w-full">
+                                <div
+                                    class="flex flex-5 items-center gap-4 bg-base-100 px-3 py-1 rounded-lg border border-base-300">
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="radio" formControlName="ind_tipo_contrato" value="M"
+                                            (change)="tipoContrato.set('M')" class="radio text-[#013B5C]"
+                                            style="width: 16px; height: 16px; min-height: 16px;" />
+                                        <span class="text-xs">Operación Mina</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="radio" formControlName="ind_tipo_contrato" value="T"
+                                            (change)="tipoContrato.set('T')" class="radio text-[#013B5C]"
+                                            style="width: 16px; height: 16px; min-height: 16px;" />
+                                        <span class="text-xs">Transporte</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="radio" formControlName="ind_tipo_contrato" value="A"
+                                            (change)="tipoContrato.set('A')" class="radio text-[#013B5C]"
+                                            style="width: 16px; height: 16px; min-height: 16px;" />
+                                        <span class="text-xs">Alq. Equipo</span>
+                                    </label>
+                                </div>
+
+                                @if(formsUtils.isValidField(miFormulario,'ind_tipo_contrato')) {
+                                <div class="text-[#C23E32] text-xs mt-1">
+                                    <span><b>{{ formsUtils.getFiledError(miFormulario,'ind_tipo_contrato') }}</b></span>
+                                </div>
+                                }
+
                             </div>
                         </div>
                     </div>
@@ -60,18 +77,36 @@
                         <label class="label py-0.5 w-[30%]">
                             <span class="label-text font-semibold text-xs text-base-content/70">Contratista</span>
                         </label>
-                        <select class="select-base_cuatro" formControlName="cod_contrata">
-                            @for (item of listContrataAdm(); track $index) {
-                            <option [value]="item.cod_contrata">{{ item.des_contrata }}</option>
+                        <div class="flex flex-col w-full">
+                            <select class="select-base_cuatro" formControlName="cod_contrata">
+                                @for (item of listContrataAdm(); track $index) {
+                                <option [value]="item.cod_contrata">{{ item.des_contrata }}</option>
+                                }
+                            </select>
+
+                            @if(formsUtils.isValidField(miFormulario,'cod_contrata')) {
+                            <div class="text-[#C23E32] text-xs mt-1">
+                                <span><b>{{ formsUtils.getFiledError(miFormulario,'cod_contrata') }}</b></span>
+                            </div>
                             }
-                        </select>
+                        </div>
+
                     </div>
 
                     <div class="form-control w-full flex flex-col md:flex-row lg:flex-row xl:flex-row">
                         <label class="label py-0.5 w-[30%]">
                             <span class="label-text font-semibold text-xs text-base-content/70">Representante</span>
                         </label>
-                        <input type="text" formControlName="c_t_representante" class="input-base_5" />
+                        <div class="flex flex-col w-full">
+                            <input type="text" formControlName="c_t_representante" class="input-base_5" />
+                            @if(formsUtils.isValidField(miFormulario,'c_t_representante')) {
+                            <div class="text-[#C23E32] text-xs mt-1">
+                                <span><b>{{ formsUtils.getFiledError(miFormulario,'c_t_representante') }}</b></span>
+                            </div>
+                            }
+
+                        </div>
+
                     </div>
 
                     <div class="form-control w-full flex items-start flex-col md:flex-row lg:flex-row xl:flex-row">
@@ -79,132 +114,242 @@
                             <span class="label-text font-semibold text-xs text-base-content/70">Objeto del
                                 Contrato</span>
                         </label>
-                        <textarea class="input-base_5 textarea-xs w-full resize-none h-25"
-                            formControlName="des_observacion">Sergio Bendezu</textarea>
+
+                        <div class="flex flex-col w-full">
+                            <textarea class="input-base_5 textarea-xs w-full resize-none h-25"
+                                formControlName="des_observacion"></textarea>
+                            @if(formsUtils.isValidField(miFormulario,'des_observacion')) {
+                            <div class="text-[#C23E32] text-xs mt-1">
+                                <span><b>{{ formsUtils.getFiledError(miFormulario,'des_observacion') }}</b></span>
+                            </div>
+                            }
+                        </div>
                     </div>
 
                     <div class="flex gap-4 flex-col md:flex-row lg:flex-row xl:flex-row">
                         <div class="flex-1">
-                            <div class="form-control w-full flex mb-2">
-                                <label class="form-control w-full flex mb-2">
-                                    <span class="label-text font-semibold text-xs text-base-content/70">Periodo de
-                                        Inicio</span>
-                                </label>
-                                <input type="date" formControlName="fec_inicio" class="input-base_date" />
+
+                            <div class="form-control w-full mb-2">
+                                <div class="flex w-full">
+                                    <label class="label py-0.5 w-full">
+                                        <span class="label-text font-semibold text-xs text-base-content/70">Periodo de
+                                            Inicio</span>
+                                    </label>
+                                    <input type="date" formControlName="fec_inicio" class="input-base_date" />
+                                </div>
+                                @if(formsUtils.isValidField(miFormulario,'fec_inicio')) {
+                                <div class="text-[#C23E32] text-xs mt-1 w-full text-center">
+                                    <span><b>{{ formsUtils.getFiledError(miFormulario,'fec_inicio') }}</b></span>
+                                </div>
+                                }
                             </div>
-                            <div class="form-control w-full flex mb-2">
-                                <label class="label py-0.5 w-full">
-                                    <span class="label-text font-semibold text-xs text-base-content/70">Fecha
-                                        Firma</span>
-                                </label>
-                                <input type="date" formControlName="fec_firma" class="input-base_date" />
+
+                            <div class="form-control w-full mb-2">
+                                <div class="flex w-full">
+                                    <label class="label py-0.5 w-full">
+                                        <span class="label-text font-semibold text-xs text-base-content/70">Fecha
+                                            Firma</span>
+                                    </label>
+                                    <input type="date" formControlName="fec_firma" class="input-base_date" />
+                                </div>
+                                @if(formsUtils.isValidField(miFormulario,'fec_firma')) {
+                                <div class="text-[#C23E32] text-xs mt-1 w-full text-center">
+                                    <span><b>{{ formsUtils.getFiledError(miFormulario,'fec_firma') }}</b></span>
+                                </div>
+                                }
                             </div>
-                            <div class="form-control w-full flex mb-2">
-                                <label class="label py-0.5 w-full">
-                                    <span class="label-text font-semibold text-xs text-base-content/70">Tipo
-                                        Cambio</span>
-                                </label>
-                                <input type="number" formControlName="imp_tipo_cambio" class="input-base_5"
-                                    step="0.001" />
+
+                            <div class="form-control w-full mb-2">
+                                <div class="flex w-full">
+                                    <label class="label py-0.5 w-full">
+                                        <span class="label-text font-semibold text-xs text-base-content/70">Tipo
+                                            Cambio</span>
+                                    </label>
+                                    <input type="text" formControlName="imp_tipo_cambio" class="input-base_5"
+                                        maxlength="10" step="0.001" />
+                                </div>
+                                @if(formsUtils.isValidField(miFormulario,'imp_tipo_cambio')) {
+                                <div class="text-[#C23E32] text-xs mt-1 w-full text-center">
+                                    <span><b>{{ formsUtils.getFiledError(miFormulario,'imp_tipo_cambio') }}</b></span>
+                                </div>
+                                }
                             </div>
-                            <div class="form-control w-full flex mb-2">
-                                <label class="label py-0.5 w-full">
-                                    <span class="label-text font-semibold text-xs text-base-content/70">Usuario</span>
-                                </label>
-                                <input type="text" formControlName="cod_usuario_creo" class="input-base_5" />
+
+                            <div class="form-control w-full mb-2">
+                                <div class="flex w-full">
+                                    <label class="label py-0.5 w-full">
+                                        <span
+                                            class="label-text font-semibold text-xs text-base-content/70">Usuario</span>
+                                    </label>
+                                    <input type="text" formControlName="cod_usuario_creo" class="input-base_5" />
+                                </div>
+                                @if(formsUtils.isValidField(miFormulario,'cod_usuario_creo')) {
+                                <div class="text-[#C23E32] text-[8px] mt-1 w-full text-center">
+                                    <span><b>{{ formsUtils.getFiledError(miFormulario,'cod_usuario_creo') }}</b></span>
+                                </div>
+                                }
                             </div>
+
                         </div>
 
                         <div class="flex-1">
-                            <div class="form-control w-full flex mb-2">
-                                <label class="label py-0.5 w-full">
-                                    <span class="label-text font-semibold text-xs text-base-content/70">Periodo de
-                                        Term.</span>
-                                </label>
-                                <input type="date" formControlName="fec_termino" class="input-base_date" />
-                            </div>
-                            <div class="form-control w-full flex mb-2">
-                                <label class="label py-0.5 w-full">
-                                    <span class="label-text font-semibold text-xs text-base-content/70">Moneda
-                                        Valor.</span>
-                                </label>
 
-                                <select class="select-base_cuatro" formControlName="ind_moneda">
-                                    <option value="S">SOLES (S/.)</option>
-                                    <option value="D">DOLAR (US$)</option>
-                                </select>
-                                <!-- <input type="text" formControlName="ind_moneda" class="input-base" /> -->
-                            </div>
-
-                            <!-- @if () { -->
-
-                            <div class="form-control w-full flex mb-2 h-7 min-h-7 max-h-7">
-                                @if (miFormulario.get('ind_moneda')?.value !== 'S') {
-
-                                <label class="label py-0.5 w-full">
-                                    <span class="label-text font-semibold text-xs text-base-content/70">Ind. T.
-                                        Cambio</span>
-                                </label>
-
-                                <select class="select-base_cuatro" formControlName="ind_tipocambio">
-                                    <option value="1">FIJO</option>
-                                    <option value="0">VARIABLE</option>
-                                </select>
+                            <div class="form-control w-full mb-2">
+                                <div class="flex w-full">
+                                    <label class="label py-0.5 w-full">
+                                        <span class="label-text font-semibold text-xs text-base-content/70">Periodo de
+                                            Term.</span>
+                                    </label>
+                                    <input type="date" formControlName="fec_termino" class="input-base_date" />
+                                </div>
+                                @if(formsUtils.isValidField(miFormulario,'fec_termino')) {
+                                <div class="text-[#C23E32] text-xs mt-1 w-full text-center">
+                                    <span><b>{{ formsUtils.getFiledError(miFormulario,'fec_termino') }}</b></span>
+                                </div>
                                 }
                             </div>
-                            <!-- } -->
-                            <div class="form-control w-full flex mb-2">
-                                <label class="label py-0.5 w-full">
-                                    <span class="label-text font-semibold text-xs text-base-content/70">Fecha
-                                        Usu.</span>
-                                </label>
-                                <input type="date" formControlName="fec_usuario_creo" class="input-base_date" />
+
+                            <div class="form-control w-full mb-2">
+                                <div class="flex w-full">
+                                    <label class="label py-0.5 w-full">
+                                        <span class="label-text font-semibold text-xs text-base-content/70">Moneda
+                                            Valor.</span>
+                                    </label>
+                                    <select class="select-base_cuatro" formControlName="ind_moneda">
+                                        <option value="S">SOLES (S/.)</option>
+                                        <option value="D">DOLAR (US$)</option>
+                                    </select>
+                                </div>
+                                @if(formsUtils.isValidField(miFormulario,'ind_moneda')) {
+                                <div class="text-[#C23E32] text-xs mt-1 w-full text-center">
+                                    <span><b>{{ formsUtils.getFiledError(miFormulario,'ind_moneda') }}</b></span>
+                                </div>
+                                }
                             </div>
+
+                            <div class="form-control w-full mb-2 h-7 min-h-7 max-h-7">
+                                @if (miFormulario.get('ind_moneda')?.value !== 'S') {
+                                <div class="flex w-full">
+                                    <label class="label py-0.5 w-full">
+                                        <span class="label-text font-semibold text-xs text-base-content/70">Ind. T.
+                                            Cambio</span>
+                                    </label>
+                                    <select class="select-base_cuatro" formControlName="ind_tipocambio">
+                                        <option value="1">FIJO</option>
+                                        <option value="0">VARIABLE</option>
+                                    </select>
+                                </div>
+                                @if(formsUtils.isValidField(miFormulario,'ind_tipocambio')) {
+                                <div class="text-[#C23E32] text-xs mt-1 w-full text-center">
+                                    <span><b>{{ formsUtils.getFiledError(miFormulario,'ind_tipocambio') }}</b></span>
+                                </div>
+                                }
+                                }
+                            </div>
+
+                            <div class="form-control w-full mb-2">
+                                <div class="flex w-full">
+                                    <label class="label py-0.5 w-full">
+                                        <span class="label-text font-semibold text-xs text-base-content/70">Fecha
+                                            Usu.</span>
+                                    </label>
+                                    <input type="date" formControlName="fec_usuario_creo"
+                                        class="input-base_date disabled:opacity-90 disabled:bg-gray-100 disabled:cursor-not-allowed" />
+                                </div>
+                                @if(formsUtils.isValidField(miFormulario,'fec_usuario_creo')) {
+                                <div class="text-[#C23E32] text-xs mt-1 w-full text-center">
+                                    <span><b>{{ formsUtils.getFiledError(miFormulario,'fec_usuario_creo') }}</b></span>
+                                </div>
+                                }
+                            </div>
+
                         </div>
                     </div>
                 </div>
 
                 <div class="flex-1 min-w-0">
-                    <div class="form-control flex-1 flex mb-2">
-                        <label class="label py-0.5 w-full">
-                            <span class="label-text font-semibold text-xs text-base-content/70">Fecha de Registro</span>
-                        </label>
-                        <input type="date" formControlName="fec_registro" class="input-base_date" />
+                    <div class="form-control flex-1 mb-2">
+                        <div class="flex w-full">
+                            <label class="label py-0.5 w-full">
+                                <span class="label-text font-semibold text-xs text-base-content/70">Fecha de
+                                    Registro</span>
+                            </label>
+                            <input type="date" formControlName="fec_registro" class="input-base_date" />
+                        </div>
+                        @if(formsUtils.isValidField(miFormulario,'fec_registro')) {
+                        <div class="text-[#C23E32] text-xs mt-1 w-full text-center">
+                            <span><b>{{ formsUtils.getFiledError(miFormulario,'fec_registro') }}</b></span>
+                        </div>
+                        }
                     </div>
+
 
                     <div class="form-control flex-1 flex mb-2">
                         <label class="label py-0.5 w-full">
                             <span class="label-text font-semibold text-xs text-base-content/70">Estado</span>
                         </label>
-                        <select class="select-base_tres border" formControlName="ind_estado">
-                            <option value="G">GENERADO</option>
-                            <option value="A">APROBADO</option>
-                            <option value="X">ANULADO</option>
-                            <option value="H">HISTORICO</option>
 
-                        </select>
+                        <div class="flex flex-col w-full">
+                            <select class="select-base_tres border" formControlName="ind_estado">
+                                <option value="G">GENERADO</option>
+                                <option value="A">APROBADO</option>
+                                <option value="X">ANULADO</option>
+                                <option value="H">HISTORICO</option>
+
+                            </select>
+
+                            @if(formsUtils.isValidField(miFormulario,'ind_estado')) {
+                            <div class="text-[#C23E32] text-xs mt-1">
+                                <span><b>{{ formsUtils.getFiledError(miFormulario,'ind_estado') }}</b></span>
+                            </div>
+                            }
+
+                        </div>
+
                     </div>
 
                     <div class="form-control flex-1 flex mb-2">
                         <label class="label py-0.5 w-full">
                             <span class="label-text font-semibold text-xs text-base-content/70">Periodo de Ruc</span>
                         </label>
-                        <input type="text" formControlName="c_t_ruc" class="input-base_5" readonly />
+
+                        <div class="flex flex-col w-full">
+
+                            <input type="text" formControlName="c_t_ruc"
+                                class="input-base_5 disabled:opacity-90 disabled:bg-gray-100 disabled:cursor-not-allowed" />
+                            @if(formsUtils.isValidField(miFormulario,'c_t_ruc')) {
+                            <div class="text-[#C23E32] text-xs mt-1">
+                                <span><b>{{ formsUtils.getFiledError(miFormulario,'c_t_ruc') }}</b></span>
+                            </div>
+                            }
+
+                        </div>
+
                     </div>
 
-                    <label class="cursor-pointer select-none shrink-0 flex items-center justify-between mt-3">
-                        <span class="label-text font-semibold text-xs text-base-content/70">Valoriza
-                            Contablemente</span>
-                        <input type="checkbox" class="input-base_5" formControlName="ind_valorizacion"
-                            class="hidden peer" />
-                        <span
-                            class="w-4 h-4 rounded border-2 border-[#002B48] flex items-center justify-center bg-white peer-checked:bg-[#002B48] peer-checked:shadow-[0_0_8px_rgba(0,43,72,0.7)] transition-all duration-300 ease-in-out">
-                            <svg class=" w-3 h-3 text-white scale-0 peer-checked:scale-100 transition-transform duration-300 ease-in-out"
-                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                stroke-width="3">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                            </svg>
-                        </span>
+                    <label class="cursor-pointer select-none flex flex-col mt-3 p-2">
+                        <div class="flex items-center justify-between w-full">
+                            <span class="label-text font-semibold text-xs text-base-content/70">Valoriza
+                                Contablemente</span>
+
+                            <div class="flex items-center">
+                                <input type="checkbox" formControlName="ind_valorizacion" class="hidden peer" />
+                                <span
+                                    class="w-4 h-4 rounded border-2 border-[#002B48] flex items-center justify-center bg-white peer-checked:bg-[#002B48] peer-checked:shadow-[0_0_8px_rgba(0,43,72,0.7)] transition-all duration-300 ease-in-out">
+                                    <svg class="w-3 h-3 text-white scale-0 peer-checked:scale-100 transition-transform duration-300 ease-in-out"
+                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke="currentColor" stroke-width="3">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                                    </svg>
+                                </span>
+                            </div>
+                        </div>
+
+                        @if(formsUtils.isValidField(miFormulario,'ind_valorizacion')) {
+                        <div class="text-[#C23E32] text-xs mt-1 text-center">
+                            <span><b>{{ formsUtils.getFiledError(miFormulario,'ind_valorizacion') }}</b></span>
+                        </div>
+                        }
                     </label>
 
                     <!-- SECCIÓN ANEXOS -->
@@ -216,8 +361,8 @@
                         </span>
                         <!-- Tarifario: bloqueado en O y A, libre en T -->
                         <div (click)="abrirSubModalTarifario.set(true)"
-                            [class.pointer-events-none]="tipoContrato() === 'O' || tipoContrato() === 'A'"
-                            [class.opacity-50]="tipoContrato() === 'O' || tipoContrato() === 'A'"
+                            [class.pointer-events-none]="tipoContrato() === 'M' || tipoContrato() === 'A'"
+                            [class.opacity-50]="tipoContrato() === 'M' || tipoContrato() === 'A'"
                             class="flex items-center gap-2.5 px-2 py-1.5 rounded-md hover:bg-base-200 cursor-pointer transition-colors">
                             <button type="button" class="w-7 h-7 rounded-md flex items-center justify-center shrink-0"
                                 style="background:#FAEEDA; color:#854F0B;">
@@ -232,8 +377,8 @@
                         <!-- (click)="abrirSubModalPrecUnitario.set(true)"  -->
                         <!-- Precios Unitarios: bloqueado en O y A, libre en T -->
                         <div (click)="abrirTarifario()"
-                            [class.pointer-events-none]="tipoContrato() === 'O' || tipoContrato() === 'A'"
-                            [class.opacity-50]="tipoContrato() === 'O' || tipoContrato() === 'A'"
+                            [class.pointer-events-none]="tipoContrato() === 'M' || tipoContrato() === 'A'"
+                            [class.opacity-50]="tipoContrato() === 'M' || tipoContrato() === 'A'"
                             class="flex items-center gap-2.5 px-2 py-1.5 rounded-md hover:bg-base-200 cursor-pointer transition-colors">
                             <button type="button" class="w-7 h-7 rounded-md flex items-center justify-center shrink-0"
                                 style="background:#FCEBEB; color:#A32D2D;">
@@ -287,7 +432,7 @@
             <div
                 class="flex flex-col w-[65%] md:flex-row lg:flex-row xl:flex-row space-x-2 pb-1 mt-2 mb-2 border-b border-base-300">
 
-                @if (miFormulario.get('ind_tipo_contrato')?.value === 'O' ||
+                @if (miFormulario.get('ind_tipo_contrato')?.value === 'M' ||
                 miFormulario.get('ind_tipo_contrato')?.value === 'T') {
                 <a (click)="tabActivo.set('parametros')" [class.tab-active]="tabActivo() === 'parametros'"
                     class="tab-style flex items-center gap-1 whitespace-nowrap px-1 py-1 cursor-pointer">
@@ -300,7 +445,7 @@
                 </a>
                 }
 
-                @if (miFormulario.get('ind_tipo_contrato')?.value === 'O') {
+                @if (miFormulario.get('ind_tipo_contrato')?.value === 'M') {
                 <a (click)="tabActivo.set('base')" [class.tab-active]="tabActivo() === 'base'"
                     class="tab-style flex items-center gap-1 whitespace-nowrap px-1 py-1 cursor-pointer">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
@@ -325,19 +470,20 @@
                 }
 
             </div>
-
-            @if(tabActivo() === 'parametros') { 
-                <app-parametros-generales [parametros]="parametrosArray"  [cod_contrato]="miFormulario.get('cod_contrato')?.value" /> 
+            <!-- [modo]="modo() ?? 'nuevo' -->
+            @if(tabActivo() === 'parametros') {
+            <app-parametros-generales [parametros]="parametrosArray"
+                [cod_contrato]="miFormulario.get('cod_contrato')?.value" [dataContrato]="obServicioTransporte()" />
             }
 
-            @if(tabActivo() === 'base') { 
-                <app-esptec-base-medicion [mediciones]="medicionesArray"  
-                    [cod_contrato]="miFormulario.get('cod_contrato')?.value" /> 
+            @if(tabActivo() === 'base') {
+            <app-esptec-base-medicion [mediciones]="medicionesArray"
+                [cod_contrato]="miFormulario.get('cod_contrato')?.value" />
             }
 
-            @if(tabActivo() === 'equipos') { 
-                <app-equipos-alquilados [equipos]="equiposArray"
-                [cod_contrata]="miFormulario.get('cod_contrata')?.value" /> 
+            @if(tabActivo() === 'equipos') {
+            <app-equipos-alquilados [equipos]="equiposArray" [cod_contrato]="miFormulario.get('cod_contrato')?.value"
+                [cod_contrata]="miFormulario.get('cod_contrata')?.value" />
             }
 
             <div class="modal-action border-t border-base-200 pt-3 mt-2 flex justify-end gap-2">
@@ -349,7 +495,8 @@
                     </svg>
                     Guardar
                 </button>
-                <button type="button" class="btn btn-sm btn-outline border-base-300 flex items-center gap-1">
+                <button (click)="onCerrarConConfirmacion()" type="button"
+                    class="btn btn-sm btn-outline border-base-300 flex items-center gap-1">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />

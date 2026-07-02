@@ -97,7 +97,6 @@ export class DetallePrecioUnitarioComponent implements OnInit {
 
         this.servioTransporteService.obtenerPrecioUnitarioCabTab(payload).subscribe({
             next: (data) => {
-                console.log(data)
                 if (!data) return;
 
                 if (data.cabecera) {

@@ -111,7 +111,8 @@
     </div>
 </div>
 @if(abrirModal()) {
-    <app-servicio-transporte (cerrarModal)="abrirModal.set(false)" [obServicioTransporte]="obServicioTransporte()" 
-    [modo]="modo()"
+    <app-servicio-transporte 
+    (cerrarModal)="abrirModal.set(false)" [obServicioTransporte]="obServicioTransporte()"  (listarAdmContrato)="listarAdmContrato()"
+    [modo]="modo()" (onAbrirContrato)="onAbrirContrato($event)" [contratoSiguiente]="contratoSiguiente()"
     /> 
 }

@@ -42,7 +42,8 @@
                 </tr>
                 }
                 @else if (filas.length > 0) {
-                @for (fila of filas; track $index) {
+                @for (fila of filas; track fila.get('cod_parametro_contrato')?.value; let indexFila = $index) {
+                    
                 <tr [formGroup]="fila"
                     class="hover:bg-[#17324D]/5 select-none cursor-pointer transition-colors text-center text-[12px]">
 
@@ -50,12 +51,19 @@
                     <td class="p-1">
                         <select formControlName="cod_parametro_contrato" class="select-base_cuatro w-full">
                             @for (item of listParametroContato(); track $index) {
-                            <option [value]="item.cod_parametro_contrato">
+                            <option [value]="item.cod_parametro_contrato"
+                                [disabled]="isOptionUsada(item.cod_parametro_contrato, indexFila)">
                                 {{ item.cod_parametro_contrato }} {{ item.des_parametro_contrato }}
                             </option>
                             }
                         </select>
+                        @if(formUtils.isValidFieldInArray(fila,'cod_parametro_contrato')) {
+                        <div class="text-[#C23E32] text-xs mt-1">
+                            <span><b>{{ formUtils.getFiledErrorArray(fila,'cod_parametro_contrato') }}</b></span>
+                        </div>
+                        }
                     </td>
+
 
                     <!-- cod_moneda -->
                     <td class="p-1">
@@ -66,16 +74,33 @@
                             </option>
                             }
                         </select>
+                        @if(formUtils.isValidFieldInArray(fila,'cod_item_anexo')) {
+                        <div class="text-[#C23E32] text-xs mt-1">
+                            <span><b>{{ formUtils.getFiledErrorArray(fila,'cod_item_anexo') }}</b></span>
+                        </div>
+                        }
                     </td>
 
                     <!-- imp_porcentaje -->
                     <td class="p-1">
-                        <input type="text" formControlName="imp_monto" class="input-base_3 w-full text-right" />
+                        <input type="text" formControlName="imp_monto" class="input-base_3 w-full text-right"
+                            maxlength="10" />
+                        @if(formUtils.isValidFieldInArray(fila,'imp_monto')) {
+                        <div class="text-[#C23E32] text-xs mt-1">
+                            <span><b>{{ formUtils.getFiledErrorArray(fila,'imp_monto') }}</b></span>
+                        </div>
+                        }
                     </td>
 
                     <!-- imp_monto -->
                     <td class="p-1">
-                        <input type="text" formControlName="imp_porcentaje" class="input-base_3 w-full text-center" />
+                        <input type="text" formControlName="imp_porcentaje" maxlength="10"
+                            class="input-base_3 w-full text-center" />
+                        @if(formUtils.isValidFieldInArray(fila,'imp_porcentaje')) {
+                        <div class="text-[#C23E32] text-xs mt-1">
+                            <span><b>{{ formUtils.getFiledErrorArray(fila,'imp_porcentaje') }}</b></span>
+                        </div>
+                        }
                     </td>
 
                     <!-- botón eliminar -->

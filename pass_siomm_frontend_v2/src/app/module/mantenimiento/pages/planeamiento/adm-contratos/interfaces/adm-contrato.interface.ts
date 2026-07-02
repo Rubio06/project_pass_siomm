@@ -48,6 +48,13 @@
 //     c_t_equipo_alq?: string;
 // }
 
+export interface EntradaEliminarParametro {
+
+    cod_empresa: string;
+    cod_empresa_unidad: string;
+    cod_contrato: string;
+    cod_parametro_contrato: string;
+}
 
 export interface ContratoParametro {
     cod_empresa?: string;
@@ -62,6 +69,8 @@ export interface ContratoParametro {
     c_t_anexo?: string;
     cod_valor?: string;
     cod_tabla_anexo?: string;
+    cod_usuario_modi?: string | null;
+    cod_usuario_creo?: string | null;
     cod_item_anexo?: string;
 }
 
@@ -197,6 +206,12 @@ export interface ServicioTransporteEntrada {
     cod_empresa: string;
     cod_empresa_unidad: string;
     cod_contrato: string;
+}
+
+export interface RespuestaCodigo {
+    estado: number;
+    codigoGenerado: string;
+    mensaje: string;
 }
 
 

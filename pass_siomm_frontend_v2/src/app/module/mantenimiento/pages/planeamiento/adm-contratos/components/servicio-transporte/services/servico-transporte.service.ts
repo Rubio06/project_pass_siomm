@@ -3,7 +3,7 @@ import { FormUtils } from 'src/app/utils/form-utils';
 import { catchError, map, Observable, shareReplay, throwError } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '@environments/environments';
-import { ActividadTareaMant, CatalogoTarea, CatalogoTareaFiltro, CentroCosto, ContratoEquipoVehiculo, ContratoEquipoVehiculoRequest, CostosFijosDetalle, CostosFijosMae, CuentaContable, DetallePuResultado, DetTarifarioTransporteMaterial, EliminarPartidaDto, EliminarRespuestaDto, EliminarTarifarioEquiposAlquiler, EliminarTarifarioTransporte, EliminarTarifarioTransporteMaterial, EntradaCostoFijo, EntradaEliminarPrecioUnitario, EntradaPuCabTab, EntradaTablaDetalle, EntradaTarifarioDetalle, EntradaTarifarioDetalleReporte, EntradaTarifarioMaterial, GastosGenerales, GastosGeneralesInsertarDTO, GastosGeneralesRequest, GastosGneralesRequest, MaeContrataAdmDto, MaeTablaDetalleDto, MaeTablaDetalleRequest, PaginacionTarifarioDetalle, ParametroContrato, ParametroMedicionDto, ParametrosContratoDto, PartidaPuInsertDto, PartidaPuListarDto, PartidaPUModel, ProcesarResult, ReporteTransporteOtrosResponse, RespuestaApiDto, RespuestaSpDto, RespuestaTarifario, RespuestCostoFijo, ResultadoDatosDto, RutasFijasBalanza, RutaTransporte, SvalDetTarifarioEquiposAlquiler, SvalDetTarifarioTransporte, SvalMaeEquipo, SvalMaeTablaDetalle, SvalTablaDetalle, TablaDetalle, TablaDetalleDto, TablaDetalleRequest, TarifarioTransporteDetalle, ZonaPu } from '../interfaces/servicio-transporte.interface';
+import { ActividadTareaMant, CatalogoTarea, CatalogoTareaFiltro, CentroCosto, ContratoEquipoVehiculo, ContratoEquipoVehiculoRequest, ContratoPayload, CostosFijosDetalle, CostosFijosMae, CuentaContable, DetallePuResultado, DetTarifarioTransporteMaterial, EliminarPartidaDto, EliminarRespuestaDto, EliminarTarifarioEquiposAlquiler, EliminarTarifarioTransporte, EliminarTarifarioTransporteMaterial, EntradaCostoFijo, EntradaEliminarPrecioUnitario, EntradaPuCabTab, EntradaTablaDetalle, EntradaTarifarioDetalle, EntradaTarifarioDetalleReporte, EntradaTarifarioMaterial, GastosGenerales, GastosGeneralesInsertarDTO, GastosGeneralesRequest, GastosGneralesRequest, MaeContrataAdmDto, MaeTablaDetalleDto, MaeTablaDetalleRequest, PaginacionTarifarioDetalle, ParametroContrato, ParametroMedicionDto, ParametrosContratoDto, PartidaPuInsertDto, PartidaPuListarDto, PartidaPUModel, ProcesarResult, ReporteTransporteOtrosResponse, RespuestaApiDto, RespuestaServidor, RespuestaSpDto, RespuestaTarifario, RespuestCostoFijo, ResultadoDatosDto, RutasFijasBalanza, RutaTransporte, SvalDetTarifarioEquiposAlquiler, SvalDetTarifarioTransporte, SvalMaeEquipo, SvalMaeTablaDetalle, SvalTablaDetalle, TablaDetalle, TablaDetalleDto, TablaDetalleRequest, TarifarioTransporteDetalle, ZonaPu } from '../interfaces/servicio-transporte.interface';
 import { ContratoEquipoPesado, ContratoMedicion, ContratoParametro } from '../../../interfaces/adm-contrato.interface';
 
 @Injectable({
@@ -744,6 +744,23 @@ export class ServioTransporteService {
                 })
             );;
     }
+
+    public guardarServicioTransporte(dto: ContratoPayload): Observable<RespuestaServidor> {
+        return this.http.post<RespuestaServidor>(`${this.routeshUrl}mantenimiento/servicio-transporte/guardar-servicios-transporte`, dto)
+            .pipe(
+                catchError(error => {
+                    // Mantiene tu manejador centralizado de alertas si cuentas con él
+                    if (this.formUtils) {
+                        this.formUtils.mensajeErrorClase(error);
+                    }
+                    return throwError(() => error);
+                })
+            );
+    }
+
+
+
+
 
 
 }

@@ -156,7 +156,6 @@ namespace pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers
         public async Task<IActionResult> InsertarGastosGenerales([FromBody] List<GastosGeneralesDTO> filas)
         {
 
-            Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(filas));
 
             if (filas == null || filas.Count == 0)
                 return BadRequest(new GastosGeneralesRequestDTO
@@ -214,6 +213,90 @@ namespace pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers
             var respuesta = await _servicioTransporte.EliminarDetContratoMedicionAsync(dto);
             return Ok(respuesta);
         }
-    }
 
+        [HttpPost("guardar-servicios-transporte")]
+        public async Task<IActionResult> GuardarContratoCompleto([FromBody] ContratoDTO contrato)
+        {
+            // 1. Validación inicial del modelo recibido
+            if (contrato == null)
+            {
+                return BadRequest(new { estado = 0, mensaje = "El objeto de contrato no puede ser nulo o vacío." });
+            }
+
+            if (string.IsNullOrEmpty(contrato.cod_contrato))
+            {
+                return BadRequest(new { estado = 0, mensaje = "El código de contrato es obligatorio." });
+            }
+
+            try
+            {
+                // 2. Ejecutar la transacción de forma asíncrona en la capa de datos
+                bool exito = await _servicioTransporte.GuardarContratoCompletoAsync(contrato);
+
+                if (exito)
+                {
+                    // Retornamos un objeto de respuesta estándar estructurado
+                    return Ok(new
+                    {
+                        estado = 1,
+                        mensaje = $"El contrato {contrato.cod_contrato} y sus detalles se procesaron correctamente."
+                    });
+                }
+                else
+                {
+                    return StatusCode(500, new { estado = 0, mensaje = "No se pudo completar la operación en la base de datos." });
+                }
+            }
+            catch (Exception ex)
+            {
+                // 3. Captura cualquier error que haya hecho saltar el Rollback en el ADO.NET
+                return StatusCode(500, new
+                {
+                    estado = 0,
+                    mensaje = "Ocurrió un error interno al procesar el contrato corporativo.",
+                    error = ex.Message
+                });
+            }
+        }
+
+        // GENERAR CODIGO POR ANIO
+        [HttpGet("siguiente-codigo/{cod_contrato_anio}")]
+        public async Task<IActionResult> ObtenerSiguienteCodigo(string cod_contrato_anio)
+        {
+            // 1. Validación básica
+            if (string.IsNullOrEmpty(cod_contrato_anio) || cod_contrato_anio.Length != 4 || !int.TryParse(cod_contrato_anio, out _))
+            {
+                return BadRequest(new { estado = 0, mensaje = "El año proporcionado no es válido." });
+            }
+
+            try
+            {
+                // 2. Llamada asíncrona usando await 🔄
+                string siguienteCodigo = await _servicioTransporte.ObtenerNuevoCodigoContratoAsync(cod_contrato_anio);
+
+                if (string.IsNullOrEmpty(siguienteCodigo))
+                {
+                    return NotFound(new { estado = 0, mensaje = "No se pudo generar el código." });
+                }
+
+                // 3. Respuesta estructurada para Angular
+                return Ok(new
+                {
+                    estado = 1,
+                    codigoGenerado = siguienteCodigo,
+                    mensaje = "Correlativo generado con éxito de forma asíncrona."
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    estado = 0,
+                    mensaje = "Error interno en el servidor al procesar el código.",
+                    detalle = ex.Message
+                });
+            }
+        }
+
+    }
 }

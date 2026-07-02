@@ -1,7 +1,7 @@
 <form [formGroup]="form" class="max-w-7xl mx-auto pb-10">
 
     <app-nav-bar (onTabChange)="$event === 'lista' ? intentarSalirADetalle() : tabActivo.set('detalle')" [tabActivo]="tabActivo()"
-            [detalleTexto]="'Lista de Rutas Transporte Movimiento'"
+        [detalleTexto]="'Lista de Rutas Transporte Movimiento'"
         [listaTexto]="'Detalle de Rutas Transporte Movimiento'"
     />
 

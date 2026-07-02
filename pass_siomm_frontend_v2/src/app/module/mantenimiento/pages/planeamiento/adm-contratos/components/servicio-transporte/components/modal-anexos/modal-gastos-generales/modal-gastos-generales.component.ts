@@ -71,22 +71,24 @@ export class ModalGastosGeneralesComponent implements OnInit {
             ]],
             flg_vigente: [item.flg_vigente],
             esNueva: [esNueva],
+            accion: [esNueva ? 'I' : 'U'] // 'I' para insertar, 'U' para actualizar
         });
     }
 
-    get tieneFilasNuevas(): boolean {
-        return this.filas.controls.some(fila => fila.get('esNueva')?.value === true);
+    get tieneCambiosPendientes(): boolean {
+        const hayFilasNuevas = this.filas.controls.some(fila => fila.get('esNueva')?.value === true);
+        return this.form.dirty || this.filas.dirty || this.filas.controls.some(fila => fila.dirty) || hayFilasNuevas;
     }
 
     public onCerrar(): void {
-        if (!this.tieneFilasNuevas) {
+        if (!this.tieneCambiosPendientes) {
             this.onCerrarModalGastos.emit();
             return;
         }
 
         this.formUtils.confirmarAnulacionClase(
             '¿Salir sin guardar?',
-            'Tiene registros sin guardar. ¿Está seguro de salir?',
+            'Tiene cambios pendientes. ¿Está seguro de salir?',
             'Sí, salir',
             'No, quedarme'
         ).then(result => {
@@ -174,7 +176,7 @@ export class ModalGastosGeneralesComponent implements OnInit {
             return;
         }
 
-        // Marca todos los campos como touched para mostrar errores
+        // Marca todos los campos como touched para mostrar errores visuales
         this.filas.controls.forEach(fila => (fila as FormGroup).markAllAsTouched());
 
         if (this.form.invalid) {
@@ -182,20 +184,41 @@ export class ModalGastosGeneralesComponent implements OnInit {
             return;
         }
 
-        const payload: GastosGeneralesInsertarDTO[] = this.filas.controls.map((fila, i) => ({
-            cod_empresa: '03',
-            cod_empresa_unidad: '01',
-            cod_contrato: this.cod_contrato(),
-            cod_costo_fijo: fila.get('cod_costo_fijo')?.value,
-            cod_item_det: fila.get('cod_item_det')?.value,
-            ind_moneda: fila.get('ind_moneda')?.value,
-            imp_costo_fijo: Number(fila.get('imp_costo_fijo')?.value),
-            cnt_prog_mes: Number(fila.get('cnt_prog_mes')?.value),
-            imp_prog_mes: this.getImporte(i),
-            flg_vigente: fila.get('flg_vigente')?.value,
-            cod_usuario_creo: sessionStorage.getItem('username') || 'SISTEMA'
-        }));
+        // 1. Determinamos qué filas procesar
+        // Supongamos que tienes una propiedad 'this.esUpdate' (true/false) en tu componente
+        const esUpdate = true; // <-- Reemplaza con tu lógica o condición real
 
+        const filasAProcesar = esUpdate
+            ? this.filas.controls.filter(fila => fila.dirty) // SOLO las modificadas si es UPDATE
+            : this.filas.controls;                          // TODAS las filas si es INSERT
+
+        // 2. Si es un UPDATE y nadie modificó nada, detenemos el proceso
+        if (filasAProcesar.length === 0) {
+            this.formUtils.alertaNoPermitidoClase('Sin cambios', 'No se encontraron modificaciones para actualizar.');
+            return;
+        }
+
+        // 3. Mapeamos el payload únicamente con las filas filtradas
+        const payload: GastosGeneralesInsertarDTO[] = filasAProcesar.map((fila) => {
+            return {
+                cod_empresa: '03',
+                cod_empresa_unidad: '01',
+                cod_contrato: this.cod_contrato(),
+                cod_costo_fijo: fila.get('cod_costo_fijo')?.value,
+                cod_item_det: fila.get('cod_item_det')?.value,
+                ind_moneda: fila.get('ind_moneda')?.value,
+                imp_costo_fijo: Number(fila.get('imp_costo_fijo')?.value),
+                cnt_prog_mes: Number(fila.get('cnt_prog_mes')?.value),
+                // Ojo: Como filtramos el array, 'i' ya no coincide con el índice original.
+                // Es mucho mejor obtener el importe directamente desde los controles de la fila actual:
+                imp_prog_mes: Number(fila.get('imp_prog_mes')?.value) || 0,
+                flg_vigente: fila.get('flg_vigente')?.value,
+                cod_usuario_creo: sessionStorage.getItem('username') || 'SISTEMA',
+                accion: fila.get('accion')?.value
+            };
+        });
+
+        console.log('Payload a enviar:', JSON.stringify(payload, null, 2)); // Para depuración
         // Confirmación antes de guardar
         this.formUtils.confirmarAnulacionClase(
             'Guardar Registros',
@@ -208,9 +231,14 @@ export class ModalGastosGeneralesComponent implements OnInit {
             this.isLoading.set(true);
 
             this.servioTransporteService.guardarGastosGenerales(payload).subscribe({
-                next: (res: GastosGneralesRequest) => {
+                next: (res: GastosGneralesRequest) => { // Nota: en tu código tenías 'next', lo mantengo igual
                     if (res.estado === 1) {
                         this.formUtils.alertaExitoAnulacion('Guardado', res.mensaje);
+
+                        // IMPORTANTE: Resetea el estado dirty del formulario tras el éxito
+                        this.filas.markAsPristine();
+                        this.filas.markAsUntouched();
+
                         this.onCerrarModalGastos.emit();
                     } else {
                         this.formUtils.alertaNoPermitidoClase('Error al Guardar', res.mensaje);

@@ -184,7 +184,10 @@ export class ListaProgramaMensualLaboresComponent {
 
     private cargarMeses(year: string): void {
         this.mostrarFiltrosService.getMonths(year).subscribe({
-            next: months => this.listaMeses.set(months),
+            next: (months) => 
+            {
+                this.listaMeses.set(months)
+            },
             error: error => console.log(error)
         });
     }

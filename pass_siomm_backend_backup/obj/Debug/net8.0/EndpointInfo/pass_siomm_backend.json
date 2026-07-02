@@ -3323,6 +3323,59 @@
         }
       }
     },
+    "/mantenimiento/servicio-transporte/guardar-servicios-transporte": {
+      "post": {
+        "tags": [
+          "ServicioTranporte"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContratoDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContratoDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContratoDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/mantenimiento/servicio-transporte/siguiente-codigo/{cod_contrato_anio}": {
+      "get": {
+        "tags": [
+          "ServicioTranporte"
+        ],
+        "parameters": [
+          {
+            "name": "cod_contrato_anio",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/mantenimiento/servicio-transporte/tarifario/obtener-tarifario-detalle": {
       "get": {
         "tags": [
@@ -4756,6 +4809,137 @@
         },
         "additionalProperties": false
       },
+      "ContratoDTO": {
+        "type": "object",
+        "properties": {
+          "accion": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_empresa": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_empresa_unidad": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_contrato": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_contrata": {
+            "type": "string",
+            "nullable": true
+          },
+          "fec_registro": {
+            "type": "string",
+            "nullable": true
+          },
+          "fec_inicio": {
+            "type": "string",
+            "nullable": true
+          },
+          "fec_termino": {
+            "type": "string",
+            "nullable": true
+          },
+          "des_contacto_contrata": {
+            "type": "string",
+            "nullable": true
+          },
+          "imp_tipo_cambio": {
+            "type": "string",
+            "nullable": true
+          },
+          "nro_adendum": {
+            "type": "string",
+            "nullable": true
+          },
+          "des_observacion": {
+            "type": "string",
+            "nullable": true
+          },
+          "ind_situacion": {
+            "type": "string",
+            "nullable": true
+          },
+          "ind_estado": {
+            "type": "string",
+            "nullable": true
+          },
+          "flg_vigente": {
+            "type": "string",
+            "nullable": true
+          },
+          "fec_firma": {
+            "type": "string",
+            "nullable": true
+          },
+          "ind_tipo_contrato": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_usuario_creo": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_usuario_modi": {
+            "type": "string",
+            "nullable": true
+          },
+          "ind_moneda": {
+            "type": "string",
+            "nullable": true
+          },
+          "fec_usuario_modi": {
+            "type": "string",
+            "nullable": true
+          },
+          "fec_usuario_creo": {
+            "type": "string",
+            "nullable": true
+          },
+          "ind_tipocambio": {
+            "type": "string",
+            "nullable": true
+          },
+          "ind_valorizacion": {
+            "type": "string",
+            "nullable": true
+          },
+          "c_t_ruc": {
+            "type": "string",
+            "nullable": true
+          },
+          "c_t_representante": {
+            "type": "string",
+            "nullable": true
+          },
+          "parametros": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ParametroDTO"
+            },
+            "nullable": true
+          },
+          "mediciones": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MedicionDTO"
+            },
+            "nullable": true
+          },
+          "equipos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EquipoDTO"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "CopiarDetalleDto": {
         "type": "object",
         "properties": {
@@ -5362,6 +5546,48 @@
         },
         "additionalProperties": false
       },
+      "EquipoDTO": {
+        "type": "object",
+        "properties": {
+          "accion": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_equipo_pesado": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_equipo_pesado_1": {
+            "type": "string",
+            "nullable": true
+          },
+          "ind_tarifa": {
+            "type": "string",
+            "nullable": true
+          },
+          "ind_moneda": {
+            "type": "string",
+            "nullable": true
+          },
+          "imp_alquiler_equipo": {
+            "type": "string",
+            "nullable": true
+          },
+          "flg_vigencia": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_usuario_creo": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_usuario_modi": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "GastosGeneralesDTO": {
         "type": "object",
         "properties": {
@@ -5428,6 +5654,10 @@
             "nullable": true
           },
           "c_t_gastos_det": {
+            "type": "string",
+            "nullable": true
+          },
+          "accion": {
             "type": "string",
             "nullable": true
           }
@@ -6671,6 +6901,72 @@
         },
         "additionalProperties": false
       },
+      "MedicionDTO": {
+        "type": "object",
+        "properties": {
+          "accion": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_parametro_medicion": {
+            "type": "string",
+            "nullable": true
+          },
+          "nro_potencia_veta_1": {
+            "type": "number",
+            "format": "double"
+          },
+          "cod_item_um_pv": {
+            "type": "string",
+            "nullable": true
+          },
+          "nro_potencia_veta_2": {
+            "type": "number",
+            "format": "double"
+          },
+          "cod_item_um_ap": {
+            "type": "string",
+            "nullable": true
+          },
+          "c_t_ap": {
+            "type": "string",
+            "nullable": true
+          },
+          "nro_ancho_pago_1": {
+            "type": "number",
+            "format": "double"
+          },
+          "cod_valor_ap": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_tabla_um_pv": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_tabla_um_ap": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_valor_pv": {
+            "type": "string",
+            "nullable": true
+          },
+          "c_t_pv": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_usuario_creo": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_usuario_modi": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "NivelDto": {
         "type": "object",
         "properties": {
@@ -6726,6 +7022,66 @@
             "nullable": true
           },
           "accion": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ParametroDTO": {
+        "type": "object",
+        "properties": {
+          "accion": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_parametro_contrato": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_moneda": {
+            "type": "string",
+            "nullable": true
+          },
+          "imp_porcentaje": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "imp_monto": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "des_observacion": {
+            "type": "string",
+            "nullable": true
+          },
+          "flg_vigente": {
+            "type": "string",
+            "nullable": true
+          },
+          "c_t_anexo": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_valor": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_tabla_anexo": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_item_anexo": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_usuario_creo": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_usuario_modi": {
             "type": "string",
             "nullable": true
           }

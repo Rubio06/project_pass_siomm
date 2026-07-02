@@ -940,3 +940,93 @@ export interface ResultadoDatosDto {
     mensaje: string;
 
 }
+
+
+export interface ContratoPayload {
+  cod_empresa: string;
+  cod_empresa_unidad: string;
+  cod_contrato: string;
+  cod_contrata: string;
+  fec_registro: string;
+  fec_inicio: string;
+  fec_termino: string;
+  des_contacto_contrata: string;
+  imp_tipo_cambio: number;
+  nro_adendum: string;
+  des_observacion: string;
+  ind_situacion: string;
+  ind_estado: string;
+  flg_vigente: string | null;
+  fec_firma: string;
+  ind_tipo_contrato: string;
+  cod_usuario_creo: string;
+  fec_usuario_creo: string;
+  cod_usuario_modi: string;
+  fec_usuario_modi: string;
+  ind_moneda: string;
+  ind_tipocambio: string;
+  ind_valorizacion: string;
+  c_t_ruc: string;
+  c_t_representante: string;
+  
+  // Arreglos de Objetos Hijos (Grillas)
+  parametros: ParametroContratoDto[];
+  mediciones: MedicionContratoDto[];
+  equipos: EquipoContratoDto[];
+}
+
+export interface ParametroContratoDto {
+  accion?: string; // Comodín: 'I', 'U', 'D'
+  cod_empresa?: string;
+  cod_empresa_unidad?: string;
+  cod_contrato?: string;
+  cod_parametro_contrato: string;
+  cod_moneda: string;
+  imp_porcentaje: number | null;
+  imp_monto: number | null;
+  des_observacion: string;
+  flg_vigente: string;
+  c_t_anexo: string;
+  cod_valor: string;
+  cod_tabla_anexo: string;
+  cod_item_anexo: string;
+}
+
+export interface MedicionContratoDto {
+  accion?: string; // Comodín: 'I', 'U', 'D'
+  cod_empresa?: string;
+  cod_empresa_unidad?: string;
+  cod_contrato?: string;
+  cod_parametro_medicion: string;
+  nro_potencia_veta_1: string | number;
+  cod_item_um_pv: string;
+  nro_potencia_veta_2: string | number;
+  cod_item_um_ap: string;
+  c_t_ap: string;
+  nro_ancho_pago_1: string | number;
+  cod_valor_ap: string;
+  cod_tabla_um_pv: string;
+  cod_tabla_um_ap: string;
+  cod_valor_pv: string;
+  c_t_pv: string;
+}
+
+export interface EquipoContratoDto {
+  accion?: string; // Comodín: 'I', 'U', 'D'
+  cod_empresa?: string;
+  cod_empresa_unidad?: string;
+  cod_contrato?: string;
+  cod_equipo_pesado: string;
+  cod_equipo_pesado_1: string;
+  ind_tarifa: string;
+  ind_moneda: string;
+  imp_alquiler_equipo: string | number;
+  flg_vigencia: string;
+}
+
+// Interfaz opcional para la respuesta estandarizada del Backend .NET
+export interface RespuestaServidor {
+  estado: number;   // 1 = Éxito, 0 = Error
+  mensaje: string;  // Descripción de la operación
+  error?: string;   // Detalle técnico del rollback si existiera
+}

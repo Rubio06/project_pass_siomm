@@ -3,7 +3,3 @@
 @for (mes of listaMeses(); track $index) {
 <option [value]="mes">{{ mes | transfornMonth }}</option>
 }
-<option disabled value="">Selecciona un mes</option>
-@for (item of listaMeses(); track $index) {
-    <option [value]="item">{{ item }}</option>
-}

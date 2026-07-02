@@ -1,9 +1,4 @@
-
 <option disabled value="">Selecciona un año</option>
 @for (anio of listaAnio(); track $index) {
 <option [value]="anio">{{ anio }}</option>
 }
-    <option disabled value="">Selecciona un año</option>
-    @for (item of listaAnio(); track $index) {
-        <option>{{ item }}</option>
-    }

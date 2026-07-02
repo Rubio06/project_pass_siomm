@@ -1160,6 +1160,22 @@
   },
   {
     "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.ServicioTranporteController",
+    "Method": "GuardarContratoCompleto",
+    "RelativePath": "mantenimiento/servicio-transporte/guardar-servicios-transporte",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "contrato",
+        "Type": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Data.ContratoDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.ServicioTranporteController",
     "Method": "InsertarGastosGenerales",
     "RelativePath": "mantenimiento/servicio-transporte/insertar-gastos-generales",
     "HttpMethod": "POST",
@@ -1558,6 +1574,22 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.ServicioTranporteController",
+    "Method": "ObtenerSiguienteCodigo",
+    "RelativePath": "mantenimiento/servicio-transporte/siguiente-codigo/{cod_contrato_anio}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_contrato_anio",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {

@@ -518,6 +518,92 @@ namespace pass_siomm_backend.Mantenimiento.Planeamiento_mant.Services
             return lista;
         }
 
+        //public async Task<GastosGeneralesRequestDTO> InsertarGastosGenerales(List<GastosGeneralesDTO> filas)
+        //{
+        //    using var connection = new SqlConnection(_connectionString);
+        //    await connection.OpenAsync();
+        //    using var transaction = connection.BeginTransaction();
+
+        //    try
+        //    {
+        //        // Eliminar registros existentes del contrato
+        //        if (filas.Any())
+        //        {
+        //            var primeraFila = filas.First();
+
+        //            using var cmdDelete = new SqlCommand(@"
+        //                DELETE FROM sval_cab_gastos_generales
+        //                WHERE cod_empresa = @cod_empresa
+        //                  AND cod_empresa_unidad = @cod_empresa_unidad
+        //                  AND cod_contrato = @cod_contrato",
+        //                connection,
+        //                transaction);
+
+        //            cmdDelete.Parameters.AddWithValue("@cod_empresa", primeraFila.cod_empresa);
+        //            cmdDelete.Parameters.AddWithValue("@cod_empresa_unidad", primeraFila.cod_empresa_unidad);
+        //            cmdDelete.Parameters.AddWithValue("@cod_contrato", primeraFila.cod_contrato);
+
+        //            await cmdDelete.ExecuteNonQueryAsync();
+        //        }
+
+        //        // Insertar todas las filas nuevas
+        //        foreach (var fila in filas)
+        //        {
+        //            using var cmd = new SqlCommand("SP_INSERTAR_GASTOS_GENERALES", connection, transaction);
+        //            cmd.CommandType = CommandType.StoredProcedure;
+
+        //            cmd.Parameters.AddWithValue("@cod_empresa", fila.cod_empresa);
+        //            cmd.Parameters.AddWithValue("@cod_empresa_unidad", fila.cod_empresa_unidad);
+        //            cmd.Parameters.AddWithValue("@cod_contrato", fila.cod_contrato);
+        //            cmd.Parameters.AddWithValue("@cod_costo_fijo", fila.cod_costo_fijo);
+        //            cmd.Parameters.AddWithValue("@cod_item_det", fila.cod_item_det);
+        //            cmd.Parameters.AddWithValue("@ind_moneda", fila.ind_moneda);
+        //            cmd.Parameters.AddWithValue("@imp_costo_fijo", fila.imp_costo_fijo);
+        //            cmd.Parameters.AddWithValue("@cnt_prog_mes", fila.cnt_prog_mes);
+        //            cmd.Parameters.AddWithValue("@imp_prog_mes", fila.imp_prog_mes);
+        //            cmd.Parameters.AddWithValue("@flg_vigente", fila.flg_vigente);
+        //            cmd.Parameters.AddWithValue("@cod_usuario_creo", fila.cod_usuario_creo);
+
+        //            var pEstado = cmd.Parameters.Add("@estado", SqlDbType.Int);
+        //            pEstado.Direction = ParameterDirection.Output;
+
+        //            var pMensaje = cmd.Parameters.Add("@mensaje", SqlDbType.NVarChar, 200);
+        //            pMensaje.Direction = ParameterDirection.Output;
+
+        //            await cmd.ExecuteNonQueryAsync();
+
+        //            if ((int)pEstado.Value == 0)
+        //            {
+        //                await transaction.RollbackAsync();
+
+        //                return new GastosGeneralesRequestDTO
+        //                {
+        //                    estado = 0,
+        //                    mensaje = pMensaje.Value.ToString()!
+        //                };
+        //            }
+        //        }
+
+        //        await transaction.CommitAsync();
+
+        //        return new GastosGeneralesRequestDTO
+        //        {
+        //            estado = 1,
+        //            mensaje = "Registros guardados correctamente."
+        //        };
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        await transaction.RollbackAsync();
+
+        //        return new GastosGeneralesRequestDTO
+        //        {
+        //            estado = 0,
+        //            mensaje = $"Error inesperado: {ex.Message}"
+        //        };
+        //    }
+        //}
+
         public async Task<GastosGeneralesRequestDTO> InsertarGastosGenerales(List<GastosGeneralesDTO> filas)
         {
             using var connection = new SqlConnection(_connectionString);
@@ -526,84 +612,74 @@ namespace pass_siomm_backend.Mantenimiento.Planeamiento_mant.Services
 
             try
             {
-                // Eliminar registros existentes del contrato
-                if (filas.Any())
-                {
-                    var primeraFila = filas.First();
-
-                    using var cmdDelete = new SqlCommand(@"
-                        DELETE FROM sval_cab_gastos_generales
-                        WHERE cod_empresa = @cod_empresa
-                          AND cod_empresa_unidad = @cod_empresa_unidad
-                          AND cod_contrato = @cod_contrato",
-                        connection,
-                        transaction);
-
-                    cmdDelete.Parameters.AddWithValue("@cod_empresa", primeraFila.cod_empresa);
-                    cmdDelete.Parameters.AddWithValue("@cod_empresa_unidad", primeraFila.cod_empresa_unidad);
-                    cmdDelete.Parameters.AddWithValue("@cod_contrato", primeraFila.cod_contrato);
-
-                    await cmdDelete.ExecuteNonQueryAsync();
-                }
-
-                // Insertar todas las filas nuevas
                 foreach (var fila in filas)
                 {
                     using var cmd = new SqlCommand("SP_INSERTAR_GASTOS_GENERALES", connection, transaction);
                     cmd.CommandType = CommandType.StoredProcedure;
 
+                    // 1. Parámetros de entrada comunes
                     cmd.Parameters.AddWithValue("@cod_empresa", fila.cod_empresa);
                     cmd.Parameters.AddWithValue("@cod_empresa_unidad", fila.cod_empresa_unidad);
                     cmd.Parameters.AddWithValue("@cod_contrato", fila.cod_contrato);
                     cmd.Parameters.AddWithValue("@cod_costo_fijo", fila.cod_costo_fijo);
-                    cmd.Parameters.AddWithValue("@cod_item_det", fila.cod_item_det);
+                    cmd.Parameters.AddWithValue("@cod_item_det", fila.cod_item_det ?? (object)DBNull.Value);
                     cmd.Parameters.AddWithValue("@ind_moneda", fila.ind_moneda);
                     cmd.Parameters.AddWithValue("@imp_costo_fijo", fila.imp_costo_fijo);
                     cmd.Parameters.AddWithValue("@cnt_prog_mes", fila.cnt_prog_mes);
                     cmd.Parameters.AddWithValue("@imp_prog_mes", fila.imp_prog_mes);
                     cmd.Parameters.AddWithValue("@flg_vigente", fila.flg_vigente);
-                    cmd.Parameters.AddWithValue("@cod_usuario_creo", fila.cod_usuario_creo);
 
+                    // Enviamos el usuario al parámetro genérico @cod_usuario
+                    cmd.Parameters.AddWithValue("@cod_usuario", fila.cod_usuario_creo);
+
+                    // 2. PARÁMETRO COMODÍN CLAVE: Controla si el SP hace INSERT, UPDATE o DELETE
+                    cmd.Parameters.AddWithValue("@accion", fila.accion); // 'I', 'U', o 'D'
+
+                    // 3. Parámetros OUTPUT del SP
                     var pEstado = cmd.Parameters.Add("@estado", SqlDbType.Int);
                     pEstado.Direction = ParameterDirection.Output;
 
                     var pMensaje = cmd.Parameters.Add("@mensaje", SqlDbType.NVarChar, 200);
                     pMensaje.Direction = ParameterDirection.Output;
 
+                    // Ejecutamos la fila actual
                     await cmd.ExecuteNonQueryAsync();
 
-                    if ((int)pEstado.Value == 0)
+                    // 4. Validación del estado devuelto por el SP
+                    if (pEstado.Value == DBNull.Value || (int)pEstado.Value == 0)
                     {
+                        // Si falla una sola fila, hacemos Rollback completo para no dejar la data inconsistente
                         await transaction.RollbackAsync();
 
                         return new GastosGeneralesRequestDTO
                         {
                             estado = 0,
-                            mensaje = pMensaje.Value.ToString()!
+                            mensaje = pMensaje.Value?.ToString() ?? "Error desconocido en el procedimiento."
                         };
                     }
                 }
 
+                // Si todas las filas se procesaron con éxito en el SP, confirmamos los cambios
                 await transaction.CommitAsync();
 
                 return new GastosGeneralesRequestDTO
                 {
                     estado = 1,
-                    mensaje = "Registros guardados correctamente."
+                    mensaje = "Todos los cambios fueron guardados y auditados correctamente."
                 };
             }
             catch (Exception ex)
             {
+                // Ante cualquier error de conexión o de red, revertimos
                 await transaction.RollbackAsync();
 
                 return new GastosGeneralesRequestDTO
                 {
                     estado = 0,
-                    mensaje = $"Error inesperado: {ex.Message}"
+                    mensaje = $"Error crítico en el repositorio: {ex.Message}"
                 };
             }
         }
-
 
         public RespuestCostoFijoDto EliminarCostoFijoDetalle([FromQuery] EntradaCostoFijoDto request)
         {
@@ -742,9 +818,308 @@ namespace pass_siomm_backend.Mantenimiento.Planeamiento_mant.Services
 
 
 
+        public async Task<bool> GuardarContratoCompletoAsync(ContratoDTO dto)
+        {
+            using (SqlConnection cn = new SqlConnection(_connectionString))
+            {
+                await cn.OpenAsync();
+
+                using (SqlTransaction tx = cn.BeginTransaction())
+                {
+                    try
+                    {
+
+                        using (SqlCommand cmd = new SqlCommand("SP_GUARDAR_CONTRATO_CABECERA", cn, tx))
+                        {
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Parameters.Add("@accion", SqlDbType.VarChar, 1).Value =
+                                (object?)dto.accion ?? DBNull.Value;
+                            cmd.Parameters.AddWithValue("@cod_empresa", dto.cod_empresa ?? (object)DBNull.Value);
+                            cmd.Parameters.AddWithValue("@cod_empresa_unidad", dto.cod_empresa_unidad ?? (object)DBNull.Value);
+                            cmd.Parameters.AddWithValue("@cod_contrato", dto.cod_contrato ?? (object)DBNull.Value);
+                            cmd.Parameters.AddWithValue("@cod_contrata", dto.cod_contrata ?? (object)DBNull.Value);
+
+                            cmd.Parameters.AddWithValue("@cod_usuario_creo", dto.cod_usuario_creo ?? (object)DBNull.Value);
+                            cmd.Parameters.AddWithValue("@cod_usuario_modi", dto.cod_usuario_modi ?? (object)DBNull.Value);
+
+                            cmd.Parameters.AddWithValue("@des_contacto_contrata", dto.des_contacto_contrata ?? (object)DBNull.Value);
+                            cmd.Parameters.AddWithValue("@des_observacion", dto.des_observacion ?? (object)DBNull.Value);
+
+                            cmd.Parameters.Add("@fec_firma", SqlDbType.DateTime).Value =
+                                string.IsNullOrEmpty(dto.fec_firma) ? (object)DBNull.Value : Convert.ToDateTime(dto.fec_firma);
+
+                            cmd.Parameters.Add("@fec_inicio", SqlDbType.DateTime).Value =
+                                string.IsNullOrEmpty(dto.fec_inicio) ? (object)DBNull.Value : Convert.ToDateTime(dto.fec_inicio);
+
+                            cmd.Parameters.Add("@fec_registro", SqlDbType.DateTime).Value =
+                                string.IsNullOrEmpty(dto.fec_registro) ? (object)DBNull.Value : Convert.ToDateTime(dto.fec_registro);
+
+                            cmd.Parameters.Add("@fec_termino", SqlDbType.DateTime).Value =
+                                string.IsNullOrEmpty(dto.fec_termino) ? (object)DBNull.Value : Convert.ToDateTime(dto.fec_termino);
 
 
+                            cmd.Parameters.AddWithValue("@flg_vigente", dto.flg_vigente ?? (object)DBNull.Value);
+                            cmd.Parameters.AddWithValue("@ind_estado", dto.ind_estado ?? (object)DBNull.Value);
+                            cmd.Parameters.AddWithValue("@ind_moneda", dto.ind_moneda ?? (object)DBNull.Value);
+                            cmd.Parameters.AddWithValue("@ind_situacion", dto.ind_situacion ?? (object)DBNull.Value);
+                            cmd.Parameters.AddWithValue("@ind_tipo_contrato", dto.ind_tipo_contrato ?? (object)DBNull.Value);
+                            cmd.Parameters.AddWithValue("@ind_tipocambio", dto.ind_tipocambio ?? (object)DBNull.Value);
+                            cmd.Parameters.AddWithValue("@ind_valorizacion", dto.ind_valorizacion ?? (object)DBNull.Value);
+                            cmd.Parameters.AddWithValue("@nro_adendum", dto.nro_adendum ?? (object)DBNull.Value);
 
+                            cmd.Parameters.Add("@imp_tipo_cambio", SqlDbType.Decimal).Value =
+                                string.IsNullOrEmpty(dto.imp_tipo_cambio) ? (object)DBNull.Value : Convert.ToDecimal(dto.imp_tipo_cambio);
+
+                            // Ejecución Asíncrona
+                            await cmd.ExecuteNonQueryAsync();
+                        }
+
+
+                        if (dto.parametros != null)
+                        {
+                            foreach (var param in dto.parametros)
+                            {
+                                using (SqlCommand cmd = new SqlCommand("SP_GUARDAR_CONTRATO_PARAMETRO", cn, tx))
+                                {
+                                    cmd.CommandType = CommandType.StoredProcedure;
+
+                                    cmd.Parameters.Add("@accion", SqlDbType.VarChar, 1).Value =
+                                        (object?)param.accion ?? DBNull.Value;
+
+                                    // VARCHAR(2)
+                                    cmd.Parameters.Add("@cod_empresa", SqlDbType.VarChar, 2).Value =
+                                        (object?)dto.cod_empresa ?? DBNull.Value;
+
+                                    // VARCHAR(2)
+                                    cmd.Parameters.Add("@cod_empresa_unidad", SqlDbType.VarChar, 2).Value =
+                                        (object?)dto.cod_empresa_unidad ?? DBNull.Value;
+
+                                    // VARCHAR(8)
+                                    cmd.Parameters.Add("@cod_contrato", SqlDbType.VarChar, 8).Value =
+                                        (object?)dto.cod_contrato ?? DBNull.Value;
+
+                                    // VARCHAR(3)
+                                    cmd.Parameters.Add("@cod_parametro_contrato", SqlDbType.VarChar, 3).Value =
+                                        (object?)param.cod_parametro_contrato ?? DBNull.Value;
+
+                                    // VARCHAR(1)
+                                    cmd.Parameters.Add("@cod_moneda", SqlDbType.VarChar, 1).Value =
+                                        (object?)param.cod_moneda ?? DBNull.Value;
+
+                                    // DECIMAL
+                                    var pPorcentaje = cmd.Parameters.Add("@imp_porcentaje", SqlDbType.Decimal);
+                                    pPorcentaje.Precision = 18;
+                                    pPorcentaje.Scale = 2;
+                                    pPorcentaje.Value = (object?)param.imp_porcentaje ?? DBNull.Value;
+
+                                    // DECIMAL
+                                    var pMonto = cmd.Parameters.Add("@imp_monto", SqlDbType.Decimal);
+                                    pMonto.Precision = 18;
+                                    pMonto.Scale = 2;
+                                    pMonto.Value = (object?)param.imp_monto ?? DBNull.Value;
+
+                                    // VARCHAR(255)
+                                    cmd.Parameters.Add("@des_observacion", SqlDbType.VarChar, 255).Value =
+                                        (object?)param.des_observacion ?? DBNull.Value;
+
+                                    // VARCHAR(1)
+                                    cmd.Parameters.Add("@flg_vigente", SqlDbType.VarChar, 1).Value =
+                                        (object?)param.flg_vigente ?? DBNull.Value;
+
+                                    // Si c_t_anexo existe en el SP, coloca el tamaño correcto.
+                                    // Aquí asumí VARCHAR(255), cámbialo si en el SP es diferente.
+                                    cmd.Parameters.Add("@c_t_anexo", SqlDbType.VarChar, 255).Value =
+                                        (object?)param.c_t_anexo ?? DBNull.Value;
+
+                                    // VARCHAR(3)
+                                    cmd.Parameters.Add("@cod_tabla_anexo", SqlDbType.VarChar, 3).Value =
+                                        (object?)param.cod_tabla_anexo ?? DBNull.Value;
+
+                                    // VARCHAR(3)
+                                    cmd.Parameters.Add("@cod_item_anexo", SqlDbType.VarChar, 3).Value =
+                                        (object?)param.cod_item_anexo ?? DBNull.Value;
+
+                                    cmd.Parameters.Add("@cod_usuario_creo", SqlDbType.VarChar, 30).Value =
+                                        (object?)param.cod_usuario_creo ?? DBNull.Value;
+
+                                    cmd.Parameters.Add("@cod_usuario_modi", SqlDbType.VarChar, 30).Value =
+                                        (object?)param.cod_usuario_modi ?? DBNull.Value;
+
+                                    // Ejecución Asíncrona
+                                    await cmd.ExecuteNonQueryAsync();
+                                }
+                            }
+                        }
+
+
+                        if (dto.mediciones != null)
+                        {
+                            foreach (var med in dto.mediciones)
+                            {
+                                using (SqlCommand cmd = new SqlCommand("SP_GUARDAR_CONTRATO_MEDICION", cn, tx))
+                                {
+                                    cmd.CommandType = CommandType.StoredProcedure;
+
+                                    // Si el SP tiene @accion, usa el tamaño que corresponda (aquí asumo VARCHAR(1))
+                                    cmd.Parameters.Add("@accion", SqlDbType.VarChar, 1).Value =
+                                        (object?)med.accion ?? DBNull.Value;
+
+                                    // VARCHAR(2)
+                                    cmd.Parameters.Add("@cod_empresa", SqlDbType.VarChar, 2).Value =
+                                        (object?)dto.cod_empresa ?? DBNull.Value;
+
+                                    // VARCHAR(2)
+                                    cmd.Parameters.Add("@cod_empresa_unidad", SqlDbType.VarChar, 2).Value =
+                                        (object?)dto.cod_empresa_unidad ?? DBNull.Value;
+
+                                    // VARCHAR(8)
+                                    cmd.Parameters.Add("@cod_contrato", SqlDbType.VarChar, 8).Value =
+                                        (object?)dto.cod_contrato ?? DBNull.Value;
+
+                                    // VARCHAR(3)
+                                    cmd.Parameters.Add("@cod_parametro_medicion", SqlDbType.VarChar, 3).Value =
+                                        (object?)med.cod_parametro_medicion ?? DBNull.Value;
+
+                                    // DECIMAL
+                                    var pPotenciaVeta1 = cmd.Parameters.Add("@nro_potencia_veta_1", SqlDbType.Decimal);
+                                    pPotenciaVeta1.Precision = 18;
+                                    pPotenciaVeta1.Scale = 2;
+                                    pPotenciaVeta1.Value = (object?)med.nro_potencia_veta_1 ?? DBNull.Value;
+
+                                    // VARCHAR(3)
+                                    cmd.Parameters.Add("@cod_item_um_pv", SqlDbType.VarChar, 3).Value =
+                                        (object?)med.cod_item_um_pv ?? DBNull.Value;
+
+                                    // DECIMAL
+                                    var pPotenciaVeta2 = cmd.Parameters.Add("@nro_potencia_veta_2", SqlDbType.Decimal);
+                                    pPotenciaVeta2.Precision = 18;
+                                    pPotenciaVeta2.Scale = 2;
+                                    pPotenciaVeta2.Value = (object?)med.nro_potencia_veta_2 ?? DBNull.Value;
+
+                                    // VARCHAR(3)
+                                    cmd.Parameters.Add("@cod_item_um_ap", SqlDbType.VarChar, 3).Value =
+                                        (object?)med.cod_item_um_ap ?? DBNull.Value;
+
+                                    // DECIMAL
+                                    var pAnchoPago1 = cmd.Parameters.Add("@nro_ancho_pago_1", SqlDbType.Decimal);
+                                    pAnchoPago1.Precision = 18;
+                                    pAnchoPago1.Scale = 2;
+                                    pAnchoPago1.Value = (object?)med.nro_ancho_pago_1 ?? DBNull.Value;
+
+                                    // VARCHAR(1)
+                                    cmd.Parameters.Add("@cod_valor_ap", SqlDbType.VarChar, 1).Value =
+                                        (object?)med.cod_valor_ap ?? DBNull.Value;
+
+                                    // VARCHAR(3)
+                                    cmd.Parameters.Add("@cod_tabla_um_pv", SqlDbType.VarChar, 3).Value =
+                                        (object?)med.cod_tabla_um_pv ?? DBNull.Value;
+
+                                    // VARCHAR(3)
+                                    cmd.Parameters.Add("@cod_tabla_um_ap", SqlDbType.VarChar, 3).Value =
+                                        (object?)med.cod_tabla_um_ap ?? DBNull.Value;
+
+                                    // VARCHAR(1)
+                                    cmd.Parameters.Add("@cod_valor_pv", SqlDbType.VarChar, 1).Value =
+                                        (object?)med.cod_valor_pv ?? DBNull.Value;
+
+                                    cmd.Parameters.Add("@cod_usuario_creo", SqlDbType.VarChar, 30).Value =
+                                        (object?)med.cod_usuario_creo ?? DBNull.Value;
+
+                                    cmd.Parameters.Add("@cod_usuario_modi", SqlDbType.VarChar, 30).Value =
+                                        (object?)med.cod_usuario_modi ?? DBNull.Value;
+
+                                    // Ejecución Asíncrona
+                                    await cmd.ExecuteNonQueryAsync();
+                                }
+                            }
+                        }
+
+                        if (dto.equipos != null)
+                        {
+                            foreach (var eq in dto.equipos)
+                            {
+                                using (SqlCommand cmd = new SqlCommand("SP_GUARDAR_CONTRATO_EQUIPO", cn, tx))
+                                {
+                                    cmd.CommandType = CommandType.StoredProcedure;
+
+                                    cmd.Parameters.AddWithValue("@accion", eq.accion);
+                                    cmd.Parameters.AddWithValue("@cod_empresa", dto.cod_empresa);
+                                    cmd.Parameters.AddWithValue("@cod_empresa_unidad", dto.cod_empresa_unidad);
+                                    cmd.Parameters.AddWithValue("@cod_contrato", dto.cod_contrato);
+
+                                    cmd.Parameters.AddWithValue("@cod_equipo_pesado", eq.cod_equipo_pesado ?? "");
+                                    //cmd.Parameters.AddWithValue("@cod_equipo_pesado_1", eq.cod_equipo_pesado_1 ?? "");
+                                    cmd.Parameters.AddWithValue("@ind_tarifa", eq.ind_tarifa ?? "");
+                                    cmd.Parameters.AddWithValue("@ind_moneda", eq.ind_moneda ?? "");
+                                    cmd.Parameters.AddWithValue("@imp_alquiler_equipo", string.IsNullOrEmpty(eq.imp_alquiler_equipo) ? 0 : Convert.ToDecimal(eq.imp_alquiler_equipo));
+                                    cmd.Parameters.AddWithValue("@flg_vigencia", eq.flg_vigencia ?? "");
+                                    cmd.Parameters.AddWithValue("@cod_usuario_creo", eq.cod_usuario_creo ?? "");
+                                    cmd.Parameters.AddWithValue("@cod_usuario_modi", eq.cod_usuario_modi ?? "");
+
+
+                                    // Ejecución Asíncrona
+                                    await cmd.ExecuteNonQueryAsync();
+                                }
+                            }
+                        }
+
+                        await tx.CommitAsync();
+                        return true;
+                    }
+                    catch (Exception ex)
+                    {
+                        // Deshacer de manera asíncrona
+                        await tx.RollbackAsync();
+
+                        throw new Exception("Error al guardar la transacción del contrato corporativo: " + ex.Message, ex);
+                    }
+                }
+            }
+
+        }
+
+        /// GENERAR CODIGO POR ANIO
+        /// 
+
+      
+
+        public async Task<string> ObtenerNuevoCodigoContratoAsync(string cod_contrato_anio)
+        {
+            string nuevoCodigo = string.Empty;
+
+            using (SqlConnection conexion = new SqlConnection(_connectionString))
+            {
+                using (SqlCommand comando = new SqlCommand("SP_GENERAR_NUEVO_CONTRATO", conexion))
+                {
+                    comando.CommandType = CommandType.StoredProcedure;
+
+                    comando.Parameters.Add(new SqlParameter("@cod_contrato_anio", SqlDbType.VarChar, 4)
+                    {
+                        Value = cod_contrato_anio
+                    });
+
+                    try
+                    {
+                        // 🚀 Conexión asíncrona
+                        await conexion.OpenAsync();
+
+                        // 🚀 Ejecución asíncrona optimizada para un solo valor scalar
+                        object resultado = await comando.ExecuteScalarAsync();
+
+                        if (resultado != null && resultado != DBNull.Value)
+                        {
+                            nuevoCodigo = resultado.ToString();
+                        }
+                    }
+                    catch (SqlException ex)
+                    {
+                        throw new Exception("Error asíncrono al generar el correlativo en la BD.", ex);
+                    }
+                }
+            }
+
+            return nuevoCodigo;
+        }
 
     }
 }
