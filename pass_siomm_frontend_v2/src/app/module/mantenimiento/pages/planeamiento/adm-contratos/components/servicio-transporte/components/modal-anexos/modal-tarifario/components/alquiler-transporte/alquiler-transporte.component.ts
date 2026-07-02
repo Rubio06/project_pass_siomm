@@ -18,7 +18,8 @@ export class AlquilerTransporteComponent {
     public listEquiposVal = signal<SvalMaeEquipo[]>([]);
     public listTablaDetalle = signal<SvalTablaDetalle[]>([])
     public formUtils = FormUtils
-
+    ind_estado = input<string>('');
+    
     isLoading = signal(false);
     cod_contrato = input<string>('');
 

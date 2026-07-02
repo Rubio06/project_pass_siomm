@@ -475,5 +475,149 @@ namespace pass_siomm_backend.Mantenimiento.Planeamiento_mant.Services
                 }
             }
         }
+
+
+        public async Task<GenericResponseDTO> EliminarContratoCascada(EliminarContratoDTO dto)
+        {
+            using var connection = new SqlConnection(_connectionString);
+            await connection.OpenAsync();
+            using var transaction = connection.BeginTransaction();
+
+            try
+            {
+                // Lista secuencial y ordenada para respetar las restricciones de llave foránea (FK)
+                // Se eliminan primero los detalles profundos y al final la cabecera principal
+                string[] tablasEliminar = new string[]
+                {
+                    // -- TARIFARIOS --
+                    "sval_det_tarifario_equipos_alquiler",
+                    "sval_det_tarifario_transporte",
+                    "sval_det_tarifario_personal",
+                    "sval_det_tarifario_implementos",
+                    "sval_det_tarifario_material_herramienta",
+                    "sval_det_tarifario_material_voladura",
+
+                    // -- PRECIOS UNITARIOS --
+                    "sval_det_partida_costos_pu",
+                    "sval_det_subpartidas_pu",
+                    "sval_det_parametros_partida_pu",
+                    "sval_det_partida_pu",
+
+                    // -- PRE-VALORIZACIÓN SERVICIOS MINA --
+                    "sval_det_servgen_transporte_diario",
+                    "sval_det_servgen_diario",
+                    "sval_det_servgen_semanal",
+                    "sval_det_preval_produccion_zona",
+                    "sval_cab_pre_valproduccion",
+                    "sval_cab_preval_ccosto",
+                    "sval_det_pre_valorizacion_sem",
+                    "sval_det_pre_valorizacion",
+                    "sval_cab_pre_valorizacion",
+
+                    // -- PRE-VALORIZACIÓN DOCUMENTOS --
+                    "sval_det_pre_valdoc",
+                    "sval_cab_prevaldoc_ccosto",
+                    "sval_cab_pre_valdoc",
+                    "sval_cab_documentacion",
+
+                    // -- DATOS DEL CONTRATO (Cabeceras finales) --
+                    "sval_det_tarifario_equipos_pesados",
+                    "sval_det_contrato_medicion",
+                    //"sval_det_acuerdo_contrato",
+                    "sval_det_contrato_parametro",
+                    "sval_CAB_CONTRATO" // La cabecera padre se elimina al último
+                };
+
+                // Recorremos el array ejecutando los deletes uno por uno bajo la misma transacción
+                foreach (var tabla in tablasEliminar)
+                {
+                    string query = $@"
+                        DELETE FROM {tabla} 
+                        WHERE COD_EMPRESA = @cod_empresa 
+                          AND COD_EMPRESA_UNIDAD = @cod_empresa_unidad 
+                          AND COD_CONTRATO = @cod_contrato";
+
+                    using var cmd = new SqlCommand(query, connection, transaction);
+                    cmd.CommandType = CommandType.Text;
+
+                    cmd.Parameters.AddWithValue("@cod_empresa", dto.cod_empresa);
+                    cmd.Parameters.AddWithValue("@cod_empresa_unidad", dto.cod_empresa_unidad);
+                    cmd.Parameters.AddWithValue("@cod_contrato", dto.cod_contrato);
+
+                    await cmd.ExecuteNonQueryAsync();
+                }
+
+                // Confirmamos todos los DELETE en lote físico si no hubo errores previos
+                await transaction.CommitAsync();
+
+                return new GenericResponseDTO
+                {
+                    estado = 1,
+                    mensaje = "Eliminación realizada satisfactoriamente de manera íntegra."
+                };
+            }
+            catch (Exception ex)
+            {
+                // Si algo falla, limpiamos la cola de ejecución de SQL para que no afecte a las tablas
+                if (transaction.Connection != null)
+                {
+                    await transaction.RollbackAsync();
+                }
+
+                return new GenericResponseDTO
+                {
+                    estado = 0,
+                    mensaje = $"Error crítico al purgar las tablas del contrato: {ex.Message}"
+                };
+            }
+        }
+
+        public async Task<GenericResponseDTO> EstadoContrato(EstadoContratoDto dto)
+        {
+            using var connection = new SqlConnection(_connectionString);
+            await connection.OpenAsync();
+
+            string query = @"
+                UPDATE sval_cab_contrato
+                SET ind_estado = @ind_estado,
+                    cod_usuario_modi = @cod_usuario_modi,
+                    fec_usuario_modi = GETDATE() -- Reemplaza ldt_fecha con la hora exacta del servidor BD
+                WHERE cod_empresa = @cod_empresa 
+                  AND cod_empresa_unidad = @cod_empresa_unidad 
+                  AND cod_contrato = @cod_contrato;";
+
+            try
+            {
+                using var cmd = new SqlCommand(query, connection);
+                cmd.CommandType = CommandType.Text;
+
+                cmd.Parameters.AddWithValue("@cod_empresa", dto.cod_empresa);
+                cmd.Parameters.AddWithValue("@cod_empresa_unidad", dto.cod_empresa_unidad);
+                cmd.Parameters.AddWithValue("@cod_contrato", dto.cod_contrato);
+                cmd.Parameters.AddWithValue("@ind_estado", dto.ind_estado);
+                cmd.Parameters.AddWithValue("@cod_usuario_modi", dto.cod_usuario_modi);
+
+                int filasAfectadas = await cmd.ExecuteNonQueryAsync();
+
+                if (filasAfectadas == 0)
+                {
+                    return new GenericResponseDTO
+                    {
+                        estado = 0,
+                        mensaje = "No se encontró el contrato especificado o no sufrió modificaciones."
+                    };
+                }
+
+                return new GenericResponseDTO { estado = 1, mensaje = "Aprobado con éxito." };
+            }
+            catch (Exception ex)
+            {
+                return new GenericResponseDTO
+                {
+                    estado = 0,
+                    mensaje = $"Error crítico de base de datos: {ex.Message}"
+                };
+            }
+        }
     }
 }

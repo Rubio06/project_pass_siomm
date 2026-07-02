@@ -19,6 +19,8 @@ export class TransporteMaterialComponent implements OnInit {
     private readonly cdr = inject(ChangeDetectorRef);
     public formUtils = FormUtils;
     public codigoSiguienmte = signal<number>(0);
+    public ind_estado = input<string>('');
+
     isLoading = signal(false);
     cod_contrato = input<string>('');
 

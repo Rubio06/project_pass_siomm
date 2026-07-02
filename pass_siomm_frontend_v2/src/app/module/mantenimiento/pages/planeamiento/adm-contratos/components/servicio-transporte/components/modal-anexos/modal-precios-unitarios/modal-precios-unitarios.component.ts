@@ -28,7 +28,7 @@ export class ModalPreciosUnitariosComponent implements OnInit {
     cod_contrato = input<string>()
     onCerrarModalPrecUnitario = output<void>();
     onCerrarModalPrecUnitarioDetalle = output<void>();
-
+    ind_estado = input<string>('');
 
 
     public onAbrirModalPrecioUnitarioDetalle = signal<boolean>(false);

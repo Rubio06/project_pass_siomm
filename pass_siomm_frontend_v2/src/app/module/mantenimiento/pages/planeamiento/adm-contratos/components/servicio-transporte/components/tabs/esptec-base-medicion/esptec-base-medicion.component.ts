@@ -20,7 +20,7 @@ export class EsptecBaseMedicionComponent implements OnInit {
     public formUtils = FormUtils;
     public cod_contrato = input<string>('');
     public onRegistroEliminado = output<string>();
-
+    public ind_estado = input<string>('');
     ngOnInit(): void {
         this.cargarEquiposPorFila();
         this.obtenerMedicion();

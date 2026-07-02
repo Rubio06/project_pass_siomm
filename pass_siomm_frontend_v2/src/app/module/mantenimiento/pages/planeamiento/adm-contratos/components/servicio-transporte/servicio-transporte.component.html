@@ -409,8 +409,14 @@
 
                         <!-- Gastos Generales: siempre libre -->
                         <div (click)="abrirSubModalGastos.set(true)"
+                        
+
                             class="flex items-center gap-2.5 px-2 py-1.5 rounded-md hover:bg-base-200 cursor-pointer transition-colors">
                             <button type="button" class="w-7 h-7 rounded-md flex items-center justify-center shrink-0"
+
+                                [disabled]="miFormulario.get('ind_estado')?.value !== 'G'"
+                                [class.opacity-50]="miFormulario.get('ind_estado')?.value !== 'G'"
+                                [class.cursor-not-allowed]="miFormulario.get('ind_estado')?.value !== 'G'"
                                 style="background:#EEEDFE; color:#534AB7;">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none"
                                     stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -473,21 +479,29 @@
             <!-- [modo]="modo() ?? 'nuevo' -->
             @if(tabActivo() === 'parametros') {
             <app-parametros-generales [parametros]="parametrosArray"
-                [cod_contrato]="miFormulario.get('cod_contrato')?.value" [dataContrato]="obServicioTransporte()" />
+                [cod_contrato]="miFormulario.get('cod_contrato')?.value" 
+                [dataContrato]="obServicioTransporte()" 
+                [ind_estado]="miFormulario.get('ind_estado')?.value"
+                />
             }
 
             @if(tabActivo() === 'base') {
             <app-esptec-base-medicion [mediciones]="medicionesArray"
-                [cod_contrato]="miFormulario.get('cod_contrato')?.value" />
+                [cod_contrato]="miFormulario.get('cod_contrato')?.value"
+                [ind_estado]="miFormulario.get('ind_estado')?.value" />
             }
 
             @if(tabActivo() === 'equipos') {
             <app-equipos-alquilados [equipos]="equiposArray" [cod_contrato]="miFormulario.get('cod_contrato')?.value"
-                [cod_contrata]="miFormulario.get('cod_contrata')?.value" />
+                [cod_contrata]="miFormulario.get('cod_contrata')?.value"
+                [ind_estado]="miFormulario.get('ind_estado')?.value" />
             }
 
             <div class="modal-action border-t border-base-200 pt-3 mt-2 flex justify-end gap-2">
-                <button type="submit"
+                <button type="submit" 
+                    [disabled]="miFormulario.get('ind_estado')?.value !== 'G'"
+                    [class.opacity-50]="miFormulario.get('ind_estado')?.value !== 'G'"
+                    [class.cursor-not-allowed]="miFormulario.get('ind_estado')?.value !== 'G'"
                     class="btn btn-sm text-white bg-[#013B5C] hover:bg-[#002B48] flex items-center gap-1">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor" stroke-width="2">
@@ -513,15 +527,18 @@
 <!-- ======================================================================= -->
 @if(abrirSubModalGastos()) {
 <app-modal-gastos-generales (onCerrarModalGastos)="abrirSubModalGastos.set(false)"
-    [cod_contrato]="miFormulario.get('cod_contrato')?.value" />
+    [cod_contrato]="miFormulario.get('cod_contrato')?.value"
+    [ind_estado]="miFormulario.get('ind_estado')?.value" />
 }
 
 @if(abrirSubModalTarifario()) {
 <app-modal-tarifario (onCerrarModalTarifario)="abrirSubModalTarifario.set(false)"
-    [cod_contrato]="miFormulario.get('cod_contrato')?.value" />
+    [cod_contrato]="miFormulario.get('cod_contrato')?.value"
+    [ind_estado]="miFormulario.get('ind_estado')?.value" />
 }
 
 @if(abrirSubModalPrecUnitario()) {
 <app-modal-precios-unitarios (onCerrarModalPrecUnitario)="abrirSubModalPrecUnitario.set(false)"
-    [cod_contrato]="miFormulario.get('cod_contrato')?.value" />
+    [cod_contrato]="miFormulario.get('cod_contrato')?.value"
+    [ind_estado]="miFormulario.get('ind_estado')?.value" />
 }

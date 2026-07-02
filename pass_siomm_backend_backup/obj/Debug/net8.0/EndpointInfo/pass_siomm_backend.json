@@ -120,6 +120,68 @@
         }
       }
     },
+    "/mantenimiento/opciones-modelo/eliminar-cascada": {
+      "post": {
+        "tags": [
+          "AdmContrato"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EliminarContratoDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EliminarContratoDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/EliminarContratoDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/mantenimiento/opciones-modelo/estado-contrato": {
+      "post": {
+        "tags": [
+          "AdmContrato"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EstadoContratoDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EstadoContratoDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/EstadoContratoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/planeamiento/aper-periodo-operativo/obtener-datos": {
       "get": {
         "tags": [
@@ -5314,6 +5376,24 @@
         },
         "additionalProperties": false
       },
+      "EliminarContratoDTO": {
+        "type": "object",
+        "properties": {
+          "cod_empresa": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_empresa_unidad": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_contrato": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "EliminarDetContratoMedicionDto": {
         "type": "object",
         "properties": {
@@ -5578,6 +5658,32 @@
             "nullable": true
           },
           "cod_usuario_creo": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_usuario_modi": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "EstadoContratoDto": {
+        "type": "object",
+        "properties": {
+          "cod_empresa": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_empresa_unidad": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_contrato": {
+            "type": "string",
+            "nullable": true
+          },
+          "ind_estado": {
             "type": "string",
             "nullable": true
           },

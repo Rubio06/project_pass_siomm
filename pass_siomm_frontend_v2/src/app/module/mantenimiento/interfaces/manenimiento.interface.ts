@@ -117,14 +117,16 @@ export const BOTONES_PLANEAMIENTO_CONTRATO: BotonesInterface[] = [
         icono: 'M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z',
         bloqueo: true
     },
-    {
-        texto: 'Guardar',
-        accion: 'guardar',
-        color: 'bg-[#1e40af]',
-        // save
-        icono: 'M17 16l4-4m0 0l-4-4m4 4H7m6 4v1m0-10V4',
-        bloqueo: true
-    },
+    // 047857
+
+    // {
+    //     texto: 'Guardar',
+    //     accion: 'guardar',
+    //     color: 'bg-[#1e40af]',
+    //     // save
+    //     icono: 'M17 16l4-4m0 0l-4-4m4 4H7m6 4v1m0-10V4',
+    //     bloqueo: true
+    // },
     {
         texto: 'Aprobar',
         accion: 'aprobar',
@@ -150,13 +152,22 @@ export const BOTONES_PLANEAMIENTO_CONTRATO: BotonesInterface[] = [
         bloqueo: true
     },
     {
+        texto: 'Imprimir',
+        accion: 'imprimir',
+        color: 'bg-[#1e40af]',
+        // document-download
+        icono: 'M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z',        
+        bloqueo: false
+    },
+    {
         texto: 'Exportar a Excel',
         accion: 'exportar',
         color: 'bg-[#166534]',
         // document-download
         icono: 'M12 16v-8m0 8l-3-3m3 3l3-3m6 5H3',
-        bloqueo: true
+        bloqueo: false
     },
+
 ];
 
 export interface ZonaInsert {

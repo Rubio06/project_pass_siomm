@@ -22,6 +22,7 @@ export class EquiposAlquiladosComponent implements OnInit {
     public formUtils = FormUtils;
     public onRegistroEliminado = output<string>();
     public cod_contrato = input<string>('')
+    public ind_estado = input<string>('');
 
     ngOnInit(): void {
         this.cargarEquiposPorFila();
@@ -65,8 +66,6 @@ export class EquiposAlquiladosComponent implements OnInit {
             cod_empresa: '03',
             cod_empresa_unidad: '01',
             cod_contrata: this.cod_contrata()
-
-
         }
 
         this.servioTransporteService.obtenerEquiposContrata(payload).subscribe({

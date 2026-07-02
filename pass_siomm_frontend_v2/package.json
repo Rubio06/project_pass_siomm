@@ -49,6 +49,7 @@
     "sweetalert2": "^11.26.4",
     "tailwindcss": "^4.1.16",
     "tslib": "^2.3.0",
+    "xlsx": "^0.18.5",
     "xlsx-js-style": "^1.2.0"
   },
   "devDependencies": {

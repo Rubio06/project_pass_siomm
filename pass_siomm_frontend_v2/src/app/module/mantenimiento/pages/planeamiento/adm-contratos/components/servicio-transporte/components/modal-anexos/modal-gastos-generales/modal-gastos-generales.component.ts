@@ -20,7 +20,7 @@ export class ModalGastosGeneralesComponent implements OnInit {
     onCerrarModalGastos = output<void>();
 
     cod_contrato = input<string>('');
-
+    ind_estado = input<string>('');
     // FormGroup principal con el FormArray
     form: FormGroup = this.fb.group({
         filas: this.fb.array([])

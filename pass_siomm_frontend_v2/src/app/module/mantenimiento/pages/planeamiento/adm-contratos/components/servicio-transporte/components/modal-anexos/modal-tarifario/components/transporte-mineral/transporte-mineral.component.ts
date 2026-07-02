@@ -19,6 +19,8 @@ export class TransporteMineralComponent implements OnInit {
 
     public formUtils = FormUtils
     public cod_contrato = input<string>('');
+    public ind_estado = input<string>('');
+
     public isLoading = signal(false);
     public codigoSiguienmte = signal<number>(0)
 

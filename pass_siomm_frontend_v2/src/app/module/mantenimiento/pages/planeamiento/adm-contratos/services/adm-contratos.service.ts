@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { FormUtils } from 'src/app/utils/form-utils';
-import { ContratoDetalleResponse, FiltrosAdmContrato, RespuestaCodigo, ServicioTransporteEntrada, ServicoTransporte } from '../interfaces/adm-contrato.interface';
+import { AprobarContratoRequest, ContratoDetalleResponse, EliminarContratoRequest, FiltrosAdmContrato, GenericResponseDTO, RespuestaCodigo, ServicioTransporteEntrada, ServicoTransporte } from '../interfaces/adm-contrato.interface';
 import { catchError, Observable, throwError } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '@environments/environments';
@@ -61,16 +61,37 @@ export class AdmContratosServvice {
         );
     }
 
-    public obtenerCorrelativoContrato(cod_contrato_anio : string): Observable<RespuestaCodigo> {
+    public obtenerCorrelativoContrato(cod_contrato_anio: string): Observable<RespuestaCodigo> {
         return this.http.get<RespuestaCodigo>(`${this.routeshUrl}mantenimiento/servicio-transporte/siguiente-codigo/${cod_contrato_anio}`)
             .pipe(
-            catchError(error => {
-                this.formUtils.mensajeError(error);
-                return throwError(() => error);
-            })
-        );;
+                catchError(error => {
+                    this.formUtils.mensajeError(error);
+                    return throwError(() => error);
+                })
+            );
     }
 
+    /// ACCIONES DE BOTONES 
+    public eliminarContratoCascada(payload: EliminarContratoRequest): Observable<GenericResponseDTO> {
+        return this.http.post<GenericResponseDTO>(`${this.routeshUrl}mantenimiento/opciones-modelo/eliminar-cascada`, payload)
+            .pipe(
+                catchError(error => {
+                    this.formUtils.mensajeError(error);
+                    return throwError(() => error);
+                })
 
+            );
+    }
+
+    public estadoContrato(payload: AprobarContratoRequest): Observable<GenericResponseDTO> {
+        return this.http.post<GenericResponseDTO>(`${this.routeshUrl}mantenimiento/opciones-modelo/estado-contrato`, payload)
+            .pipe(
+                catchError(error => {
+                    this.formUtils.mensajeError(error);
+                    return throwError(() => error);
+                })
+
+            );
+    }
 
 }

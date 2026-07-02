@@ -109,7 +109,6 @@ export class ServicioTransporteComponent implements OnInit {
         // Carga cabecera + arrays cuando llega o cambia la data
         effect(() => {
             const data = this.obServicioTransporte();
-
             if (!data) return;
             this.cargarCabecera(data);
             this.cargarArrays(data);
@@ -512,7 +511,6 @@ export class ServicioTransporteComponent implements OnInit {
                 }))
         };
 
-        console.log("Payload a enviar al servidor:", JSON.stringify(payloadCompleto, null, 2));
 
         // 5. Ventana emergente de confirmación unificada
         this.formsUtils.confirmarAnulacionClase(
@@ -525,7 +523,7 @@ export class ServicioTransporteComponent implements OnInit {
             this.servicioTransporte.guardarServicioTransporte(payloadCompleto).subscribe({
                 next: (respuesta: RespuestaServidor) => {
                     if (respuesta.estado === 1) {
-                        this.formsUtils.mensajeEliminarLaborClase('Operación Exitosa', respuesta.mensaje);
+                        this.formsUtils.alertaExitoAnulacion('Operación Exitosa', respuesta.mensaje);
                         this.miFormulario.markAsPristine();
                         this.parametrosArray.markAsPristine();
                         this.medicionesArray.markAsPristine();

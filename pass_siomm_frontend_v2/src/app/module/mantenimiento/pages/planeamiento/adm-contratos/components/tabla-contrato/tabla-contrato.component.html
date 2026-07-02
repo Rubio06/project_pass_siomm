@@ -52,7 +52,7 @@
                     [class.bg-[#17324D]/10]="contratoActivo()?.cod_contrato === contrato.cod_contrato"
                     [class.text-[#013B5C]]="contratoActivo()?.cod_contrato === contrato.cod_contrato"
                     [class.font-bold]="contratoActivo()?.cod_contrato === contrato.cod_contrato" 
-                    (dblclick)="seleccionar(contrato)">
+                    (dblclick)="seleccionar(contrato)" (click)="onEnviarContrato(contrato)">
                     <td class="py-2 font-medium min-w-[60px]">
                         @switch (contrato.ind_estado) {
 

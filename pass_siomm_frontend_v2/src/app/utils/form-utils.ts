@@ -617,16 +617,29 @@ export class FormUtils {
         });
     }
 
-    static alertaExitoAnulacion(title: string, html: string) {
+    ///Este es el quie tengo que modificar
+    // static alertaExitoAnulacion(title: string, html: string) {
+    //     return Swal.fire({
+    //         icon: 'success',
+    //         title: title,
+    //         html: html,
+    //         timer: 2200,
+    //         showConfirmButton: false,
+    //         background: '#f0fdf4',
+    //         color: '#065f46',
+    //         iconColor: '#16a34a'
+    //     });
+    // }
+
+
+    static alertaExitoAnulacion(title: string, message: string) {
         return Swal.fire({
             icon: 'success',
             title: title,
-            html: html,
-            timer: 2200,
-            showConfirmButton: false,
-            background: '#f0fdf4',
-            color: '#065f46',
-            iconColor: '#16a34a'
+            html: `<b>${message}</b>`,
+            confirmButtonText: 'Entendido',
+            confirmButtonColor: '#033351',
+            customClass: { container: 'swal-encima' }
         });
     }
 

@@ -210,6 +210,10 @@
                     <!-- (click)="onEliminarFila(i, filas.at(i).value)" -->
                     <td class="p-1 flex justify-center items-center">
                         <button type="button" (click)="onEliminar($index, fila)"
+                            [disabled]="ind_estado() !== 'G'"
+                            [class.opacity-50]="ind_estado() !== 'G'"
+                            [class.cursor-not-allowed]="ind_estado() !== 'G'"
+
                             class="bg-[#A6200A] flex items-center justify-center rounded-lg hover:bg-red-700 hover:scale-105 transition-all duration-200 w-8 h-8">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
                                 stroke="white" class="w-4 h-4">
@@ -226,6 +230,10 @@
     </div>
     <div>
         <button type="button" (click)="onAgregarFila()"
+                            [disabled]="ind_estado() !== 'G'"
+                    [class.opacity-50]="ind_estado() !== 'G'"
+                    [class.cursor-not-allowed]="ind_estado() !== 'G'"
+
             class="bg-[#047857] flex items-center justify-center rounded-lg shadow-sm group
             hover:shadow-md hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed w-8 h-8">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="white"

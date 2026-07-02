@@ -18,6 +18,7 @@ export class RutasFijasBalanzaComponent {
 
     // Inputs y Estados globales
     public cod_contrato = input<string>('');
+    public ind_estado = input<string>('');
     public isLoading = signal<boolean>(false);
     public esModoLectura = signal<boolean>(false); // Controla el estado visual y de edición
     public formUtils = FormUtils;

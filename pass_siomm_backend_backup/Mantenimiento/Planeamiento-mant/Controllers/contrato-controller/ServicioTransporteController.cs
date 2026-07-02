@@ -64,8 +64,8 @@ namespace pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers
             {
                 var resultado = await _servicioTransporte.GetEquiposContrataAsync(request);
 
-                if (resultado == null || resultado.Count == 0)
-                    return NotFound(new { estado = 0, mensaje = "No se encontraron equipos." });
+                //if (resultado == null || resultado.Count == 0)
+                //    return NotFound(new { estado = 0, mensaje = "No se encontraron equipos." });
 
                 return Ok(resultado);
             }

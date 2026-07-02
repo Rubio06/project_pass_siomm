@@ -214,4 +214,24 @@ export interface RespuestaCodigo {
     mensaje: string;
 }
 
+export interface EliminarContratoRequest {
+    cod_empresa: string;
+    cod_empresa_unidad: string;
+    cod_contrato: string;
+}
+
+export interface AprobarContratoRequest {
+    cod_empresa: string;
+    cod_empresa_unidad: string;
+    cod_contrato: string;
+    ind_estado: string; 
+    cod_usuario_modi: string; 
+}
+
+// Interfaz para la respuesta estandarizada que devuelve tu API en .NET
+export interface GenericResponseDTO {
+    estado: number;
+    mensaje: string;
+}
+
 

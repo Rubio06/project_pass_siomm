@@ -62,6 +62,44 @@ namespace pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers
             var count = await _admContratoService.ContarTarifarioAsync(cod_contrato);
             return Ok(count);
         }
+
+        // ACCION DE BOTONES 
+
+        [HttpPost("eliminar-cascada")]
+        public async Task<IActionResult> EliminarContratoCascada([FromBody] EliminarContratoDTO dto)
+        {
+            if (dto == null || string.IsNullOrEmpty(dto.cod_contrato))
+            {
+                return BadRequest(new GenericResponseDTO { estado = 0, mensaje = "Datos de contrato inválidos." });
+            }
+
+            var resultado = await _admContratoService.EliminarContratoCascada(dto);
+
+            if (resultado.estado == 1)
+            {
+                return Ok(resultado);
+            }
+
+            return StatusCode(500, resultado);
+        }
+
+        [HttpPost("estado-contrato")]
+        public async Task<IActionResult> EstadoContrato([FromBody] EstadoContratoDto dto)
+        {
+            if (dto == null || string.IsNullOrEmpty(dto.cod_contrato))
+            {
+                return BadRequest(new GenericResponseDTO { estado = 0, mensaje = "Parámetros de aprobación inválidos." });
+            }
+
+            var resultado = await _admContratoService.EstadoContrato(dto);
+
+            if (resultado.estado == 1)
+            {
+                return Ok(resultado);
+            }
+
+            return StatusCode(500, resultado);
+        }
     }
 
 }

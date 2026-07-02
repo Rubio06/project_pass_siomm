@@ -21,10 +21,10 @@
         <!-- TABS -->
         <app-tab-tarifario [activeTab]="tabActivo()" (onTabChange)="onCambiarTab($event)" />
         <!-- app-rutas-fijas-balanza -->
-        @if(tabActivo() === 'transporte-mineral') { <app-transporte-mineral [cod_contrato]="cod_contrato()" /> }
-        @if(tabActivo() === 'transporte-material') { <app-transporte-material [cod_contrato]="cod_contrato()" /> }
-        @if(tabActivo() === 'rutas-fijas-balanza') { <app-rutas-fijas-balanza [cod_contrato]="cod_contrato()" /> }
-        @if(tabActivo() === 'alquiler-transporte') { <app-alquiler-transporte [cod_contrato]="cod_contrato()" /> }
+        @if(tabActivo() === 'transporte-mineral') { <app-transporte-mineral [cod_contrato]="cod_contrato()"  [ind_estado]="ind_estado()" /> }
+        @if(tabActivo() === 'transporte-material') { <app-transporte-material [cod_contrato]="cod_contrato()" [ind_estado]="ind_estado()" /> }
+        @if(tabActivo() === 'rutas-fijas-balanza') { <app-rutas-fijas-balanza [cod_contrato]="cod_contrato()" [ind_estado]="ind_estado()" /> }
+        @if(tabActivo() === 'alquiler-transporte') { <app-alquiler-transporte [cod_contrato]="cod_contrato()" [ind_estado]="ind_estado()" /> }
 
 
 
@@ -47,6 +47,9 @@
             </button>
 
             <button type="button" (click)="onGuardar()"
+                [disabled]="ind_estado() !== 'G'"
+                [class.opacity-50]="ind_estado() !== 'G'"
+                [class.cursor-not-allowed]="ind_estado() !== 'G'"
                 class="btn btn-sm text-white bg-[#013B5C] hover:bg-[#002B48] flex items-center gap-1">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor" stroke-width="2">

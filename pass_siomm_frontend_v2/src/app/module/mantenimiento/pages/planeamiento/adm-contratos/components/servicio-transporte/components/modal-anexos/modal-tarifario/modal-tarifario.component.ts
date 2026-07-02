@@ -32,6 +32,7 @@ export class ModalTarifarioComponent {
     onCerrarModalTarifario = output<void>();
     tabActivo = signal('transporte-mineral');
     cod_contrato = input<string>('');
+    ind_estado = input<string>('');
     transporteMineral = viewChild(TransporteMineralComponent);
 
     transporteMaterial = viewChild(TransporteMaterialComponent);

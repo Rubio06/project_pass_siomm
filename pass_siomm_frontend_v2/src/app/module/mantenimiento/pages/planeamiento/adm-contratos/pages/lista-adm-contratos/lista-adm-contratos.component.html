@@ -34,7 +34,6 @@
                 <app-botones [texto]="btn.texto" [color]="btn.color" [icono]="btn.icono" [bloqueo]="btn.bloqueo"
                     (accion)="onAccion(btn.accion)" />
 
-
                 }
             </div>
 
@@ -101,7 +100,9 @@
             <!-- AREA TABLA -->
             <div class="flex-1 overflow-auto">
 
-                <app-tabla-contrato [listContrato]="listContrato()" [isLoading]="isLoading()" (abrirContrato)="onAbrirContrato($event)" class="block min-w-max" />
+                <app-tabla-contrato [listContrato]="listContrato()" [isLoading]="isLoading()" (abrirContrato)="onAbrirContrato($event)" class="block min-w-max"
+                   
+                 />
 
 
                 <!-- FOOTER -->
@@ -112,7 +113,11 @@
 </div>
 @if(abrirModal()) {
     <app-servicio-transporte 
-    (cerrarModal)="abrirModal.set(false)" [obServicioTransporte]="obServicioTransporte()"  (listarAdmContrato)="listarAdmContrato()"
+    (cerrarModal)="onAbrir(false)" [obServicioTransporte]="obServicioTransporte()"  (listarAdmContrato)="listarAdmContrato()"
     [modo]="modo()" (onAbrirContrato)="onAbrirContrato($event)" [contratoSiguiente]="contratoSiguiente()"
     /> 
 }
+
+
+<app-reporte  [listContrato]="listContrato()" #reporte/> 
+

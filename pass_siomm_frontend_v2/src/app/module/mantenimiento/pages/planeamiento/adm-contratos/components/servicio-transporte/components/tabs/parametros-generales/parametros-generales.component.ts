@@ -24,6 +24,8 @@ export class ParametrosGeneralesComponent implements OnInit {
 
     public dataContrato = input<any>();
 
+    public ind_estado = input<string>('')
+
     // El output ahora transporta un string (el código del contrato)
 
     onAbrirContrato = output<ContratoDetalleResponse>();

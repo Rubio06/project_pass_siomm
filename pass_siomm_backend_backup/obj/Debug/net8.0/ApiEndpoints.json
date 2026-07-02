@@ -185,6 +185,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.AdmContratoController",
+    "Method": "EliminarContratoCascada",
+    "RelativePath": "mantenimiento/opciones-modelo/eliminar-cascada",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Data.EliminarContratoDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.ContrataController",
     "Method": "EliminarContrata",
     "RelativePath": "mantenimiento/opciones-modelo/eliminar-contrata/{cod_contrata}",
@@ -366,6 +382,22 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Controllers.AdmContratoController",
+    "Method": "EstadoContrato",
+    "RelativePath": "mantenimiento/opciones-modelo/estado-contrato",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "pass_siomm_backend.Mantenimiento.Planeamiento_mant.Data.EstadoContratoDto",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {
