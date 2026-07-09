@@ -1,11 +1,7 @@
 <div class="w-[93%] flex flex-row-reverse mx-auto mb-1">
 
-    <button type="button" (click)="onAgregarFila()"
-                        
-        [disabled]="ind_estado() !== 'G'"
-        [class.opacity-50]="ind_estado() !== 'G'"
-        [class.cursor-not-allowed]="ind_estado() !== 'G'"
-
+    <button type="button" (click)="onAgregarFila()" [disabled]="ind_estado() !== 'G'"
+        [class.opacity-50]="ind_estado() !== 'G'" [class.cursor-not-allowed]="ind_estado() !== 'G'"
         class="bg-[#047857] flex items-center justify-center rounded-lg shadow-sm group
         hover:shadow-md hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed w-8 h-8">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="white"
@@ -48,13 +44,15 @@
                 }
                 @else if (filas.length > 0) {
                 @for (fila of filas; track fila.get('cod_parametro_contrato')?.value; let indexFila = $index) {
-                    
+
                 <tr [formGroup]="fila"
                     class="hover:bg-[#17324D]/5 select-none cursor-pointer transition-colors text-center text-[12px]">
 
                     <!-- cod_parametro_contrato -->
                     <td class="p-1">
-                        <select formControlName="cod_parametro_contrato" class="select-base_cuatro w-full">
+                        <select formControlName="cod_parametro_contrato" class="select-base_cuatro w-full"
+                            [disabled]="ind_estado() !== 'G'" [class.opacity-50]="ind_estado() !== 'G'"
+                            [class.cursor-not-allowed]="ind_estado() !== 'G'">
                             @for (item of listParametroContato(); track $index) {
                             <option [value]="item.cod_parametro_contrato"
                                 [disabled]="isOptionUsada(item.cod_parametro_contrato, indexFila)">
@@ -72,7 +70,9 @@
 
                     <!-- cod_moneda -->
                     <td class="p-1">
-                        <select formControlName="cod_item_anexo" class="select-base_cuatro w-full">
+                        <select formControlName="cod_item_anexo" class="select-base_cuatro w-full"
+                            [disabled]="ind_estado() !== 'G'" [class.opacity-50]="ind_estado() !== 'G'"
+                            [class.cursor-not-allowed]="ind_estado() !== 'G'">
                             @for (item of listParametroGeneral(); track $index) {
                             <option [value]="item.cod_item">
                                 {{ item.des_tabladet }}
@@ -89,7 +89,8 @@
                     <!-- imp_porcentaje -->
                     <td class="p-1">
                         <input type="text" formControlName="imp_monto" class="input-base_3 w-full text-right"
-                            maxlength="10" />
+                            maxlength="10" [disabled]="ind_estado() !== 'G'" [class.opacity-50]="ind_estado() !== 'G'"
+                            [class.cursor-not-allowed]="ind_estado() !== 'G'" />
                         @if(formUtils.isValidFieldInArray(fila,'imp_monto')) {
                         <div class="text-[#C23E32] text-xs mt-1">
                             <span><b>{{ formUtils.getFiledErrorArray(fila,'imp_monto') }}</b></span>
@@ -100,7 +101,9 @@
                     <!-- imp_monto -->
                     <td class="p-1">
                         <input type="text" formControlName="imp_porcentaje" maxlength="10"
-                            class="input-base_3 w-full text-center" />
+                            class="input-base_3 w-full text-center" [disabled]="ind_estado() !== 'G'"
+                            [class.opacity-50]="ind_estado() !== 'G'"
+                            [class.cursor-not-allowed]="ind_estado() !== 'G'" />
                         @if(formUtils.isValidFieldInArray(fila,'imp_porcentaje')) {
                         <div class="text-[#C23E32] text-xs mt-1">
                             <span><b>{{ formUtils.getFiledErrorArray(fila,'imp_porcentaje') }}</b></span>
@@ -112,7 +115,9 @@
                     <!-- (click)="eliminarFila($index)" -->
 
                     <td class="p-1 flex justify-center items-center">
-                        <button type="button" (click)="onEliminarFila($index, fila)" class="bg-[#A6200A] flex items-center justify-center rounded-lg shadow-sm group relative
+                        <button type="button" (click)="onEliminarFila($index, fila)" [disabled]="ind_estado() !== 'G'"
+                            [class.opacity-50]="ind_estado() !== 'G'" [class.cursor-not-allowed]="ind_estado() !== 'G'"
+                            class="bg-[#A6200A] flex items-center justify-center rounded-lg shadow-sm group relative
                         hover:bg-red-700 hover:shadow-md hover:scale-105 transition-all duration-200 
                         disabled:opacity-50 disabled:cursor-not-allowed w-8 h-8">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"

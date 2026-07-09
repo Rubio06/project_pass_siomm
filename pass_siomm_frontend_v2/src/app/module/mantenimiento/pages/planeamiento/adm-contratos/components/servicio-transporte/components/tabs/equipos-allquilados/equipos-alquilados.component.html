@@ -1,9 +1,7 @@
 <div class="w-[93%] flex flex-row-reverse mx-auto mb-1">
 
-    <button type="button" (click)="onAgregarFila()"
-        [disabled]="ind_estado() !== 'G'"
-        [class.opacity-50]="ind_estado() !== 'G'"
-        [class.cursor-not-allowed]="ind_estado() !== 'G'"
+    <button type="button" (click)="onAgregarFila()" [disabled]="ind_estado() !== 'G'"
+        [class.opacity-50]="ind_estado() !== 'G'" [class.cursor-not-allowed]="ind_estado() !== 'G'"
         class="bg-[#047857] flex items-center justify-center rounded-lg shadow-sm group
         hover:shadow-md hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed w-8 h-8">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="white"
@@ -65,9 +63,12 @@
 
                     <td class="p-1">
                         <select formControlName="cod_equipo_pesado" class="select-base_cuatro w-full"
-                            (change)="onEquipoChange($event, fila)">
+                            [disabled]="ind_estado() !== 'G'" [class.opacity-50]="ind_estado() !== 'G'"
+                            [class.cursor-not-allowed]="ind_estado() !== 'G'" (change)="onEquipoChange($event, fila)">
                             @for (item of listEquiposContrata(); track $index) {
-                            <option [value]="item.des_cod_equipo" [disabled]="isOptionUsada(item.des_cod_equipo ?? '', indexFila)" > {{ item.des_cod_equipo }} || {{
+                            <option [value]="item.des_cod_equipo"
+                                [disabled]="isOptionUsada(item.des_cod_equipo ?? '', indexFila)"> {{ item.des_cod_equipo
+                                }} || {{
                                 item.des_equipo_contrata }}</option>
                             }
                         </select>
@@ -78,7 +79,8 @@
                         }
                     </td>
                     <td class="p-1">
-                        <input type="text" formControlName="cod_equipo_pesado_1"
+                        <input type="text" formControlName="cod_equipo_pesado_1" [disabled]="ind_estado() !== 'G'"
+                            [class.opacity-50]="ind_estado() !== 'G'" [class.cursor-not-allowed]="ind_estado() !== 'G'"
                             class="input-base_3 w-full text-center disabled:opacity-50 disabled:cursor-not-allowed" />
 
                         @if(formUtils.isValidFieldInArray(fila,'cod_equipo_pesado_1')) {
@@ -90,7 +92,9 @@
 
 
                     <td class="p-1">
-                        <select formControlName="ind_tarifa" class="select-base_cuatro w-full">
+                        <select formControlName="ind_tarifa" class="select-base_cuatro w-full"
+                            [disabled]="ind_estado() !== 'G'" [class.opacity-50]="ind_estado() !== 'G'"
+                            [class.cursor-not-allowed]="ind_estado() !== 'G'">
                             <option value="V">VIAJE</option>
                             <option value="H">HORAS</option>
                             <option value="D">DIA</option>
@@ -106,7 +110,9 @@
                     </td>
 
                     <td class="p-1">
-                        <select formControlName="ind_moneda" class="select-base_cuatro w-full">
+                        <select formControlName="ind_moneda" class="select-base_cuatro w-full"
+                            [disabled]="ind_estado() !== 'G'" [class.opacity-50]="ind_estado() !== 'G'"
+                            [class.cursor-not-allowed]="ind_estado() !== 'G'">
                             <option value="S">S/.</option>
                             <option value="D">US$</option>
                         </select>
@@ -119,7 +125,8 @@
                     </td>
 
                     <td class="p-1">
-                        <input type="text" formControlName="imp_alquiler_equipo"
+                        <input type="text" formControlName="imp_alquiler_equipo" [disabled]="ind_estado() !== 'G'"
+                            [class.opacity-50]="ind_estado() !== 'G'" [class.cursor-not-allowed]="ind_estado() !== 'G'"
                             class="input-base_3 w-full text-center" />
 
                         @if(formUtils.isValidFieldInArray(fila,'imp_alquiler_equipo')) {
@@ -131,7 +138,9 @@
 
 
                     <td class="p-1">
-                        <select formControlName="flg_vigencia" class="select-base_cuatro w-full">
+                        <select formControlName="flg_vigencia" class="select-base_cuatro w-full"
+                            [disabled]="ind_estado() !== 'G'" [class.opacity-50]="ind_estado() !== 'G'"
+                            [class.cursor-not-allowed]="ind_estado() !== 'G'">
                             <option value="1">ACTIVO</option>
                             <option value="0">INACTIVO</option>
                         </select>
@@ -144,7 +153,8 @@
 
                     <!-- (click)="eliminarFila($index)" -->
                     <td class="p-1 flex justify-center items-center">
-                        <button type="button" (click)="onEliminarFila($index, fila)"
+                        <button type="button" (click)="onEliminarFila($index, fila)" [disabled]="ind_estado() !== 'G'"
+                            [class.opacity-50]="ind_estado() !== 'G'" [class.cursor-not-allowed]="ind_estado() !== 'G'"
                             class="bg-[#A6200A] flex items-center justify-center rounded-lg shadow-sm group relative hover:bg-red-700 hover:shadow-md hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed w-8 h-8">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
                                 stroke="white" class="w-4 h-4">

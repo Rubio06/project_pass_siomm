@@ -28,6 +28,10 @@ export class TransporteMaterialComponent implements OnInit {
     totalRegistros = signal(0);
     totalPaginas = signal(0);
 
+    public listRutas = signal<RutaTransporte[]>([]);
+    public listCentrosCosto = signal<CentroCosto[]>([]);
+    public listCuentas = signal<CuentaContable[]>([]);
+
     onPaginaCambio(pagina: number): void {
         const filasNuevas = this.filas.controls
             .filter(f => f.get('esNuevo')?.value === true)
@@ -40,9 +44,6 @@ export class TransporteMaterialComponent implements OnInit {
         });
     }
 
-    public listRutas = signal<RutaTransporte[]>([]);
-    public listCentrosCosto = signal<CentroCosto[]>([]);
-    public listCuentas = signal<CuentaContable[]>([]);
 
     public form: FormGroup = this.fb.group({ filas: this.fb.array([]) });
 
@@ -92,7 +93,7 @@ export class TransporteMaterialComponent implements OnInit {
     }
 
     private crearFila(item: TarifarioTransporteDetalle, esNuevo: boolean = false): FormGroup {
-        return this.fb.group({
+        const group = this.fb.group({
             cod_empresa: [item.cod_empresa],
             cod_empresa_unidad: [item.cod_empresa_unidad],
             cod_contrato: [item.cod_contrato],
@@ -101,7 +102,7 @@ export class TransporteMaterialComponent implements OnInit {
             cod_ruta_origen: [item.cod_ruta_origen],
             cod_ruta_destino: [item.cod_ruta_destino],
             cod_ruta_intermedia: [item.cod_ruta_intermedia],
-            c_t_zona: [item.c_t_zona, Validators.required],
+            c_t_zona: [item.c_t_zona],
             nro_distancia_km: [(item.nro_distancia_km ?? 0).toFixed(3), [Validators.pattern(/^\d{1,10}(\.\d{1,3})?$/)]],
             imp_tmh_km_soles: [(item.imp_tmh_km_soles ?? 0).toFixed(3), [Validators.pattern(/^\d{1,10}(\.\d{1,3})?$/)]],
             imp_ruta_pu: [(item.imp_ruta_pu ?? 0).toFixed(3), [Validators.pattern(/^\d{1,10}(\.\d{1,3})?$/)]],
@@ -113,6 +114,11 @@ export class TransporteMaterialComponent implements OnInit {
             ind_mov_sap: [item.ind_material],
             esNuevo: [esNuevo]
         }, { validators: this.formUtils.rutasDistintasValidator });
+        
+        if (this.ind_estado() !== 'G') {
+            group.disable();
+        }
+        return group;
     }
 
     public onRutaOrigenChange(index: number, codRuta: string): void {

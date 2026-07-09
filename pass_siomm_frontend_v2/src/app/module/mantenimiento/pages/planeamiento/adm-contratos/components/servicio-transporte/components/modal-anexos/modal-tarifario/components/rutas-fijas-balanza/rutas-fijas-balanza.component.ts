@@ -185,7 +185,7 @@ export class RutasFijasBalanzaComponent {
     }
 
     private crearGrupoFila(item: DetTarifarioTransporteMaterial, esNuevo: boolean = false): FormGroup {
-        return this.fb.group({
+        const group = this.fb.group({
             // cod_empresa: [item.cod_empresa],
 
             // cod_empresa_unidad: [item.cod_empresa_unidad],
@@ -204,6 +204,12 @@ export class RutasFijasBalanzaComponent {
             ind_balanza_desmonte: [item.ind_balanza_desmonte], // Calculado desde base de datos
             esNuevo: [esNuevo]
         });
+
+        if (this.ind_estado() !== 'G') {
+            group.disable();
+        }
+        
+        return group;
     }
 
     public cargarMaestros(): void {

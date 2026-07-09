@@ -6,6 +6,8 @@ using Microsoft.OpenApi.Models;
 using pass_siomm_backend.Autenticacion.Service;
 using pass_siomm_backend.Conexion;
 using pass_siomm_backend.Mantenimiento.Planeamiento_mant.Services;
+using pass_siomm_backend.Planeamiento.Balanza_Detalle.Data;
+using pass_siomm_backend.Planeamiento.Balanza_Detalle.Services;
 using pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Services;
 using pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Services.ExplotacionService;
 using pass_siomm_backend.Planeamiento.Services.PlaneamientoService;
@@ -66,6 +68,9 @@ builder.Services.AddScoped<ServicioTransporteService>();
 builder.Services.AddScoped<TarifarioService>();
 builder.Services.AddScoped<TarifarioEscrituraService>();
 builder.Services.AddScoped<PreciosUnitariosService>();
+builder.Services.AddScoped<BalanzaDetalleService>();
+builder.Services.AddScoped<ICatalogosService, BalanzaDetalleService>();
+
 builder.Services.AddHttpClient();
 
 builder.Services.AddAuthentication(options =>

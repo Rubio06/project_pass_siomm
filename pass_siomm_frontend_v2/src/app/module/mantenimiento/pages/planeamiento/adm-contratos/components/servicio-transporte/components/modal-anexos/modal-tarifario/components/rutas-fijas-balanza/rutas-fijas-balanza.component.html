@@ -58,6 +58,8 @@
                     <td class="text-left p-2 border-r border-base-300 font-medium bg-base-200/20">
 
                         <select formControlName="cod_item_ruta" class="select-base_cuatro w-full"
+                            [disabled]="ind_estado() !== 'G'" [class.opacity-50]="ind_estado() !== 'G'"
+                            [class.cursor-not-allowed]="ind_estado() !== 'G'"
                             (change)="onItemRutaChange(i, $any($event.target).value)">
                             @for (tra of listTransporteVal(); track $index) {
                             <option [value]="tra.cod_item_ruta">{{ tra.cod_item_ruta }} - {{ tra.c_t_origen }} - {{
@@ -86,7 +88,9 @@
 
                     <td class="text-left p-2 border-r border-base-300 font-medium bg-base-200/20">
 
-                        <select formControlName="cod_item" class="select-base_cuatro w-full">
+                        <select formControlName="cod_item" class="select-base_cuatro w-full"
+                            [disabled]="ind_estado() !== 'G'" [class.opacity-50]="ind_estado() !== 'G'"
+                            [class.cursor-not-allowed]="ind_estado() !== 'G'">
                             @for (it of listSvalTablaDetalle(); track $index) {
 
                             <option [value]="it.cod_item">{{ it.des_tabladet }}</option>
@@ -96,18 +100,17 @@
                     </td>
 
                     <td class="p-2 border-r border-base-300">
-                        <select formControlName="flg_vigente" class="select-base_cuatro w-full">
+                        <select formControlName="flg_vigente" class="select-base_cuatro w-full"
+                            [disabled]="ind_estado() !== 'G'" [class.opacity-50]="ind_estado() !== 'G'"
+                            [class.cursor-not-allowed]="ind_estado() !== 'G'">
                             <option value="1">Activo</option>
                             <option value="0">Inactivo</option>
                         </select>
                     </td>
 
                     <td class="p-1 flex justify-center items-center">
-                        <button type="button" (click)="onEliminar($index, fila)"
-
-                            [disabled]="ind_estado() !== 'G'"
-                            [class.opacity-50]="ind_estado() !== 'G'"
-                            [class.cursor-not-allowed]="ind_estado() !== 'G'"
+                        <button type="button" (click)="onEliminar($index, fila)" [disabled]="ind_estado() !== 'G'"
+                            [class.opacity-50]="ind_estado() !== 'G'" [class.cursor-not-allowed]="ind_estado() !== 'G'"
                             class="bg-[#A6200A] flex items-center justify-center rounded-lg hover:bg-red-700 hover:scale-105 transition-all duration-200 w-8 h-8">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
                                 stroke="white" class="w-4 h-4">
@@ -137,10 +140,8 @@
     </div>
 
     <div>
-        <button type="button" (click)="onAgregarFila()"
-                    [disabled]="ind_estado() !== 'G'"
-                    [class.opacity-50]="ind_estado() !== 'G'"
-                    [class.cursor-not-allowed]="ind_estado() !== 'G'"
+        <button type="button" (click)="onAgregarFila()" [disabled]="ind_estado() !== 'G'"
+            [class.opacity-50]="ind_estado() !== 'G'" [class.cursor-not-allowed]="ind_estado() !== 'G'"
             class="bg-[#047857] flex items-center justify-center rounded-lg shadow-sm group
             hover:shadow-md hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed w-8 h-8">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="white"

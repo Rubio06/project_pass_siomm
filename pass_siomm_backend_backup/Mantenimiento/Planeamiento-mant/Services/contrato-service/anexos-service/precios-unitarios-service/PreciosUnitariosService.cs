@@ -3,18 +3,19 @@ using Microsoft.Data.SqlClient;
 using NPOI.SS.Formula.Functions;
 using pass_siomm_backend.Autenticacion.Data;
 using pass_siomm_backend.Mantenimiento.Planeamiento_mant.Data;
+using pass_siomm_backend.Planeamiento.Balanza_Detalle.Data;
 using pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Data.Dto;
 using pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Data.Dto.ExplotacionDto;
 using System.Data;
 using System.Diagnostics.Contracts;
 using System.Globalization;
+using System.Globalization;
 using System.Security;
 using System.Text;
-using System.Globalization;
 
 namespace pass_siomm_backend.Mantenimiento.Planeamiento_mant.Services
 {
-    public class PreciosUnitariosService
+    public class PreciosUnitariosService 
     {
 
         private readonly string _connectionString;

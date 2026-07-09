@@ -19,7 +19,7 @@ export class AlquilerTransporteComponent {
     public listTablaDetalle = signal<SvalTablaDetalle[]>([])
     public formUtils = FormUtils
     ind_estado = input<string>('');
-    
+
     isLoading = signal(false);
     cod_contrato = input<string>('');
 
@@ -109,22 +109,26 @@ export class AlquilerTransporteComponent {
 
 
     private crearGrupoFila(item: SvalDetTarifarioEquiposAlquiler, esNuevo: boolean = false): FormGroup {
-        return this.fb.group({
-
+        const group = this.fb.group({
             cod_empresa: [item.cod_empresa],
             cod_empresa_unidad: [item.cod_empresa_unidad],
             cod_contrato: [item.cod_contrato],
-            cod_equipo: [item.cod_equipo, [Validators.required]], // solo lectura
+            cod_equipo: [item.cod_equipo, [Validators.required]],
             cod_item_unimed: [item.cod_item_unimed ?? '', Validators.required],
             imp_alquiler_hora: [item.imp_alquiler_hora ?? 0, [Validators.required, Validators.pattern(/^\d{1,15}(\.\d{1,3})?$/)]],
             flg_vigencia: [item.flg_vigencia, Validators.required],
             cod_tabla_unimed: ['002'],
             ind_turno_trabajo: [item.ind_turno_trabajo],
-
             esNuevo: [esNuevo]
         });
-    }
 
+        // Si no es estado G, deshabilitar todos los controles
+        if (this.ind_estado() !== 'G') {
+            group.disable();
+        }
+
+        return group;
+    }
     public onAgregarFila(): void {
         // this.obtenerSiguienteItem();
 

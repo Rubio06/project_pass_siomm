@@ -549,9 +549,9 @@ export class FormUtils {
         const intermedia = group.get('cod_ruta_intermedia')?.value;
         const destino = group.get('cod_ruta_destino')?.value;
 
-        if (intermedia && (intermedia === origen || intermedia === destino)) {
-            return { rutaIntermediaDuplicada: true };
-        }
+        // if (intermedia && (destino === origen || origen === destino)) {
+        //     return { rutaIntermediaDuplicada: true };
+        // }
         if (origen && destino && origen === destino) {
             return { rutaOrigenDestinoDuplicada: true };
         }

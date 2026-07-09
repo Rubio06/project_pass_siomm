@@ -2107,6 +2107,407 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Balanza_Detalle.Services.BalanzaDetalleController",
+    "Method": "ObtenerAlas",
+    "RelativePath": "planeamiento/detalle-balanza/alas",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[pass_siomm_backend.Planeamiento.Balanza_Detalle.Data.AlaDto, pass_siomm_backend, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Balanza_Detalle.Services.BalanzaDetalleController",
+    "Method": "ObtenerContratas",
+    "RelativePath": "planeamiento/detalle-balanza/contratas-activas",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_empresa",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_empresa_unidad",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[pass_siomm_backend.Planeamiento.Balanza_Detalle.Data.ContrataDto, pass_siomm_backend, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Balanza_Detalle.Services.BalanzaDetalleController",
+    "Method": "ObtenerContratos",
+    "RelativePath": "planeamiento/detalle-balanza/contratos-x-contrata",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "contrata",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[pass_siomm_backend.Planeamiento.Balanza_Detalle.Data.ContratoDto, pass_siomm_backend, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Balanza_Detalle.Services.BalanzaDetalleController",
+    "Method": "ObtenerEquiposContrata",
+    "RelativePath": "planeamiento/detalle-balanza/equipos-contrata",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_empresa",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_contrata",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[pass_siomm_backend.Planeamiento.Balanza_Detalle.Data.EquipoContrataDto, pass_siomm_backend, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Balanza_Detalle.Services.BalanzaDetalleController",
+    "Method": "ObtenerLaboresProgramadas",
+    "RelativePath": "planeamiento/detalle-balanza/labores-programadas",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_empresa",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_empresa_unidad",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cie_ano",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cie_mes",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_tipo_labor",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[pass_siomm_backend.Planeamiento.Balanza_Detalle.Data.LaborProgramadaDto, pass_siomm_backend, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Balanza_Detalle.Services.BalanzaDetalleController",
+    "Method": "ObtenerMaquinaria",
+    "RelativePath": "planeamiento/detalle-balanza/maquinaria",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_empresa",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_empresa_unidad",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[pass_siomm_backend.Planeamiento.Balanza_Detalle.Data.MaquinariaDto, pass_siomm_backend, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Balanza_Detalle.Services.BalanzaDetalleController",
+    "Method": "ObtenerDetalle",
+    "RelativePath": "planeamiento/detalle-balanza/obtener-ticket-detalle",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_empresa",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_empresa_unidad",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_ticket_balanza",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "pass_siomm_backend.Planeamiento.Balanza_Detalle.Data.DetalleTicketBalanzaDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Balanza_Detalle.Services.BalanzaDetalleController",
+    "Method": "ObtenerTicketsBalanza",
+    "RelativePath": "planeamiento/detalle-balanza/obtener-tickets-balanza",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "pass_siomm_backend.Planeamiento.Balanza_Detalle.Data.EntradaTicketBalanzaDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Balanza_Detalle.Services.BalanzaDetalleController",
+    "Method": "ObtenerPersonalContrata",
+    "RelativePath": "planeamiento/detalle-balanza/personal-contrata",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "contrata",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[pass_siomm_backend.Planeamiento.Balanza_Detalle.Data.PersonalContrataDto, pass_siomm_backend, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Balanza_Detalle.Services.BalanzaDetalleController",
+    "Method": "ObtenerTarifarioTransporte",
+    "RelativePath": "planeamiento/detalle-balanza/tarifario-transporte",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_contrato",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "ind_material",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[pass_siomm_backend.Planeamiento.Balanza_Detalle.Data.TarifarioTransporteDto, pass_siomm_backend, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Balanza_Detalle.Services.BalanzaDetalleController",
+    "Method": "ObtenerTipoCarro",
+    "RelativePath": "planeamiento/detalle-balanza/tipo-carro",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[pass_siomm_backend.Planeamiento.Balanza_Detalle.Data.TipoCarroDto, pass_siomm_backend, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Balanza_Detalle.Services.BalanzaDetalleController",
+    "Method": "ObtenerTipoLabor",
+    "RelativePath": "planeamiento/detalle-balanza/tipo-labor-activo",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[pass_siomm_backend.Planeamiento.Balanza_Detalle.Data.TipoLaborBlnzDto, pass_siomm_backend, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Balanza_Detalle.Services.BalanzaDetalleController",
+    "Method": "ObtenerTipoMaterialDetalle",
+    "RelativePath": "planeamiento/detalle-balanza/tipo-material-detalle",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_empresa",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_empresa_unidad",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_tipo_material",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[pass_siomm_backend.Planeamiento.Balanza_Detalle.Data.TipoMaterialDetalleDto, pass_siomm_backend, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "pass_siomm_backend.Planeamiento.Balanza_Detalle.Services.BalanzaDetalleController",
+    "Method": "ObtenerTurnos",
+    "RelativePath": "planeamiento/detalle-balanza/turnos-activos",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cod_empresa",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cod_empresa_unidad",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[pass_siomm_backend.Planeamiento.Balanza_Detalle.Data.TurnoDto, pass_siomm_backend, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "pass_siomm_backend.Planeamiento.Programa_Mensual_Labores.Controllers.ExplotacionController.ExplotacionController",
     "Method": "ObtenerBlocksYArchivos",
     "RelativePath": "planeamiento/edicion-programa-mensual/blocks-archivos",

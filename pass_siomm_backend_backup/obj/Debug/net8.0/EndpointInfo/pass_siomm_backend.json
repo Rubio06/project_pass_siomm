@@ -347,6 +347,703 @@
         }
       }
     },
+    "/planeamiento/detalle-balanza/obtener-tickets-balanza": {
+      "post": {
+        "tags": [
+          "BalanzaDetalle"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EntradaTicketBalanzaDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EntradaTicketBalanzaDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/EntradaTicketBalanzaDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/planeamiento/detalle-balanza/obtener-ticket-detalle": {
+      "get": {
+        "tags": [
+          "BalanzaDetalle"
+        ],
+        "parameters": [
+          {
+            "name": "cod_empresa",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cod_empresa_unidad",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cod_ticket_balanza",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetalleTicketBalanzaDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetalleTicketBalanzaDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetalleTicketBalanzaDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/planeamiento/detalle-balanza/turnos-activos": {
+      "get": {
+        "tags": [
+          "BalanzaDetalle"
+        ],
+        "parameters": [
+          {
+            "name": "cod_empresa",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cod_empresa_unidad",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TurnoDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TurnoDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TurnoDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/planeamiento/detalle-balanza/tipo-material-detalle": {
+      "get": {
+        "tags": [
+          "BalanzaDetalle"
+        ],
+        "parameters": [
+          {
+            "name": "cod_empresa",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cod_empresa_unidad",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cod_tipo_material",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TipoMaterialDetalleDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TipoMaterialDetalleDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TipoMaterialDetalleDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/planeamiento/detalle-balanza/contratas-activas": {
+      "get": {
+        "tags": [
+          "BalanzaDetalle"
+        ],
+        "parameters": [
+          {
+            "name": "cod_empresa",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cod_empresa_unidad",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ContrataDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ContrataDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ContrataDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/planeamiento/detalle-balanza/contratos-x-contrata": {
+      "get": {
+        "tags": [
+          "BalanzaDetalle"
+        ],
+        "parameters": [
+          {
+            "name": "contrata",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ContratoDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ContratoDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ContratoDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/planeamiento/detalle-balanza/personal-contrata": {
+      "get": {
+        "tags": [
+          "BalanzaDetalle"
+        ],
+        "parameters": [
+          {
+            "name": "contrata",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PersonalContrataDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PersonalContrataDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PersonalContrataDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/planeamiento/detalle-balanza/tipo-carro": {
+      "get": {
+        "tags": [
+          "BalanzaDetalle"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TipoCarroDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TipoCarroDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TipoCarroDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/planeamiento/detalle-balanza/equipos-contrata": {
+      "get": {
+        "tags": [
+          "BalanzaDetalle"
+        ],
+        "parameters": [
+          {
+            "name": "cod_empresa",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cod_contrata",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EquipoContrataDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EquipoContrataDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EquipoContrataDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/planeamiento/detalle-balanza/maquinaria": {
+      "get": {
+        "tags": [
+          "BalanzaDetalle"
+        ],
+        "parameters": [
+          {
+            "name": "cod_empresa",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cod_empresa_unidad",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MaquinariaDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MaquinariaDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MaquinariaDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/planeamiento/detalle-balanza/tipo-labor-activo": {
+      "get": {
+        "tags": [
+          "BalanzaDetalle"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TipoLaborBlnzDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TipoLaborBlnzDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TipoLaborBlnzDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/planeamiento/detalle-balanza/labores-programadas": {
+      "get": {
+        "tags": [
+          "BalanzaDetalle"
+        ],
+        "parameters": [
+          {
+            "name": "cod_empresa",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cod_empresa_unidad",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cie_ano",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cie_mes",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cod_tipo_labor",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LaborProgramadaDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LaborProgramadaDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LaborProgramadaDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/planeamiento/detalle-balanza/alas": {
+      "get": {
+        "tags": [
+          "BalanzaDetalle"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AlaDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AlaDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AlaDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/planeamiento/detalle-balanza/tarifario-transporte": {
+      "get": {
+        "tags": [
+          "BalanzaDetalle"
+        ],
+        "parameters": [
+          {
+            "name": "cod_contrato",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ind_material",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TarifarioTransporteDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TarifarioTransporteDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TarifarioTransporteDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/mantenimiento/opciones-modelo/contrata": {
       "get": {
         "tags": [
@@ -4593,6 +5290,54 @@
   },
   "components": {
     "schemas": {
+      "AlaDto": {
+        "type": "object",
+        "properties": {
+          "cod_ala": {
+            "type": "string",
+            "nullable": true
+          },
+          "nom_ala": {
+            "type": "string",
+            "nullable": true
+          },
+          "est_ala": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_usuario_creo": {
+            "type": "string",
+            "nullable": true
+          },
+          "fec_usuario_creo": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "cod_usuario_modi": {
+            "type": "string",
+            "nullable": true
+          },
+          "fec_usuario_modi": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "nombre": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_empresa": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_empresa_unidad": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "AperPeriodoCierreGuardarDto": {
         "type": "object",
         "properties": {
@@ -4789,6 +5534,24 @@
             "nullable": true
           },
           "ind_calc_dil": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ContrataDto": {
+        "type": "object",
+        "properties": {
+          "cod_empresa": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_contrata": {
+            "type": "string",
+            "nullable": true
+          },
+          "des_contrata": {
             "type": "string",
             "nullable": true
           }
@@ -4997,6 +5760,20 @@
             "items": {
               "$ref": "#/components/schemas/EquipoDTO"
             },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ContratoDto": {
+        "type": "object",
+        "properties": {
+          "cod_contrato": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_contrata": {
+            "type": "string",
             "nullable": true
           }
         },
@@ -5376,6 +6153,227 @@
         },
         "additionalProperties": false
       },
+      "DetalleTicketBalanzaDto": {
+        "type": "object",
+        "properties": {
+          "cod_empresa": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_empresa_unidad": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_ticket_balanza": {
+            "type": "string",
+            "nullable": true
+          },
+          "fec_emision": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "cod_turno": {
+            "type": "string",
+            "nullable": true
+          },
+          "des_comentario": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_proveedor": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_tipo_material": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_tipo_material_detalle": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_personal": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_contrato": {
+            "type": "string",
+            "nullable": true
+          },
+          "des_guia_remitente": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_tipo_car": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_tipo_car_equipo": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_proced_blza": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_item_ruta": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_zona": {
+            "type": "string",
+            "nullable": true
+          },
+          "num_cantidad_carros": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "fec_peso_entrada": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "num_peso_entrada_tmh": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "fec_peso_salida": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "num_peso_salida_tmh": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "num_peso_neto_tmh": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "est_ticket_balanza": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_usuario_creo": {
+            "type": "string",
+            "nullable": true
+          },
+          "fec_usuario_creo": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "cod_usuario_modi": {
+            "type": "string",
+            "nullable": true
+          },
+          "fec_usuario_modi": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "cod_placa": {
+            "type": "string",
+            "nullable": true
+          },
+          "ruta_origen": {
+            "type": "string",
+            "nullable": true
+          },
+          "ruta_destino": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_usuario_apr": {
+            "type": "string",
+            "nullable": true
+          },
+          "fec_usuario_apr": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "cod_ruta_origen": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_ruta_destino": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_labor": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_tipo_labor": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_ala": {
+            "type": "string",
+            "nullable": true
+          },
+          "des_tipo_car": {
+            "type": "string",
+            "nullable": true
+          },
+          "fec_pesaje": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "ind_automatico": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "cod_ticket_balanza_copia": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_nivel": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_und_econom": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_veta": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_fase": {
+            "type": "string",
+            "nullable": true
+          },
+          "ind_tipo_cancha": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_grupo_control": {
+            "type": "string",
+            "nullable": true
+          },
+          "nom_labor": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_maquinaria": {
+            "type": "string",
+            "nullable": true
+          },
+          "des_maquinaria": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "EliminarContratoDTO": {
         "type": "object",
         "properties": {
@@ -5620,6 +6618,66 @@
             "nullable": true
           },
           "cod_equipo_pesado": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "EntradaTicketBalanzaDto": {
+        "type": "object",
+        "properties": {
+          "cod_empresa": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_empresa_unidad": {
+            "type": "string",
+            "nullable": true
+          },
+          "cie_ano": {
+            "type": "string",
+            "nullable": true
+          },
+          "cie_per": {
+            "type": "string",
+            "nullable": true
+          },
+          "cie_dia": {
+            "type": "string",
+            "nullable": true
+          },
+          "pagina": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "registros_por_pagina": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "EquipoContrataDto": {
+        "type": "object",
+        "properties": {
+          "cod_empresa": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_empresa_unidad": {
+            "type": "string",
+            "nullable": true
+          },
+          "equipo": {
+            "type": "string",
+            "nullable": true
+          },
+          "descripcion": {
+            "type": "string",
+            "nullable": true
+          },
+          "placa": {
             "type": "string",
             "nullable": true
           }
@@ -5978,6 +7036,88 @@
             "nullable": true
           },
           "accion": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LaborProgramadaDto": {
+        "type": "object",
+        "properties": {
+          "cod_empresa": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_und_econom": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_zona": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_veta": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_nivel_prg": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_tipo_labor": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_labor": {
+            "type": "string",
+            "nullable": true
+          },
+          "nom_labor": {
+            "type": "string",
+            "nullable": true
+          },
+          "des_labor": {
+            "type": "string",
+            "nullable": true
+          },
+          "lab_blkgeo": {
+            "type": "string",
+            "nullable": true
+          },
+          "met_cod": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_nivel_labor": {
+            "type": "string",
+            "nullable": true
+          },
+          "est_labor": {
+            "type": "string",
+            "nullable": true
+          },
+          "nom_und_econom": {
+            "type": "string",
+            "nullable": true
+          },
+          "des_zona": {
+            "type": "string",
+            "nullable": true
+          },
+          "nom_veta": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_empresa_unidad": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_ala": {
+            "type": "string",
+            "nullable": true
+          },
+          "labor_con": {
             "type": "string",
             "nullable": true
           }
@@ -7007,6 +8147,32 @@
         },
         "additionalProperties": false
       },
+      "MaquinariaDto": {
+        "type": "object",
+        "properties": {
+          "cod_empresa": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_empresa_unidad": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_maquinaria": {
+            "type": "string",
+            "nullable": true
+          },
+          "des_maquinaria": {
+            "type": "string",
+            "nullable": true
+          },
+          "est_maquinaria": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "MedicionDTO": {
         "type": "object",
         "properties": {
@@ -7698,6 +8864,82 @@
           "fec_usuario_modi": {
             "type": "string",
             "format": "date-time",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PersonalContrataDto": {
+        "type": "object",
+        "properties": {
+          "cod_empresa": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_empresa_unidad": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_contrata": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_personal": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_cargo": {
+            "type": "string",
+            "nullable": true
+          },
+          "des_apellido_pat": {
+            "type": "string",
+            "nullable": true
+          },
+          "des_apellido_mat": {
+            "type": "string",
+            "nullable": true
+          },
+          "des_nombre": {
+            "type": "string",
+            "nullable": true
+          },
+          "ind_chofer": {
+            "type": "string",
+            "nullable": true
+          },
+          "nro_doc_dni": {
+            "type": "string",
+            "nullable": true
+          },
+          "nro_doc_brevete": {
+            "type": "string",
+            "nullable": true
+          },
+          "flg_vigente": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_usuario_creo": {
+            "type": "string",
+            "nullable": true
+          },
+          "fec_usuario_creo": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "cod_usuario_modi": {
+            "type": "string",
+            "nullable": true
+          },
+          "fec_usuario_modi": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "c_T_PERSONAL": {
+            "type": "string",
             "nullable": true
           }
         },
@@ -8400,6 +9642,153 @@
         },
         "additionalProperties": false
       },
+      "TarifarioTransporteDto": {
+        "type": "object",
+        "properties": {
+          "cod_empresa": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_empresa_unidad": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_contrato": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_item_ruta": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_ruta_origen": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_ruta_destino": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_ruta_intermedia": {
+            "type": "string",
+            "nullable": true
+          },
+          "imp_ruta_pu": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "ind_material": {
+            "type": "string",
+            "nullable": true
+          },
+          "imp_tmh_km_soles": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "nro_distancia_km": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "nro_factor_viajepeso": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "flg_vigencia": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_zona": {
+            "type": "string",
+            "nullable": true
+          },
+          "cta_cod": {
+            "type": "string",
+            "nullable": true
+          },
+          "cto_cod": {
+            "type": "string",
+            "nullable": true
+          },
+          "c_t_zona": {
+            "type": "string",
+            "nullable": true
+          },
+          "c_t_origen": {
+            "type": "string",
+            "nullable": true
+          },
+          "c_t_destino": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TipoCarroDto": {
+        "type": "object",
+        "properties": {
+          "cod_empresa": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_empresa_unidad": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_tipo_car": {
+            "type": "string",
+            "nullable": true
+          },
+          "des_tipo_car": {
+            "type": "string",
+            "nullable": true
+          },
+          "nro_tipo_car_fac": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TipoLaborBlnzDto": {
+        "type": "object",
+        "properties": {
+          "cod_tipo_labor": {
+            "type": "string",
+            "nullable": true
+          },
+          "nom_tipo_labor": {
+            "type": "string",
+            "nullable": true
+          },
+          "ind_orient": {
+            "type": "string",
+            "nullable": true
+          },
+          "ind_tipchm": {
+            "type": "string",
+            "nullable": true
+          },
+          "est_tipo_labor": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_empresa": {
+            "type": "string",
+            "nullable": true
+          },
+          "cod_empresa_unidad": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "TipoLaborDto": {
         "type": "object",
         "properties": {
@@ -8463,6 +9852,44 @@
           },
           "accion": {
             "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TipoMaterialDetalleDto": {
+        "type": "object",
+        "properties": {
+          "cod_tipo_material_detalle": {
+            "type": "string",
+            "nullable": true
+          },
+          "des_tipo_material_det": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TurnoDto": {
+        "type": "object",
+        "properties": {
+          "cod_turno": {
+            "type": "string",
+            "nullable": true
+          },
+          "des_turno": {
+            "type": "string",
+            "nullable": true
+          },
+          "hor_inicio_operacion": {
+            "type": "string",
+            "format": "date-span",
+            "nullable": true
+          },
+          "hor_fin_operacion": {
+            "type": "string",
+            "format": "date-span",
             "nullable": true
           }
         },

@@ -72,7 +72,7 @@ export class TransporteMineralComponent implements OnInit {
 
 
     private crearFila(item: TarifarioTransporteDetalle, esNuevo: boolean = false): FormGroup {
-        return this.fb.group({
+        const group = this.fb.group({
             cod_empresa: [item.cod_empresa],
             cod_empresa_unidad: [item.cod_empresa_unidad],
             cod_contrato: [item.cod_contrato],
@@ -80,7 +80,7 @@ export class TransporteMineralComponent implements OnInit {
             cod_ruta_origen: [item.cod_ruta_origen],
             cod_ruta_intermedia: [item.cod_ruta_intermedia],
             cod_ruta_destino: [item.cod_ruta_destino],
-            c_t_zona: [item.c_t_zona, [Validators.required]],
+            c_t_zona: [item.c_t_zona],
             // Tratamiento seguro de decimales para evitar el '0' por defecto si es nulo
             nro_distancia_km: [(item.nro_distancia_km ?? 0).toFixed(3), [Validators.pattern(/^\d{1,10}(\.\d{1,3})?$/)]],
             imp_tmh_km_soles: [(item.imp_tmh_km_soles ?? 0).toFixed(3), [Validators.pattern(/^\d{1,10}(\.\d{1,3})?$/)]],
@@ -93,6 +93,11 @@ export class TransporteMineralComponent implements OnInit {
             ind_material:[item.ind_material],
             esNuevo: [esNuevo]
         }, { validators: this.formUtils.rutasDistintasValidator });
+        
+        if (this.ind_estado() !== 'G') {
+            group.disable();
+        }
+        return group;
     }
 
     public cargarTarifarioDetalle(callback?: () => void): void {

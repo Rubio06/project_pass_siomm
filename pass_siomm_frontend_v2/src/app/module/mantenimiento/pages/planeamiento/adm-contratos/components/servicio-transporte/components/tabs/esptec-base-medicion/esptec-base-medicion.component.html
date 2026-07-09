@@ -3,12 +3,8 @@
     <button type="button"
         class="bg-[#047857] flex items-center justify-center rounded-lg shadow-sm group
         hover:shadow-md hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed w-8 h-8"
-        (click)="onAgregarFila()"
-        [disabled]="ind_estado() !== 'G'"
-        [class.opacity-50]="ind_estado() !== 'G'"
-        [class.cursor-not-allowed]="ind_estado() !== 'G'"
-        
-        >
+        (click)="onAgregarFila()" [disabled]="ind_estado() !== 'G'" [class.opacity-50]="ind_estado() !== 'G'"
+        [class.cursor-not-allowed]="ind_estado() !== 'G'">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="white"
             class="w-4 h-4">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -60,8 +56,9 @@
                     class="hover:bg-[#17324D]/5 select-none cursor-pointer transition-colors text-center text-[12px]">
 
                     <td class="p-1">
-                        <input type="text" formControlName="nro_potencia_veta_1" class="input-base_3 w-full text-center"
-                            maxlength="10" />
+                        <input type="text" formControlName="nro_potencia_veta_1" [disabled]="ind_estado() !== 'G'"
+                            [class.opacity-50]="ind_estado() !== 'G'" [class.cursor-not-allowed]="ind_estado() !== 'G'"
+                            class="input-base_3 w-full text-center" maxlength="10" />
                         @if(formUtils.isValidFieldInArray(fila,'nro_potencia_veta_1')) {
                         <div class="text-[#C23E32] text-xs mt-1">
                             <span><b>{{ formUtils.getFiledErrorArray(fila,'nro_potencia_veta_1') }}</b></span>
@@ -71,7 +68,8 @@
 
                     <td class="p-1">
                         <select formControlName="cod_item_um_pv" (change)="onAsignarPG($event, fila)"
-                            class="select-base_cuatro w-full">
+                            [disabled]="ind_estado() !== 'G'" [class.opacity-50]="ind_estado() !== 'G'"
+                            [class.cursor-not-allowed]="ind_estado() !== 'G'" class="select-base_cuatro w-full">
                             @for (item of listParametroGeneral(); track $index) {
 
                             <option [value]="item.cod_item">{{ item.des_tabladet }}</option>
@@ -86,11 +84,13 @@
 
                     <td class="p-1">
                         <select formControlName="cod_parametro_medicion" (change)="onAsignarPM($event, fila)"
-                            class="select-base_cuatro w-full">
+                            [disabled]="ind_estado() !== 'G'" [class.opacity-50]="ind_estado() !== 'G'"
+                            [class.cursor-not-allowed]="ind_estado() !== 'G'" class="select-base_cuatro w-full">
 
                             @for (item of listMedicion(); track $index) {
 
-                            <option [value]="item.cod_parametro_medicion" [disabled]="isOptionUsada(item.cod_parametro_medicion, indexFila)">
+                            <option [value]="item.cod_parametro_medicion"
+                                [disabled]="isOptionUsada(item.cod_parametro_medicion, indexFila)">
                                 {{ item.des_potencia_veta }} - {{ item.des_ancho_pago }}
                             </option>
 
@@ -106,7 +106,8 @@
 
                     <td class="p-1">
                         <input type="text" formControlName="nro_potencia_veta_2" class="input-base_3 w-full text-center"
-                            maxlength="10" />
+                            [disabled]="ind_estado() !== 'G'" [class.opacity-50]="ind_estado() !== 'G'"
+                            [class.cursor-not-allowed]="ind_estado() !== 'G'" maxlength="10" />
                         @if(formUtils.isValidFieldInArray(fila,'nro_potencia_veta_2')) {
                         <div class="text-[#C23E32] text-xs mt-1">
                             <span><b>{{ formUtils.getFiledErrorArray(fila,'nro_potencia_veta_2') }}</b></span>
@@ -117,7 +118,8 @@
 
                     <td class="p-1">
                         <select formControlName="cod_item_um_ap" (change)="onAsignarCT($event, fila)"
-                            class="select-base_cuatro w-full">
+                            [disabled]="ind_estado() !== 'G'" [class.opacity-50]="ind_estado() !== 'G'"
+                            [class.cursor-not-allowed]="ind_estado() !== 'G'" class="select-base_cuatro w-full">
                             @for (item of listParametroGeneral(); track $index) {
 
                             <option [value]="item.cod_item">{{ item.des_tabladet }}</option>
@@ -138,7 +140,8 @@
                     <td class="p-1">
 
                         <input type="text" formControlName="c_t_ap" class="input-base_3 w-full text-center"
-                            maxlength="50" />
+                            [disabled]="ind_estado() !== 'G'" [class.opacity-50]="ind_estado() !== 'G'"
+                            [class.cursor-not-allowed]="ind_estado() !== 'G'" maxlength="50" />
 
                         @if(formUtils.isValidFieldInArray(fila,'c_t_ap')) {
                         <div class="text-[#C23E32] text-xs mt-1">
@@ -150,7 +153,8 @@
 
                     <td class="p-1">
                         <input type="text" formControlName="nro_ancho_pago_1" maxlength="10"
-                            class="input-base_3 w-full text-center" />
+                            [disabled]="ind_estado() !== 'G'" [class.opacity-50]="ind_estado() !== 'G'"
+                            [class.cursor-not-allowed]="ind_estado() !== 'G'" class="input-base_3 w-full text-center" />
                         @if(formUtils.isValidFieldInArray(fila,'nro_ancho_pago_1')) {
                         <div class="text-[#C23E32] text-xs mt-1">
                             <span><b>{{ formUtils.getFiledErrorArray(fila,'nro_ancho_pago_1') }}</b></span>
@@ -164,7 +168,9 @@
 
                     <td class="p-1">
 
-                        <select formControlName="cod_valor_ap" class="select-base_cuatro w-full">
+                        <select formControlName="cod_valor_ap" class="select-base_cuatro w-full"
+                            [disabled]="ind_estado() !== 'G'" [class.opacity-50]="ind_estado() !== 'G'"
+                            [class.cursor-not-allowed]="ind_estado() !== 'G'">
                             <option value="1"> # </option>
                             <option value="2"> % </option>
 
@@ -179,7 +185,9 @@
 
                     <td class="p-1">
 
-                        <select formControlName="cod_item_um_ap" class="select-base_cuatro w-full">
+                        <select formControlName="cod_item_um_ap" class="select-base_cuatro w-full"
+                            [disabled]="ind_estado() !== 'G'" [class.opacity-50]="ind_estado() !== 'G'"
+                            [class.cursor-not-allowed]="ind_estado() !== 'G'">
                             @for (item of listParametroGeneral(); track $index) {
                             <option [value]="item.cod_item">{{ item.des_tabladet }}</option>
                             }
@@ -193,7 +201,8 @@
 
                     <!-- (click)="eliminarFila($index)" -->
                     <td class="p-1 flex justify-center items-center">
-                        <button type="button" (click)="onEliminarFila($index, fila)"
+                        <button type="button" (click)="onEliminarFila($index, fila)" [disabled]="ind_estado() !== 'G'"
+                            [class.opacity-50]="ind_estado() !== 'G'" [class.cursor-not-allowed]="ind_estado() !== 'G'"
                             class="bg-[#A6200A] flex items-center justify-center rounded-lg shadow-sm group relative hover:bg-red-700 hover:shadow-md hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed w-8 h-8">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
                                 stroke="white" class="w-4 h-4">

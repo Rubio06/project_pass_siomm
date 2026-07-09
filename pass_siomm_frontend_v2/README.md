@@ -1,59 +1,122 @@
-# PassSiommFrontend
+# Nombre del Proyecto - Frontend = PASS_SIOMM_FRONTEND
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.7.
+Sistema de operaciones mineras de migrado desde **PowerBuilder** 
+hacia una arquitectura web moderna: **Angular** (frontend), **ADO.NET** (backend/API) 
+y **SQL Server** (base de datos).
 
-## Development server
+## Contexto de la migración
+- Sistema legacy: PowerBuilder [10.5]
+- Motivo de la migración: Escalabilidad y actualizacioón de los modulos
+- Estado actual: en progreso - migración por modulos
 
-To start a local development server, run:
 
-```bash
+## Arquitectura general
+[Diagrama simple: Angular → API ADO.NET → SQL Server]
+
+
+##  Stack Tecnológico
+| Capa | Tecnología |
+|---|---|
+| Frontend | Angular versión 20.3.30. / DaisyUI versión  daisyui@5.6.3 | node versión v24.14.0
+| Backend | ADO.NET / .NET 8.0 |
+| Base de datos | SQL Server 2008 |
+
+## Cómo levantar el proyecto completo (entorno local)
+1. Base de datos → restaurar/ejecutar scripts (ver database/README.md)
+2. Backend → configurar connection string y correr (ver backend/README.md)
+3. Frontend → configurar apiUrl y correr (ver frontend/README.md)
+
+## Configuración
+
+Antes de correr el proyecto, se debe indicar la URL del backend (API ADO.NET).
+
+### Archivos de entorno
+| Archivo | Uso |
+|---|---|
+| `src/environments/environment.ts` | Desarrollo local |
+| `src/environments/environment.prod.ts` | Producción |
+
+### Ejecución del proyecto
+* Instalación del Frontend
+* Requisitos
+* Node.js v24.14.0
+* Angular CLI 20.3.30
+* Pasos
+
+Instalar Node.js v24.14.0 desde:
+
+https://nodejs.org/es/download
+
+Instalar Angular CLI 20.3.30:
+
+npm install -g @angular/cli@20.3.30
+
+Más información:
+
+https://angular.dev/installation
+
+Clonar el repositorio e ingresar a la carpeta del proyecto.
+
+Instalar las dependencias del proyecto:
+
+npm install
+
+Levantar el backend y verificar el puerto en el que queda escuchando (se mostrará en la consola al ejecutar dotnet run).
+
+Ejemplo:
+
+https://localhost:44334
+
+Configurar la URL del backend en el archivo src/environments/environment.ts:
+
+export const environment = {
+  production: false,
+  baseUrl: 'https://localhost:44334/'
+};
+Verificar que todos los servicios (src/app/**/services/*.service.ts) utilicen environment.baseUrl y no tengan URLs escritas directamente (hardcodeadas).
+
+Iniciar la aplicación Angular:
+
 ng serve
-```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Abrir la aplicación en el navegador:
 
-## Code scaffolding
+http://localhost:4200
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
 
-```bash
-ng generate component component-name
-```
+### Problema común: error de CORS
+Si aparece un error de CORS en consola, el backend no tiene habilitado 
+`http://localhost:4200` como origen permitido. Ver sección CORS en 
+`backend/README.md`.
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
 
-```bash
-ng generate --help
-```
+### Estructura de carpetas
 
-## Building
+PASS_SIOMM_FRONTEND_V2/
+├── src/
+│   └── app/
+│       ├── core/            # servicios singleton, guards, interceptors
+│       ├── module/          # módulos funcionales del negocio (uno por feature)
+│       ├── shared/          # componentes, pipes y directivas reutilizables
+│       ├── utils/           # funciones/helpers utilitarios generales
+│       ├── app.config.ts        # configuración principal de la app (providers, etc.)
+│       ├── app.config.server.ts # configuración específica para SSR (server-side)
+│       ├── app.routes.ts        # rutas del cliente
+│       ├── app.routes.server.ts # rutas para SSR
+│       ├── app.ts               # componente raíz
+│       ├── app.html / app.css   # template y estilos del componente raíz
+│       └── app.spec.ts          # tests del componente raíz
+│   ├── environments/        # configuración por entorno (dev, prod)
+│   ├── index.html
+│   ├── main.ts               # bootstrap de la app (cliente)
+│   ├── main.server.ts        # bootstrap de la app (servidor / SSR)
+│   ├── server.ts              # servidor Express/Node para SSR
+│   ├── styles.css             # estilos globales
+│   └── custom-theme.scss      # tema personalizado (DaisyUI/Tailwind)
+├── public/                  # assets estáticos
+├── proxy.conf.json          # configuración de proxy (probablemente para redirigir /api al backend en dev)
+├── tailwind.config.js       # configuración de Tailwind/DaisyUI
+├── angular.json
+├── package.json
+└── tsconfig*.json           # configuración de TypeScript (app, spec, base)
 
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.

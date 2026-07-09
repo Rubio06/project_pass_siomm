@@ -20,9 +20,6 @@ namespace pass_siomm_backend.Planeamiento.Services.PlaneamientoService
         public async Task<object> ObtenerDatosCompletos(string month, string anio)
         {
 
-            Console.WriteLine("El mes es : " + month);
-            Console.WriteLine("El anio es " + anio);
-
 
             var result = new DatosCompletosDto();
 

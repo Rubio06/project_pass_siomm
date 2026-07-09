@@ -259,15 +259,9 @@ export class ServicioTransporteComponent implements OnInit {
 
         if (modo === 'visualizar') {
             this.miFormulario.disable();
+            this.toggleFormArrays(['parametros', 'mediciones', 'equipos'], false);
 
-            this.toggleFormArrays(['parametros', 'mediciones', 'equipos'], true);
-
-            // 🔒 Re-bloquear el código incremental después de habilitar el array
-            this.bloquearCodParametroContrato();
-            this.bloquearCodParametroMedicion();
-            this.bloquearCodEquipoPesado1();
-
-            if (this.obServicioTransporte()?.ind_estado === 'G') {
+            if (this.obServicioTransporte()?.ind_estado == 'G') {
                 const camposHabilitados = [
                     'cod_contrata', 'des_observacion', 'fec_inicio',
                     'fec_registro', 'imp_tipo_cambio', 'ind_tipocambio',
@@ -278,15 +272,14 @@ export class ServicioTransporteComponent implements OnInit {
                     this.miFormulario.get(campo)?.enable()
                 );
 
-                // ✅ Habilitados en visualizar
                 this.toggleFormArrays(['parametros', 'mediciones', 'equipos'], true);
-
-                // 🔒 Re-bloquear otra vez, porque toggleFormArrays se volvió a llamar
-                this.bloquearCodParametroContrato();
-                this.bloquearCodParametroMedicion();
-                this.bloquearCodEquipoPesado1();
-
             }
+
+            // 🔒 Re-bloquear el código incremental después de cualquier cambio
+            this.bloquearCodParametroContrato();
+            this.bloquearCodParametroMedicion();
+            this.bloquearCodEquipoPesado1();
+
         } else if (modo === 'nuevo') {
             // 1. PRIMERO: Seteamos todos los valores iniciales en el formulario
             this.miFormulario.patchValue({

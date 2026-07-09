@@ -55,7 +55,7 @@ export class ModalGastosGeneralesComponent implements OnInit {
 
     // Crea un FormGroup por cada fila
     private crearFila(item: GastosGenerales, esNueva = false): FormGroup {
-        return this.fb.group({
+        const group = this.fb.group({
             c_t_gastos: [item.c_t_gastos],
             c_t_gastos_det: [item.c_t_gastos_det],
             ind_moneda: ['D'],
@@ -73,6 +73,10 @@ export class ModalGastosGeneralesComponent implements OnInit {
             esNueva: [esNueva],
             accion: [esNueva ? 'I' : 'U'] // 'I' para insertar, 'U' para actualizar
         });
+        if (this.ind_estado() !== 'G') {
+            group.disable();
+        }
+        return group;
     }
 
     get tieneCambiosPendientes(): boolean {

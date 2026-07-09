@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { menuPlaningComponent } from './page/menu-planing/menu-planning.component';
+import { BalanzaDetalleComponent } from './opciones-componentes/balanza-detalle/pages/balanza-detalle.component';
 
 export const planingMainRouter: Routes = [
     {
@@ -20,6 +21,11 @@ export const planingMainRouter: Routes = [
                         .then(m => m.default),
                 data: { noReuse: true }
             },
+
+            {
+                path: 'balanza_detalle',
+                component: BalanzaDetalleComponent
+            }
         ]
     }
 ];

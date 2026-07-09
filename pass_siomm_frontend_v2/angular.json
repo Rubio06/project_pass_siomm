@@ -20,7 +20,11 @@
                             "exceljs",
                             "file-saver",
                             "core-js/modules/es.regexp.to-string.js",
-                            "core-js/modules/es.array.reverse.js"
+                            "core-js/modules/es.array.reverse.js",
+                            "canvg",
+                            "rgbcolor",
+                            "raf",
+                            "core-js"
                         ],
 
                         "browser": "src/main.ts",
@@ -32,7 +36,7 @@
                             }
                         ],
                         "styles": ["src/custom-theme.scss", "src/styles.css"],
- 
+
                         "server": "src/main.server.ts",
                         "outputMode": "server",
                         "ssr": {
@@ -44,7 +48,7 @@
                             "budgets": [
                                 {
                                     "type": "initial",
-                                    "maximumWarning": "500kB",
+                                    "maximumWarning": "600kB",
                                     "maximumError": "1MB"
                                 },
                                 {
@@ -80,9 +84,6 @@
                         }
                     },
 
-                    
-
- 
                     "defaultConfiguration": "development"
                 },
                 "extract-i18n": {
@@ -90,6 +91,7 @@
                 },
                 "test": {
                     "builder": "@angular/build:karma",
+
                     "options": {
                         "tsConfig": "tsconfig.spec.json",
                         "assets": [

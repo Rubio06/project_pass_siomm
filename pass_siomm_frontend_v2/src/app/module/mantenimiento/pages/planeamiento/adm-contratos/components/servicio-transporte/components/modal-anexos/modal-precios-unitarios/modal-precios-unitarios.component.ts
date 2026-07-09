@@ -93,7 +93,7 @@ export class ModalPreciosUnitariosComponent implements OnInit {
     }
 
     private crearGrupoFila(item: PartidaPuListarDto): FormGroup {
-        return this.fb.group({
+        const group = this.fb.group({
             seleccionado: [false],
             nro_partida: [item.nro_partida],
             codigo_precio: [item.codigo_precio],
@@ -111,6 +111,10 @@ export class ModalPreciosUnitariosComponent implements OnInit {
             ind_estado: [item.ind_estado],
             ind_situacion: [item.ind_situacion === '1']
         });
+        if (this.ind_estado() !== 'G') {
+            group.disable();
+        }
+        return group;
     }
 
 

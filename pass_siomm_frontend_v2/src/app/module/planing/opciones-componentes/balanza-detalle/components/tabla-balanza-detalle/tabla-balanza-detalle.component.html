@@ -1,0 +1,155 @@
+<div class="flex flex-col justify-between min-h-[455px] max-h-[455px]">
+
+    <div>
+        <table class="table table-zebra table-sm w-full table-auto">
+
+            <thead class="sticky top-0 bg-white z-10">
+                <tr class="shadow-[0_2px_0_0_black] text-center whitespace-nowrap">
+                    <th class="py-2 px-2 text-[#013B5C]">Icono</th>
+                    <th class="py-2 px-2 text-[#013B5C]">Contrata</th>
+                    <th class="py-2 px-2 text-[#013B5C]">Fecha Emision</th>
+                    <th class="py-2 px-2 text-[#013B5C]">Turno</th>
+                    <th class="py-2 px-2 text-[#013B5C]">Nro. Guia</th>
+                    <th class="py-2 px-2 text-[#013B5C]">Estado</th>
+                    <th class="py-2 px-2 text-[#013B5C]">Ind. Mat</th>
+                    <th class="py-2 px-2 text-[#013B5C]">Tipo Material</th>
+                    <th class="py-2 px-2 text-[#013B5C]">Ruta Origen</th>
+                    <th class="py-2 px-2 text-[#013B5C]">Ruta Destino</th>
+                    <th class="py-2 px-2 text-[#013B5C]">Codigo Equipo</th>
+                    <th class="py-2 px-2 text-[#013B5C]">Placa</th>
+                    <th class="py-2 px-2 text-[#013B5C]">Zona</th>
+                    <th class="py-2 px-2 text-[#013B5C]">Peso Bruto</th>
+                    <th class="py-2 px-2 text-[#013B5C]">Tara</th>
+                    <th class="py-2 px-2 text-[#013B5C]">Peso Neto</th>
+                    <th class="py-2 px-2 text-[#013B5C]">Hora Inicial</th>
+                    <th class="py-2 px-2 text-[#013B5C]">Hora Final</th>
+                    <th class="py-2 px-2 text-[#013B5C]">Ticket</th>
+                    <th class="py-2 px-2 text-[#013B5C]">Contrato</th>
+                    <th class="py-2 px-2 text-[#013B5C]">Nro. Carros</th>
+                    <th class="py-2 px-2 text-[#013B5C]">Chofer</th>
+                    <th class="py-2 px-2 text-[#013B5C]">Tipo Transporte</th>
+                    <th class="py-2 px-2 text-[#013B5C]">Tolva/Procedencia</th>
+                    <th class="py-2 px-2 text-[#013B5C]">Labor</th>
+                    <th class="py-2 px-2 text-[#013B5C]">Nom. Labor</th>
+                    <th class="py-2 px-2 text-[#013B5C]">Tipo Labor</th>
+                    <th class="py-2 px-2 text-[#013B5C]">Ala</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @if (isLoading()) {
+                <tr>
+
+                    <td colspan="30" class="text-center py-8">
+
+                        <div class="flex justify-center">
+
+                            <div class="flex flex-col items-center gap-2">
+
+                                <progress class="progress w-56" style="color:#013B5C;"></progress>
+
+                                <span class="text-xs">
+                                    <b>Cargando...</b>
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+                }
+
+                <!-- [class.bg-[#17324D]/10]="contratoActivo()?.cod_contrato === contrato.cod_contrato"
+                                [class.text-[#013B5C]]="contratoActivo()?.cod_contrato === contrato.cod_contrato"
+                                [class.font-bold]="contratoActivo()?.cod_contrato === contrato.cod_contrato"
+                                (dblclick)="seleccionar(contrato)" (click)="onEnviarContrato(contrato)" -->
+
+                @else if (listBalanzaDetalle().length > 0) {
+                @for (dt of listBalanzaDetalle(); track $index) {
+                <tr class="hover:bg-[#17324D]/5 select-none cursor-pointer transition-colors text-center align-top"
+                    [class.bg-[#17324D]/10]="codTicketBalanza() === dt.cod_ticket_balanza"
+                    [class.text-[#013B5C]]="codTicketBalanza() === dt.cod_ticket_balanza"
+                    [class.font-bold]="codTicketBalanza() === dt.cod_ticket_balanza"
+                    (dblclick)="onSelecionar(dt)" 
+                    >
+                    <td class="py-2 px-2 font-medium whitespace-nowrap"></td>
+                    <td class="py-2 px-2 font-medium whitespace-nowrap">{{ dt.contrata }}</td>
+                    <td class="py-2 px-2 font-medium whitespace-nowrap">{{ dt.fec_emision }}</td>
+                    <td class="py-2 px-2 font-medium whitespace-nowrap">
+                        @switch (dt.cod_turno) {
+                            @case ('A') { TURNO A }
+                            @case ('B') { TURNO B }
+                            @case ('C') { TURNO C }
+                            @default { REVISAR TURNO }
+                        }
+                    </td>
+                    <td class="py-2 px-2 font-medium whitespace-nowrap">{{ dt.des_guia_remitente }}</td>
+                    <td class="py-2 px-2 font-medium whitespace-nowrap">
+
+                        @switch (dt.est_ticket_balanza) {
+                            @case ('G') { Generado }
+                            @case ('B') { Aprobado }
+                            @case ('A') { Anulado }
+                            @default { REVISAR ESTADO }
+                        }
+
+                    </td>
+                    <td class="py-2 px-2 font-medium whitespace-nowrap">{{ dt.cod_tipo_material }}</td>
+                    <td class="py-2 px-2 font-medium whitespace-nowrap">
+
+                        @switch (dt.cod_tipo_material) {
+                            @case ('M') { Material }
+                            @case ('D') { Desmonte }
+                            @default { REVISAR MATERIAL }
+                        }
+
+                    </td>
+                    <td class="py-2 px-2 font-medium whitespace-nowrap">{{ dt.ruta_origen }}</td>
+                    <td class="py-2 px-2 font-medium whitespace-nowrap">{{ dt.ruta_destino }}</td>
+                    <td class="py-2 px-2 font-medium whitespace-nowrap">{{ dt.des_cod_equipo }}</td>
+                    <td class="py-2 px-2 font-medium whitespace-nowrap">{{ dt.des_placa }}</td>
+                    <td class="py-2 px-2 font-medium whitespace-nowrap">{{ dt.cod_zona }}</td>
+                    <td class="py-2 px-2 font-medium whitespace-nowrap">{{ dt.num_peso_entrada_tmh }}</td>
+                    <td class="py-2 px-2 font-medium whitespace-nowrap">{{ dt.num_peso_salida_tmh }}</td>
+                    <td class="py-2 px-2 font-medium whitespace-nowrap">{{ dt.num_peso_neto_tmh }}</td>
+                    <td class="py-2 px-2 font-medium whitespace-nowrap">{{ dt.fec_peso_entrada }}</td>
+                    <td class="py-2 px-2 font-medium whitespace-nowrap">{{ dt.fec_peso_salida }}</td>
+                    <td class="py-2 px-2 font-medium whitespace-nowrap">{{ dt.cod_ticket_balanza }}</td>
+                    <td class="py-2 px-2 font-medium whitespace-nowrap">{{ dt.cod_contrato }}</td>
+                    <td class="py-2 px-2 font-medium whitespace-nowrap">{{ dt.num_cantidad_carros }}</td>
+                    <td class="py-2 px-2 font-medium whitespace-nowrap">{{ dt.des_chofer }}</td>
+                    <td class="py-2 px-2 font-medium whitespace-nowrap">{{ dt.des_tipo_transporte }}</td>
+                    <td class="py-2 px-2 font-medium whitespace-nowrap">{{ dt.des_proced_blza }}</td>
+                    <td class="py-2 px-2 font-medium whitespace-nowrap">{{ dt.cod_labor }}</td>
+                    <td class="py-2 px-2 font-medium whitespace-nowrap">{{ dt.nom_labor }}</td>
+
+                    <td class="py-2 px-2 font-medium whitespace-nowrap">{{ dt.cod_tipo_labor }}</td>
+                    <td class="py-2 px-2 font-medium whitespace-nowrap">{{ dt.cod_ala }}</td>
+
+                </tr>
+                }
+
+                } @else if(!isLoading()){
+                <tr>
+                    <td colspan="30"
+                        class="border border-red-200 px-2 py-4 text-center bg-red-50 text-red-700 rounded-lg">
+                        <div class="flex items-center justify-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                            </svg>
+                            <b>No existen datos para mostrar con los filtros seleccionados.</b>
+                        </div>
+                    </td>
+                </tr>
+                }
+            </tbody>
+
+        </table>
+    </div>
+    <div class="p-3 bg-base-200 border-t border-base-300 font-bold text-sm text-[#013B5C]">
+        Nº: {{ listBalanzaDetalle().length }}
+    </div>
+</div>

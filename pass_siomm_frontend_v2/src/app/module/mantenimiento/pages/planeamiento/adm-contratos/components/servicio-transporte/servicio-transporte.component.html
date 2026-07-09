@@ -45,18 +45,27 @@
                                     class="flex flex-5 items-center gap-4 bg-base-100 px-3 py-1 rounded-lg border border-base-300">
                                     <label class="flex items-center gap-2 cursor-pointer">
                                         <input type="radio" formControlName="ind_tipo_contrato" value="M"
+                                            [disabled]="miFormulario.get('ind_estado')?.value !== 'G'"
+                                            [class.opacity-50]="miFormulario.get('ind_estado')?.value !== 'G'"
+                                            [class.cursor-not-allowed]="miFormulario.get('ind_estado')?.value !== 'G'"
                                             (change)="tipoContrato.set('M')" class="radio text-[#013B5C]"
                                             style="width: 16px; height: 16px; min-height: 16px;" />
                                         <span class="text-xs">Operación Mina</span>
                                     </label>
                                     <label class="flex items-center gap-2 cursor-pointer">
                                         <input type="radio" formControlName="ind_tipo_contrato" value="T"
+                                            [disabled]="miFormulario.get('ind_estado')?.value !== 'G'"
+                                            [class.opacity-50]="miFormulario.get('ind_estado')?.value !== 'G'"
+                                            [class.cursor-not-allowed]="miFormulario.get('ind_estado')?.value !== 'G'"
                                             (change)="tipoContrato.set('T')" class="radio text-[#013B5C]"
                                             style="width: 16px; height: 16px; min-height: 16px;" />
                                         <span class="text-xs">Transporte</span>
                                     </label>
                                     <label class="flex items-center gap-2 cursor-pointer">
                                         <input type="radio" formControlName="ind_tipo_contrato" value="A"
+                                            [disabled]="miFormulario.get('ind_estado')?.value !== 'G'"
+                                            [class.opacity-50]="miFormulario.get('ind_estado')?.value !== 'G'"
+                                            [class.cursor-not-allowed]="miFormulario.get('ind_estado')?.value !== 'G'"
                                             (change)="tipoContrato.set('A')" class="radio text-[#013B5C]"
                                             style="width: 16px; height: 16px; min-height: 16px;" />
                                         <span class="text-xs">Alq. Equipo</span>
@@ -135,7 +144,9 @@
                                         <span class="label-text font-semibold text-xs text-base-content/70">Periodo de
                                             Inicio</span>
                                     </label>
-                                    <input type="date" formControlName="fec_inicio" class="input-base_date" />
+                                    <input type="date" formControlName="fec_inicio" class="input-base_date"
+                                        [class.opacity-50]="miFormulario.get('ind_estado')?.value !== 'G'"
+                                        [class.cursor-not-allowed]="miFormulario.get('ind_estado')?.value !== 'G'" />
                                 </div>
                                 @if(formsUtils.isValidField(miFormulario,'fec_inicio')) {
                                 <div class="text-[#C23E32] text-xs mt-1 w-full text-center">
@@ -150,7 +161,9 @@
                                         <span class="label-text font-semibold text-xs text-base-content/70">Fecha
                                             Firma</span>
                                     </label>
-                                    <input type="date" formControlName="fec_firma" class="input-base_date" />
+                                    <input type="date" formControlName="fec_firma" class="input-base_date"
+                                        [class.opacity-50]="miFormulario.get('ind_estado')?.value !== 'G'"
+                                        [class.cursor-not-allowed]="miFormulario.get('ind_estado')?.value !== 'G'" />
                                 </div>
                                 @if(formsUtils.isValidField(miFormulario,'fec_firma')) {
                                 <div class="text-[#C23E32] text-xs mt-1 w-full text-center">
@@ -200,7 +213,9 @@
                                         <span class="label-text font-semibold text-xs text-base-content/70">Periodo de
                                             Term.</span>
                                     </label>
-                                    <input type="date" formControlName="fec_termino" class="input-base_date" />
+                                    <input type="date" formControlName="fec_termino" class="input-base_date"
+                                        [class.opacity-50]="miFormulario.get('ind_estado')?.value !== 'G'"
+                                        [class.cursor-not-allowed]="miFormulario.get('ind_estado')?.value !== 'G'" />
                                 </div>
                                 @if(formsUtils.isValidField(miFormulario,'fec_termino')) {
                                 <div class="text-[#C23E32] text-xs mt-1 w-full text-center">
@@ -254,6 +269,9 @@
                                             Usu.</span>
                                     </label>
                                     <input type="date" formControlName="fec_usuario_creo"
+                                        [disabled]="miFormulario.get('ind_estado')?.value !== 'G'"
+                                        [class.opacity-50]="miFormulario.get('ind_estado')?.value !== 'G'"
+                                        [class.cursor-not-allowed]="miFormulario.get('ind_estado')?.value !== 'G'"
                                         class="input-base_date disabled:opacity-90 disabled:bg-gray-100 disabled:cursor-not-allowed" />
                                 </div>
                                 @if(formsUtils.isValidField(miFormulario,'fec_usuario_creo')) {
@@ -274,7 +292,9 @@
                                 <span class="label-text font-semibold text-xs text-base-content/70">Fecha de
                                     Registro</span>
                             </label>
-                            <input type="date" formControlName="fec_registro" class="input-base_date" />
+                            <input type="date" formControlName="fec_registro" class="input-base_date"
+                                [class.opacity-50]="miFormulario.get('ind_estado')?.value !== 'G'"
+                                [class.cursor-not-allowed]="miFormulario.get('ind_estado')?.value !== 'G'" />
                         </div>
                         @if(formsUtils.isValidField(miFormulario,'fec_registro')) {
                         <div class="text-[#C23E32] text-xs mt-1 w-full text-center">
@@ -409,14 +429,9 @@
 
                         <!-- Gastos Generales: siempre libre -->
                         <div (click)="abrirSubModalGastos.set(true)"
-                        
-
                             class="flex items-center gap-2.5 px-2 py-1.5 rounded-md hover:bg-base-200 cursor-pointer transition-colors">
                             <button type="button" class="w-7 h-7 rounded-md flex items-center justify-center shrink-0"
 
-                                [disabled]="miFormulario.get('ind_estado')?.value !== 'G'"
-                                [class.opacity-50]="miFormulario.get('ind_estado')?.value !== 'G'"
-                                [class.cursor-not-allowed]="miFormulario.get('ind_estado')?.value !== 'G'"
                                 style="background:#EEEDFE; color:#534AB7;">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none"
                                     stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -439,7 +454,7 @@
                 class="flex flex-col w-[65%] md:flex-row lg:flex-row xl:flex-row space-x-2 pb-1 mt-2 mb-2 border-b border-base-300">
 
                 @if (miFormulario.get('ind_tipo_contrato')?.value === 'M' ||
-                miFormulario.get('ind_tipo_contrato')?.value === 'T') {
+                    miFormulario.get('ind_tipo_contrato')?.value === 'T') {
                 <a (click)="tabActivo.set('parametros')" [class.tab-active]="tabActivo() === 'parametros'"
                     class="tab-style flex items-center gap-1 whitespace-nowrap px-1 py-1 cursor-pointer">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
@@ -479,10 +494,8 @@
             <!-- [modo]="modo() ?? 'nuevo' -->
             @if(tabActivo() === 'parametros') {
             <app-parametros-generales [parametros]="parametrosArray"
-                [cod_contrato]="miFormulario.get('cod_contrato')?.value" 
-                [dataContrato]="obServicioTransporte()" 
-                [ind_estado]="miFormulario.get('ind_estado')?.value"
-                />
+                [cod_contrato]="miFormulario.get('cod_contrato')?.value" [dataContrato]="obServicioTransporte()"
+                [ind_estado]="miFormulario.get('ind_estado')?.value" />
             }
 
             @if(tabActivo() === 'base') {
@@ -492,14 +505,14 @@
             }
 
             @if(tabActivo() === 'equipos') {
-            <app-equipos-alquilados [equipos]="equiposArray" [cod_contrato]="miFormulario.get('cod_contrato')?.value"
+            <app-equipos-alquilados [equipos]="equiposArray" 
+                [cod_contrato]="miFormulario.get('cod_contrato')?.value"
                 [cod_contrata]="miFormulario.get('cod_contrata')?.value"
                 [ind_estado]="miFormulario.get('ind_estado')?.value" />
             }
 
             <div class="modal-action border-t border-base-200 pt-3 mt-2 flex justify-end gap-2">
-                <button type="submit" 
-                    [disabled]="miFormulario.get('ind_estado')?.value !== 'G'"
+                <button type="submit" [disabled]="miFormulario.get('ind_estado')?.value !== 'G'"
                     [class.opacity-50]="miFormulario.get('ind_estado')?.value !== 'G'"
                     [class.cursor-not-allowed]="miFormulario.get('ind_estado')?.value !== 'G'"
                     class="btn btn-sm text-white bg-[#013B5C] hover:bg-[#002B48] flex items-center gap-1">
@@ -527,18 +540,15 @@
 <!-- ======================================================================= -->
 @if(abrirSubModalGastos()) {
 <app-modal-gastos-generales (onCerrarModalGastos)="abrirSubModalGastos.set(false)"
-    [cod_contrato]="miFormulario.get('cod_contrato')?.value"
-    [ind_estado]="miFormulario.get('ind_estado')?.value" />
+    [cod_contrato]="miFormulario.get('cod_contrato')?.value" [ind_estado]="miFormulario.get('ind_estado')?.value" />
 }
 
 @if(abrirSubModalTarifario()) {
 <app-modal-tarifario (onCerrarModalTarifario)="abrirSubModalTarifario.set(false)"
-    [cod_contrato]="miFormulario.get('cod_contrato')?.value"
-    [ind_estado]="miFormulario.get('ind_estado')?.value" />
+    [cod_contrato]="miFormulario.get('cod_contrato')?.value" [ind_estado]="miFormulario.get('ind_estado')?.value" />
 }
 
 @if(abrirSubModalPrecUnitario()) {
 <app-modal-precios-unitarios (onCerrarModalPrecUnitario)="abrirSubModalPrecUnitario.set(false)"
-    [cod_contrato]="miFormulario.get('cod_contrato')?.value"
-    [ind_estado]="miFormulario.get('ind_estado')?.value" />
+    [cod_contrato]="miFormulario.get('cod_contrato')?.value" [ind_estado]="miFormulario.get('ind_estado')?.value" />
 }

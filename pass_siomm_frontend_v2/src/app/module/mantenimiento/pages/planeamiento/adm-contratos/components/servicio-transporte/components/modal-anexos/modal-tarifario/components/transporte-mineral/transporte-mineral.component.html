@@ -3,17 +3,17 @@
         <table class="table table-sm table-zebra w-full min-w-[2500px] ">
             <thead class="sticky top-0 z-10 shadow-[0_2px_0_0_black] text-center">
                 <tr class="bg-base-200 text-base-content/80 text-center text-xs ">
-                    <th class="w-[5%] text-[#013B5C]">Código</th>
-                    <th class="w-[12%] text-[#013B5C]">Lugar Origen</th>
-                    <th class="w-[12%] text-[#013B5C]">Punto Intermedio</th>
-                    <th class="w-[12%] text-[#013B5C]">Lugar Destino</th>
+                    <th class="w-[1%] text-[#013B5C]">Código</th>
+                    <th class="w-[9%] text-[#013B5C]">Lugar Origen</th>
+                    <th class="w-[9%] text-[#013B5C]">Punto Intermedio</th>
+                    <th class="w-[9%] text-[#013B5C]">Lugar Destino</th>
                     <th class="w-[7%] text-[#013B5C]">Zona</th>
                     <th class="w-[4%] text-[#013B5C]">Distancia (Km)</th>
                     <th class="w-[4%] text-[#013B5C]">PU S/ TMH x KM</th>
                     <th class="w-[4%] text-[#013B5C]">Precio Ruta S/.</th>
                     <th class="w-[10%] text-[#013B5C]">Centro Costo</th>
                     <th class="w-[12%] text-[#013B5C]">Cuenta Contable</th>
-                    <th class="w-[4%] text-[#013B5C]">Estado</th>
+                    <th class="w-[5%] text-[#013B5C]">Estado</th>
                     <th class="w-[11%] text-[#013B5C]">Tipo Movimiento SAP</th>
                     <th class="w-[1%] text-[#013B5C]"></th>
                 </tr>
@@ -64,7 +64,10 @@
                             (change)="onRutaOrigenChange(i, $event?.cod_ruta)">
                         </ng-select> -->
 
-                        <select formControlName="cod_ruta_origen" (change)="onRutaOrigenChange(i, $any($event.target).value)" class="select-base_cuatro w-full">
+                        <select formControlName="cod_ruta_origen" [disabled]="ind_estado() !== 'G'"
+                            [class.opacity-50]="ind_estado() !== 'G'" [class.cursor-not-allowed]="ind_estado() !== 'G'"
+                            (change)="onRutaOrigenChange(i, $any($event.target).value)"
+                            class="select-base_cuatro w-full">
                             @for (ruta of listRutas(); track $index) {
                             <option [value]="ruta.cod_ruta">{{ ruta.des_ruta }}</option>
 
@@ -72,7 +75,7 @@
                         </select>
 
                         @if(filas.at(i).errors?.['rutaOrigenDestinoDuplicada']) {
-                        <span class="text-[#C23E32] text-xs"><b>Origen = Destino</b></span>
+                        <span class="text-[#C23E32] text-xs"><b> Origen y Destino no pueden ser iguales.</b></span>
                         }
                     </td>
 
@@ -81,7 +84,9 @@
                             formControlName="cod_ruta_intermedia" [virtualScroll]="true" class="ng-select-custom w-full"
                             placeholder="Seleccione intermedia" [minTermLength]="0" [loading]="false">
                         </ng-select> -->
-                        <select formControlName="cod_ruta_intermedia" class="select-base_cuatro w-full">
+                        <select formControlName="cod_ruta_intermedia" class="select-base_cuatro w-full"
+                            [disabled]="ind_estado() !== 'G'" [class.opacity-50]="ind_estado() !== 'G'"
+                            [class.cursor-not-allowed]="ind_estado() !== 'G'">
                             @for (ruta of listRutas(); track $index) {
                             <option [value]="ruta.cod_ruta">{{ ruta.des_ruta }}</option>
 
@@ -99,14 +104,16 @@
                             placeholder="Seleccione destino" [minTermLength]="0" [loading]="false">
                         </ng-select> -->
 
-                        <select formControlName="cod_ruta_destino" class="select-base_cuatro w-full">
+                        <select formControlName="cod_ruta_destino" class="select-base_cuatro w-full"
+                            [disabled]="ind_estado() !== 'G'" [class.opacity-50]="ind_estado() !== 'G'"
+                            [class.cursor-not-allowed]="ind_estado() !== 'G'">
                             @for (ruta of listRutas(); track $index) {
                             <option [value]="ruta.cod_ruta">{{ ruta.des_ruta }}</option>
 
                             }
                         </select>
                         @if(filas.at(i).errors?.['rutaOrigenDestinoDuplicada']) {
-                        <span class="text-[#C23E32] text-xs"><b>Destino = Origen</b></span>
+                        <span class="text-[#C23E32] text-xs"><b> Origen y Destino no pueden ser iguales.</b></span>
                         }
                     </td>
                     <td class="p-2 border-r border-base-200 bg-base-100/50 font-medium">
@@ -120,7 +127,9 @@
                     </td>
 
                     <td class="p-2">
-                        <input type="text" formControlName="nro_distancia_km" class="input-base_3" [maxlength]="10" />
+                        <input type="text" formControlName="nro_distancia_km" class="input-base_3" [maxlength]="10"
+                            [disabled]="ind_estado() !== 'G'" [class.opacity-50]="ind_estado() !== 'G'"
+                            [class.cursor-not-allowed]="ind_estado() !== 'G'" />
                         @if(formUtils.isValidFieldInArray(filas.at(i),'nro_distancia_km')) {
                         <div class="text-[#C23E32] text-xs mt-1">
                             <span><b>{{ formUtils.getFiledErrorArray(filas.at(i),'nro_distancia_km') }}</b></span>
@@ -129,7 +138,9 @@
                     </td>
 
                     <td class="p-2">
-                        <input type="text" formControlName="imp_tmh_km_soles" class="input-base_3" [maxlength]="10" />
+                        <input type="text" formControlName="imp_tmh_km_soles" class="input-base_3" [maxlength]="10"
+                            [disabled]="ind_estado() !== 'G'" [class.opacity-50]="ind_estado() !== 'G'"
+                            [class.cursor-not-allowed]="ind_estado() !== 'G'" />
                         @if(formUtils.isValidFieldInArray(filas.at(i),'imp_tmh_km_soles')) {
                         <div class="text-[#C23E32] text-xs mt-1">
                             <span><b>{{ formUtils.getFiledErrorArray(filas.at(i),'imp_tmh_km_soles') }}</b></span>
@@ -138,7 +149,9 @@
                     </td>
 
                     <td class="p-2">
-                        <input type="text" formControlName="imp_ruta_pu" class="input-base_3" [maxlength]="10" />
+                        <input type="text" formControlName="imp_ruta_pu" class="input-base_3" [maxlength]="10"
+                            [disabled]="ind_estado() !== 'G'" [class.opacity-50]="ind_estado() !== 'G'"
+                            [class.cursor-not-allowed]="ind_estado() !== 'G'" />
 
                         @if(formUtils.isValidFieldInArray(filas.at(i),'imp_ruta_pu')) {
                         <div class="text-[#C23E32] text-xs mt-1">
@@ -161,7 +174,9 @@
                             formControlName="cto_cod" [virtualScroll]="true" class="ng-select-custom w-full"
                             placeholder="Seleccione origen">
                         </ng-select> -->
-                        <select formControlName="cto_cod" class="select-base_cuatro w-full">
+                        <select formControlName="cto_cod" class="select-base_cuatro w-full"
+                            [disabled]="ind_estado() !== 'G'" [class.opacity-50]="ind_estado() !== 'G'"
+                            [class.cursor-not-allowed]="ind_estado() !== 'G'">
                             @for (cto of listCentrosCosto(); track $index) {
                             <option [value]="cto.cto_cod">{{ cto.cto_des }}</option>
                             }
@@ -179,7 +194,9 @@
                             placeholder="Seleccione origen">
                         </ng-select> -->
 
-                        <select formControlName="cta_cod" class="select-base_cuatro w-full">
+                        <select formControlName="cta_cod" class="select-base_cuatro w-full"
+                            [disabled]="ind_estado() !== 'G'" [class.opacity-50]="ind_estado() !== 'G'"
+                            [class.cursor-not-allowed]="ind_estado() !== 'G'">
                             @for (cto of listCuentas(); track $index) {
                             <option [value]="cto.cta_cod">{{ cto.cta_des }}</option>
                             }
@@ -193,14 +210,18 @@
 
 
                     <td class="p-2 border-r border-base-300">
-                        <select formControlName="flg_vigencia" class="select-base_cuatro w-full">
+                        <select formControlName="flg_vigencia" class="select-base_cuatro w-full"
+                            [disabled]="ind_estado() !== 'G'" [class.opacity-50]="ind_estado() !== 'G'"
+                            [class.cursor-not-allowed]="ind_estado() !== 'G'">
                             <option value="1">Activo</option>
                             <option value="0">Inactivo</option>
                         </select>
                     </td>
 
                     <td class="p-2 sub-mira">
-                        <select formControlName="ind_mov_sap" class="select-base_cuatro w-full">
+                        <select formControlName="ind_mov_sap" class="select-base_cuatro w-full"
+                            [disabled]="ind_estado() !== 'G'" [class.opacity-50]="ind_estado() !== 'G'"
+                            [class.cursor-not-allowed]="ind_estado() !== 'G'">
                             <option value="P">INGRESO STOCK</option>
                             <option value="C">CONSUMO + INGRESO STOCK</option>
                             <option value="T">INGRESO ALMACEN EN TRANSITO</option>
@@ -209,11 +230,8 @@
                     </td>
                     <!-- (click)="onEliminarFila(i, filas.at(i).value)" -->
                     <td class="p-1 flex justify-center items-center">
-                        <button type="button" (click)="onEliminar($index, fila)"
-                            [disabled]="ind_estado() !== 'G'"
-                            [class.opacity-50]="ind_estado() !== 'G'"
-                            [class.cursor-not-allowed]="ind_estado() !== 'G'"
-
+                        <button type="button" (click)="onEliminar($index, fila)" [disabled]="ind_estado() !== 'G'"
+                            [class.opacity-50]="ind_estado() !== 'G'" [class.cursor-not-allowed]="ind_estado() !== 'G'"
                             class="bg-[#A6200A] flex items-center justify-center rounded-lg hover:bg-red-700 hover:scale-105 transition-all duration-200 w-8 h-8">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
                                 stroke="white" class="w-4 h-4">
@@ -229,11 +247,8 @@
         </table>
     </div>
     <div>
-        <button type="button" (click)="onAgregarFila()"
-                            [disabled]="ind_estado() !== 'G'"
-                    [class.opacity-50]="ind_estado() !== 'G'"
-                    [class.cursor-not-allowed]="ind_estado() !== 'G'"
-
+        <button type="button" (click)="onAgregarFila()" [disabled]="ind_estado() !== 'G'"
+            [class.opacity-50]="ind_estado() !== 'G'" [class.cursor-not-allowed]="ind_estado() !== 'G'"
             class="bg-[#047857] flex items-center justify-center rounded-lg shadow-sm group
             hover:shadow-md hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed w-8 h-8">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="white"
