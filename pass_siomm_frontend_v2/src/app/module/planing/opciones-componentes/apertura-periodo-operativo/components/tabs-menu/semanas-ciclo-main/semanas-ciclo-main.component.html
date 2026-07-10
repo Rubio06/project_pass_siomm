@@ -7,7 +7,8 @@
 
             <div class="mt-5">
 
-                <div class="p-3 flex flex-col md:flex-row md:justify-between md:items-center gap-2 mb-4 border-l-4 border-[#013B5C] shadow-sm rounded-md bg-white">
+                <!-- <div
+                    class="p-3 flex flex-col md:flex-row md:justify-between md:items-center gap-2 mb-4 border-l-4 border-[#013B5C] shadow-sm rounded-md bg-white">
                     <h3 class="text-base sm:text-lg font-bold text-[#013B5C]">
                         Detalle de Labores
                     </h3>
@@ -19,98 +20,147 @@
                             {{ semanas.length }}
                         </span>
                     </div>
-                </div>
+                </div> -->
 
-                <div class="relative flex gap-4">
-                    <div class="flex-1 border mx-auto rounded-lg overflow-x-auto shadow-md border-gray-300">
-                        <table class="min-w-full border-collapse text-sm text-gray-800">
-                            <thead>
-                                <tr class="text-center text-gray-700 font-bold bg-gray-200 uppercase text-xs">
-                                    @for (col of titulo; track $index) {
-                                        <th class="border border-gray-300 px-4 py-2">{{ col }}</th>
-                                    }
-                                    <th class="border border-gray-300 px-4 py-2">ACCIÓN</th>
-                                </tr>
-                            </thead>
+                <div class="overflow-hidden mt-2 w-full">
+                    <div class="flex items-end justify-between mb-5">
+                        <div class="flex items-center gap-2">
+                            <div class="bg-[#013B5C] p-1.5 rounded-md">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-white" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M3 10h18M3 6h18M3 14h18M3 18h18" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h1 class="text-sm font-bold text-[#013B5C]">Detalle de Semana Ciclo</h1>
+                                <p class="text-xs text-gray-400">Listado de registros (Semanas Ciclo)</p>
+                            </div>
+                        </div>
 
-                            <tbody formArrayName="semanas">
-                                @if (semanas.controls.length === 0) {
-                                    <tr class="border-y border-gray-300">
-                                        <td [attr.colspan]="datosColumna().length + 2"
-                                            class="p-4 text-center font-semibold text-red-700 bg-red-50 border border-gray-300">
-                                            No existen datos para mostrar.
-                                        </td>
-                                    </tr>
-                                } @else {
-                                    @for (item of semanas.controls; track $index; let i = $index) {
+                        <div
+                            class="flex items-center gap-1.5 bg-[#013B5C]/10 border border-[#013B5C]/20 px-3 py-1.5 rounded-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-[#013B5C]" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                            <span class="text-xs font-bold text-[#013B5C]">{{ semanas.length }}</span>
+                            <b><span class="text-xs text-[#013B5C]/70">registro</span></b>
+                        </div>
+                    </div>
+
+                    <div class="flex">
+                        <div
+                            class="border border-gray-300 rounded overflow-auto max-h-100 min-h-100 flex-11 custom-scroll">
+                            <div class="flex-1">
+                                <table class="table table-zebra table-sm w-full min-w-[900px]">
+                                    <thead class="sticky top-0 bg-white z-10">
+                                        <tr class="shadow-[0_2px_0_0_black] text-center">
+                                            @for (col of titulo; track $index) {
+                                            <th class="py-2 text-[#013B5C]">{{ col }}</th>
+                                            }
+                                            <th class="py-2 text-[#013B5C]">ACCIÓN</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody formArrayName="semanas">
+                                        @if (semanas.controls.length === 0) {
+                                        <tr>
+                                            <td [attr.colspan]="datosColumna().length + 2"
+                                                class="border border-red-200 px-2 py-4 text-center bg-red-50 text-red-700 rounded-lg">
+                                                <div class="flex items-center justify-center gap-2">
+                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                                    </svg>
+                                                    <b>No existen datos para mostrar.</b>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        } @else {
+                                        @for (item of semanas.controls; track $index; let i = $index) {
                                         <tr [formGroupName]="i"
-                                            class="even:bg-gray-50 odd:bg-white hover:bg-blue-50/70 transition duration-150">
-
+                                            class="hover:bg-[#17324D]/5 select-none transition-colors text-center">
                                             @for (col of datosColumna(); track $index) {
-                                                <td class="border-x border-gray-300 p-1.5 w-40">
-                                                    <div class="flex items-center border border-gray-300 rounded-md px-2 py-1 bg-white shadow-sm">
-                                                        <input [type]="col.type" [formControlName]="col.name"
-                                                            [class.opacity-30]="col.name == 'num_semana'"
-                                                            [class.opacity-40]="planingCompartido.tablaBloqueada() && !item.get('esNuevo')?.value"
-                                                            [class.pointer-events-none]="planingCompartido.tablaBloqueada() && !item.get('esNuevo')?.value"
-                                                            class="w-full bg-transparent outline-none text-gray-800 placeholder-gray-400 text-sm font-medium" />
-                                                    </div>
+                                            <td class="py-2 font-medium min-w-[150px]">
+                                                <div
+                                                    class="">
+                                                    <input [type]="col.type" [formControlName]="col.name"
+                                                        [class.opacity-50]="col.name == 'num_semana'"
+                                                        [class.opacity-50]="planingCompartido.tablaBloqueada() && !item.get('esNuevo')?.value"
+                                                        [class.pointer-events-none]="planingCompartido.tablaBloqueada() && !item.get('esNuevo')?.value"
+                                                        class="w-full input-base_5 " />
+                                                </div>
 
-                                                    @if (formUtils.isValidFieldInArray(item, col.name)) {
-                                                        <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
-                                                            <span>
-                                                                <b>{{ formUtils.getFiledErrorArray(item, col.name) }}</b>
-                                                            </span>
-                                                        </div>
-                                                    }
+                                                @if (formUtils.isValidFieldInArray(item, col.name)) {
+                                                <div class="form-text text-[#C23E32] text-xs mt-1"
+                                                    style="font-size: 10px;">
+                                                    <span>
+                                                        <b>{{ formUtils.getFiledErrorArray(item, col.name) }}</b>
+                                                    </span>
+                                                </div>
+                                                }
 
-                                                    @if (col.name === 'fec_fin' && item.errors?.['fechasIguales'] && item.touched) {
-                                                        <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
-                                                            <b>Las fechas no pueden ser iguales.</b>
-                                                        </div>
-                                                    }
+                                                @if (col.name === 'fec_fin' && item.errors?.['fechasIguales'] &&
+                                                item.touched) {
+                                                <div class="form-text text-[#C23E32] text-xs mt-1"
+                                                    style="font-size: 10px;">
+                                                    <b>Las fechas no pueden ser iguales.</b>
+                                                </div>
+                                                }
 
-                                                    @if (col.name === 'fec_fin' && item.errors?.['rangoInvalido'] && item.touched) {
-                                                        <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
-                                                            <b>La fecha fin debe ser mayor que la fecha inicio.</b>
-                                                        </div>
-                                                    }
+                                                @if (col.name === 'fec_fin' && item.errors?.['rangoInvalido'] &&
+                                                item.touched) {
+                                                <div class="form-text text-[#C23E32] text-xs mt-1"
+                                                    style="font-size: 10px;">
+                                                    <b>La fecha fin debe ser mayor que la fecha inicio.</b>
+                                                </div>
+                                                }
 
-                                                    @if (col.name === 'fec_fin' && item.errors?.['rangoMayorA7Dias'] && item.touched) {
-                                                        <div class="form-text text-[#C23E32] text-xs mt-1" style="font-size: 10px;">
-                                                            <b>El rango es de 7 días no puede exceder.</b>
-                                                        </div>
-                                                    }
-                                                </td>
+                                                @if (col.name === 'fec_fin' && item.errors?.['rangoMayorA7Dias'] &&
+                                                item.touched) {
+                                                <div class="form-text text-[#C23E32] text-xs mt-1"
+                                                    style="font-size: 10px;">
+                                                    <b>El rango es de 7 días no puede exceder.</b>
+                                                </div>
+                                                }
+                                            </td>
                                             }
 
-                                            <td class="border-x border-gray-300 p-1.5 w-24 text-center">
+                                            <td class="py-2 font-medium min-w-[120px] text-center">
                                                 <button type="button" (click)="eliminarFila(item, i)"
                                                     [disabled]="planingCompartido.tablaBloqueada() && !item.get('esNuevo')?.value"
                                                     class="flex items-center justify-center gap-1 mx-auto bg-[#A3361D] hover:bg-red-700 text-white px-2 py-1.5 rounded-md shadow-sm transition-all duration-200 font-medium text-xs disabled:opacity-30 disabled:cursor-not-allowed">
-                                                    
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                         viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                                         <polyline points="3 6 5 6 21 6"></polyline>
-                                                        <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6m5 0V4a2 2 0 0 1 2-2h0a2 2 0 0 1 2 2v2"></path>
+                                                        <path
+                                                            d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6m5 0V4a2 2 0 0 1 2-2h0a2 2 0 0 1 2 2v2">
+                                                        </path>
                                                     </svg>
-
                                                     <b>Eliminar</b>
                                                 </button>
                                             </td>
-
                                         </tr>
-                                    }
-                                }
-                            </tbody>
-                        </table>
-                    </div>
+                                        }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
 
-                    <button type="button" (click)="agregarFilas()" [disabled]="planingCompartido._agregarRegistro()"
-                        title="Agregar registro" class="self-start flex-1 sticky top-24 flex items-center justify-center rounded-full transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed">
-                        <img src="icono-agregar.png" class="w-20 h-20 object-contain" alt="Agregar" />
-                    </button>
+                        <div class="flex items-start mt-4 flex-1 justify-center">
+                            <button type="button" (click)="agregarFilas()"
+                                [disabled]="planingCompartido._agregarRegistro()" title="Agregar registro"
+                                class="flex items-center justify-center rounded-full transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed">
+                                <img src="icono-agregar.png" class="w-20 h-20 object-contain" alt="Agregar" />
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </form>

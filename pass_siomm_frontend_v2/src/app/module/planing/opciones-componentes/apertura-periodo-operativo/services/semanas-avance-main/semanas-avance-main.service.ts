@@ -4,7 +4,6 @@ import { environment } from '@environments/environments';
 import { catchError, Observable, of, throwError } from 'rxjs';
 import { FormUtils } from 'src/app/utils/form-utils';
 import Swal from 'sweetalert2'
-import 'sweetalert2/dist/sweetalert2.min.css';
 import { ApiResponse, PeriodoDestino } from '../../interface/aper-per-oper.interface';
 
 

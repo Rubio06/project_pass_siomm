@@ -6,10 +6,12 @@ import { FiltroAnioComponent } from 'src/app/shared/components/filtros-generales
 import { FiltroMesComponent } from 'src/app/shared/components/filtros-generales-selects/filtro-mes/filtro-mes.component';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { PaginacionComponent } from 'src/app/shared/components/paginacion/paginacion.component';
-import { EntradaTicketBalanza, RespuestaTicketBalanza, TicketBalanzaDto, TurnoActivo } from '../interface/balanza-detalle.interface';
+import { BOTONES_BALANZA_DETALLE, EntradaTicketBalanza, RespuestaTicketBalanza, TicketBalanzaDto, TurnoActivo } from '../interface/balanza-detalle.interface';
 import { BalanzaDetalleService } from '../service/balanza-detalle.service';
 import { TransfornMonthPipe } from 'src/app/core/pipe/transforn-month-pipe';
 import { ModalDetalleBallanzaComponent } from '../components/modal-detalle-ballanza/modal-detalle-ballanza.component';
+import { BotonesComponent } from 'src/app/shared/components/botones/botones.component';
+import { BotonesInterface } from '../../programa-mensual-labores/interface';
 
 @Component({
     selector: 'app-balanza-detalle',
@@ -21,8 +23,8 @@ import { ModalDetalleBallanzaComponent } from '../components/modal-detalle-balla
         ReactiveFormsModule,
         PaginacionComponent,
         TransfornMonthPipe,
-        ModalDetalleBallanzaComponent
-
+        ModalDetalleBallanzaComponent,
+        BotonesComponent
 
     ],
     templateUrl: './balanza-detalle.component.html',
@@ -45,6 +47,34 @@ export class BalanzaDetalleComponent implements OnInit {
     codTicketBalanza = signal<string>('');
     isLoading = signal<boolean>(false);
     abrirlModalBlnzDet = signal<boolean>(false);
+
+    /// VARIABLES DE BOTONES
+
+    bloqueo = signal<boolean>(false);
+
+    listBotones = signal<BotonesInterface[]>(BOTONES_BALANZA_DETALLE);
+
+    public onAccionBtn(accion: string) {
+        switch(accion){
+            case 'refrescar':
+                this.cargarTickets();
+                break
+
+            case 'nuevo':
+                this.onNuevo();
+                break
+        }
+    }
+
+    public bloqueoBtn(accion: string) {
+        this.listBotones.update(botones =>
+            botones.map(btn => ({
+                ...btn,
+                bloqueo: btn.accion === accion ? true : false
+            }))
+        )
+    }
+
 
     // Solo el formulario de filtros
     form: FormGroup = this.fb.group({
@@ -104,10 +134,13 @@ export class BalanzaDetalleComponent implements OnInit {
         this.abrirlModalBlnzDet.set(true);
     }
 
+
+
     public onNuevo() {
         this.modo.set('nuevo');
         this.codTicketBalanza.set('');
         this.abrirlModalBlnzDet.set(true);
+        this.bloqueoBtn('nuevo');
     }
 
 

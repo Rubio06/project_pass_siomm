@@ -4,7 +4,6 @@ import { inject, Injectable, Signal, signal, WritableSignal } from '@angular/cor
 import { catchError, Observable, of } from 'rxjs';
 import { PlanningData, SelectExploracion, SelectTipoLabor, SelectZona } from '../interface/aper-per-oper.interface';
 import Swal from 'sweetalert2'
-import 'sweetalert2/dist/sweetalert2.min.css';
 import { FormUtils } from 'src/app/utils/form-utils';
 
 @Injectable({

@@ -120,7 +120,7 @@
                             <span class="label-text font-semibold text-xs text-base-content/70">Material</span>
                         </label>
                         <div class="flex flex-col flex-1">
-                            <select class="select-base_cuatro w-full" formControlName="cod_tipo_material">
+                            <select class="select-base_cuatro w-full" formControlName="cod_tipo_material" (change)="onTipoMaterial($event)">
                                 <option value="M">Mineral</option>
                                 <option value="D">Otros</option>
 
@@ -131,7 +131,10 @@
 
                         <div class="flex-1">
                             <select class="select-base_cuatro w-full" formControlName="cod_tipo_material_detalle">
-                                <option>Ejemplo1 </option>
+                                @for (item of listTipoMaterial(); track item.cod_tipo_material_detalle) {
+                                    <option [value]="item.cod_tipo_material_detalle">{{ item.des_tipo_material_det }} </option>
+
+                                }
 
                             </select>
                         </div>
@@ -462,6 +465,7 @@
                                 </div>
                                 } -->
 
+
                             </div>
 
                             <div class="flex flex-col w-full flex-1">
@@ -524,6 +528,7 @@
 
 
             </div>
+            
             <fieldset class="border border-gray-300 rounded p-2 mt-3">
                 <legend class="px-2 text-sm font-semibold text-base-content/70">
                     Comentarios

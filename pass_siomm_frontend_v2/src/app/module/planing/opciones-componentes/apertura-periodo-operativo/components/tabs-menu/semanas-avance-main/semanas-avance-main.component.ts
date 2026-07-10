@@ -73,7 +73,7 @@ export class SemanasAvanceMainComponent implements OnInit {
                     cie_ano: [periodo?.anio, Validators.required],
                     cie_per: [periodo?.mes, Validators.required],
                     num_semana: [
-                        item.num_semana,
+                        { value: item.num_semana, disabled: true },
                         [
                             Validators.required,
                             Validators.min(1),

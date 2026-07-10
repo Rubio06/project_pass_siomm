@@ -1,1 +1,0 @@
-import{O as r,ga as i}from"./chunk-WHOZMNTM.js";var e=class a{usuario=i(null);setUsuario(o){this.usuario.set(o)}clearUsuario(){this.usuario.set(null)}static \u0275fac=function(t){return new(t||a)};static \u0275prov=r({token:a,factory:a.\u0275fac,providedIn:"root"})};export{e as a};

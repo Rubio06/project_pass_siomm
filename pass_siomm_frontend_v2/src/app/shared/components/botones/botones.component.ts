@@ -10,13 +10,6 @@ import { BotonesInterface } from 'src/app/module/planing/opciones-componentes/pr
 })
 export class BotonesComponent {
 
-    // estadoBotones = signal<boolean>(false);
-    // @Input() disabled: boolean = false;
-    // @Output() accion = new EventEmitter<void>();
-
-
-    // bloqueo = signal<boolean>(false);
-
     bloqueo = input<boolean>(false);
 
     accion = output<void>();

@@ -1,7 +1,7 @@
 import { Component, effect, inject, input, OnInit, output, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BalanzaDetalleService } from '../../service/balanza-detalle.service';
-import { EntradaDetTicketBalanza, TurnoActivo } from '../../interface/balanza-detalle.interface';
+import { DetalleTicketBalanza, EntradaDetTicketBalanza, EntradaTipoDetalle, TipoDetalleMaterial, TurnoActivo } from '../../interface/balanza-detalle.interface';
 import { FormUtils } from 'src/app/utils/form-utils';
 import { EstadoTicketBalanzaPipe } from 'src/app/core/pipe/EstadoTicketBalanza-pipe';
 
@@ -19,7 +19,7 @@ export class ModalDetalleBallanzaComponent implements OnInit {
     codTicketBalanza = input<string>('')
     formUtils = FormUtils;
     public listTurnosActivos = signal<TurnoActivo[]>([]);
-
+    public listTipoMaterial = signal<TipoDetalleMaterial[]>([]);
     modo = input<'nuevo' | 'visualizar' | 'edicion'>('visualizar');
     modoObtenido = signal<'nuevo' | 'visualizar' | 'edicion'>('visualizar');
 
@@ -65,33 +65,54 @@ export class ModalDetalleBallanzaComponent implements OnInit {
     }
 
     private camposPorModo: Record<'nuevo' | 'visualizar' | 'edicion', string[]> = {
-        nuevo: ['cod_turno'],
-        edicion: ['peso'],
+        nuevo: ['cod_turno', 'cod_tipo_material', 'cod_tipo_material_detalle'],
+        edicion: [],
         visualizar: []
     };
 
     private obtenerBalanzaDetalleTicket(): void {
-
         if (this.modo() === 'nuevo') return;
 
         const data: EntradaDetTicketBalanza = {
             cod_empresa: '03',
             cod_empresa_unidad: '01',
             cod_ticket_balanza: this.codTicketBalanza()
-        }
+        };
 
         this.balanzaDetalleService.obtenerBalanzaDetalleTicket(data).subscribe({
-            next: (data) => {
+            next: (detalle: DetalleTicketBalanza) => {
                 this.miFormulario.patchValue({
-                    ...data,
-                    fec_emision: this.formUtils.formatFecha(data.fec_emision)
+                    ...detalle,
+                    fec_emision: this.formUtils.formatFecha(detalle.fec_emision),
                 });
+                this.cargarTipoMaterial(detalle.cod_tipo_material);
             },
-            error: (err) => {
-                console.error('Error al cargar el detalle del ticket', err);
-            }
+            error: (err) => console.error('Error al cargar el detalle del ticket', err)
         });
     }
+
+    private cargarTipoMaterial(codTipoMaterial:string ): void {
+        if (!codTipoMaterial) return;
+
+        const payload: EntradaTipoDetalle = {
+            cod_empresa: '03',
+            cod_empresa_unidad: '01',
+            cod_tipo_material: codTipoMaterial
+        };
+
+        this.balanzaDetalleService.obtenerTipoMaterial(payload).subscribe({
+            next: (opciones: TipoDetalleMaterial[]) => {
+                this.listTipoMaterial.set(opciones);
+            },
+            error: (err) => console.error('Error al cargar tipo material detalle', err)
+        });
+    }
+
+    public onTipoMaterial(event: Event): void {
+        const codigo = (event.target as HTMLSelectElement).value;
+        this.cargarTipoMaterial(codigo);
+    }
+
 
     public construirFormulario() {
         this.miFormulario = this.fb.group({
@@ -140,6 +161,29 @@ export class ModalDetalleBallanzaComponent implements OnInit {
             error: (err) => console.error(err)
         })
     }
+
+    // public onTipoMaterial(event: Event): void {
+    //     const codigo = (event.target as HTMLSelectElement).value;
+    //     this.cargarTipoMaterialDetalle(codigo);
+    // }
+
+    // private cargarTipoMaterialDetalle(codigo: string): void {
+    //     if (!codigo) {
+    //         this.listTipoMaterial.set([]);
+    //         return;
+    //     }
+
+    //     const payload: EntradaTipoDetalle = {
+    //         cod_empresa: '03',
+    //         cod_empresa_unidad: '01',
+    //         cod_tipo_material: codigo
+    //     };
+
+    //     this.balanzaDetalleService.obtenerTipoMaterial(payload).subscribe({
+    //         next: (data: TipoDetalleMaterial[]) => this.listTipoMaterial.set(data),
+    //         error: (err) => console.error(err)
+    //     });
+    // }
 
 
     public onGuardar(): void {

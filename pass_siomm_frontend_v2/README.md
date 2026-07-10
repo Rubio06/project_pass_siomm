@@ -21,10 +21,6 @@ y **SQL Server** (base de datos).
 | Backend | ADO.NET / .NET 8.0 |
 | Base de datos | SQL Server 2008 |
 
-## Cómo levantar el proyecto completo (entorno local)
-1. Base de datos → restaurar/ejecutar scripts (ver database/README.md)
-2. Backend → configurar connection string y correr (ver backend/README.md)
-3. Frontend → configurar apiUrl y correr (ver frontend/README.md)
 
 ## Configuración
 

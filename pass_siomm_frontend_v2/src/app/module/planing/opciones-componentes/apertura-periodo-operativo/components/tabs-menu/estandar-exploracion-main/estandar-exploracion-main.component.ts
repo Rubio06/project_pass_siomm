@@ -73,6 +73,20 @@ export class EstandarExploracionMainComponent implements OnInit {
         return index;
     }
 
+    // Solo para el <th> — con borde abajo
+    public clasesHeaderColumna(j: number): string {
+        const base = 'py-2 text-[#013B5C] min-w-[150px]';
+        const fija = 'sticky left-0 bg-white z-10 border-r-2 border-b-2 border-black';
+        return j === 0 ? `${base} ${fija}` : base;
+    }
+
+    // Solo para el <td> — SIN borde abajo, solo a la derecha
+    public clasesCeldaColumna(j: number): string {
+        const base = 'py-2 font-medium min-w-[150px]';
+        const fija = 'sticky left-0 bg-white z-10 border-r-2';
+        return j === 0 ? `${base} ${fija}` : base;
+    }
+
     /**
      * Carga data desde backend
      */

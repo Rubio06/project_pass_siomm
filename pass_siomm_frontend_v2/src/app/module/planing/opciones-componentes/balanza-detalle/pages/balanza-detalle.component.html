@@ -28,7 +28,7 @@
             </div>
 
             <div
-                class="flex flex-col sm:flex-col lg:flex-col xl:flex-row sm:items-center sm:justify-between gap-4 mt-4 ">
+                class="flex flex-col sm:flex-col lg:flex-col xl:flex-row sm:justify-between gap-4 mt-4 items-end">
 
                 <div
                     class="w-full flex-1 flex gap-2 flex-col sm:flex-row lg:flex-row xl:flex-row  sm:items-center sm:justify-between p-2 rounded-lg">
@@ -63,8 +63,13 @@
                     </div>
                 </div>
 
-                <div class="border flex-1 w-full">
-                    <button (click)="onNuevo()">Preionando el boton</button>
+                <div class="flex-1 w-full flex gap-4 justify-end  p-1">
+                    <!-- <button (click)="onNuevo()">Preionando el boton</button> -->
+                    @for (item of listBotones(); track item.accion) {
+                        <app-botones [bloqueo]="item.bloqueo ?? false" [texto]="item.texto" [icono]="item.icono" [color]="item.color"
+                            (accion)="onAccionBtn(item.accion)"
+                        />                        
+                    }
                 </div>
 
 
